@@ -1,0 +1,636 @@
+/**
+ * ============================================================================
+ * styles.css — Neo-Brutalism (Stwedy x Chitralada Technology Institute Edition)
+ * รายวิชา: เทคโนโลยีการนำเข้าข้อมูลสู่ระบบคอมพิวเตอร์ (รหัสวิชา 21901-2017)
+ * ฟอนต์หลัก:
+ *   - ภาษาอังกฤษ / ตัวเลข / ป้ายคะแนน: 'Stack Sans Notch'
+ *   - ภาษาไทยทั้งหมด (หัวข้อ / เนื้อหา / ปุ่ม / เกียรติบัตร): 'Mitr'
+ * ============================================================================
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600;700&family=Stack+Sans+Notch:wght@200..700&display=swap');
+
+/* ============================================================================
+   1. THEME VARIABLES (LIGHT MODE & DARK MODE — HIGH CONTRAST)
+   ============================================================================ */
+:root,
+html[data-theme="light"] {
+  --bg-canvas: #DFD7C5;
+  --bg-dot: rgba(15, 23, 42, 0.18);
+  --bg-surface: #FFFDF8;
+  --bg-surface-elevated: #FFFFFF;
+  --bg-surface-muted: #EFE9DB;
+  --text-primary: #0F172A;
+  --text-secondary: #1E293B;
+  --text-muted: #334155;
+  --border-brutal: #000000;
+  --shadow-brutal: #000000;
+  --accent-emerald: #10B981;
+  --accent-amber: #FACC15;
+  --accent-pink: #F472B6;
+  --accent-sky: #38BDF8;
+  --accent-royal: #0B4F9E;
+  --code-bg: #FEF08A;
+  --code-text: #09090B;
+}
+
+html[data-theme="dark"] {
+  --bg-canvas: #090D16;
+  --bg-dot: rgba(148, 163, 184, 0.18);
+  --bg-surface: #131C2E;
+  --bg-surface-elevated: #1E293B;
+  --bg-surface-muted: #1B273D;
+  --text-primary: #F8FAFC;
+  --text-secondary: #E2E8F0;
+  --text-muted: #CBD5E1;
+  --border-brutal: #000000;
+  --shadow-brutal: #000000;
+  --accent-emerald: #34D399;
+  --accent-amber: #FACC15;
+  --accent-pink: #F472B6;
+  --accent-sky: #38BDF8;
+  --accent-royal: #3B82F6;
+  --code-bg: #FDE047;
+  --code-text: #09090B;
+}
+
+/* ============================================================================
+   2. BASE TYPOGRAPHY & DOT-GRID BACKGROUND
+   ============================================================================ */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: 'Mitr', 'Stack Sans Notch', sans-serif;
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+}
+
+body {
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: 'Mitr', 'Stack Sans Notch', sans-serif;
+  font-weight: 400;
+  line-height: 1.65;
+  overflow-x: hidden;
+  transition: background-color 0.22s ease, color 0.22s ease;
+  background-image: radial-gradient(var(--bg-dot) 1.5px, transparent 1.5px); /* taste-skill-ignore */
+  background-size: 22px 22px;
+}
+
+.font-notch {
+  font-family: 'Stack Sans Notch', 'Mitr', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.font-thai {
+  font-family: 'Mitr', 'Stack Sans Notch', sans-serif;
+}
+
+/* Inline code tags */
+code {
+  background-color: var(--code-bg);
+  color: var(--code-text) !important;
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.375rem;
+  border: 1.5px solid #000000;
+  font-family: 'Stack Sans Notch', 'Mitr', monospace;
+  font-weight: 600;
+  font-size: 0.92em;
+}
+
+pre code {
+  background: transparent;
+  color: inherit !important;
+  border: none;
+  padding: 0;
+}
+
+/* ============================================================================
+   3. NEO-BRUTALIST SURFACES & MODULE COLOR ACCENTS
+   ============================================================================ */
+.theme-surface {
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.theme-surface-muted {
+  background-color: var(--bg-surface-muted);
+  color: var(--text-primary);
+}
+
+.theme-text-muted {
+  color: var(--text-muted);
+}
+
+.theme-text-secondary {
+  color: var(--text-secondary);
+}
+
+/* Module Tinted Cards in Light & Dark Mode so cards never blend into the background (Flat Solid Neo-Brutalism) */
+html[data-theme="light"] .module-card-tint-1 {
+  background-color: #D1FAE5;
+}
+html[data-theme="light"] .module-card-tint-2 {
+  background-color: #FEF08A;
+}
+html[data-theme="light"] .module-card-tint-3 {
+  background-color: #BAE6FD;
+}
+html[data-theme="light"] .module-card-tint-4 {
+  background-color: #FBCFE8;
+}
+html[data-theme="light"] .module-card-tint-5 {
+  background-color: #FDE68A;
+}
+
+html[data-theme="dark"] .module-card-tint-1 {
+  background-color: #0D2821 !important;
+}
+html[data-theme="dark"] .module-card-tint-2 {
+  background-color: #27200E !important;
+}
+html[data-theme="dark"] .module-card-tint-3 {
+  background-color: #0E2238 !important;
+}
+html[data-theme="dark"] .module-card-tint-4 {
+  background-color: #2B1222 !important;
+}
+html[data-theme="dark"] .module-card-tint-5 {
+  background-color: #241D0B !important;
+}
+
+/* Home Hero Banner & Progress Summary Card (Flat Solid, High Contrast in Both Themes) */
+.home-hero-banner {
+  background-color: #FEF08A;
+  color: #09090B;
+}
+.home-hero-banner .home-hero-title {
+  color: #09090B !important;
+}
+.home-hero-banner .home-hero-desc {
+  color: #18181B !important;
+}
+.home-student-welcome-box {
+  background-color: #FFFFFF;
+  color: #09090B;
+}
+.home-progress-card {
+  background-color: #FFFFFF;
+  color: #09090B;
+}
+
+html[data-theme="dark"] .home-hero-banner {
+  background-color: #131C2E !important;
+  color: #F8FAFC !important;
+}
+html[data-theme="dark"] .home-hero-banner .home-hero-title {
+  color: #F8FAFC !important;
+}
+html[data-theme="dark"] .home-hero-banner .home-hero-desc {
+  color: #E2E8F0 !important;
+}
+html[data-theme="dark"] .home-student-welcome-box {
+  background-color: #090D16 !important;
+  color: #F8FAFC !important;
+}
+html[data-theme="dark"] .home-student-welcome-box h2,
+html[data-theme="dark"] .home-student-welcome-box span#home-welcome-name {
+  color: #F8FAFC !important;
+}
+html[data-theme="dark"] .home-progress-card {
+  background-color: #090D16 !important;
+  color: #F8FAFC !important;
+}
+
+/* ============================================================================
+   4. DARK MODE CONTRAST & FONT COLOR FIXES (ป้องกันตัวหนังสือกลืนกับพื้นหลัง 100%)
+   ============================================================================ */
+/* 4.1 Convert neutral white/gray boxes and 50-tint boxes into two distinct dark slate tiers so nested boxes never blend */
+html[data-theme="dark"] #reader-step-stage .bg-emerald-50,
+html[data-theme="dark"] #reader-step-stage .bg-amber-50,
+html[data-theme="dark"] #reader-step-stage .bg-sky-50,
+html[data-theme="dark"] #reader-step-stage .bg-pink-50,
+html[data-theme="dark"] #game-stage-body .bg-emerald-50,
+html[data-theme="dark"] #game-stage-body .bg-amber-50,
+html[data-theme="dark"] #game-stage-body .bg-sky-50,
+html[data-theme="dark"] #game-stage-body .bg-pink-50 {
+  background-color: #1E293B !important;
+  color: #F8FAFC !important;
+  border-color: #64748B !important;
+}
+
+html[data-theme="dark"] #reader-step-stage .bg-white,
+html[data-theme="dark"] #reader-step-stage .bg-zinc-50,
+html[data-theme="dark"] #reader-step-stage .bg-zinc-100,
+html[data-theme="dark"] #game-stage-body .bg-white,
+html[data-theme="dark"] #game-stage-body .bg-zinc-50,
+html[data-theme="dark"] #game-stage-body .bg-zinc-100 {
+  background-color: #0F172A !important;
+  color: #F8FAFC !important;
+  border-color: #475569 !important;
+}
+
+/* Keep .bg-white badges/boxes nested inside bright pastel (100-400) containers crisp white with pitch-black text */
+html[data-theme="dark"] #reader-step-stage :is(.bg-emerald-100, .bg-emerald-200, .bg-emerald-300, .bg-amber-100, .bg-amber-200, .bg-amber-300, .bg-sky-100, .bg-sky-200, .bg-sky-300, .bg-pink-100, .bg-pink-200, .bg-pink-300, .bg-red-100, .bg-red-200) .bg-white,
+html[data-theme="dark"] #game-stage-body :is(.bg-emerald-100, .bg-emerald-200, .bg-emerald-300, .bg-amber-100, .bg-amber-200, .bg-amber-300, .bg-sky-100, .bg-sky-200, .bg-sky-300, .bg-pink-100, .bg-pink-200, .bg-pink-300, .bg-red-100, .bg-red-200) .bg-white {
+  background-color: #FFFFFF !important;
+  color: #09090B !important;
+  border-color: #000000 !important;
+}
+
+/* Keep buttons inside simulators/games that use bg-white clearly readable in Dark Mode */
+html[data-theme="dark"] button.bg-white,
+html[data-theme="dark"] button.bg-zinc-50,
+html[data-theme="dark"] button.bg-zinc-100 {
+  background-color: #334155 !important;
+  color: #F8FAFC !important;
+  border-color: #000000 !important;
+}
+
+html[data-theme="dark"] button.bg-white:hover,
+html[data-theme="dark"] button.bg-zinc-50:hover,
+html[data-theme="dark"] button.bg-zinc-100:hover {
+  background-color: #FACC15 !important;
+  color: #09090B !important;
+}
+
+/* Keep QR Code canvas box and explicit WHITE ('W') pixel cells pure white with black foreground */
+html[data-theme="dark"] #reader-step-stage #u7-qr-box,
+html[data-theme="dark"] #reader-step-stage #u15-pixel-strip button.bg-white,
+html[data-theme="dark"] #game-stage-body #pc-pixel-grid div.bg-white {
+  background-color: #FFFFFF !important;
+  color: #09090B !important;
+}
+
+/* 4.2 Fix dark Tailwind text classes inside Dark Mode so they become bright & readable on dark surfaces */
+html[data-theme="dark"] .text-zinc-950,
+html[data-theme="dark"] .text-zinc-900,
+html[data-theme="dark"] .text-zinc-800,
+html[data-theme="dark"] .text-zinc-700,
+html[data-theme="dark"] .text-zinc-600,
+html[data-theme="dark"] .text-zinc-500 {
+  color: #E2E8F0 !important;
+}
+
+html[data-theme="dark"] .text-red-600 {
+  color: #F87171 !important;
+}
+html[data-theme="dark"] .text-amber-700 {
+  color: #FBBF24 !important;
+}
+html[data-theme="dark"] .text-emerald-900 {
+  color: #34D399 !important;
+}
+
+/* 4.3 Force pitch-black text inside bright pastel badges, banners, and buttons even in Dark Mode */
+.bg-emerald-100, .bg-emerald-200, .bg-emerald-300, .bg-emerald-400,
+.bg-amber-100, .bg-amber-200, .bg-amber-300, .bg-amber-400,
+.bg-sky-100, .bg-sky-200, .bg-sky-300, .bg-sky-400,
+.bg-pink-100, .bg-pink-200, .bg-pink-300, .bg-pink-400,
+.bg-red-100, .bg-red-200, .bg-red-300,
+.bg-zinc-200 {
+  color: #09090B !important;
+}
+
+html[data-theme="dark"] .bg-emerald-100 *,
+html[data-theme="dark"] .bg-emerald-200 *,
+html[data-theme="dark"] .bg-emerald-300 *,
+html[data-theme="dark"] .bg-emerald-400 *,
+html[data-theme="dark"] .bg-amber-100 *,
+html[data-theme="dark"] .bg-amber-200 *,
+html[data-theme="dark"] .bg-amber-300 *,
+html[data-theme="dark"] .bg-amber-400 *,
+html[data-theme="dark"] .bg-sky-100 *,
+html[data-theme="dark"] .bg-sky-200 *,
+html[data-theme="dark"] .bg-sky-300 *,
+html[data-theme="dark"] .bg-pink-100 *,
+html[data-theme="dark"] .bg-pink-200 *,
+html[data-theme="dark"] .bg-pink-300 *,
+html[data-theme="dark"] .bg-red-100 *,
+html[data-theme="dark"] .bg-red-200 *,
+html[data-theme="dark"] .bg-red-300 * {
+  color: #09090B !important;
+}
+
+/* Preserve white text on dark/vibrant badges even when nested inside pastel containers */
+html[data-theme="dark"] .bg-zinc-900,
+html[data-theme="dark"] .bg-zinc-950,
+html[data-theme="dark"] .bg-red-500,
+html[data-theme="dark"] .bg-red-600,
+html[data-theme="dark"] .bg-blue-600,
+html[data-theme="dark"] .bg-emerald-600,
+html[data-theme="dark"] .bg-zinc-900 *,
+html[data-theme="dark"] .bg-zinc-950 *,
+html[data-theme="dark"] .bg-red-500 *,
+html[data-theme="dark"] .bg-red-600 *,
+html[data-theme="dark"] .bg-blue-600 *,
+html[data-theme="dark"] .bg-emerald-600 * {
+  color: #FFFFFF !important;
+}
+html[data-theme="dark"] .bg-zinc-950 .text-emerald-400,
+html[data-theme="dark"] .bg-zinc-900 .text-emerald-400,
+html[data-theme="dark"] .bg-zinc-900 .text-emerald-300 {
+  color: #34D399 !important;
+}
+html[data-theme="dark"] .bg-zinc-950 .text-amber-300 {
+  color: #FDE047 !important;
+}
+html[data-theme="dark"] .bg-zinc-950 .text-sky-300 {
+  color: #7DD3FC !important;
+}
+
+/* Keep SVG diagrams clean and visible in Dark Mode */
+html[data-theme="dark"] #reader-step-stage svg:not(.bg-zinc-950) {
+  background-color: #F8FAFC;
+  border-radius: 0.75rem;
+  padding: 0.25rem;
+}
+
+/* Keep E-Certificate ALWAYS in authentic light paper mode with dark ink even in Dark Mode */
+#certificate-render-node,
+#certificate-render-node *,
+html[data-theme="dark"] #certificate-render-node,
+html[data-theme="dark"] #certificate-render-node * {
+  color: #09090B !important;
+}
+html[data-theme="dark"] #certificate-render-node .text-blue-900 {
+  color: #1E3A8A !important;
+}
+html[data-theme="dark"] #certificate-render-node .text-emerald-950 {
+  color: #064E3B !important;
+}
+html[data-theme="dark"] #certificate-render-node .text-zinc-700,
+html[data-theme="dark"] #certificate-render-node .text-zinc-600 {
+  color: #3F3F46 !important;
+}
+
+/* ============================================================================
+   5. NEO-BRUTALIST BORDERS, HARD SHADOWS & HOVER MICRO-INTERACTIONS
+   ============================================================================ */
+.brutal-border {
+  border: 2.5px solid #000000;
+}
+
+.brutal-border-thick {
+  border: 3px solid #000000;
+}
+
+.brutal-shadow-sm {
+  box-shadow: 3px 3px 0px #000000;
+}
+
+.brutal-shadow {
+  box-shadow: 5px 5px 0px #000000;
+}
+
+.brutal-shadow-lg {
+  box-shadow: 8px 8px 0px #000000;
+}
+
+.brutal-card {
+  border: 2.5px solid #000000;
+  box-shadow: 5px 5px 0px #000000;
+  transition:
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.2s ease;
+}
+
+.brutal-card-interactive {
+  position: relative;
+  overflow: hidden;
+}
+
+.brutal-card-interactive::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background-color: #0B4F9E;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.28s ease;
+}
+
+.brutal-card-interactive:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 9px 9px 0px #000000;
+}
+
+.brutal-card-interactive:hover::before {
+  transform: scaleX(1);
+}
+
+.brutal-btn {
+  border: 2.5px solid #000000;
+  box-shadow: 4px 4px 0px #000000;
+  font-family: 'Mitr', 'Stack Sans Notch', sans-serif;
+  font-weight: 600;
+  transition:
+    transform 0.14s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.14s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 0.15s ease;
+  cursor: pointer;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.brutal-btn:hover:not(:disabled) {
+  transform: translate(-2.5px, -2.5px);
+  box-shadow: 6.5px 6.5px 0px #000000;
+}
+
+.brutal-btn:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 1.5px 1.5px 0px #000000;
+}
+
+.brutal-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: 2px 2px 0px #000000;
+}
+
+.hover-arrow-shift .arrow-icon {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hover-arrow-shift:hover .arrow-icon {
+  transform: translateX(5px);
+}
+
+.nav-dropdown-item {
+  border: 2px solid transparent;
+  transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.nav-dropdown-item:hover {
+  border-color: #000000;
+  transform: translateX(4px);
+  background-color: #FACC15;
+  color: #09090B !important;
+  box-shadow: 3px 3px 0px #000000;
+}
+
+html[data-theme="dark"] .nav-dropdown-item:hover * {
+  color: #09090B !important;
+}
+
+/* ============================================================================
+   6. INPUTS & STEP-BY-STEP CALCULATION BOXES
+   ============================================================================ */
+.brutal-input {
+  border: 2.5px solid #000000;
+  box-shadow: 3px 3px 0px #000000;
+  background-color: #FFFFFF;
+  color: #09090B !important;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.15s ease;
+}
+
+.brutal-input:focus {
+  outline: none;
+  background-color: #FEF9C3;
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0px #000000;
+}
+
+.calc-step-box {
+  border: 2.5px solid #000000;
+  box-shadow: 4px 4px 0px #000000;
+  background-color: var(--bg-surface-elevated);
+  color: var(--text-primary);
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.calc-step-box:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #000000;
+}
+
+.bouncy-badge {
+  border: 2px solid #000000;
+  box-shadow: 2.5px 2.5px 0px #000000;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.bouncy-badge:hover {
+  transform: scale(1.06) rotate(-1.5deg);
+}
+
+/* ============================================================================
+   7. SIMULATORS, SLIDERS, QUIZ OPTIONS & CERTIFICATE CANVAS
+   ============================================================================ */
+@keyframes laserSweep {
+  0% { top: 10%; opacity: 0.95; }
+  50% { top: 86%; opacity: 1; }
+  100% { top: 10%; opacity: 0.95; }
+}
+
+.laser-line {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  height: 3px;
+  background: #EF4444;
+  box-shadow: 0 0 10px #EF4444;
+  animation: laserSweep 1.3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes popBounce {
+  0% { transform: scale(0.85); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.combo-bounce {
+  animation: popBounce 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.quiz-option-btn {
+  border: 2.5px solid #000000;
+  box-shadow: 3px 3px 0px #000000;
+  transition: transform 0.14s ease, box-shadow 0.14s ease, background-color 0.14s ease;
+}
+
+.quiz-option-btn:hover:not(:disabled) {
+  background-color: #FEF08A !important;
+  color: #09090B !important;
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0px #000000;
+}
+
+.quiz-option-btn.selected {
+  background-color: #FDE047 !important;
+  color: #09090B !important;
+  box-shadow: 4px 4px 0px #000000;
+}
+
+.quiz-option-btn.correct {
+  background-color: #6EE7B7 !important;
+  color: #09090B !important;
+}
+
+.quiz-option-btn.wrong {
+  background-color: #FCA5A5 !important;
+  color: #09090B !important;
+}
+
+.certificate-canvas-box {
+  background-color: #FFFDF5;
+  border: 4px solid #000000;
+  box-shadow: 8px 8px 0px #000000; /* taste-skill-ignore */
+  position: relative;
+  overflow: hidden;
+}
+
+.certificate-inner-border {
+  border: 2.5px dashed #0B4F9E;
+}
+
+input[type="range"].brutal-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 14px;
+  background: #E4E4E7;
+  border: 2px solid #000000;
+  border-radius: 999px;
+  outline: none;
+}
+
+input[type="range"].brutal-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #10B981;
+  border: 2.5px solid #000000;
+  box-shadow: 2px 2px 0px #000000;
+  cursor: pointer;
+}
+
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-animate-in {
+  animation: modalSlideUp 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

@@ -1,0 +1,468 @@
+/**
+ * ============================================================================
+ * ระบบหลังบ้าน Google Apps Script (Code.gs)
+ * รายวิชา: เทคโนโลยีการนำเข้าข้อมูลสู่ระบบคอมพิวเตอร์ (รหัสวิชา 21901-2017)
+ * ระดับชั้น: ปวช.1
+ * ============================================================================
+ * โครงสร้าง Google Sheets (2 แท็บหลัก):
+ * 1. Students_Progress : เก็บสถานะและคะแนนล่าสุดรายบุคคล (เต็ม 100 คะแนน: อ่าน 15 + ควิซ 45 + มินิเกม 40) แบบ Upsert
+ * 2. Score_Logs        : เก็บประวัติการทำควิซ การทดลองอุปกรณ์ และการเล่นมินิเกมทุกครั้ง
+ *
+ * วิธีนำไปใช้งานสำหรับครูผู้สอน:
+ * 1. สร้างไฟล์ Google Sheets ใหม่ แล้วไปที่ Extensions > Apps Script
+ * 2. นำโค้ดทั้งหมดในไฟล์นี้ไปวางใน Code.gs แล้วกด Save
+ * 3. กด Deploy > New deployment > เลือกประเภทเป็น Web app
+ * 4. ตั้งค่า Execute as: "Me" และ Who has access: "Anyone"
+ * 5. คัดลอก Web App URL ไปใส่ในตัวแปร GAS_WEB_APP_URL บนสุดของไฟล์ app.js
+ * ============================================================================
+ */
+
+const SHEET_STUDENTS = 'Students_Progress';
+const SHEET_LOGS = 'Score_Logs';
+
+const STUDENTS_HEADERS = [
+  'Timestamp',
+  'Student_ID',
+  'Full_Name',
+  'Email',
+  'Read_Units_JSON',
+  'Unit_Quiz_Score',
+  'Mini_Game_Score',
+  'Total_Score',
+  'Cert_Status',
+  'Detail_State_JSON'
+];
+
+const LOGS_HEADERS = [
+  'Timestamp',
+  'Student_ID',
+  'Full_Name',
+  'Activity_ID',
+  'Score',
+  'Details'
+];
+
+/**
+ * รองรับการเรียกแบบ GET
+ * - ?action=ping : เช็กสถานะการเชื่อมต่อ
+ * - ?action=get_progress&studentId=...&email=... : ดึงข้อมูลความคืบหน้าของนักเรียนรายบุคคล
+ */
+function doGet(e) {
+  try {
+    const params = (e && e.parameter) ? e.parameter : {};
+    const action = params.action || 'ping';
+
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    ensureSheetsExist_(ss);
+
+    if (action === 'get_progress') {
+      const studentId = String(params.studentId || '').trim();
+      const email = String(params.email || '').trim().toLowerCase();
+      const record = findStudentProgress_(ss, studentId, email);
+
+      return createJsonResponse_({
+        status: 'success',
+        found: !!record,
+        data: record
+      });
+    }
+
+    return createJsonResponse_({
+      status: 'success',
+      service: '21901-2017 Data Entry Technology Backend',
+      message: 'ระบบหลังบ้านพร้อมใช้งานแล้ว!',
+      timestamp: new Date().toISOString()
+    });
+  } catch (err) {
+    return createJsonResponse_({
+      status: 'error',
+      message: err.toString()
+    });
+  }
+}
+
+/**
+ * รองรับการเรียกแบบ POST (Content-Type: text/plain;charset=utf-8 เพื่อเลี่ยงปัญหา CORS Preflight)
+ * รองรับ action:
+ * - "sync_progress" (ค่าเริ่มต้น): Upsert ข้อมูลลง Students_Progress และบันทึกประวัติลง Score_Logs (ถ้ามี)
+ * - "log_activity": บันทึกประวัติกิจกรรมลง Score_Logs และอัปเดตคะแนนรวมใน Students_Progress (ถ้าส่งมาด้วย)
+ * - "get_progress": ค้นหาและคืนค่าข้อมูลนักเรียนจาก Students_Progress
+ */
+function doPost(e) {
+  const lock = LockService.getScriptLock();
+  try {
+    // รอคิวสูงสุด 10 วินาที ป้องกันข้อมูลชนกันเวลานักเรียนส่งพร้อมกันทั้งห้อง
+    lock.waitLock(10000);
+
+    if (!e || !e.postData || !e.postData.contents) {
+      return createJsonResponse_({
+        status: 'error',
+        message: 'ไม่พบข้อมูลที่ส่งมา (Empty payload)'
+      });
+    }
+
+    const payload = JSON.parse(e.postData.contents);
+    const action = payload.action || 'sync_progress';
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    ensureSheetsExist_(ss);
+
+    if (action === 'get_progress') {
+      const studentId = String(payload.studentId || '').trim();
+      const email = String(payload.email || '').trim().toLowerCase();
+      const record = findStudentProgress_(ss, studentId, email);
+      return createJsonResponse_({
+        status: 'success',
+        found: !!record,
+        data: record
+      });
+    }
+
+    // ข้อมูลพื้นฐานของนักเรียน
+    const studentId = String(payload.studentId || '').trim();
+    const fullName = String(payload.fullName || '').trim();
+    const email = String(payload.email || '').trim();
+
+    if (!studentId && !email) {
+      return createJsonResponse_({
+        status: 'error',
+        message: 'กรุณาระบุรหัสนักศึกษาหรืออีเมล'
+      });
+    }
+
+    let upsertedRecord = null;
+
+    // 1. อัปเดตหรือเพิ่มแถวใน Students_Progress (Upsert)
+    if (action === 'sync_progress' || payload.syncProgress !== false) {
+      upsertedRecord = upsertStudentProgress_(ss, {
+        studentId: studentId,
+        fullName: fullName,
+        email: email,
+        readUnits: payload.readUnits,
+        unitQuizScore: payload.unitQuizScore,
+        miniGameScore: payload.miniGameScore,
+        totalScore: payload.totalScore,
+        certStatus: payload.certStatus,
+        quizScoresMap: payload.quizScoresMap,
+        gameScoresMap: payload.gameScoresMap
+      });
+    }
+
+    // 2. บันทึกประวัติลงแท็บ Score_Logs (ถ้ามีข้อมูล activityLog หรือเรียก action === 'log_activity')
+    if (action === 'log_activity' || payload.activityLog) {
+      const logData = payload.activityLog || {
+        activityId: payload.activityId || 'General_Activity',
+        score: payload.score !== undefined ? payload.score : 0,
+        details: payload.details || ''
+      };
+
+      appendScoreLog_(ss, {
+        studentId: studentId,
+        fullName: fullName,
+        activityId: logData.activityId,
+        score: logData.score,
+        details: logData.details
+      });
+    }
+
+    return createJsonResponse_({
+      status: 'success',
+      message: 'บันทึกข้อมูลเรียบร้อย',
+      data: upsertedRecord,
+      timestamp: new Date().toISOString()
+    });
+  } catch (err) {
+    return createJsonResponse_({
+      status: 'error',
+      message: err.toString()
+    });
+  } finally {
+    try {
+      lock.releaseLock();
+    } catch (_) {
+      // Ignore lock release error if lock was not acquired
+    }
+  }
+}
+
+/**
+ * ฟังก์ชันสำหรับกดรันครั้งแรกใน Apps Script Editor เพื่อสร้างตารางและหัวคอลัมน์อัตโนมัติ
+ */
+function setupSheets() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  ensureSheetsExist_(ss);
+}
+
+/**
+ * ตรวจสอบว่ามีแท็บ Students_Progress และ Score_Logs หรือยัง ถ้ายังไม่มีให้สร้างพร้อมตั้งค่าหัวตาราง
+ */
+function ensureSheetsExist_(ss) {
+  let studentsSheet = ss.getSheetByName(SHEET_STUDENTS);
+  if (!studentsSheet) {
+    studentsSheet = ss.insertSheet(SHEET_STUDENTS);
+    studentsSheet.appendRow(STUDENTS_HEADERS);
+    styleHeaderRow_(studentsSheet, STUDENTS_HEADERS.length, '#34D399');
+  } else if (studentsSheet.getLastRow() === 0) {
+    studentsSheet.appendRow(STUDENTS_HEADERS);
+    styleHeaderRow_(studentsSheet, STUDENTS_HEADERS.length, '#34D399');
+  }
+
+  let logsSheet = ss.getSheetByName(SHEET_LOGS);
+  if (!logsSheet) {
+    logsSheet = ss.insertSheet(SHEET_LOGS);
+    logsSheet.appendRow(LOGS_HEADERS);
+    styleHeaderRow_(logsSheet, LOGS_HEADERS.length, '#FDE047');
+  } else if (logsSheet.getLastRow() === 0) {
+    logsSheet.appendRow(LOGS_HEADERS);
+    styleHeaderRow_(logsSheet, LOGS_HEADERS.length, '#FDE047');
+  }
+}
+
+/**
+ * ตกแต่งแถวหัวตารางให้อ่านง่ายและตรึงแถวแรก
+ */
+function styleHeaderRow_(sheet, colCount, bgColor) {
+  const headerRange = sheet.getRange(1, 1, 1, colCount);
+  headerRange.setBackground(bgColor);
+  headerRange.setFontWeight('bold');
+  headerRange.setHorizontalAlignment('center');
+  sheet.setFrozenRows(1);
+}
+
+/**
+ * ค้นหาข้อมูลนักเรียนใน Students_Progress ด้วย Student_ID หรือ Email
+ */
+function findStudentProgress_(ss, studentId, email) {
+  const sheet = ss.getSheetByName(SHEET_STUDENTS);
+  const lastRow = sheet.getLastRow();
+  if (lastRow <= 1) return null;
+
+  const values = sheet.getRange(2, 1, lastRow - 1, STUDENTS_HEADERS.length).getValues();
+  const normId = String(studentId || '').trim().toLowerCase();
+  const normEmail = String(email || '').trim().toLowerCase();
+
+  for (let i = 0; i < values.length; i++) {
+    const row = values[i];
+    const rowId = String(row[1] || '').trim().toLowerCase();
+    const rowEmail = String(row[3] || '').trim().toLowerCase();
+
+    const idMatch = normId && rowId && rowId === normId;
+    const emailMatch = normEmail && rowEmail && rowEmail === normEmail;
+
+    if (idMatch || emailMatch) {
+      let parsedReadUnits = [];
+      try {
+        parsedReadUnits = JSON.parse(row[4] || '[]');
+      } catch (_) {
+        parsedReadUnits = [];
+      }
+
+      let detailState = { quizScoresMap: {}, gameScoresMap: {} };
+      try {
+        if (row[9]) {
+          detailState = JSON.parse(row[9]);
+        }
+      } catch (_) {
+        detailState = { quizScoresMap: {}, gameScoresMap: {} };
+      }
+
+      return {
+        rowIndex: i + 2,
+        timestamp: row[0],
+        studentId: String(row[1] || ''),
+        fullName: String(row[2] || ''),
+        email: String(row[3] || ''),
+        readUnits: Array.isArray(parsedReadUnits) ? parsedReadUnits : [],
+        unitQuizScore: Number(row[5] || 0),
+        miniGameScore: Number(row[6] || 0),
+        totalScore: Number(row[7] || 0),
+        certStatus: String(row[8] || 'Locked'),
+        quizScoresMap: detailState.quizScoresMap || {},
+        gameScoresMap: detailState.gameScoresMap || {}
+      };
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Upsert ข้อมูลความคืบหน้านักเรียนลงใน Students_Progress
+ * - หากพบ Student_ID หรือ Email เดิม จะอัปเดตแถวเดิม (ไม่สร้างแถวซ้ำ)
+ * - คำนวณคะแนนเต็ม 100 (อ่าน 15 + ควิซ 45 + มินิเกม 40) และสถานะเกียรติบัตร (Unlocked เมื่อคะแนนรวม >= 70 และอ่านครบ 15 หน่วย)
+ */
+function upsertStudentProgress_(ss, data) {
+  const sheet = ss.getSheetByName(SHEET_STUDENTS);
+  const nowStr = Utilities.formatDate(new Date(), 'Asia/Bangkok', 'yyyy-MM-dd HH:mm:ss');
+
+  const existing = findStudentProgress_(ss, data.studentId, data.email);
+
+  // รวมรายการหน่วยที่อ่านแล้ว (ไม่ให้คะแนนหาย)
+  let incomingReadUnits = [];
+  if (Array.isArray(data.readUnits)) {
+    incomingReadUnits = data.readUnits;
+  } else if (typeof data.readUnits === 'string') {
+    try {
+      incomingReadUnits = JSON.parse(data.readUnits);
+    } catch (_) {
+      incomingReadUnits = [];
+    }
+  }
+
+  const mergedReadSet = {};
+  if (existing && Array.isArray(existing.readUnits)) {
+    existing.readUnits.forEach(function(u) {
+      const num = Number(u);
+      if (num >= 1 && num <= 15) mergedReadSet[num] = true;
+    });
+  }
+  if (Array.isArray(incomingReadUnits)) {
+    incomingReadUnits.forEach(function(u) {
+      const num = Number(u);
+      if (num >= 1 && num <= 15) mergedReadSet[num] = true;
+    });
+  }
+
+  const finalReadUnits = Object.keys(mergedReadSet)
+    .map(function(k) { return Number(k); })
+    .sort(function(a, b) { return a - b; });
+
+  // รวมคะแนนรายหน่วย (quizScoresMap) และรายเกม (gameScoresMap) เพื่อเก็บค่าสูงสุดเสมอเมื่อย้ายเครื่อง
+  const mergedQuizMap = {};
+  if (existing && existing.quizScoresMap) {
+    Object.keys(existing.quizScoresMap).forEach(function(k) {
+      mergedQuizMap[k] = Number(existing.quizScoresMap[k] || 0);
+    });
+  }
+  if (data.quizScoresMap && typeof data.quizScoresMap === 'object') {
+    Object.keys(data.quizScoresMap).forEach(function(k) {
+      const prev = Number(mergedQuizMap[k] || 0);
+      const curr = Number(data.quizScoresMap[k] || 0);
+      mergedQuizMap[k] = Math.min(3, Math.max(prev, curr));
+    });
+  }
+
+  const mergedGameMap = {
+    cashier_rush: 0,
+    cyber_detective: 0,
+    vault_hacker: 0,
+    pixel_compressor: 0
+  };
+  if (existing && existing.gameScoresMap) {
+    Object.keys(existing.gameScoresMap).forEach(function(k) {
+      mergedGameMap[k] = Number(existing.gameScoresMap[k] || 0);
+    });
+  }
+  if (data.gameScoresMap && typeof data.gameScoresMap === 'object') {
+    Object.keys(data.gameScoresMap).forEach(function(k) {
+      const prev = Number(mergedGameMap[k] || 0);
+      const curr = Number(data.gameScoresMap[k] || 0);
+      mergedGameMap[k] = Math.min(10, Math.max(prev, curr));
+    });
+  }
+
+  let calcQuizFromMap = 0;
+  Object.keys(mergedQuizMap).forEach(function(k) {
+    calcQuizFromMap += Number(mergedQuizMap[k] || 0);
+  });
+
+  let calcGameFromMap = 0;
+  Object.keys(mergedGameMap).forEach(function(k) {
+    calcGameFromMap += Number(mergedGameMap[k] || 0);
+  });
+
+  // คะแนนอ่าน (สูงสุด 15 คะแนน)
+  const readScore = Math.min(15, finalReadUnits.length);
+
+  // คะแนนควิซ (สูงสุด 45 คะแนน) - เก็บค่าสูงสุดระหว่างของเดิมกับของใหม่
+  const incomingQuiz = Math.min(45, Math.max(0, Number(data.unitQuizScore || 0), calcQuizFromMap));
+  const existingQuiz = existing ? Number(existing.unitQuizScore || 0) : 0;
+  const finalQuizScore = Math.max(incomingQuiz, existingQuiz);
+
+  // คะแนนมินิเกม (สูงสุด 40 คะแนน) - เก็บค่าสูงสุดระหว่างของเดิมกับของใหม่
+  const incomingGame = Math.min(40, Math.max(0, Number(data.miniGameScore || 0), calcGameFromMap));
+  const existingGame = existing ? Number(existing.miniGameScore || 0) : 0;
+  const finalGameScore = Math.max(incomingGame, existingGame);
+
+  // คะแนนรวมเต็ม 100
+  const finalTotalScore = Math.min(100, readScore + finalQuizScore + finalGameScore);
+
+  // เงื่อนไขปลดล็อกเกียรติบัตร: อ่านครบ 15 หน่วย และได้คะแนนรวม >= 70
+  const isUnlocked = (finalReadUnits.length >= 15 && finalTotalScore >= 70) || data.certStatus === 'Unlocked';
+  const finalCertStatus = isUnlocked ? 'Unlocked' : 'Locked';
+
+  const finalStudentId = data.studentId || (existing ? existing.studentId : '');
+  const finalFullName = data.fullName || (existing ? existing.fullName : '');
+  const finalEmail = data.email || (existing ? existing.email : '');
+  const readUnitsJson = JSON.stringify(finalReadUnits);
+  const detailStateJson = JSON.stringify({
+    quizScoresMap: mergedQuizMap,
+    gameScoresMap: mergedGameMap
+  });
+
+  const rowValues = [
+    nowStr,
+    finalStudentId,
+    finalFullName,
+    finalEmail,
+    readUnitsJson,
+    finalQuizScore,
+    finalGameScore,
+    finalTotalScore,
+    finalCertStatus,
+    detailStateJson
+  ];
+
+  if (existing && existing.rowIndex) {
+    sheet.getRange(existing.rowIndex, 1, 1, STUDENTS_HEADERS.length).setValues([rowValues]);
+  } else {
+    sheet.appendRow(rowValues);
+  }
+
+  return {
+    timestamp: nowStr,
+    studentId: finalStudentId,
+    fullName: finalFullName,
+    email: finalEmail,
+    readUnits: finalReadUnits,
+    readScore: readScore,
+    unitQuizScore: finalQuizScore,
+    miniGameScore: finalGameScore,
+    totalScore: finalTotalScore,
+    certStatus: finalCertStatus,
+    quizScoresMap: mergedQuizMap,
+    gameScoresMap: mergedGameMap
+  };
+}
+
+/**
+ * เพิ่มแถวประวัติการทำกิจกรรมลงใน Score_Logs
+ */
+function appendScoreLog_(ss, logEntry) {
+  const sheet = ss.getSheetByName(SHEET_LOGS);
+  const nowStr = Utilities.formatDate(new Date(), 'Asia/Bangkok', 'yyyy-MM-dd HH:mm:ss');
+
+  let detailsStr = '';
+  if (typeof logEntry.details === 'object' && logEntry.details !== null) {
+    detailsStr = JSON.stringify(logEntry.details);
+  } else {
+    detailsStr = String(logEntry.details || '');
+  }
+
+  sheet.appendRow([
+    nowStr,
+    String(logEntry.studentId || ''),
+    String(logEntry.fullName || ''),
+    String(logEntry.activityId || 'Activity'),
+    Number(logEntry.score || 0),
+    detailsStr
+  ]);
+}
+
+/**
+ * สร้าง JSON Response มาตรฐานกลับไปยังฝั่ง Frontend
+ */
+function createJsonResponse_(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}

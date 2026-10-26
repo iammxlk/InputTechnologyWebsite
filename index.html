@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>21901-2017 เทคโนโลยีการนำเข้าข้อมูลสู่ระบบคอมพิวเตอร์ | สถาบันเทคโนโลยีจิตรลดา</title>
+
+  <!-- Google Fonts: Stack Sans Notch (Headings/Numbers) & Mitr (Thai) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600;700&family=Stack+Sans+Notch:wght@300..700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Modern Blue & White Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- Top Network & Route Loading Progress Bar -->
+  <div id="top-loading-bar" class="top-loading-bar" aria-hidden="true"></div>
+
+  <!-- ========================================================================
+       1. ROUTE-PROTECTED AUTH SCREEN (LOGIN & REGISTER WITH AVATAR UPLOAD)
+       ======================================================================== -->
+  <section id="auth-screen" class="auth-wrapper">
+    <div class="auth-shell">
+      <!-- Left Editorial Course Showcase with Multi-Layer SVG Parallax -->
+      <div class="auth-showcase">
+        <div class="parallax-scene parallax-scene--auth" aria-hidden="true">
+          <svg class="parallax-layer parallax-auth-back" data-parallax-depth="0.025" viewBox="0 0 420 520" fill="none">
+            <rect x="240" y="28" width="144" height="144" rx="20" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="1.5"/>
+            <rect x="268" y="56" width="88" height="88" rx="12" stroke="#FFFFFF" stroke-opacity="0.09" stroke-width="1.5"/>
+            <line x1="20" y1="290" x2="390" y2="290" stroke="#FFFFFF" stroke-opacity="0.08" stroke-dasharray="5 7"/>
+            <circle cx="82" cy="360" r="54" stroke="#FFFFFF" stroke-opacity="0.09" stroke-width="1.5"/>
+          </svg>
+          <svg class="parallax-layer parallax-auth-mid" data-parallax-depth="0.05" viewBox="0 0 420 520" fill="none">
+            <rect x="292" y="196" width="64" height="64" rx="10" stroke="#DBEAFE" stroke-opacity="0.22" stroke-width="2"/>
+            <rect x="310" y="214" width="28" height="28" rx="4" fill="#DBEAFE" fill-opacity="0.14"/>
+            <g fill="#DBEAFE" fill-opacity="0.15">
+              <rect x="250" y="340" width="4" height="32"/><rect x="260" y="340" width="2" height="32"/>
+              <rect x="268" y="340" width="6" height="32"/><rect x="280" y="340" width="3" height="32"/>
+              <rect x="289" y="340" width="5" height="32"/><rect x="300" y="340" width="2" height="32"/>
+              <rect x="308" y="340" width="6" height="32"/>
+            </g>
+          </svg>
+          <svg class="parallax-layer parallax-auth-front" data-parallax-depth="0.08" viewBox="0 0 420 520" fill="none">
+            <circle cx="348" cy="86" r="6" fill="#DBEAFE" fill-opacity="0.28"/>
+            <circle cx="236" cy="242" r="4.5" fill="#FFFFFF" fill-opacity="0.24"/>
+            <path d="M326 312h24v24" stroke="#DBEAFE" stroke-opacity="0.26" stroke-width="2" stroke-linecap="round"/>
+            <path d="M68 238h-20v-20" stroke="#DBEAFE" stroke-opacity="0.2" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <div class="auth-showcase-fg">
+          <div class="auth-logo-chip">
+            <img src="cdti-logo.png" alt="โลโก้สถาบันเทคโนโลยีจิตรลดา" />
+            <div>
+              <span class="font-notch" style="font-size: 0.72rem; font-weight: 700; color: var(--blue-600); display: block;">COURSE 21901-2017</span>
+              <span style="font-size: 0.82rem; font-weight: 600;">สถาบันเทคโนโลยีจิตรลดา</span>
+            </div>
+          </div>
+
+          <h1>ระบบบทเรียนออนไลน์รายวิชา เทคโนโลยีการนำเข้าข้อมูลสู่ระบบคอมพิวเตอร์</h1>
+          <p>
+            เรียนรู้แบบแบ่งย่อยทีละขั้นตอน (Bite-sized Learning) ครบทั้ง 16 หน่วยการเรียนรู้
+            ฝึกทำแบบทดสอบท้ายหน่วย สะสมสถิติความเร็วจากมินิเกมจับเวลา และรับเกียรติบัตรอิเล็กทรอนิกส์เมื่อเรียนผ่านครบ 100%
+          </p>
+        </div>
+
+        <div class="auth-spec-list auth-showcase-fg">
+          <div>
+            <span class="auth-spec-num">16 Units</span>
+            <span class="auth-spec-text">เนื้อหาย่อยเข้าใจง่ายทีละสเต็ป</span>
+          </div>
+          <div>
+            <span class="auth-spec-num">80% Pass</span>
+            <span class="auth-spec-text">เกณฑ์ผ่านแบบทดสอบท้ายหน่วย (8/10)</span>
+          </div>
+          <div>
+            <span class="auth-spec-num">Time-Attack</span>
+            <span class="auth-spec-text">มินิเกมแข่งความเร็วและแม่นยำ</span>
+          </div>
+          <div>
+            <span class="auth-spec-num">Top 10 Live</span>
+            <span class="auth-spec-text">จัดอันดับคะแนนรวมและเวลาจริง</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Authentication Forms -->
+      <div class="auth-form-pane">
+        <div class="segmented-tabs" role="tablist">
+          <button id="tab-btn-login" type="button" class="segmented-tab-btn is-active">เข้าสู่ระบบ</button>
+          <button id="tab-btn-register" type="button" class="segmented-tab-btn">สมัครสมาชิกใหม่</button>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <h2 id="auth-pane-heading" style="font-size: 1.35rem; font-weight: 600;">เข้าสู่ระบบผู้เรียน</h2>
+          <p id="auth-pane-subtitle" style="font-size: 0.86rem; color: var(--text-muted); margin-top: 4px;">
+            ลงชื่อเข้าใช้ด้วยรหัสนักเรียนและรหัสผ่านเพื่อซิงก์ความคืบหน้าการเรียน
+          </p>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <form id="login-form" class="form-stack" autocomplete="on">
+          <div id="login-alert" class="form-alert is-error hidden"></div>
+
+          <div class="field-group">
+            <div class="floating-field">
+              <input
+                id="login-student-id"
+                type="text"
+                class="input-control font-notch"
+                placeholder=" "
+                required
+              />
+              <label for="login-student-id" class="floating-label">รหัสนักเรียน (Username) • เช่น 6720101001</label>
+              <span class="input-focus-line" aria-hidden="true"></span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <div class="floating-field input-with-toggle">
+              <input
+                id="login-password"
+                type="password"
+                class="input-control"
+                placeholder=" "
+                required
+              />
+              <label for="login-password" class="floating-label">รหัสผ่านเข้าสู่ระบบ</label>
+              <button type="button" class="pwd-toggle-btn" data-toggle-pwd="login-password" aria-label="แสดงรหัสผ่าน">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+              <span class="input-focus-line" aria-hidden="true"></span>
+            </div>
+          </div>
+
+          <button id="login-submit-btn" type="submit" class="btn-primary" style="margin-top: 6px; width: 100%;">
+            <span>เข้าสู่ระบบ</span>
+            <svg class="btn-arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </form>
+
+        <!-- REGISTER FORM (WITH MANDATORY PROFILE PICTURE BASE64 UPLOAD) -->
+        <form id="register-form" class="form-stack hidden" autocomplete="off">
+          <div id="register-alert" class="form-alert is-error hidden"></div>
+
+          <!-- Profile Picture Uploader -->
+          <div class="field-group">
+            <span class="field-label">รูปโปรไฟล์ผู้เรียน (บันทึกขึ้น Google Drive อัตโนมัติ)</span>
+            <div class="avatar-upload-box">
+              <div class="avatar-preview-frame">
+                <svg id="reg-avatar-placeholder" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M20 21a8 8 0 0 0-16 0"/>
+                  <circle cx="12" cy="8" r="4"/>
+                </svg>
+                <img id="reg-avatar-preview-img" class="hidden" alt="ตัวอย่างรูปโปรไฟล์" />
+              </div>
+
+              <div style="flex: 1; min-width: 0;">
+                <label for="reg-avatar-input" class="btn-secondary" style="cursor: pointer; width: fit-content;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                  </svg>
+                  <span>เลือกรูปโปรไฟล์</span>
+                </label>
+                <input id="reg-avatar-input" type="file" accept="image/*" class="hidden" />
+                <p id="reg-avatar-filename" style="font-size: 0.76rem; color: var(--text-muted); margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  รองรับไฟล์ .JPG, .PNG หรือ .WEBP (ระบบครอปจัตุรัสให้อัตโนมัติ)
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <div class="floating-field">
+              <input
+                id="reg-student-id"
+                type="text"
+                class="input-control font-notch"
+                placeholder=" "
+                required
+              />
+              <label for="reg-student-id" class="floating-label">รหัสนักเรียน (Username) • เช่น 6720101015</label>
+              <span class="input-focus-line" aria-hidden="true"></span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <div class="floating-field">
+              <input
+                id="reg-full-name"
+                type="text"
+                class="input-control"
+                placeholder=" "
+                required
+              />
+              <label for="reg-full-name" class="floating-label">ชื่อ-นามสกุลจริง (สำหรับพิมพ์ใบเกียรติบัตร)</label>
+              <span class="input-focus-line" aria-hidden="true"></span>
+            </div>
+          </div>
+
+          <div class="auth-dual-field-grid">
+            <div class="field-group">
+              <div class="floating-field input-with-toggle">
+                <input
+                  id="reg-password"
+                  type="password"
+                  class="input-control"
+                  placeholder=" "
+                  required
+                />
+                <label for="reg-password" class="floating-label">รหัสผ่าน (4+ ตัว)</label>
+                <button type="button" class="pwd-toggle-btn" data-toggle-pwd="reg-password" aria-label="แสดงรหัสผ่าน">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                </button>
+                <span class="input-focus-line" aria-hidden="true"></span>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <div class="floating-field">
+                <input
+                  id="reg-confirm-password"
+                  type="password"
+                  class="input-control"
+                  placeholder=" "
+                  required
+                />
+                <label for="reg-confirm-password" class="floating-label">ยืนยันรหัสผ่าน</label>
+                <span class="input-focus-line" aria-hidden="true"></span>
+              </div>
+            </div>
+          </div>
+
+          <button id="register-submit-btn" type="submit" class="btn-primary" style="margin-top: 6px; width: 100%;">
+            <span>สมัครสมาชิกและเริ่มเรียน</span>
+            <svg class="btn-arrow-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       2. PROTECTED APPLICATION SHELL (STICKY NAVBAR + 4 CORE VIEWS)
+       ======================================================================== -->
+  <div id="app-shell" class="hidden">
+    <!-- Sticky Top Navbar -->
+    <header class="sticky-navbar">
+      <div class="navbar-inner">
+        <!-- Left Brand -->
+        <a id="navbar-brand-home" href="#home" class="brand-cluster">
+          <img src="cdti-logo.png" alt="โลโก้สถาบันเทคโนโลยีจิตรลดา" class="brand-logo" />
+          <div>
+            <span class="brand-code">COURSE 21901-2017</span>
+            <span class="brand-title">เทคโนโลยีการนำเข้าข้อมูลฯ</span>
+          </div>
+        </a>
+
+        <!-- Center Navigation Links (Desktop) -->
+        <nav class="nav-links nav-links-desktop" aria-label="เมนูหลัก">
+          <button type="button" class="nav-btn is-active" data-nav-view="home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5.5v-6h-5v6H4a1 1 0 0 1-1-1v-9.5Z"/>
+            </svg>
+            <span>หน้าหลัก</span>
+          </button>
+
+          <button type="button" class="nav-btn" data-nav-view="lessons">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22.5V5.5Z"/>
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            </svg>
+            <span>บทเรียน</span>
+          </button>
+
+          <button type="button" class="nav-btn" data-nav-view="progress">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M9 12l2 2 4-4"/>
+              <circle cx="12" cy="12" r="9"/>
+            </svg>
+            <span>ความคืบหน้า</span>
+          </button>
+
+          <button type="button" class="nav-btn" data-nav-view="leaderboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M8 21V11M16 21V7M12 21V3"/>
+            </svg>
+            <span>Leaderboard</span>
+          </button>
+        </nav>
+
+        <!-- Top-Right Profile Trigger (Opens Profile & Change Password Modal) -->
+        <button id="navbar-profile-btn" type="button" class="profile-trigger" aria-label="ข้อมูลบัญชีและเปลี่ยนรหัสผ่าน">
+          <img id="navbar-avatar-img" src="" alt="รูปโปรไฟล์" class="avatar-circle" />
+          <span class="profile-trigger-meta">
+            <span id="navbar-user-name" class="profile-trigger-name">ชื่อ-นามสกุล</span>
+            <span id="navbar-user-id" class="profile-trigger-id">0000000000</span>
+          </span>
+        </button>
+      </div>
+
+      <!-- Mobile Horizontal Nav Row -->
+      <nav class="mobile-nav-bar" aria-label="เมนูมือถือ">
+        <button type="button" class="nav-btn is-active" data-nav-view="home">หน้าหลัก</button>
+        <button type="button" class="nav-btn" data-nav-view="lessons">บทเรียน</button>
+        <button type="button" class="nav-btn" data-nav-view="progress">ความคืบหน้า</button>
+        <button type="button" class="nav-btn" data-nav-view="leaderboard">Leaderboard</button>
+      </nav>
+
+      <!-- Scroll Reading Progress Indicator -->
+      <div class="scroll-progress-track" aria-hidden="true">
+        <div id="scroll-progress-bar" class="scroll-progress-bar"></div>
+      </div>
+    </header>
+
+    <!-- Main Content Views Container -->
+    <main class="app-container" style="padding-top: 28px; padding-bottom: 64px;">
+
+      <!-- ====================================================================
+           VIEW 1: HOME (COURSE OVERVIEW, LIVE CERTIFICATE PREVIEW & SYLLABUS)
+           ==================================================================== -->
+      <section id="view-home" style="display: flex; flex-direction: column; gap: 24px;">
+
+        <!-- Split Editorial Hero: Left Course Overview + Right Live Certificate Preview -->
+        <div class="home-hero-grid">
+          <div class="home-hero-main">
+            <!-- Multi-Layer SVG Parallax Blueprint Backdrop -->
+            <div class="parallax-scene parallax-scene--hero" aria-hidden="true">
+              <svg class="parallax-layer parallax-hero-back" data-parallax-depth="0.02" viewBox="0 0 380 280" fill="none">
+                <rect x="210" y="18" width="146" height="146" rx="22" stroke="#DCE8FA" stroke-width="1.5"/>
+                <rect x="238" y="46" width="90" height="90" rx="12" stroke="#E2ECFB" stroke-width="1.5"/>
+                <line x1="176" y1="92" x2="366" y2="92" stroke="#E5EFFC" stroke-dasharray="4 6"/>
+              </svg>
+              <svg class="parallax-layer parallax-hero-mid" data-parallax-depth="0.045" viewBox="0 0 380 280" fill="none">
+                <rect x="286" y="144" width="56" height="56" rx="10" stroke="#C7DCFA" stroke-width="1.8"/>
+                <rect x="302" y="160" width="24" height="24" rx="4" fill="#EEF4FC"/>
+                <g fill="#DCE8FA">
+                  <rect x="212" y="192" width="4" height="24"/><rect x="220" y="192" width="2" height="24"/>
+                  <rect x="226" y="192" width="5" height="24"/><rect x="235" y="192" width="2" height="24"/>
+                  <rect x="241" y="192" width="4" height="24"/><rect x="249" y="192" width="6" height="24"/>
+                </g>
+              </svg>
+              <svg class="parallax-layer parallax-hero-front" data-parallax-depth="0.075" viewBox="0 0 380 280" fill="none">
+                <circle cx="332" cy="48" r="5" fill="#B9D5FA"/>
+                <circle cx="204" cy="148" r="4" fill="#DCE8FA"/>
+                <path d="M342 214h18v18" stroke="#B9D5FA" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+
+            <div class="home-hero-fg">
+              <div class="home-meta-row">
+                <span class="status-pill is-info font-notch">COURSE 21901-2017</span>
+                <span class="status-pill is-neutral">2 หน่วยกิต (3 ชม./สัปดาห์)</span>
+                <span class="status-pill is-neutral">ปวช.1 เทคโนโลยีสารสนเทศ</span>
+              </div>
+
+              <p style="font-size: 0.92rem; font-weight: 500; color: var(--blue-600); margin-top: 16px;">
+                ยินดีต้อนรับสู่ห้องเรียนออนไลน์, <span id="home-welcome-name">ผู้เรียน</span>
+              </p>
+
+              <h1 style="font-size: 1.68rem; font-weight: 600; margin-top: 6px; line-height: 1.32;">
+                รายวิชา เทคโนโลยีการนำเข้าข้อมูลสู่ระบบคอมพิวเตอร์
+              </h1>
+
+              <p style="font-size: 0.92rem; color: var(--text-secondary); margin-top: 12px; line-height: 1.68;">
+                ศึกษาหลักการของข้อมูลดิบและสารสนเทศ วงจรการทำงาน IPO อุปกรณ์นำเข้าข้อมูลพื้นฐาน
+                เทคโนโลยีบาร์โค้ด 1 มิติ รหัสภาพ 2 มิติ (QR Code) ความปลอดภัยและการเข้ารหัส SSL/TLS
+                ระบบคลื่นความถี่วิทยุ (RFID) ชีวมิติ (Biometric) ซอฟต์แวร์จัดการฐานข้อมูล การแปลงรหัสอักขระ
+                การบีบอัดข้อมูล และการประยุกต์ใช้งานจริงในองค์กร
+              </p>
+            </div>
+
+            <div class="home-hero-fg">
+              <div style="display: flex; flex-wrap: wrap; gap: 16px; padding: 14px 0; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); font-size: 0.83rem; color: var(--text-secondary);">
+                <span><strong style="color: var(--text-main); font-weight: 500;">สถานศึกษา:</strong> โรงเรียนจิตรลดาวิชาชีพ สถาบันเทคโนโลยีจิตรลดา</span>
+                <span><strong style="color: var(--text-main); font-weight: 500;">ผู้สอน:</strong> นายอนุพงศ์ พลายรักษา</span>
+                <span><strong style="color: var(--text-main); font-weight: 500;">ปีการศึกษา:</strong> <span class="font-notch">2569</span></span>
+              </div>
+
+              <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px;">
+                <button id="home-cta-continue-btn" type="button" class="btn-primary">
+                  เริ่มเรียนหน่วยที่ 1
+                </button>
+                <button type="button" class="btn-secondary" data-nav-view="progress">
+                  ตรวจสอบความคืบหน้า 16 หน่วย
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Certificate Preview Showcase -->
+          <div class="home-cert-showcase">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+              <div>
+                <h2 style="font-size: 1rem; font-weight: 600;">ตัวอย่างเกียรติบัตรประจำรายวิชา</h2>
+                <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
+                  แสดงชื่อ-นามสกุลจริงของคุณบนใบเกียรติบัตรอัตโนมัติ
+                </p>
+              </div>
+              <span id="home-cert-status-pill" class="status-pill is-warn">รอปลดล็อก 100%</span>
+            </div>
+
+            <div
+              id="home-cert-frame-trigger"
+              class="cert-canvas-frame"
+              role="button"
+              tabindex="0"
+              aria-label="คลิกเพื่อขยายดูตัวอย่างเกียรติบัตร"
+              style="cursor: pointer;"
+            >
+              <canvas id="home-cert-preview-canvas" width="1600" height="1131"></canvas>
+            </div>
+
+            <div>
+              <p id="home-cert-caption" style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 12px;">
+                เรียนเนื้อหาและสอบผ่านเกณฑ์ร้อยละ 80 (8/10 คะแนน) ครบทั้ง 16 หน่วย เพื่อปลดล็อกปุ่มดาวน์โหลดเกียรติบัตรความละเอียดสูง
+              </p>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button id="home-open-cert-modal-btn" type="button" class="btn-secondary">
+                  ขยายดูตัวอย่าง
+                </button>
+                <button id="home-cert-primary-btn" type="button" class="btn-primary">
+                  ดูเงื่อนไขการรับ
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Divided KPI Metric Strip -->
+        <div class="metric-strip">
+          <div class="metric-cell">
+            <span class="metric-label">หน่วยที่ผ่านเกณฑ์</span>
+            <span id="home-metric-units" class="metric-value">0 / 16</span>
+            <span class="metric-sub">เกณฑ์สอบผ่าน 80% ต่อหน่วย</span>
+          </div>
+          <div class="metric-cell">
+            <span class="metric-label">ความคืบหน้ารวม</span>
+            <span id="home-metric-percent" class="metric-value">0%</span>
+            <span class="metric-sub">ครบ 100% รับเกียรติบัตร</span>
+          </div>
+          <div class="metric-cell">
+            <span class="metric-label">คะแนนสะสมรวม</span>
+            <span id="home-metric-score" class="metric-value">0</span>
+            <span class="metric-sub">แบบทดสอบ + มินิเกมจับเวลา</span>
+          </div>
+          <div class="metric-cell">
+            <span class="metric-label">เวลารวมที่ใช้</span>
+            <span id="home-metric-time" class="metric-value">00:00</span>
+            <span class="metric-sub">ใช้ตัดสินอันดับเมื่อคะแนนเท่ากัน</span>
+          </div>
+        </div>
+
+        <!-- Learning Format & Scoring Criteria Overview -->
+        <div class="surface-card">
+          <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 10px; padding-bottom: 16px; border-bottom: 1px solid var(--border-subtle);">
+            <div>
+              <h2 style="font-size: 1.15rem; font-weight: 600;">รูปแบบการเรียนรู้และเกณฑ์การวัดผล</h2>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">
+                ออกแบบเส้นทางการเรียนเป็นลำดับขั้น เข้าใจง่าย และบันทึกสถิติลงฐานข้อมูลทันที
+              </p>
+            </div>
+            <button type="button" class="btn-secondary" data-nav-view="leaderboard">
+              ดูอันดับ Top 10 ปัจจุบัน
+            </button>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; padding-top: 18px;">
+            <div>
+              <span class="font-notch" style="font-size: 0.78rem; font-weight: 700; color: var(--blue-600);">STEP 1  •  BITE-SIZED CONTENT</span>
+              <h3 style="font-size: 0.98rem; font-weight: 600; margin-top: 4px;">บทเรียนย่อยทีละสเต็ป (16 หน่วย)</h3>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 6px; line-height: 1.6;">
+                แบ่งเนื้อหาแต่ละหน่วยออกเป็นสเต็ปสั้นๆ กดถัดไปทีละหัวข้อ อ่านสบายตา ไม่ยาวติดกันจนล้า
+              </p>
+            </div>
+            <div>
+              <span class="font-notch" style="font-size: 0.78rem; font-weight: 700; color: var(--blue-600);">STEP 2  •  80% UNIT MASTERY</span>
+              <h3 style="font-size: 0.98rem; font-weight: 600; margin-top: 4px;">แบบทดสอบท้ายหน่วย หน่วยละ 10 ข้อ</h3>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 6px; line-height: 1.6;">
+                ตรวจคำตอบทันทีพร้อมจับเวลา ต้องทำได้ตั้งแต่ 8 คะแนนขึ้นไป (80%) จึงจะนับว่าผ่านหน่วยการเรียนรู้นั้น
+              </p>
+            </div>
+            <div>
+              <span class="font-notch" style="font-size: 0.78rem; font-weight: 700; color: var(--blue-600);">STEP 3  •  TIME-ATTACK &amp; CERTIFICATE</span>
+              <h3 style="font-size: 0.98rem; font-weight: 600; margin-top: 4px;">มินิเกมจับเวลาและเกียรติบัตรออนไลน์</h3>
+              <p style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 6px; line-height: 1.6;">
+                ท้าทายความไวด้วยมินิเกมคั่นหมวด 4 เกม สะสมคะแนนชิง Top 10 และดาวน์โหลดเกียรติบัตรเมื่อผ่านครบ 100%
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Course Syllabus: 4 Modules & 16 Official Units -->
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px;">
+            <div>
+              <h2 style="font-size: 1.22rem; font-weight: 600;">โครงสร้างเนื้อหารายวิชา (Course Syllabus 16 หน่วย)</h2>
+              <p style="font-size: 0.86rem; color: var(--text-muted); margin-top: 2px;">
+                อ้างอิงตามแผนการจัดการเรียนรู้รายวิชา 21901-2017 แบ่งออกเป็น 4 หมวดหลัก คลิกที่ชื่อหน่วยเพื่อเข้าสู่หน้าบทเรียน
+              </p>
+            </div>
+            <button type="button" class="btn-secondary" data-nav-view="lessons">
+              ดูหน้ารวมบทเรียนทั้งหมด
+            </button>
+          </div>
+
+          <div id="home-syllabus-grid" class="syllabus-modules-grid"></div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 2: LESSONS DIRECTORY & BITE-SIZED STEP READER + TIMED QUIZ
+           ==================================================================== -->
+      <section id="view-lessons" class="hidden" style="display: flex; flex-direction: column; gap: 20px;">
+        <!-- Lessons Directory Shell (All 16 Units + Module Filters) -->
+        <div id="lessons-directory-shell" style="display: flex; flex-direction: column; gap: 20px;">
+          <div class="surface-card" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+            <div>
+              <span class="status-pill is-info font-notch">LEARNING PATH  •  16 UNITS</span>
+              <h1 style="font-size: 1.42rem; font-weight: 600; margin-top: 8px;">
+                บทเรียนออนไลน์ทั้ง 16 หน่วยการเรียนรู้
+              </h1>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 4px;">
+                เลือกหน่วยการเรียนรู้เพื่อศึกษาเนื้อหาแบบ Bite-sized Steps และทำแบบทดสอบท้ายหน่วย 10 ข้อ (เกณฑ์ผ่าน 80%)
+              </p>
+            </div>
+
+            <div id="lessons-module-filters" class="filter-pills-row" role="tablist" aria-label="กรองตามหมวดหมู่">
+              <button type="button" class="filter-pill-btn is-active" data-module-filter="all">ทั้งหมด 16 หน่วย</button>
+              <button type="button" class="filter-pill-btn" data-module-filter="1">หมวดที่ 1</button>
+              <button type="button" class="filter-pill-btn" data-module-filter="2">หมวดที่ 2</button>
+              <button type="button" class="filter-pill-btn" data-module-filter="3">หมวดที่ 3</button>
+              <button type="button" class="filter-pill-btn" data-module-filter="4">หมวดที่ 4</button>
+            </div>
+          </div>
+
+          <!-- Selected Unit Preview Header -->
+          <div id="lessons-selected-unit-banner" class="surface-card"></div>
+
+          <!-- All Units Cards Grid -->
+          <div id="lessons-units-grid" class="syllabus-modules-grid"></div>
+        </div>
+
+        <!-- Active Unit Workspace (Bite-sized Step Reader + 10-Question Instant-Grading Quiz) -->
+        <div id="lesson-workspace" class="hidden" style="display: flex; flex-direction: column; gap: 18px;"></div>
+
+        <!-- Active Time-Attack Mini-game Arena & Result Workspace -->
+        <div id="minigame-workspace" class="hidden" style="display: flex; flex-direction: column; gap: 18px;"></div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 3: PROGRESS & E-CERTIFICATE GATE (16 UNITS)
+           ==================================================================== -->
+      <section id="view-progress" class="hidden" style="display: flex; flex-direction: column; gap: 22px;">
+
+        <!-- Top Overall Progress & Strict 100% Certificate Gate Card -->
+        <div class="surface-card">
+          <div style="display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 16px;">
+            <div>
+              <span class="status-pill is-info font-notch">PROGRESS &amp; E-CERTIFICATE</span>
+              <h1 style="font-size: 1.45rem; font-weight: 600; margin-top: 8px;">
+                ความคืบหน้าการเรียนและเกียรติบัตรประจำรายวิชา
+              </h1>
+              <p id="progress-summary-subtitle" style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 4px;">
+                ผ่านเกณฑ์แล้ว 0 จาก 16 หน่วยการเรียนรู้
+              </p>
+            </div>
+
+            <div style="text-align: right;">
+              <span style="font-size: 0.78rem; color: var(--text-muted); display: block;">ความคืบหน้ารวมสุทธิ</span>
+              <span id="progress-big-percent" class="font-notch tabular-nums" style="font-size: 2.25rem; font-weight: 700; color: var(--blue-600); line-height: 1.1;">
+                0%
+              </span>
+            </div>
+          </div>
+
+          <!-- Progress Track -->
+          <div class="progress-track" style="height: 12px; margin-top: 18px;">
+            <div id="progress-bar-fill" class="progress-fill" style="width: 0%;"></div>
+          </div>
+
+          <!-- Summary Counters Row -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--border-subtle);">
+            <div>
+              <span style="font-size: 0.78rem; color: var(--text-muted); display: block;">หน่วยที่สอบผ่านเกณฑ์ (80%)</span>
+              <strong id="progress-stat-units" class="font-notch tabular-nums" style="font-size: 1.15rem; color: var(--text-main);">0 / 16 หน่วย</strong>
+            </div>
+            <div>
+              <span style="font-size: 0.78rem; color: var(--text-muted); display: block;">คะแนนแบบทดสอบรวม (เต็ม 160)</span>
+              <strong id="progress-stat-quiz" class="font-notch tabular-nums" style="font-size: 1.15rem; color: var(--text-main);">0 / 160 คะแนน</strong>
+            </div>
+            <div>
+              <span style="font-size: 0.78rem; color: var(--text-muted); display: block;">คะแนนมินิเกมจับเวลารวม</span>
+              <strong id="progress-stat-game" class="font-notch tabular-nums" style="font-size: 1.15rem; color: var(--text-main);">0 คะแนน</strong>
+            </div>
+            <div>
+              <span style="font-size: 0.78rem; color: var(--text-muted); display: block;">เวลารวมที่ใช้ทำกิจกรรม</span>
+              <strong id="progress-stat-time" class="font-notch tabular-nums" style="font-size: 1.15rem; color: var(--text-main);">00:00 นาที</strong>
+            </div>
+          </div>
+
+          <!-- Certificate Gate Notice & Action Buttons -->
+          <div
+            id="progress-cert-gate-box"
+            style="margin-top: 20px; padding: 18px 20px; border-radius: var(--radius-xl); background-color: var(--bg-ground); border: 1px solid var(--border-subtle); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;"
+          >
+            <div style="max-width: 640px;">
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <strong id="progress-cert-gate-title" style="font-size: 0.96rem; font-weight: 600;">
+                  สถานะเกียรติบัตร: ยังไม่ปลดล็อกการดาวน์โหลด
+                </strong>
+                <span id="progress-cert-gate-pill" class="status-pill is-warn">ต้องผ่านครบ 16 หน่วย</span>
+              </div>
+              <p id="progress-cert-gate-desc" style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 4px;">
+                ระบบบังคับให้เรียนเนื้อหาและทำแบบทดสอบท้ายหน่วยได้คะแนน 80% ขึ้นไปครบทั้ง 16 หน่วย (100%) ก่อนจึงจะสามารถกดดาวน์โหลดเกียรติบัตรได้
+              </p>
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+              <button id="progress-preview-cert-btn" type="button" class="btn-secondary">
+                ดูตัวอย่างเกียรติบัตร
+              </button>
+              <button id="progress-download-cert-btn" type="button" class="btn-primary" disabled>
+                ดาวน์โหลดเกียรติบัตร (.PNG)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 16-Unit Status Table Card -->
+        <div class="surface-card surface-card--flush">
+          <div style="padding: 20px 24px; border-bottom: 1px solid var(--border-subtle); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;">
+            <div>
+              <h2 style="font-size: 1.12rem; font-weight: 600;">ตารางสถานะการเรียนรู้รายหน่วย (ครบทั้ง 16 หน่วย)</h2>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">
+                แสดงคะแนนสูงสุดและเวลาที่เร็วที่สุดของแต่ละหน่วย เกณฑ์ผ่านคือ 8 / 10 คะแนน (80%)
+              </p>
+            </div>
+
+            <div id="progress-status-filters" class="filter-pills-row" role="tablist" aria-label="กรองสถานะหน่วยเรียน">
+              <button type="button" class="filter-pill-btn is-active" data-progress-filter="all">ทั้งหมด (16)</button>
+              <button type="button" class="filter-pill-btn" data-progress-filter="passed">ผ่านเกณฑ์แล้ว</button>
+              <button type="button" class="filter-pill-btn" data-progress-filter="pending">ยังไม่ผ่านเกณฑ์</button>
+            </div>
+          </div>
+
+          <div class="clean-table-wrap">
+            <table class="clean-table">
+              <thead>
+                <tr>
+                  <th style="width: 96px;">หน่วยที่</th>
+                  <th>หัวข้อหน่วยการเรียนรู้</th>
+                  <th style="width: 140px;">การเรียนเนื้อหา</th>
+                  <th class="num" style="width: 125px;">คะแนนสูงสุด</th>
+                  <th class="num" style="width: 115px;">เวลาเร็วสุด</th>
+                  <th style="width: 140px;">สถานะ</th>
+                  <th class="num" style="width: 125px;">การดำเนินการ</th>
+                </tr>
+              </thead>
+              <tbody id="progress-units-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 4 Time-Attack Mini-games Summary Strip -->
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div>
+            <h2 style="font-size: 1.08rem; font-weight: 600;">สถิติมินิเกมจับเวลาประจำหมวด (4 เกม)</h2>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">
+              คะแนนและเวลาจากมินิเกมจะนำไปคำนวณรวมกับคะแนนแบบทดสอบเพื่อจัดอันดับบน Leaderboard
+            </p>
+          </div>
+          <div id="progress-minigames-strip" class="metric-strip"></div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 4: REAL-TIME TOP 10 LEADERBOARD (SCORE DESC, TIME ASC)
+           ==================================================================== -->
+      <section id="view-leaderboard" class="hidden" style="display: flex; flex-direction: column; gap: 20px;">
+
+        <!-- Header & Sorting Rules Card -->
+        <div class="surface-card" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+          <div>
+            <span class="status-pill is-info font-notch">LIVE LEADERBOARD  •  TOP 10</span>
+            <h1 style="font-size: 1.45rem; font-weight: 600; margin-top: 8px;">
+              กระดานจัดอันดับผู้เรียนสูงสุด 10 อันดับแรก
+            </h1>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 4px;">
+              ดึงข้อมูลแบบ Real-time โดยจัดเรียงจาก <strong>1. คะแนนสะสมรวมสูงสุด (Score)</strong> และหากคะแนนเท่ากันจะตัดสินจาก <strong>2. เวลารวมที่ใช้น้อยที่สุด (Time)</strong>
+            </p>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <span id="leaderboard-sync-label" style="font-size: 0.8rem; color: var(--text-muted);">
+              อัปเดตล่าสุด: -
+            </span>
+            <button id="btn-refresh-leaderboard" type="button" class="btn-secondary">
+              รีเฟรชอันดับล่าสุด
+            </button>
+          </div>
+        </div>
+
+        <!-- Logged-in Student Personal Rank Banner -->
+        <div id="leaderboard-my-rank-banner" class="my-rank-banner"></div>
+
+        <!-- Top 3 Podium Strip -->
+        <div id="leaderboard-podium" class="podium-strip"></div>
+
+        <!-- Top 10 Clean Table -->
+        <div class="surface-card surface-card--flush">
+          <div style="padding: 18px 24px; border-bottom: 1px solid var(--border-subtle); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;">
+            <h2 style="font-size: 1.08rem; font-weight: 600;">ตารางอันดับ Top 10 ผู้เรียนคะแนนสูงสุด</h2>
+            <span id="leaderboard-total-students" style="font-size: 0.82rem; color: var(--text-muted);">
+              ผู้เรียนในระบบทั้งหมด 0 คน
+            </span>
+          </div>
+
+          <div class="clean-table-wrap">
+            <table class="clean-table">
+              <thead>
+                <tr>
+                  <th style="width: 84px;">อันดับ</th>
+                  <th>ผู้เรียน</th>
+                  <th style="width: 150px;">ความคืบหน้า</th>
+                  <th class="num" style="width: 120px;">คะแนนควิซ</th>
+                  <th class="num" style="width: 120px;">คะแนนมินิเกม</th>
+                  <th class="num" style="width: 135px;">คะแนนรวมสุทธิ</th>
+                  <th class="num" style="width: 125px;">เวลารวมที่ใช้</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboard-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ========================================================================
+       3. CERTIFICATE FULL-SIZE PREVIEW MODAL
+       ======================================================================== -->
+  <div id="cert-preview-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="cert-modal-title">
+    <div class="modal-dialog is-wide">
+      <div class="modal-header">
+        <div>
+          <h3 id="cert-modal-title" style="font-size: 1.15rem; font-weight: 600;">
+            เกียรติบัตรอิเล็กทรอนิกส์ประจำรายวิชา 21901-2017
+          </h3>
+          <p id="cert-modal-subtitle" style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">
+            โรงเรียนจิตรลดาวิชาชีพ สถาบันเทคโนโลยีจิตรลดา
+          </p>
+        </div>
+        <button id="close-cert-modal-btn" type="button" class="icon-close-btn" aria-label="ปิดหน้าต่างตัวอย่างเกียรติบัตร">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div style="padding: 20px 0;">
+        <div class="cert-canvas-frame">
+          <canvas id="modal-cert-preview-canvas" width="1600" height="1131"></canvas>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding-top: 12px; border-top: 1px solid var(--border-subtle);">
+        <span id="modal-cert-lock-note" style="font-size: 0.84rem; color: var(--text-secondary);">
+          สอบผ่านครบ 16 หน่วย (100%) เพื่อปลดล็อกการดาวน์โหลดไฟล์ความละเอียดสูง
+        </span>
+        <div style="display: flex; gap: 10px;">
+          <button id="modal-cert-close-secondary" type="button" class="btn-secondary">ปิดหน้าต่าง</button>
+          <button id="modal-cert-download-btn" type="button" class="btn-primary" disabled>
+            ดาวน์โหลดเกียรติบัตร (.PNG)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       3. PROFILE & CHANGE PASSWORD MODAL (TRIGGERED FROM TOP-RIGHT NAVBAR)
+       ======================================================================== -->
+  <div id="profile-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="profile-modal-title">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <h3 id="profile-modal-title" style="font-size: 1.15rem; font-weight: 600;">ข้อมูลผู้เรียนและการตั้งค่ารหัสผ่าน</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">
+            จัดการรูปโปรไฟล์และรหัสผ่านบัญชีของคุณ
+          </p>
+        </div>
+        <button id="close-profile-modal-btn" type="button" class="icon-close-btn" aria-label="ปิดหน้าต่าง">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- User Profile Summary & Avatar Updater -->
+      <div style="display: flex; align-items: center; gap: 18px; padding: 20px 0; border-bottom: 1px solid var(--border-subtle);">
+        <img id="modal-profile-avatar" src="" alt="รูปโปรไฟล์ผู้เรียน" class="avatar-circle-lg" />
+        <div style="flex: 1; min-width: 0;">
+          <h4 id="modal-profile-name" style="font-size: 1.08rem; font-weight: 600;">ชื่อ-นามสกุล</h4>
+          <p id="modal-profile-id" class="font-notch" style="font-size: 0.84rem; color: var(--text-muted); margin-top: 2px;">
+            รหัสนักเรียน: -
+          </p>
+          <div style="margin-top: 10px;">
+            <label for="modal-avatar-upload-input" class="btn-secondary" style="cursor: pointer; min-height: 34px; padding: 5px 12px; font-size: 0.8rem;">
+              เปลี่ยนรูปโปรไฟล์ใหม่
+            </label>
+            <input id="modal-avatar-upload-input" type="file" accept="image/*" class="hidden" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Stats inside Modal -->
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 16px 0; border-bottom: 1px solid var(--border-subtle); font-size: 0.82rem;">
+        <div>
+          <span style="color: var(--text-muted); display: block;">ความคืบหน้า</span>
+          <strong id="modal-profile-progress" class="font-notch tabular-nums">0 / 16 (0%)</strong>
+        </div>
+        <div>
+          <span style="color: var(--text-muted); display: block;">คะแนนรวม</span>
+          <strong id="modal-profile-score" class="font-notch tabular-nums">0 คะแนน</strong>
+        </div>
+        <div>
+          <span style="color: var(--text-muted); display: block;">เวลารวม</span>
+          <strong id="modal-profile-time" class="font-notch tabular-nums">00:00 นาที</strong>
+        </div>
+      </div>
+
+      <!-- Change Password Form -->
+      <form id="change-password-form" class="form-stack" style="padding-top: 18px;">
+        <h4 style="font-size: 0.95rem; font-weight: 600;">เปลี่ยนรหัสผ่าน</h4>
+        <div id="profile-modal-alert" class="form-alert is-error hidden"></div>
+
+        <div class="field-group">
+          <div class="floating-field">
+            <input id="pwd-current" type="password" class="input-control" placeholder=" " required />
+            <label for="pwd-current" class="floating-label">รหัสผ่านปัจจุบัน</label>
+            <span class="input-focus-line" aria-hidden="true"></span>
+          </div>
+        </div>
+
+        <div class="auth-dual-field-grid">
+          <div class="field-group">
+            <div class="floating-field">
+              <input id="pwd-new" type="password" class="input-control" placeholder=" " required />
+              <label for="pwd-new" class="floating-label">รหัสผ่านใหม่ (4+ ตัว)</label>
+              <span class="input-focus-line" aria-hidden="true"></span>
+            </div>
+          </div>
+          <div class="field-group">
+            <div class="floating-field">
+              <input id="pwd-confirm" type="password" class="input-control" placeholder=" " required />
+              <label for="pwd-confirm" class="floating-label">ยืนยันรหัสผ่านใหม่</label>
+              <span class="input-focus-line" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 8px;">
+          <button id="logout-btn" type="button" class="btn-danger-outline">
+            ออกจากระบบ
+          </button>
+          <button id="pwd-submit-btn" type="submit" class="btn-primary">
+            บันทึกรหัสผ่านใหม่
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       4. TIME-ATTACK MINI-GAME RULE POP-UP MODAL (SHOWN BEFORE TIMER STARTS)
+       ======================================================================== -->
+  <div id="minigame-rule-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="mg-rule-modal-title">
+    <div class="modal-dialog modal-dialog-game-rules">
+      <div class="modal-header">
+        <div>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+            <span id="mg-rule-badge" class="status-pill is-info font-notch">TIME-ATTACK  •  G01</span>
+            <span id="mg-rule-checkpoint" class="status-pill is-neutral">คั่นหลังหน่วยที่ 4</span>
+          </div>
+          <h3 id="mg-rule-modal-title" style="font-size: 1.22rem; font-weight: 600; margin-top: 8px;">
+            กติกามินิเกมจับเวลา
+          </h3>
+          <p id="mg-rule-subtitle" style="font-size: 0.86rem; color: var(--text-secondary); margin-top: 3px;">
+            ตอบให้ไวและแม่นยำที่สุดภายในเวลา 60 วินาที
+          </p>
+        </div>
+        <button id="close-mg-rule-modal-btn" type="button" class="icon-close-btn" aria-label="ปิดหน้าต่างกติกา">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Divided 3-KPI Summary inside Rule Modal -->
+      <div class="game-rule-kpi-strip">
+        <div class="game-rule-kpi-cell">
+          <span style="font-size: 0.76rem; color: var(--text-muted); display: block;">เวลาจำกัดต่อรอบ</span>
+          <strong id="mg-rule-time-limit" class="font-notch tabular-nums" style="font-size: 1.05rem; color: var(--blue-600); display: block; margin-top: 2px;">
+            60 วินาที
+          </strong>
+        </div>
+        <div class="game-rule-kpi-cell">
+          <span style="font-size: 0.76rem; color: var(--text-muted); display: block;">จำนวนโจทย์และคะแนนเต็ม</span>
+          <strong id="mg-rule-max-score" class="font-notch tabular-nums" style="font-size: 1.05rem; display: block; margin-top: 2px;">
+            10 ด่าน (20 คะแนน)
+          </strong>
+        </div>
+        <div class="game-rule-kpi-cell">
+          <span style="font-size: 0.76rem; color: var(--text-muted); display: block;">สถิติสูงสุดของคุณ</span>
+          <strong id="mg-rule-personal-best" class="font-notch tabular-nums" style="font-size: 0.96rem; display: block; margin-top: 2px;">
+            ยังไม่เคยเล่น
+          </strong>
+        </div>
+      </div>
+
+      <!-- Rules List -->
+      <div style="padding-top: 16px;">
+        <h4 style="font-size: 0.92rem; font-weight: 600; color: var(--text-main);">
+          กติกาการแข่งขันและการบันทึกคะแนน
+        </h4>
+        <ul id="mg-rule-list" class="game-rules-list"></ul>
+      </div>
+
+      <!-- Modal Footer Buttons -->
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding-top: 18px; margin-top: 18px; border-top: 1px solid var(--border-subtle);">
+        <span style="font-size: 0.8rem; color: var(--text-muted);">
+          รองรับการคลิกเมาส์ แตะหน้าจอ หรือกดปุ่มตัวเลข 1 – 4 บนแป้นพิมพ์
+        </span>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <button id="cancel-mg-rule-btn" type="button" class="btn-secondary">
+            ยกเลิก
+          </button>
+          <button id="btn-confirm-start-minigame" type="button" class="btn-primary">
+            เริ่มจับเวลา 60 วินาที
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Stack -->
+  <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
+
+  <!-- Application Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/motion.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/certificate.js"></script>
+  <script src="js/curriculum-part1.js"></script>
+  <script src="js/curriculum-part2.js"></script>
+  <script src="js/minigames.js"></script>
+  <script src="js/learning.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
