@@ -95,8 +95,10 @@
 
   function setQuizFocusMode(active) {
     if (active) {
-      document.body.classList.add("is-quiz-active");
-      window.scrollTo({ top: 0, behavior: "auto" });
+      if (!document.body.classList.contains("is-quiz-active")) {
+        document.body.classList.add("is-quiz-active");
+        window.scrollTo({ top: 0, behavior: "auto" });
+      }
     } else {
       document.body.classList.remove("is-quiz-active");
     }
@@ -1062,11 +1064,11 @@
     }
 
     setTimeout(() => {
-      const inlineBtn = document.getElementById("btn-quiz-advance-inline");
-      if (inlineBtn) {
-        inlineBtn.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      const banner = document.getElementById("quiz-feedback-banner") || document.getElementById("btn-quiz-advance-inline");
+      if (banner) {
+        banner.scrollIntoView({ behavior: "smooth", block: "center" });
       }
-    }, 40);
+    }, 60);
   }
 
   function advanceQuizOrSubmit() {
