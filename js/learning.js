@@ -172,6 +172,18 @@
     }
     if (options.moduleFilter) {
       moduleFilter = options.moduleFilter;
+      if (!options.unitNo) {
+        if (moduleFilter === "all") {
+          activeUnitNo = 1;
+        } else {
+          const modUnits = CFG.UNITS_METADATA.filter(
+            (u) => String(u.moduleId) === String(moduleFilter)
+          );
+          if (modUnits.length > 0) {
+            activeUnitNo = modUnits[0].no;
+          }
+        }
+      }
     }
     toggleLessonsContainers(true);
     renderDirectory();
@@ -312,7 +324,7 @@
           }
 
           const unitCardHtml = `
-            <article class="module-overview-card module-theme-${u.moduleId} ${isSelected ? "is-selected-unit" : ""}">
+            <article class="module-overview-card module-theme-${u.moduleId} ${isSelected ? "is-selected-unit" : ""}" data-unit-no="${u.no}" style="cursor: pointer;">
               <div>
                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
                   <span class="unit-number-badge ${passed ? "is-done" : ""}">${esc(u.code)}</span>
@@ -1505,17 +1517,48 @@
       const modBtn = e.target.closest("[data-module-filter]");
       if (modBtn) {
         e.preventDefault();
+        window.SoundEngine?.playClick();
         moduleFilter = modBtn.getAttribute("data-module-filter") || "all";
-        if (moduleFilter !== "all") {
+        if (moduleFilter === "all") {
+          activeUnitNo = 1;
+        } else {
           const modUnits = CFG.UNITS_METADATA.filter(
             (u) => String(u.moduleId) === String(moduleFilter)
           );
-          if (modUnits.length > 0 && !modUnits.some((u) => u.no === activeUnitNo)) {
+          if (modUnits.length > 0) {
             activeUnitNo = modUnits[0].no;
           }
         }
         renderDirectory();
+
+        // Animate the updated banner to give instant visual feedback
+        const bannerEl = document.getElementById("lessons-selected-unit-banner");
+        if (bannerEl) {
+          bannerEl.style.transition = "transform 0.16s ease, opacity 0.16s ease";
+          bannerEl.style.transform = "scale(0.97)";
+          bannerEl.style.opacity = "0.7";
+          setTimeout(() => {
+            bannerEl.style.transform = "scale(1)";
+            bannerEl.style.opacity = "1";
+          }, 80);
+        }
         return;
+      }
+
+      // Click card to select unit preview in Directory
+      const unitCard = e.target.closest(".module-overview-card");
+      if (unitCard && !e.target.closest("button")) {
+        const uNo = Number(unitCard.getAttribute("data-unit-no"));
+        if (uNo) {
+          activeUnitNo = uNo;
+          renderDirectory();
+          window.SoundEngine?.playPop?.();
+          const bannerEl = document.getElementById("lessons-selected-unit-banner");
+          if (bannerEl) {
+            bannerEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          }
+          return;
+        }
       }
 
       // Select unit preview in Directory

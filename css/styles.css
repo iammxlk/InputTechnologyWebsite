@@ -1542,6 +1542,15 @@ html[data-theme="dark"] .step-pill-3 {
   border-radius: var(--radius-xl);
 }
 
+#lessons-module-filters {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 0 auto !important;
+  max-width: 100%;
+}
+
 .filter-pill-btn {
   appearance: none;
   border: none;
@@ -4736,6 +4745,20 @@ body.is-minigame-active main.app-container {
 
   .lesson-step-footer > span {
     text-align: center !important;
+  }
+
+  #lessons-module-filters {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 4px !important;
+    width: 100% !important;
+    padding: 6px !important;
+  }
+
+  #lessons-module-filters .filter-pill-btn {
+    padding: 6px 10px !important;
+    font-size: 0.8rem !important;
   }
 
   /* Auth Screen on Mobile */
