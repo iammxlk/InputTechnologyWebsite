@@ -1,82 +1,210 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="100%" height="100%">
   <defs>
-    <linearGradient id="bgGrad15" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#EAF2FC"/>
-      <stop offset="100%" stop-color="#CEE1F8"/>
+    <linearGradient id="bgGrad15" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#080E1E"/>
+      <stop offset="50%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#0B132B"/>
     </linearGradient>
-    <filter id="shadow15" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#0F2B5C" flood-opacity="0.18"/>
-    </filter>
-    <filter id="glow15">
-      <feGaussianBlur stdDeviation="6" result="blur"/>
-      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    <linearGradient id="headerGrad15" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+    <filter id="shadow15" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.55"/>
     </filter>
   </defs>
 
+  <style>
+    .mono { font-family: 'Stack Sans Notch', 'Segoe UI Mono', monospace; font-variant-numeric: tabular-nums; }
+    .thai { font-family: 'Mitr', 'Segoe UI', system-ui, sans-serif; }
+  </style>
+
+  <!-- Background -->
   <rect width="1280" height="720" fill="url(#bgGrad15)"/>
 
-  <g transform="translate(640, 420)" filter="url(#shadow15)">
-    <!-- Isometric Floating Base Platform -->
-    <path d="M 0 100 L 420 -110 L 420 -60 L 0 150 L -420 -60 L -420 -110 Z" fill="#64748B"/>
-    <path d="M 0 150 L 420 -60 L 420 -20 L 0 190 L -420 -20 L -420 -60 Z" fill="#475569"/>
-    <path d="M 0 -220 L 420 -10 L 0 200 L -420 -10 Z" fill="#F8FAFC"/>
-    <path d="M 0 -220 L -420 -10 L 0 200 Z" fill="#E2E8F0"/>
+  <!-- Top Title Badge -->
+  <g transform="translate(64, 40)">
+    <rect width="460" height="34" rx="6" fill="#1E293B" stroke="#334155"/>
+    <circle cx="18" cy="17" r="5" fill="#818CF8"/>
+    <text x="32" y="22" fill="#A5B4FC" font-size="13" font-weight="700" class="mono">CHARACTER ENCODING &amp; BINARY DATA MATRIX</text>
+    <text x="0" y="66" fill="#F8FAFC" font-size="22" font-weight="600" class="thai">กระบวนการแปลงรหัสอักขระสู่ข้อมูลดิจิทัล (ASCII / TIS-620 / UTF-8 / Base64)</text>
+  </g>
 
-    <!-- Left Side: Binary Bits Input Track (Glowing 0 and 1 Voxel Lamps) -->
-    <g transform="translate(-240, -40)">
-      <!-- Track Platform -->
-      <polygon points="-80,-40 60,30 60,50 -80,-20" fill="#334155"/>
+  <!-- ==================== FLOW CARD 1: ENGLISH ASCII / UTF-8 (1-BYTE) ==================== -->
+  <g transform="translate(64, 150)" filter="url(#shadow15)">
+    <rect width="560" height="230" rx="12" fill="#141C2E" stroke="#334155" stroke-width="1.5"/>
+    <path d="M 0 12 Q 0 0 12 0 L 548 0 Q 560 0 560 12 L 560 48 L 0 48 Z" fill="url(#headerGrad15)"/>
+    <text x="20" y="30" fill="#FFFFFF" font-size="15" font-weight="700" class="mono">CASE 1: ENGLISH CHARACTER 'A' (1-BYTE ASCII / UTF-8)</text>
 
-      <!-- Bit Block 1 (Glowing Cyan Voxel Cube) -->
-      <g transform="translate(-40, -10)" filter="url(#glow15)">
-        <polygon points="0,-20 25,-8 0,5 -25,-8" fill="#38BDF8"/>
-        <polygon points="0,5 25,-8 25,18 0,30" fill="#0284C7"/>
-        <polygon points="0,5 -25,-8 -25,18 0,30" fill="#0369A1"/>
+    <!-- Stage Flow: Char -> Dec -> Hex -> Binary -->
+    <g transform="translate(20, 68)" class="mono">
+      <!-- 1. Input Char -->
+      <g transform="translate(0, 0)">
+        <rect width="80" height="72" rx="8" fill="#1E293B" stroke="#6366F1"/>
+        <text x="40" y="44" fill="#818CF8" font-size="34" font-weight="800" text-anchor="middle">A</text>
+        <text x="40" y="62" fill="#94A3B8" font-size="10" text-anchor="middle">CHAR</text>
       </g>
-      <!-- Bit Block 0 (Dark Blue Off-State Voxel Cube) -->
-      <g transform="translate(10, 15)">
-        <polygon points="0,-20 25,-8 0,5 -25,-8" fill="#64748B"/>
-        <polygon points="0,5 25,-8 25,18 0,30" fill="#334155"/>
-        <polygon points="0,5 -25,-8 -25,18 0,30" fill="#1E293B"/>
+
+      <path d="M 94 36 L 126 36" stroke="#818CF8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+      <!-- 2. Decimal Codepoint -->
+      <g transform="translate(138, 0)">
+        <rect width="100" height="72" rx="8" fill="#0F172A" stroke="#334155"/>
+        <text x="50" y="36" fill="#F8FAFC" font-size="20" font-weight="700" text-anchor="middle">65</text>
+        <text x="50" y="52" fill="#94A3B8" font-size="10" text-anchor="middle">DECIMAL</text>
+        <text x="50" y="64" fill="#38BDF8" font-size="10" text-anchor="middle">HEX: 0x41</text>
+      </g>
+
+      <path d="M 252 36 L 284 36" stroke="#818CF8" stroke-width="2.5"/>
+
+      <!-- 3. Binary 8-Bit Byte (1 Byte) -->
+      <g transform="translate(296, 0)">
+        <rect width="224" height="72" rx="8" fill="#0B1329" stroke="#10B981" stroke-width="1.5"/>
+        <!-- 8 Bit Cells -->
+        <g transform="translate(12, 16)" font-size="14" font-weight="800">
+          <rect x="0" y="0" width="22" height="30" rx="4" fill="#1E3A5F"/><text x="11" y="21" fill="#38BDF8" text-anchor="middle">0</text>
+          <rect x="25" y="0" width="22" height="30" rx="4" fill="#047857"/><text x="36" y="21" fill="#34D399" text-anchor="middle">1</text>
+          <rect x="50" y="0" width="22" height="30" rx="4" fill="#1E3A5F"/><text x="61" y="21" fill="#38BDF8" text-anchor="middle">0</text>
+          <rect x="75" y="0" width="22" height="30" rx="4" fill="#1E3A5F"/><text x="86" y="21" fill="#38BDF8" text-anchor="middle">0</text>
+          <rect x="100" y="0" width="22" height="30" rx="4" fill="#1E3A5F"/><text x="111" y="21" fill="#38BDF8" text-anchor="middle">0</text>
+          <rect x="125" y="0" width="22" height="30" rx="4" fill="#1E3A5F"/><text x="136" y="21" fill="#38BDF8" text-anchor="middle">0</text>
+          <rect x="150" y="0" width="22" height="30" rx="4" fill="#1E3A5F"/><text x="161" y="21" fill="#38BDF8" text-anchor="middle">0</text>
+          <rect x="175" y="0" width="22" height="30" rx="4" fill="#047857"/><text x="186" y="21" fill="#34D399" text-anchor="middle">1</text>
+        </g>
+        <text x="112" y="62" fill="#10B981" font-size="10" font-weight="700" text-anchor="middle">8 BITS = 1 BYTE IN MEMORY</text>
       </g>
     </g>
 
-    <!-- Center: Voxel Translation Prism (Encoding Engine: UTF-8 / ASCII / Base64) -->
-    <g transform="translate(0, -70)">
-      <!-- Pedestal Stand -->
-      <polygon points="0,-15 50,-40 100,-15 50,10" fill="#1E293B"/>
-      <polygon points="0,-15 -50,-40 -100,-15 -50,10" fill="#0F172A"/>
+    <!-- Technical Specs Note -->
+    <g transform="translate(20, 160)">
+      <rect width="520" height="50" rx="6" fill="#0F172A" stroke="#1E293B"/>
+      <text x="14" y="22" fill="#94A3B8" font-size="11" class="mono">STANDARD: ASCII (American Standard Code for Information Interchange)</text>
+      <text x="14" y="40" fill="#E2E8F0" class="thai" font-size="11">ใช้เพียง 7 บิตแรก (0-127) จึงมีขนาดกะทัดรัด 1 ไบต์ต่อ 1 ตัวอักษร</text>
+    </g>
+  </g>
 
-      <!-- Glowing Crystal Converter Prism -->
-      <g filter="url(#glow15)">
-        <polygon points="0,-130 50,-70 0,-10 -50,-70" fill="#818CF8" opacity="0.85"/>
-        <polygon points="0,-130 50,-70 0,-60" fill="#A5B4FC"/>
-        <polygon points="0,-130 -50,-70 0,-60" fill="#6366F1"/>
-        <polygon points="0,-10 50,-70 0,-60" fill="#4F46E5"/>
-        <polygon points="0,-10 -50,-70 0,-60" fill="#3730A3"/>
+  <!-- ==================== FLOW CARD 2: THAI UTF-8 (MULTI-BYTE) ==================== -->
+  <g transform="translate(656, 150)" filter="url(#shadow15)">
+    <rect width="560" height="230" rx="12" fill="#141C2E" stroke="#334155" stroke-width="1.5"/>
+    <path d="M 0 12 Q 0 0 12 0 L 548 0 Q 560 0 560 12 L 560 48 L 0 48 Z" fill="url(#headerGrad15)"/>
+    <text x="20" y="30" fill="#FFFFFF" font-size="15" font-weight="700" class="mono">CASE 2: THAI CHARACTER 'ก' (3-BYTE UTF-8 VARIABLE LENGTH)</text>
+
+    <g transform="translate(20, 68)" class="mono">
+      <!-- 1. Input Thai Char -->
+      <g transform="translate(0, 0)">
+        <rect width="80" height="72" rx="8" fill="#1E293B" stroke="#6366F1"/>
+        <text x="40" y="48" fill="#818CF8" font-size="36" font-weight="800" text-anchor="middle" class="thai">ก</text>
+        <text x="40" y="64" fill="#94A3B8" font-size="10" text-anchor="middle">THAI CHAR</text>
       </g>
 
-      <!-- Connecting Redstone/Logic Signal Beams -->
-      <path d="M -160 30 C -80 0, -40 -30, 0 -60" fill="none" stroke="#00E5FF" stroke-width="4" stroke-dasharray="8 4" filter="url(#glow15)"/>
-      <path d="M 0 -60 C 40 -30, 80 0, 160 30" fill="none" stroke="#6366F1" stroke-width="4" stroke-dasharray="8 4" filter="url(#glow15)"/>
+      <path d="M 94 36 L 126 36" stroke="#818CF8" stroke-width="2.5"/>
+
+      <!-- 2. Unicode Codepoint -->
+      <g transform="translate(138, 0)">
+        <rect width="100" height="72" rx="8" fill="#0F172A" stroke="#334155"/>
+        <text x="50" y="32" fill="#F8FAFC" font-size="16" font-weight="700" text-anchor="middle">U+0E01</text>
+        <text x="50" y="48" fill="#94A3B8" font-size="10" text-anchor="middle">DEC: 3585</text>
+        <text x="50" y="62" fill="#F59E0B" font-size="10" text-anchor="middle">TIS-620: 0xA1</text>
+      </g>
+
+      <path d="M 252 36 L 284 36" stroke="#818CF8" stroke-width="2.5"/>
+
+      <!-- 3. UTF-8 3-Byte Representation -->
+      <g transform="translate(296, 0)">
+        <rect width="224" height="72" rx="8" fill="#0B1329" stroke="#38BDF8" stroke-width="1.5"/>
+        <!-- Byte 1, Byte 2, Byte 3 in Hex -->
+        <g transform="translate(14, 16)" font-size="12" font-weight="700">
+          <rect x="0" y="0" width="60" height="28" rx="4" fill="#1E3A8A"/><text x="30" y="19" fill="#93C5FD" text-anchor="middle">0xE0</text>
+          <rect x="68" y="0" width="60" height="28" rx="4" fill="#1E3A8A"/><text x="98" y="19" fill="#93C5FD" text-anchor="middle">0xB8</text>
+          <rect x="136" y="0" width="60" height="28" rx="4" fill="#1E3A8A"/><text x="166" y="19" fill="#93C5FD" text-anchor="middle">0x81</text>
+        </g>
+        <text x="112" y="62" fill="#38BDF8" font-size="10" font-weight="700" text-anchor="middle">24 BITS = 3 BYTES IN UTF-8</text>
+      </g>
     </g>
 
-    <!-- Right Side: Standard Encoded Character Output Blocks (Color-coded Byte Blocks) -->
-    <g transform="translate(240, -40)">
-      <polygon points="-60,-30 80,40 80,60 -60,-10" fill="#334155"/>
+    <g transform="translate(20, 160)">
+      <rect width="520" height="50" rx="6" fill="#0F172A" stroke="#1E293B"/>
+      <text x="14" y="22" fill="#94A3B8" font-size="11" class="mono">STANDARD: Unicode UTF-8 (Universal Character Set Transformation Format)</text>
+      <text x="14" y="40" fill="#E2E8F0" class="thai" font-size="11">อักษรไทยจัดเก็บ 3 ไบต์ใน UTF-8 (หรือ 1 ไบต์ใน TIS-620) เพื่อรองรับทุกภาษาในโลก</text>
+    </g>
+  </g>
 
-      <!-- Encoded Byte Block A (Vibrant Indigo Voxel Cube) -->
-      <g transform="translate(-10, -10)" filter="url(#glow15)">
-        <polygon points="0,-22 28,-8 0,6 -28,-8" fill="#C7D2FE"/>
-        <polygon points="0,6 28,-8 28,20 0,34" fill="#6366F1"/>
-        <polygon points="0,6 -28,-8 -28,20 0,34" fill="#4338CA"/>
+  <!-- ==================== FLOW CARD 3: BASE64 BINARY-TO-TEXT STREAM ==================== -->
+  <g transform="translate(64, 400)" filter="url(#shadow15)">
+    <rect width="1152" height="280" rx="12" fill="#141C2E" stroke="#334155" stroke-width="1.5"/>
+    <path d="M 0 12 Q 0 0 12 0 L 1140 0 Q 1152 0 1152 12 L 1152 48 L 0 48 Z" fill="#0F2D6B"/>
+    <text x="20" y="30" fill="#FFFFFF" font-size="15" font-weight="700" class="mono">CASE 3: BASE64 ENCODING PIPELINE (BINARY MEDIA &amp; AVATAR DATA TRANSMISSION)</text>
+    <rect x="1040" y="14" width="94" height="22" rx="4" fill="#1D4ED8"/>
+    <text x="1052" y="29" fill="#DBEAFE" font-size="11" font-weight="700" class="mono">RFC 4648</text>
+
+    <!-- 4-Step Base64 Pipeline -->
+    <g transform="translate(20, 68)" class="mono">
+      <!-- Step 1: 3 Raw Bytes Input -->
+      <g transform="translate(0, 0)">
+        <rect width="250" height="180" rx="8" fill="#0B1329" stroke="#334155"/>
+        <text x="14" y="24" fill="#94A3B8" font-size="11" font-weight="700">1. RAW INPUT (3 BYTES = 24 BITS)</text>
+        <text x="14" y="50" fill="#E2E8F0" font-size="13">Characters: <tspan fill="#38BDF8" font-weight="800">"Man"</tspan></text>
+        <g transform="translate(14, 68)" font-size="11">
+          <text x="0" y="16" fill="#94A3B8">'M' = 0x4D = <tspan fill="#F8FAFC">01001101</tspan></text>
+          <text x="0" y="36" fill="#94A3B8">'a' = 0x61 = <tspan fill="#F8FAFC">01100001</tspan></text>
+          <text x="0" y="56" fill="#94A3B8">'n' = 0x6E = <tspan fill="#F8FAFC">01101110</tspan></text>
+        </g>
+        <text x="14" y="162" fill="#64748B" class="thai" font-size="10">ข้อมูลภาพถ่าย หรืออักขระดิบ 8 บิต</text>
       </g>
 
-      <!-- Encoded Byte Block B (Vibrant Blue Voxel Cube) -->
-      <g transform="translate(45, 18)" filter="url(#glow15)">
-        <polygon points="0,-22 28,-8 0,6 -28,-8" fill="#BAE6FD"/>
-        <polygon points="0,6 28,-8 28,20 0,34" fill="#0284C7"/>
-        <polygon points="0,6 -28,-8 -28,20 0,34" fill="#0369A1"/>
+      <!-- Arrow -->
+      <path d="M 264 90 L 296 90" stroke="#38BDF8" stroke-width="2.5"/>
+
+      <!-- Step 2: 6-Bit Re-chunking -->
+      <g transform="translate(310, 0)">
+        <rect width="260" height="180" rx="8" fill="#0B1329" stroke="#38BDF8"/>
+        <text x="14" y="24" fill="#38BDF8" font-size="11" font-weight="700">2. RE-CHUNK TO 6-BIT GROUPS</text>
+        <g transform="translate(14, 46)" font-size="12">
+          <rect x="0" y="0" width="232" height="24" rx="4" fill="#1E293B"/>
+          <text x="10" y="17" fill="#F8FAFC">Group 1: <tspan fill="#F59E0B" font-weight="800">010011</tspan> (Dec 19)</text>
+
+          <rect x="0" y="30" width="232" height="24" rx="4" fill="#1E293B"/>
+          <text x="10" y="47" fill="#F8FAFC">Group 2: <tspan fill="#F59E0B" font-weight="800">010110</tspan> (Dec 22)</text>
+
+          <rect x="0" y="60" width="232" height="24" rx="4" fill="#1E293B"/>
+          <text x="10" y="77" fill="#F8FAFC">Group 3: <tspan fill="#F59E0B" font-weight="800">000101</tspan> (Dec 5)</text>
+
+          <rect x="0" y="90" width="232" height="24" rx="4" fill="#1E293B"/>
+          <text x="10" y="107" fill="#F8FAFC">Group 4: <tspan fill="#F59E0B" font-weight="800">101110</tspan> (Dec 46)</text>
+        </g>
+        <text x="14" y="162" fill="#64748B" class="thai" font-size="10">แบ่งข้อมูล 24 บิต เป็น 4 กลุ่มย่อย กลุ่มละ 6 บิต</text>
+      </g>
+
+      <!-- Arrow -->
+      <path d="M 584 90 L 616 90" stroke="#38BDF8" stroke-width="2.5"/>
+
+      <!-- Step 3: Base64 Index Lookup -->
+      <g transform="translate(630, 0)">
+        <rect width="240" height="180" rx="8" fill="#0B1329" stroke="#334155"/>
+        <text x="14" y="24" fill="#94A3B8" font-size="11" font-weight="700">3. BASE64 TABLE LOOKUP</text>
+        <g transform="translate(14, 46)" font-size="12">
+          <text x="0" y="18" fill="#94A3B8">Index 19 → <tspan fill="#34D399" font-weight="800">'T'</tspan></text>
+          <text x="0" y="44" fill="#94A3B8">Index 22 → <tspan fill="#34D399" font-weight="800">'W'</tspan></text>
+          <text x="0" y="70" fill="#94A3B8">Index 05 → <tspan fill="#34D399" font-weight="800">'F'</tspan></text>
+          <text x="0" y="96" fill="#94A3B8">Index 46 → <tspan fill="#34D399" font-weight="800">'u'</tspan></text>
+        </g>
+        <text x="14" y="162" fill="#64748B" class="thai" font-size="10">เทียบตาราง A-Z, a-z, 0-9, +, / (64 ตัว)</text>
+      </g>
+
+      <!-- Arrow -->
+      <path d="M 884 90 L 916 90" stroke="#10B981" stroke-width="2.5"/>
+
+      <!-- Step 4: Final Output String -->
+      <g transform="translate(930, 0)">
+        <rect width="182" height="180" rx="8" fill="#042F2E" stroke="#10B981" stroke-width="1.5"/>
+        <text x="14" y="24" fill="#34D399" font-size="11" font-weight="700">4. ENCODED OUTPUT</text>
+        <rect x="14" y="46" width="154" height="48" rx="6" fill="#0F172A" stroke="#059669"/>
+        <text x="91" y="78" fill="#38BDF8" font-size="24" font-weight="800" text-anchor="middle">"TWFu"</text>
+
+        <text x="14" y="118" fill="#A7F3D0" font-size="11">Data URI Format:</text>
+        <text x="14" y="136" fill="#94A3B8" font-size="9">data:image/jpeg;</text>
+        <text x="14" y="148" fill="#94A3B8" font-size="9">base64,TWFu...</text>
+        <text x="14" y="168" fill="#10B981" font-size="10" font-weight="700">[Safe HTTP Payload]</text>
       </g>
     </g>
   </g>

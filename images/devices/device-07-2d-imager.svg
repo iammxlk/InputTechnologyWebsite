@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B132B"/>
+      <stop offset="100%" stop-color="#1C2541"/>
+    </linearGradient>
+    <linearGradient id="chassisGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+  <rect width="800" height="500" rx="16" fill="url(#bgGrad)"/>
+  <g stroke="#334155" stroke-width="0.5" stroke-opacity="0.25">
+    <line x1="0" y1="100" x2="800" y2="100"/><line x1="0" y1="200" x2="800" y2="200"/>
+    <line x1="0" y1="300" x2="800" y2="300"/><line x1="0" y1="400" x2="800" y2="400"/>
+    <line x1="200" y1="0" x2="200" y2="500"/><line x1="400" y1="0" x2="400" y2="500"/>
+    <line x1="600" y1="0" x2="600" y2="500"/>
+  </g>
+  <rect x="36" y="28" width="310" height="32" rx="6" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/>
+  <circle cx="52" cy="44" r="5" fill="#38BDF8"/>
+  <text x="68" y="49" fill="#38BDF8" font-family="'Stack Sans Notch', sans-serif" font-weight="700" font-size="12" letter-spacing="1">UNIT 7 HARDWARE SPECIMEN</text>
+  <text x="36" y="86" fill="#F8FAFC" font-family="'Mitr', sans-serif" font-weight="600" font-size="18">Hands-Free Presentation 2D Area Imager Desktop Scanner</text>
+  <text x="36" y="108" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="12">เครื่องสแกนรหัสภาพ 2 มิติแบบตั้งโต๊ะ อ่านรหัส QR และบาร์โค้ดจากหน้าจอมือถือด้วยเซนเซอร์ CMOS Area Imager</text>
+  
+  <g filter="url(#shadow)" transform="translate(180, 160)">
+    <ellipse cx="120" cy="240" rx="75" ry="18" fill="#0F172A" stroke="#475569" stroke-width="2"/>
+    <path d="M 105 235 L 105 160 L 135 160 L 135 235 Z" fill="#334155" stroke="#475569" stroke-width="1.5"/>
+    
+    <g transform="translate(120, 130) rotate(-20)">
+      <rect x="-65" y="-65" width="130" height="130" rx="20" fill="#1E293B" stroke="#64748B" stroke-width="2.5"/>
+      <circle cx="0" cy="0" r="50" fill="#020617" stroke="#38BDF8" stroke-width="2"/>
+      <circle cx="0" cy="0" r="16" fill="#0284C7" stroke="#F59E0B" stroke-width="1"/>
+      <circle cx="-32" cy="0" r="4" fill="#F8FAFC"/>
+      <circle cx="32" cy="0" r="4" fill="#F8FAFC"/>
+      <circle cx="0" cy="-32" r="4" fill="#F8FAFC"/>
+      <circle cx="0" cy="32" r="4" fill="#F8FAFC"/>
+      <g stroke="#10B981" stroke-width="1.5" opacity="0.8">
+        <line x1="-12" y1="0" x2="-4" y2="0"/><line x1="4" y1="0" x2="12" y2="0"/>
+        <line x1="0" y1="-12" x2="0" y2="-4"/><line x1="0" y1="4" x2="0" y2="12"/>
+      </g>
+    </g>
+
+    <g transform="translate(280, 40) rotate(-15)">
+      <rect x="0" y="0" width="120" height="210" rx="16" fill="#020617" stroke="#94A3B8" stroke-width="2"/>
+      <rect x="6" y="10" width="108" height="190" rx="10" fill="#0F172A"/>
+      <rect x="24" y="50" width="72" height="72" fill="#FFFFFF" rx="4"/>
+      <g fill="#020617">
+        <rect x="28" y="54" width="20" height="20" rx="2"/><rect x="32" y="58" width="12" height="12" fill="#FFF"/><rect x="36" y="62" width="4" height="4"/>
+        <rect x="72" y="54" width="20" height="20" rx="2"/><rect x="76" y="58" width="12" height="12" fill="#FFF"/><rect x="80" y="62" width="4" height="4"/>
+        <rect x="28" y="98" width="20" height="20" rx="2"/><rect x="32" y="102" width="12" height="12" fill="#FFF"/><rect x="36" y="106" width="4" height="4"/>
+        <rect x="54" y="60" width="6" height="6"/><rect x="64" y="70" width="6" height="6"/><rect x="54" y="80" width="8" height="8"/><rect x="66" y="94" width="8" height="8"/>
+      </g>
+      <text x="60" y="150" fill="#38BDF8" font-family="'Stack Sans Notch', sans-serif" font-size="9" text-anchor="middle">PROMPTPAY QR</text>
+    </g>
+
+    <polygon points="120,130 290,110 320,170" fill="#38BDF8" opacity="0.12"/>
+  </g>
+
+</svg>

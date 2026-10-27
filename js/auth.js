@@ -84,10 +84,12 @@
     el.textContent = message;
     if (type !== "success") {
       window.MotionEngine?.shakeElement(el);
+      window.SoundEngine?.playError();
     }
   }
 
   function switchAuthMode(mode) {
+    window.SoundEngine?.playPop();
     const loginTab = document.getElementById("tab-btn-login");
     const regTab = document.getElementById("tab-btn-register");
     const loginForm = document.getElementById("login-form");
@@ -195,6 +197,7 @@
     // Show / Hide password toggles
     document.querySelectorAll("[data-toggle-pwd]").forEach((btn) => {
       btn.addEventListener("click", () => {
+        window.SoundEngine?.playToggle();
         const targetId = btn.getAttribute("data-toggle-pwd");
         const input = document.getElementById(targetId);
         if (!input) return;
@@ -270,6 +273,7 @@
         miniGameRecordsMap = res.minigame_records || {};
         persistSession(res.user);
         enforceRouteGuard();
+        window.SoundEngine?.playSuccess();
 
         if (window.AppController && typeof window.AppController.onAuthSuccess === "function") {
           window.AppController.onAuthSuccess();
@@ -347,6 +351,7 @@
         window.MotionEngine?.syncAllFloatingFields(registerForm);
         pendingRegisterAvatarBase64 = "";
         enforceRouteGuard();
+        window.SoundEngine?.playSuccess();
 
         if (window.AppController && typeof window.AppController.onAuthSuccess === "function") {
           window.AppController.onAuthSuccess();

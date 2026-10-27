@@ -890,8 +890,18 @@
     }
   }
 
+  function setMiniGameFocusMode(active) {
+    if (active) {
+      document.body.classList.add("is-minigame-active");
+      window.scrollTo({ top: 0, behavior: "auto" });
+    } else {
+      document.body.classList.remove("is-minigame-active");
+    }
+  }
+
   function stopActiveGame() {
     clearGameTimers();
+    setMiniGameFocusMode(false);
     if (gameState && gameState.phase === "playing") {
       gameState.phase = "aborted";
     }
@@ -1059,10 +1069,13 @@
 
     if (clockEl) {
       const formatted = window.AppUtils.formatDuration(remSecCeil);
-      if (clockEl.textContent !== formatted) {
+      const span = clockEl.querySelector("span");
+      if (span) {
+        if (span.textContent !== formatted) span.textContent = formatted;
+      } else if (clockEl.textContent !== formatted) {
         clockEl.textContent = formatted;
       }
-      clockEl.className = `mg-countdown-value ${stateClass}`.trim();
+      clockEl.className = `mg-countdown-clock-badge font-notch tabular-nums ${stateClass}`.trim();
     }
     if (fillEl) {
       fillEl.style.transform = `scaleX(${scaleRatio.toFixed(4)})`;
@@ -1186,94 +1199,74 @@
           }">${gameState.lastHitDelta > 0 ? `+${gameState.lastHitDelta} PTS` : "MISS"}</span>`
         : "";
 
+    setMiniGameFocusMode(true);
     ws.innerHTML = `
-      <!-- Top Control Bar -->
-      <div class="surface-card lesson-workspace-topbar">
-        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;">
-          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-            <button type="button" class="btn-secondary lesson-back-btn" id="btn-abort-minigame">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
-              <span>ออกจากมินิเกม</span>
-            </button>
-            <span class="unit-number-badge">${esc(def.id)}</span>
-            <span class="status-pill is-info">${esc(def.checkpointLabel)}</span>
-          </div>
+      <div class="mg-cockpit-shell">
+        <!-- Compact HUD Bar -->
+        <div class="surface-card mg-cockpit-hud">
+          <div class="mg-cockpit-hud-top">
+            <div class="mg-cockpit-hud-left">
+              <button type="button" class="btn-secondary mg-back-btn" id="btn-abort-minigame" title="ออกจากมินิเกม">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>ออก</span>
+              </button>
+              <span class="unit-number-badge font-notch">${esc(def.id)}</span>
+              <span class="mg-hud-round-tag font-notch">ด่าน ${gameState.currentIdx + 1}/${def.roundsPerPlay}</span>
+            </div>
 
-          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-            <button type="button" class="btn-secondary lesson-back-btn" id="btn-mg-sfx-toggle">
-              ${renderSfxToggleIcon()}
-            </button>
-            <button type="button" class="btn-secondary lesson-back-btn" data-open-minigame="${esc(def.id)}">
-              ดูกติกา / เริ่มใหม่
-            </button>
-          </div>
-        </div>
+            <div class="mg-cockpit-hud-center">
+              <div id="mg-countdown-clock" class="mg-countdown-clock-badge font-notch tabular-nums ${stateClass}">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="13" r="8"></circle>
+                  <path d="M12 9v4l2.5 2.5"></path>
+                  <path d="M9 2h6"></path>
+                </svg>
+                <span>${window.AppUtils.formatDuration(remSecCeil)}</span>
+              </div>
+            </div>
 
-        <div style="margin-top: 12px;">
-          <h1 style="font-size: 1.28rem; font-weight: 600; line-height: 1.35;">
-            ${esc(def.title)} • ${esc(def.thaiTitle)}
-          </h1>
-        </div>
-      </div>
-
-      <!-- Live Countdown & Score HUD -->
-      <div class="surface-card mg-hud-card">
-        <div class="mg-hud-grid">
-          <div>
-            <span class="quiz-hud-label">ด่านความไวปัจจุบัน</span>
-            <strong class="quiz-hud-value font-notch tabular-nums">
-              ${gameState.currentIdx + 1} / ${def.roundsPerPlay}
-            </strong>
-          </div>
-
-          <div style="position: relative;">
-            <span class="quiz-hud-label">คะแนนสะสมรอบนี้</span>
-            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-              <strong id="mg-live-score" class="quiz-hud-value font-notch tabular-nums" style="color: var(--blue-600);">
-                ${gameState.score} / ${maxScore}
-              </strong>
+            <div class="mg-cockpit-hud-right">
+              <span class="mg-hud-score-badge font-notch">
+                คะแนน: <strong id="mg-live-score">${gameState.score}/${maxScore}</strong>
+              </span>
               ${streakHtml}
               ${hitFloatHtml}
+              <button type="button" class="btn-secondary mg-sfx-btn" id="btn-mg-sfx-toggle" title="เปิด/ปิดเสียง">
+                ${renderSfxToggleIcon()}
+              </button>
             </div>
           </div>
 
-          <div style="text-align: right;">
-            <span class="quiz-hud-label">เวลาที่เหลือ (60 วินาที)</span>
-            <span id="mg-countdown-clock" class="mg-countdown-value ${stateClass}">
-              ${window.AppUtils.formatDuration(remSecCeil)}
-            </span>
+          <div class="mg-timer-track" aria-hidden="true" style="height: 5px; margin: 6px 0;">
+            <div id="mg-time-bar-fill" class="mg-timer-fill ${stateClass}" style="width: 100%; transform: scaleX(${scaleRatio.toFixed(4)});"></div>
+          </div>
+
+          <div class="quiz-dots-row mg-cockpit-dots">
+            ${dotsHtml}
           </div>
         </div>
 
-        <div class="mg-timer-track" aria-hidden="true">
-          <div id="mg-time-bar-fill" class="mg-timer-fill ${stateClass}" style="width: 100%; transform: scaleX(${scaleRatio.toFixed(4)});"></div>
-        </div>
+        <!-- Main Challenge Stage Card -->
+        <div id="mg-active-arena-card" class="surface-card mg-cockpit-card">
+          ${specimenHtml}
+          ${workbenchHtml}
 
-        <div class="quiz-dots-row">
-          ${dotsHtml}
-        </div>
-      </div>
+          <div class="mg-prompt-row">
+            <h2 class="mg-prompt-title">
+              ด่านที่ ${gameState.currentIdx + 1}: ${esc(round.prompt)}
+            </h2>
+            <span class="mg-prompt-sub">เลือกคำตอบที่ถูกต้องให้ไวที่สุด (คลิก หรือกด 1–4 บนแป้นพิมพ์)</span>
+          </div>
 
-      <!-- Main Challenge Stage -->
-      <div id="mg-active-arena-card" class="surface-card mg-arena-card">
-        ${specimenHtml}
-        ${workbenchHtml}
-
-        <div>
-          <h2 class="mg-prompt-title">
-            ด่านที่ ${gameState.currentIdx + 1}: ${esc(round.prompt)}
-          </h2>
-          <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">
-            เลือกคำตอบที่ถูกต้องให้ไวที่สุด (คลิกปุ่ม หรือกดคีย์ลัด 1 – 4 บนแป้นพิมพ์)
-          </p>
-        </div>
-
-        <div class="mg-pads-grid">
-          ${padsHtml}
+          <!-- 2x2 Fast-Tap Pads -->
+          <div class="mg-pads-grid">
+            ${padsHtml}
+          </div>
         </div>
       </div>
+    `;
     `;
   }
 
@@ -1337,6 +1330,7 @@
   async function finishMiniGame(reason = "completed") {
     if (!gameState || gameState.phase === "result") return;
     clearGameTimers();
+    setMiniGameFocusMode(false);
 
     const def = gameState.gameDef;
     const maxScore = def.roundsPerPlay * def.pointsPerCorrect;

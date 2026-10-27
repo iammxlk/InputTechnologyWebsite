@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <linearGradient id="screenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0284C7"/>
+    </linearGradient>
+    <linearGradient id="metalChassis" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="50%" stop-color="#475569"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="800" height="500" rx="16" fill="url(#bgGrad2)"/>
+  
+  <!-- Grid Lines -->
+  <g stroke="#334155" stroke-width="0.5" stroke-opacity="0.3">
+    <line x1="0" y1="100" x2="800" y2="100"/>
+    <line x1="0" y1="200" x2="800" y2="200"/>
+    <line x1="0" y1="300" x2="800" y2="300"/>
+    <line x1="0" y1="400" x2="800" y2="400"/>
+    <line x1="200" y1="0" x2="200" y2="500"/>
+    <line x1="400" y1="0" x2="400" y2="500"/>
+    <line x1="600" y1="0" x2="600" y2="500"/>
+  </g>
+
+  <!-- Title Badge -->
+  <rect x="36" y="28" width="310" height="32" rx="6" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/>
+  <circle cx="52" cy="44" r="5" fill="#38BDF8"/>
+  <text x="68" y="49" fill="#38BDF8" font-family="'Stack Sans Notch', sans-serif" font-weight="700" font-size="12" letter-spacing="1">UNIT 2 HARDWARE SPECIMEN</text>
+
+  <!-- Technical Spec Details -->
+  <text x="36" y="86" fill="#F8FAFC" font-family="'Mitr', sans-serif" font-weight="600" font-size="18">All-in-One Dual-Screen Smart POS Terminal</text>
+  <text x="36" y="108" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="12">เครื่องแคชเชียร์อัจฉริยะแบบสองหน้าจอ (Capacitive Touch + Thermal Printer + NFC/Barcode)</text>
+
+  <!-- Countertop Shadow & Base -->
+  <ellipse cx="440" cy="445" rx="260" ry="24" fill="#020617" opacity="0.6"/>
+
+  <!-- POS Heavy Stand Base -->
+  <g filter="url(#shadow)">
+    <path d="M 330 420 L 550 420 L 525 385 L 355 385 Z" fill="#1E293B" stroke="#475569" stroke-width="1.5"/>
+    <rect x="420" y="270" width="40" height="120" rx="4" fill="url(#metalChassis)" stroke="#475569" stroke-width="1.5"/>
+    
+    <!-- Secondary Customer Screen (Behind/Angled) -->
+    <rect x="475" y="180" width="180" height="110" rx="8" fill="#0F172A" stroke="#475569" stroke-width="2"/>
+    <rect x="483" y="188" width="164" height="94" rx="4" fill="#0284C7" opacity="0.15"/>
+    <text x="565" y="230" fill="#38BDF8" font-family="'Stack Sans Notch', sans-serif" font-size="16" font-weight="700" text-anchor="middle">CUSTOMER DISPLAY</text>
+    <text x="565" y="250" fill="#E2E8F0" font-family="'Mitr', sans-serif" font-size="11" text-anchor="middle">฿ 1,250.00 • ชำระเงินสำเร็จ</text>
+
+    <!-- Main Cashier Screen (15.6" Touchscreen) -->
+    <rect x="220" y="140" width="310" height="205" rx="12" fill="#0F172A" stroke="#64748B" stroke-width="2.5"/>
+    <!-- Screen Bezel Glass -->
+    <rect x="230" y="150" width="290" height="185" rx="6" fill="#020617"/>
+    <!-- Active Display UI -->
+    <rect x="234" y="154" width="282" height="177" rx="4" fill="url(#screenGrad)"/>
+    
+    <!-- POS Software UI Simulation -->
+    <!-- Top Bar -->
+    <rect x="234" y="154" width="282" height="26" fill="#0F172A" opacity="0.7"/>
+    <text x="246" y="171" fill="#F8FAFC" font-family="'Mitr', sans-serif" font-size="10" font-weight="600">CDTI SMART POS v3.4</text>
+    <circle cx="496" cy="167" r="3" fill="#10B981"/>
+    <text x="470" y="171" fill="#10B981" font-family="'Stack Sans Notch', sans-serif" font-size="9">ONLINE</text>
+
+    <!-- Left: Cart Items -->
+    <rect x="242" y="188" width="120" height="135" rx="4" fill="#0F172A" opacity="0.45"/>
+    <text x="250" y="202" fill="#93C5FD" font-family="'Mitr', sans-serif" font-size="9" font-weight="600">รายการสินค้านำเข้า</text>
+    <line x1="246" y1="208" x2="356" y2="208" stroke="#38BDF8" stroke-width="0.5" stroke-opacity="0.4"/>
+    <text x="250" y="222" fill="#E2E8F0" font-family="'Mitr', sans-serif" font-size="8">1. สาย LAN Cat6 5m</text>
+    <text x="250" y="238" fill="#E2E8F0" font-family="'Mitr', sans-serif" font-size="8">2. แฟลชไดรฟ์ 64GB</text>
+    <text x="250" y="254" fill="#E2E8F0" font-family="'Mitr', sans-serif" font-size="8">3. หัวอ่านการ์ด USB-C</text>
+    <rect x="246" y="295" width="112" height="20" rx="3" fill="#10B981"/>
+    <text x="302" y="309" fill="#064E3B" font-family="'Stack Sans Notch', sans-serif" font-weight="700" font-size="11" text-anchor="middle">TOTAL: ฿ 1,250</text>
+
+    <!-- Right: Touch Keypad Grid -->
+    <g fill="#1E293B" stroke="#38BDF8" stroke-width="0.7">
+      <rect x="372" y="188" width="32" height="28" rx="4"/><text x="388" y="206" fill="#F8FAFC" font-family="'Stack Sans Notch', sans-serif" font-size="11" text-anchor="middle">1</text>
+      <rect x="410" y="188" width="32" height="28" rx="4"/><text x="426" y="206" fill="#F8FAFC" font-family="'Stack Sans Notch', sans-serif" font-size="11" text-anchor="middle">2</text>
+      <rect x="448" y="188" width="32" height="28" rx="4"/><text x="464" y="206" fill="#F8FAFC" font-family="'Stack Sans Notch', sans-serif" font-size="11" text-anchor="middle">3</text>
+
+      <rect x="372" y="222" width="32" height="28" rx="4"/><text x="388" y="240" fill="#F8FAFC" font-family="'Stack Sans Notch', sans-serif" font-size="11" text-anchor="middle">4</text>
+      <rect x="410" y="222" width="32" height="28" rx="4"/><text x="426" y="240" fill="#F8FAFC" font-family="'Stack Sans Notch', sans-serif" font-size="11" text-anchor="middle">5</text>
+      <rect x="448" y="222" width="32" height="28" rx="4"/><text x="464" y="240" fill="#F8FAFC" font-family="'Stack Sans Notch', sans-serif" font-size="11" text-anchor="middle">6</text>
+
+      <rect x="372" y="256" width="32" height="28" rx="4"/><text x="388" y="274" fill="#F8FAFC" font-family="'Stack Sans Notch', sans-serif" font-size="11" text-anchor="middle">7</text>
+      <rect x="410" y="256" width="32" height="28" rx="4"/><text x="426" y="274" fill="#F8FAFC" font-family="'Stack Sans Notch', sans-serif" font-size="11" text-anchor="middle">8</text>
+      <rect x="448" y="256" width="32" height="28" rx="4"/><text x="464" y="274" fill="#F8FAFC" font-family="'Stack Sans Notch', sans-serif" font-size="11" text-anchor="middle">9</text>
+
+      <rect x="372" y="290" width="32" height="28" rx="4"/><text x="388" y="308" fill="#F8FAFC" font-family="'Stack Sans Notch', sans-serif" font-size="11" text-anchor="middle">C</text>
+      <rect x="410" y="290" width="32" height="28" rx="4"/><text x="426" y="308" fill="#F8FAFC" font-family="'Stack Sans Notch', sans-serif" font-size="11" text-anchor="middle">0</text>
+      <rect x="448" y="290" width="32" height="28" rx="4" fill="#F59E0B"/><text x="464" y="308" fill="#78350F" font-family="'Stack Sans Notch', sans-serif" font-size="11" font-weight="700" text-anchor="middle">ENTER</text>
+    </g>
+
+    <!-- Built-in Thermal Receipt Printer Slot -->
+    <rect x="130" y="360" width="130" height="75" rx="8" fill="#1E293B" stroke="#475569" stroke-width="1.5"/>
+    <rect x="145" y="372" width="100" height="6" rx="2" fill="#020617"/>
+    <!-- Printed Receipt Paper Ejection -->
+    <path d="M 150 375 L 150 410 L 155 407 L 160 410 L 165 407 L 170 410 L 175 407 L 180 410 L 185 407 L 190 410 L 195 407 L 200 410 L 205 407 L 210 410 L 215 407 L 220 410 L 225 407 L 230 410 L 235 407 L 240 410 L 240 375 Z" fill="#F8FAFC"/>
+    <line x1="160" y1="384" x2="230" y2="384" stroke="#94A3B8" stroke-width="1"/>
+    <line x1="160" y1="392" x2="220" y2="392" stroke="#94A3B8" stroke-width="1"/>
+    <line x1="160" y1="400" x2="230" y2="400" stroke="#94A3B8" stroke-width="1"/>
+  </g>
+
+  <!-- Hardware Feature Callout Pills -->
+  <g font-family="'Mitr', sans-serif" font-size="11">
+    <!-- Callout 1 -->
+    <line x1="170" y1="210" x2="230" y2="210" stroke="#38BDF8" stroke-width="1" stroke-dasharray="3,3"/>
+    <circle cx="168" cy="210" r="3" fill="#38BDF8"/>
+    <rect x="24" y="196" width="136" height="28" rx="6" fill="#0F172A" stroke="#38BDF8" stroke-width="1"/>
+    <text x="92" y="215" fill="#38BDF8" font-weight="600" text-anchor="middle">จอสัมผัส Multi-touch</text>
+
+    <!-- Callout 2 -->
+    <line x1="600" y1="285" x2="560" y2="285" stroke="#10B981" stroke-width="1" stroke-dasharray="3,3"/>
+    <circle cx="602" cy="285" r="3" fill="#10B981"/>
+    <rect x="610" y="271" width="155" height="28" rx="6" fill="#0F172A" stroke="#10B981" stroke-width="1"/>
+    <text x="687" y="290" fill="#34D399" font-weight="600" text-anchor="middle">จอลูกค้า Customer Display</text>
+
+    <!-- Callout 3 -->
+    <line x1="195" y1="435" x2="195" y2="455" stroke="#F59E0B" stroke-width="1" stroke-dasharray="3,3"/>
+    <circle cx="195" cy="433" r="3" fill="#F59E0B"/>
+    <rect x="110" y="455" width="170" height="28" rx="6" fill="#0F172A" stroke="#F59E0B" stroke-width="1"/>
+    <text x="195" y="474" fill="#FBBF24" font-weight="600" text-anchor="middle">เครื่องพิมพ์ใบเสร็จความร้อน</text>
+  </g>
+</svg>

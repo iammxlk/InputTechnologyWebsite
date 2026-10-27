@@ -27,6 +27,9 @@
     }
 
     const target = VALID_VIEWS.includes(viewName) ? viewName : "home";
+    if (activeView !== target && !options.silent) {
+      window.SoundEngine?.playPop();
+    }
     if (target !== "lessons") {
       window.LearningEngine?.stopActiveTimer();
       window.MiniGameEngine?.stopActiveGame();
@@ -210,7 +213,7 @@
             return `
               <button type="button" class="module-unit-link" data-open-unit="${u.no}">
                 <span style="display: inline-flex; align-items: center; gap: 8px; min-width: 0;">
-                  <span class="font-notch" style="font-size: 0.76rem; font-weight: 600; color: var(--blue-600); flex-shrink: 0;">${esc(u.code)}</span>
+                  <span class="font-notch" style="font-size: 0.76rem; font-weight: 600; color: var(--mod${mod.id}-accent); flex-shrink: 0;">${esc(u.code)}</span>
                   <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${esc(u.title)}</span>
                 </span>
                 <span class="status-pill ${pillClass}" style="flex-shrink: 0;">${esc(pillText)}</span>
@@ -225,10 +228,10 @@
             : "60 วินาที • เต็ม 20 คะแนน";
 
         return `
-          <article class="module-overview-card">
+          <article class="module-overview-card module-theme-${mod.id}">
             <div>
               <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
-                <span class="status-pill is-info font-notch">MODULE ${mod.id}  •  ${esc(mod.unitRange)}</span>
+                <span class="status-pill module-pill-badge font-notch">MODULE ${mod.id}  •  ${esc(mod.unitRange)}</span>
                 <span class="font-notch tabular-nums" style="font-size: 0.8rem; font-weight: 600; color: ${
                   passedInMod === modUnits.length ? "var(--status-pass-ink)" : "var(--text-muted)"
                 };">
@@ -248,10 +251,10 @@
               </div>
             </div>
 
-            <div style="padding-top: 12px; border-top: 1px solid #F1F5F9; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; font-size: 0.8rem;">
+            <div style="padding-top: 12px; border-top: 1px solid var(--border-subtle); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; font-size: 0.8rem;">
               <div style="min-width: 0;">
                 <span style="color: var(--text-secondary); display: block;">
-                  <strong class="font-notch" style="color: var(--blue-600);">${esc(mod.miniGameId)}</strong>
+                  <strong class="font-notch" style="color: var(--mod${mod.id}-accent);">${esc(mod.miniGameId)}</strong>
                   ${esc(mod.miniGameTitle)}
                 </span>
                 <span class="font-notch tabular-nums" style="font-size: 0.76rem; color: var(--text-muted);">
@@ -625,7 +628,7 @@
             const rankNo = idx + 1;
             if (!item) {
               return `
-                <div class="podium-cell">
+                <div class="podium-cell is-rank-${rankNo}">
                   <span class="rank-number-chip rank-${rankNo}">${rankNo}</span>
                   <span style="font-size: 0.86rem; color: var(--text-muted);">รอนักเรียนเข้ามาทำสถิติอันดับที่ ${rankNo}</span>
                 </div>
@@ -636,7 +639,7 @@
             const isMe = item.student_id.toLowerCase() === user.student_id.toLowerCase();
 
             return `
-              <div class="podium-cell" style="${isMe ? "background-color: var(--blue-50);" : ""}">
+              <div class="podium-cell is-rank-${rankNo}" style="${isMe ? "background-color: var(--blue-50);" : ""}">
                 <span class="rank-number-chip rank-${rankNo}">${rankNo}</span>
                 <img
                   src="${esc(item.avatar_url || fallback)}"
@@ -840,6 +843,13 @@
       if (progFilterBtn) {
         progressStatusFilter = progFilterBtn.getAttribute("data-progress-filter") || "all";
         renderProgressView();
+        return;
+      }
+
+      const hwTriggerBtn = e.target.closest("[data-hw-mode]");
+      if (hwTriggerBtn) {
+        e.preventDefault();
+        triggerHardwareSignalBus(hwTriggerBtn.getAttribute("data-hw-mode") || "key");
       }
     });
 
@@ -896,12 +906,119 @@
       .getElementById("btn-refresh-leaderboard")
       ?.addEventListener("click", () => renderLeaderboardView(true));
 
-    // Escape key closes open modals
+    // Escape key closes open modals + Number keys [1-4] switch views when outside inputs/games
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         closeCertificateModal();
+        return;
       }
+
+      const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
+      if (tag === "input" || tag === "textarea" || tag === "select" || e.target?.isContentEditable) {
+        return;
+      }
+      if (!window.AuthManager?.isAuthenticated()) return;
+      if (window.MiniGameEngine?.isMiniGameActive()) return;
+      if (document.querySelector(".modal-overlay:not(.hidden)")) return;
+      // Avoid interfering with quiz 1-4 answer keys when quiz is open
+      const lessonWs = document.getElementById("lesson-workspace");
+      if (activeView === "lessons" && lessonWs && !lessonWs.classList.contains("hidden")) {
+        return;
+      }
+
+      if (e.key === "1") switchView("home");
+      else if (e.key === "2") switchView("lessons", { resetToDirectory: true });
+      else if (e.key === "3") switchView("progress");
+      else if (e.key === "4") switchView("leaderboard");
     });
+  }
+
+  const HW_SIGNAL_SAMPLES = {
+    key: [
+      {
+        badge: "USB-HID / 1000Hz",
+        raw: "KEY_PRESS [A] -> MATRIX(ROW_2, COL_1) @ 4.2ms DEBOUNCE",
+        bin: "SCAN_CODE: 0x1E  |  ASCII: 0x41 ('A')  |  BIN: 01000001",
+        out: "แปลงแรงกดสวิตช์กลไกเป็นรหัสไบนารีส่งเข้าหน่วยประมวลผลสำเร็จ (Verified)"
+      },
+      {
+        badge: "NKRO MATRIX / 1ms",
+        raw: "KEY_PRESS [ENTER] -> MATRIX(ROW_3, COL_13) @ 3.8ms DEBOUNCE",
+        bin: "SCAN_CODE: 0x1C  |  ASCII: 0x0D (CR)   |  BIN: 00001101",
+        out: "ขจัดสัญญาณกระดอน (Debounce) และส่งคำสั่งยืนยันเข้าสู่บัสระบบทันที"
+      }
+    ],
+    laser: [
+      {
+        badge: "650nm LASER / EAN-13",
+        raw: "PHOTODIODE_REFLECT: [101 0001101 0100111 ... 101] @ 100 scans/s",
+        bin: "COUNTRY: 885 (TH)  |  ITEM: 099921901  |  CHECK_DIGIT: 7 (MOD10 OK)",
+        out: "ยิงลำแสงเลเซอร์อ่านรหัสแท่ง 1 มิติและตรวจสอบเลข Check Digit ถูกต้อง"
+      },
+      {
+        badge: "2D CMOS IMAGER / QR",
+        raw: "FINDER_LOCK(3/3) -> REED_SOLOMON_ECC(LEVEL_H 30% RECOVERY)",
+        bin: "PAYLOAD: EMVCo_PROMPTPAY_TAG54(150.00_THB)  |  CRC16: 0xA4F2",
+        out: "กู้คืนพิกัดจากมุม Finder ทั้ง 3 จุดและถอดรหัสธุรกรรม Dynamic QR สำเร็จ"
+      }
+    ],
+    rfid: [
+      {
+        badge: "UHF 922.5MHz / EPC Gen2",
+        raw: "BACKSCATTER_MODULATION -> ANTI_COLLISION(Q_SLOT: 16) @ -42 dBm",
+        bin: "EPC_96BIT: E280-1160-6000-0219-0120-17AF  |  TID:Verified",
+        out: "เหนี่ยวนำคลื่นแม่เหล็กไฟฟ้าอ่านป้ายแท็กไร้สายระยะไกลโดยไม่ต้องมองเห็นพิกัด"
+      },
+      {
+        badge: "HF NFC 13.56MHz / ISO14443",
+        raw: "INDUCTIVE_COUPLING -> CRYPTO_CHALLENGE_RESPONSE @ 106 kbps",
+        bin: "UID: 04:A2:9C:81:F0:22:80  |  CIPHER: AES-128-GCM AUTH_OK",
+        out: "แตะบัตรสมาร์ตการ์ดระยะใกล้และตรวจสอบลายมือชื่อดิจิทัลผ่านเกณฑ์"
+      }
+    ],
+    hash: [
+      {
+        badge: "SHA-256 / FIPS 180-4",
+        raw: "INPUT_STREAM: \"CDTI-21901-2017:PASS_SCORE=80%\" (256-bit Merkle)",
+        bin: "DIGEST: 8f434346648f6b96df89dda901c5176b10a6d83961dd3c1ac88b59b2dc327aa4",
+        out: "ตรวจสอบความครบถ้วนของข้อมูล (Data Integrity) ไม่พบการแก้ไขระหว่างทาง"
+      },
+      {
+        badge: "TLS 1.3 / HSM FIPS 140-2",
+        raw: "ECDHE_RSA_WITH_AES_256_GCM_SHA384 -> ZERO_TRUST_TUNNEL",
+        bin: "SESSION_KEY: EPHEMERAL_256  |  LATENCY: 0.4ms  |  TAMPER: NONE",
+        out: "เข้ารหัสข้อมูลขาเข้าผ่านโมดูลความปลอดภัยฮาร์ดแวร์ (HSM) สมบูรณ์ 100%"
+      }
+    ]
+  };
+
+  let hwSampleCounter = 0;
+
+  function triggerHardwareSignalBus(mode) {
+    const list = HW_SIGNAL_SAMPLES[mode] || HW_SIGNAL_SAMPLES.key;
+    hwSampleCounter = (hwSampleCounter + 1) % list.length;
+    const sample = list[hwSampleCounter];
+
+    document.querySelectorAll("#hero-hardware-bus [data-hw-mode]").forEach((btn) => {
+      btn.classList.toggle("is-active", btn.getAttribute("data-hw-mode") === mode);
+    });
+
+    const badgeEl = document.getElementById("hw-bus-protocol-badge");
+    const rawEl = document.getElementById("hw-bus-raw");
+    const binEl = document.getElementById("hw-bus-binary");
+    const outEl = document.getElementById("hw-bus-output");
+    const screenEl = document.querySelector("#hero-hardware-bus .hw-bus-screen");
+
+    if (badgeEl) badgeEl.textContent = sample.badge;
+    if (rawEl) rawEl.textContent = sample.raw;
+    if (binEl) binEl.textContent = sample.bin;
+    if (outEl) outEl.textContent = sample.out;
+
+    if (screenEl) {
+      screenEl.classList.remove("is-pulsing");
+      void screenEl.offsetWidth;
+      screenEl.classList.add("is-pulsing");
+    }
   }
 
   async function bootstrap() {

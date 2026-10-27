@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg03" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0f1d"/>
+      <stop offset="50%" stop-color="#141c2f"/>
+      <stop offset="100%" stop-color="#070a14"/>
+    </linearGradient>
+    <linearGradient id="kbBody" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2a3346"/>
+      <stop offset="100%" stop-color="#182030"/>
+    </linearGradient>
+    <linearGradient id="keycap" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3d4963"/>
+      <stop offset="100%" stop-color="#232d3f"/>
+    </linearGradient>
+    <linearGradient id="keycapAccent" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ff6b4a"/>
+      <stop offset="100%" stop-color="#d63b15"/>
+    </linearGradient>
+    <linearGradient id="mouseBody" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2b3446"/>
+      <stop offset="50%" stop-color="#1e2535"/>
+      <stop offset="100%" stop-color="#111622"/>
+    </linearGradient>
+    <linearGradient id="switchStem" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e02424"/>
+      <stop offset="100%" stop-color="#991b1b"/>
+    </linearGradient>
+    <filter id="shadow03" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#bg03)"/>
+  <circle cx="260" cy="250" r="220" fill="#3b82f6" opacity="0.05" filter="blur(40px)"/>
+  <circle cx="620" cy="250" r="180" fill="#ff6b4a" opacity="0.05" filter="blur(40px)"/>
+
+  <!-- Left: Mechanical Keyboard Switch & 75% Layout -->
+  <g filter="url(#shadow03)">
+    <!-- Keyboard Base -->
+    <rect x="50" y="140" width="400" height="230" rx="14" fill="url(#kbBody)" stroke="#475569" stroke-width="2"/>
+    <!-- Brushed top plate -->
+    <rect x="62" y="152" width="376" height="206" rx="8" fill="#131b2a" stroke="#334155" stroke-width="1.5"/>
+
+    <!-- Key matrix preview rows -->
+    <!-- Function row -->
+    <g fill="url(#keycap)" stroke="#1e293b" stroke-width="1" rx="3">
+      <rect x="72" y="162" width="22" height="18" rx="3"/><rect x="98" y="162" width="22" height="18" rx="3"/>
+      <rect x="124" y="162" width="22" height="18" rx="3"/><rect x="150" y="162" width="22" height="18" rx="3"/>
+      <rect x="180" y="162" width="22" height="18" rx="3"/><rect x="206" y="162" width="22" height="18" rx="3"/>
+      <rect x="232" y="162" width="22" height="18" rx="3"/><rect x="258" y="162" width="22" height="18" rx="3"/>
+      <rect x="288" y="162" width="22" height="18" rx="3"/><rect x="314" y="162" width="22" height="18" rx="3"/>
+      <rect x="340" y="162" width="22" height="18" rx="3"/><rect x="366" y="162" width="22" height="18" rx="3"/>
+      <rect x="400" y="162" width="28" height="18" rx="3" fill="url(#keycapAccent)"/>
+    </g>
+    <!-- Numbers Row -->
+    <g fill="url(#keycap)" stroke="#1e293b" stroke-width="1">
+      <rect x="72" y="186" width="24" height="22" rx="3"/><rect x="100" y="186" width="22" height="22" rx="3"/>
+      <rect x="126" y="186" width="22" height="22" rx="3"/><rect x="152" y="186" width="22" height="22" rx="3"/>
+      <rect x="178" y="186" width="22" height="22" rx="3"/><rect x="204" y="186" width="22" height="22" rx="3"/>
+      <rect x="230" y="186" width="22" height="22" rx="3"/><rect x="256" y="186" width="22" height="22" rx="3"/>
+      <rect x="282" y="186" width="22" height="22" rx="3"/><rect x="308" y="186" width="22" height="22" rx="3"/>
+      <rect x="334" y="186" width="22" height="22" rx="3"/><rect x="360" y="186" width="30" height="22" rx="3"/>
+      <rect x="396" y="186" width="32" height="22" rx="3"/>
+    </g>
+    <!-- QWERTY Row -->
+    <g fill="url(#keycap)" stroke="#1e293b" stroke-width="1">
+      <rect x="72" y="214" width="32" height="22" rx="3"/><rect x="108" y="214" width="22" height="22" rx="3"/>
+      <rect x="134" y="214" width="22" height="22" rx="3"/><rect x="160" y="214" width="22" height="22" rx="3"/>
+      <rect x="186" y="214" width="22" height="22" rx="3"/><rect x="212" y="214" width="22" height="22" rx="3"/>
+      <rect x="238" y="214" width="22" height="22" rx="3"/><rect x="264" y="214" width="22" height="22" rx="3"/>
+      <rect x="290" y="214" width="22" height="22" rx="3"/><rect x="316" y="214" width="22" height="22" rx="3"/>
+      <rect x="342" y="214" width="22" height="22" rx="3"/><rect x="368" y="214" width="24" height="22" rx="3"/>
+      <rect x="396" y="214" width="32" height="22" rx="3"/>
+    </g>
+    <!-- ASDF Row -->
+    <g fill="url(#keycap)" stroke="#1e293b" stroke-width="1">
+      <rect x="72" y="242" width="38" height="22" rx="3"/><rect x="114" y="242" width="22" height="22" rx="3"/>
+      <rect x="140" y="242" width="22" height="22" rx="3"/><rect x="166" y="242" width="22" height="22" rx="3"/>
+      <rect x="192" y="242" width="22" height="22" rx="3"/><rect x="218" y="242" width="22" height="22" rx="3"/>
+      <rect x="244" y="242" width="22" height="22" rx="3"/><rect x="270" y="242" width="22" height="22" rx="3"/>
+      <rect x="296" y="242" width="22" height="22" rx="3"/><rect x="322" y="242" width="22" height="22" rx="3"/>
+      <rect x="348" y="242" width="44" height="22" rx="3" fill="url(#keycapAccent)"/>
+      <rect x="396" y="242" width="32" height="22" rx="3"/>
+    </g>
+    <!-- ZXCV Row -->
+    <g fill="url(#keycap)" stroke="#1e293b" stroke-width="1">
+      <rect x="72" y="270" width="46" height="22" rx="3"/><rect x="122" y="270" width="22" height="22" rx="3"/>
+      <rect x="148" y="270" width="22" height="22" rx="3"/><rect x="174" y="270" width="22" height="22" rx="3"/>
+      <rect x="200" y="270" width="22" height="22" rx="3"/><rect x="226" y="270" width="22" height="22" rx="3"/>
+      <rect x="252" y="270" width="22" height="22" rx="3"/><rect x="278" y="270" width="22" height="22" rx="3"/>
+      <rect x="304" y="270" width="22" height="22" rx="3"/><rect x="330" y="270" width="36" height="22" rx="3"/>
+      <rect x="372" y="270" width="24" height="22" rx="3"/><rect x="400" y="270" width="28" height="22" rx="3"/>
+    </g>
+    <!-- Spacebar bottom row -->
+    <g fill="url(#keycap)" stroke="#1e293b" stroke-width="1">
+      <rect x="72" y="298" width="34" height="24" rx="3"/><rect x="110" y="298" width="28" height="24" rx="3"/>
+      <rect x="142" y="298" width="30" height="24" rx="3"/>
+      <!-- Spacebar -->
+      <rect x="176" y="298" width="144" height="24" rx="3" fill="#475569" stroke="#64748b"/>
+      <rect x="324" y="298" width="30" height="24" rx="3"/>
+      <!-- Arrow Cluster -->
+      <rect x="360" y="298" width="22" height="24" rx="3"/><rect x="386" y="298" width="22" height="24" rx="3"/><rect x="412" y="298" width="22" height="24" rx="3"/>
+    </g>
+    <!-- Rotary Volume Knob -->
+    <circle cx="414" cy="140" r="14" fill="#0f172a" stroke="#cbd5e1" stroke-width="2"/>
+    <circle cx="414" cy="140" r="10" fill="#334155"/>
+    <line x1="414" y1="130" x2="414" y2="137" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
+
+    <!-- Exploded MX Mechanical Switch Callout -->
+    <g transform="translate(60, 48)">
+      <rect width="180" height="74" rx="8" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5" opacity="0.95"/>
+      <text x="12" y="20" fill="#38bdf8" font-family="monospace" font-size="11" font-weight="bold">MECHANICAL RED SWITCH</text>
+      <text x="12" y="38" fill="#94a3b8" font-family="sans-serif" font-size="10">Actuation: 45cN Linear</text>
+      <text x="12" y="52" fill="#94a3b8" font-family="sans-serif" font-size="10">Travel: 2.0mm Pre / 4.0mm Total</text>
+      <text x="12" y="66" fill="#34d399" font-family="sans-serif" font-size="9" font-weight="bold">Gold Crosspoint Contacts</text>
+
+      <!-- Mini switch icon -->
+      <rect x="144" y="18" width="24" height="20" rx="3" fill="url(#switchStem)"/>
+      <rect x="152" y="10" width="8" height="12" fill="#ef4444"/>
+      <path d="M 142 38 L 170 38 L 166 48 L 146 48 Z" fill="#334155"/>
+      <line x1="150" y1="48" x2="150" y2="56" stroke="#fbbf24" stroke-width="2"/>
+      <line x1="162" y1="48" x2="162" y2="56" stroke="#fbbf24" stroke-width="2"/>
+    </g>
+  </g>
+
+  <!-- Right: Precision Ergonomic Optical Mouse -->
+  <g filter="url(#shadow03)" transform="translate(520, 110)">
+    <!-- Mouse Body Silhouette -->
+    <path d="M 90 20 C 130 20 170 50 175 140 C 180 230 160 300 90 300 C 20 300 0 230 5 140 C 10 50 50 20 90 20 Z" 
+          fill="url(#mouseBody)" stroke="#475569" stroke-width="2.5"/>
+
+    <!-- Left & Right Click Separation -->
+    <path d="M 90 20 L 90 120" stroke="#0f172a" stroke-width="3"/>
+    <path d="M 50 120 C 80 135 100 135 130 120" stroke="#0f172a" stroke-width="2" fill="none"/>
+
+    <!-- Scroll Wheel (Metal texture with rubber grip) -->
+    <rect x="82" y="45" width="16" height="42" rx="8" fill="#0f172a" stroke="#64748b" stroke-width="1.5"/>
+    <line x1="84" y1="55" x2="96" y2="55" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="84" y1="65" x2="96" y2="65" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="84" y1="75" x2="96" y2="75" stroke="#94a3b8" stroke-width="1.5"/>
+
+    <!-- DPI Switcher Button -->
+    <rect x="85" y="98" width="10" height="14" rx="3" fill="#38bdf8"/>
+
+    <!-- Ergonomic Thumb Rest with Texture Grid -->
+    <path d="M 10 150 C -15 180 -15 220 5 250" stroke="#0f172a" stroke-width="3" fill="none"/>
+    <circle cx="0" cy="185" r="2" fill="#64748b"/>
+    <circle cx="0" cy="200" r="2" fill="#64748b"/>
+    <circle cx="0" cy="215" r="2" fill="#64748b"/>
+    <!-- Thumb buttons -->
+    <rect x="-6" y="160" width="10" height="20" rx="3" fill="#334155" stroke="#475569"/>
+    <rect x="-6" y="185" width="10" height="20" rx="3" fill="#334155" stroke="#475569"/>
+
+    <!-- Palm Glow RGB Accent -->
+    <path d="M 60 250 C 75 260 105 260 120 250" stroke="#ff6b4a" stroke-width="3" stroke-linecap="round" filter="drop-shadow(0 0 6px #ff6b4a)"/>
+
+    <!-- Optical Sensor Callout Overlay -->
+    <g transform="translate(-10, 230)">
+      <rect width="200" height="70" rx="8" fill="#0f172a" stroke="#fbbf24" stroke-width="1.5" opacity="0.95"/>
+      <text x="12" y="20" fill="#fbbf24" font-family="monospace" font-size="11" font-weight="bold">HIGH-PRECISION SENSOR</text>
+      <text x="12" y="38" fill="#94a3b8" font-family="sans-serif" font-size="10">Sensor: PixArt PAW3395 Optical</text>
+      <text x="12" y="52" fill="#94a3b8" font-family="sans-serif" font-size="10">Resolution: 26,000 DPI / 650 IPS</text>
+      <text x="12" y="66" fill="#38bdf8" font-family="sans-serif" font-size="9" font-weight="bold">Polling Rate: 1000Hz (1ms Latency)</text>
+    </g>
+  </g>
+
+  <!-- Title Badge -->
+  <rect x="250" y="24" width="300" height="36" rx="8" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+  <text x="400" y="47" fill="#f8fafc" font-family="sans-serif" font-size="13" font-weight="bold" text-anchor="middle">
+    UNIT 03: KEYBOARD SWITCH &amp; OPTICAL MOUSE
+  </text>
+</svg>

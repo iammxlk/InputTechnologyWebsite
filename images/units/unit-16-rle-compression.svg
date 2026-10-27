@@ -1,92 +1,155 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="100%" height="100%">
   <defs>
-    <linearGradient id="bgGrad16" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#EBF3FC"/>
-      <stop offset="100%" stop-color="#D0E3F9"/>
+    <linearGradient id="bgGrad16" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B132B"/>
+      <stop offset="50%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#080E1E"/>
     </linearGradient>
-    <filter id="shadow16" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#0F2B5C" flood-opacity="0.18"/>
-    </filter>
-    <filter id="glow16">
-      <feGaussianBlur stdDeviation="6" result="blur"/>
-      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    <linearGradient id="headerGrad16" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0284C7"/>
+      <stop offset="100%" stop-color="#10B981"/>
+    </linearGradient>
+    <filter id="shadow16" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.55"/>
     </filter>
   </defs>
 
+  <style>
+    .mono { font-family: 'Stack Sans Notch', 'Segoe UI Mono', monospace; font-variant-numeric: tabular-nums; }
+    .thai { font-family: 'Mitr', 'Segoe UI', system-ui, sans-serif; }
+  </style>
+
+  <!-- Background -->
   <rect width="1280" height="720" fill="url(#bgGrad16)"/>
 
-  <g transform="translate(640, 420)" filter="url(#shadow16)">
-    <!-- Isometric Floating Base Platform -->
-    <path d="M 0 100 L 420 -110 L 420 -60 L 0 150 L -420 -60 L -420 -110 Z" fill="#64748B"/>
-    <path d="M 0 150 L 420 -60 L 420 -20 L 0 190 L -420 -20 L -420 -60 Z" fill="#475569"/>
-    <path d="M 0 -220 L 420 -10 L 0 200 L -420 -10 Z" fill="#F8FAFC"/>
-    <path d="M 0 -220 L -420 -10 L 0 200 Z" fill="#E2E8F0"/>
+  <!-- Top Title Badge -->
+  <g transform="translate(64, 40)">
+    <rect width="470" height="34" rx="6" fill="#1E293B" stroke="#334155"/>
+    <circle cx="18" cy="17" r="5" fill="#38BDF8"/>
+    <text x="32" y="22" fill="#38BDF8" font-size="13" font-weight="700" class="mono">LOSSLESS RUN-LENGTH ENCODING (RLE) PIPELINE</text>
+    <text x="0" y="66" fill="#F8FAFC" font-size="22" font-weight="600" class="thai">หลักการบีบอัดข้อมูลแบบไม่สูญเสียรายละเอียด (Run-Length Encoding &amp; Compression)</text>
+  </g>
 
-    <!-- Left Side: Uncompressed Data Sequence (Long row of 6 identical cyan voxel blocks) -->
-    <g transform="translate(-260, -40)">
-      <polygon points="-80,-40 60,30 60,50 -80,-20" fill="#334155"/>
-      <!-- Block 1 -->
-      <g transform="translate(-50, -25)">
-        <polygon points="0,-16 20,-6 0,4 -20,-6" fill="#7DD3FC"/>
-        <polygon points="0,4 20,-6 20,14 0,24" fill="#0284C7"/>
-        <polygon points="0,4 -20,-6 -20,14 0,24" fill="#0369A1"/>
+  <!-- ==================== STAGE 1: RAW UNCOMPRESSED DATA STREAM ==================== -->
+  <g transform="translate(64, 140)" filter="url(#shadow16)">
+    <rect width="1152" height="150" rx="12" fill="#141C2E" stroke="#334155" stroke-width="1.5"/>
+    <path d="M 0 12 Q 0 0 12 0 L 1140 0 Q 1152 0 1152 12 L 1152 42 L 0 42 Z" fill="#1E293B"/>
+    <text x="20" y="26" fill="#94A3B8" font-size="14" font-weight="700" class="mono">1. ORIGINAL UNCOMPRESSED STREAM: 24 BYTES (RAW BITMAP / MONOCHROME SCAN)</text>
+    <rect x="990" y="10" width="144" height="22" rx="4" fill="#334155"/>
+    <text x="1004" y="25" fill="#CBD5E1" font-size="11" font-weight="700" class="mono">FILE SIZE: 24 BYTES</text>
+
+    <!-- 24 Sequential Data Blocks (Repetitive Runs) -->
+    <g transform="translate(20, 58)" class="mono" font-size="13" font-weight="800">
+      <!-- Run 1: 8 White Blocks -->
+      <g transform="translate(0, 0)">
+        <rect x="0" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="20" y="26" fill="#0F172A" text-anchor="middle">W</text>
+        <rect x="44" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="64" y="26" fill="#0F172A" text-anchor="middle">W</text>
+        <rect x="88" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="108" y="26" fill="#0F172A" text-anchor="middle">W</text>
+        <rect x="132" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="152" y="26" fill="#0F172A" text-anchor="middle">W</text>
+        <rect x="176" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="196" y="26" fill="#0F172A" text-anchor="middle">W</text>
+        <rect x="220" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="240" y="26" fill="#0F172A" text-anchor="middle">W</text>
+        <rect x="264" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="284" y="26" fill="#0F172A" text-anchor="middle">W</text>
+        <rect x="308" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="328" y="26" fill="#0F172A" text-anchor="middle">W</text>
+        <!-- Bracket -->
+        <path d="M 0 50 L 174 60 L 348 50" stroke="#38BDF8" stroke-width="1.8" fill="none"/>
+        <text x="174" y="76" fill="#38BDF8" font-size="11" text-anchor="middle">8 Consecutive 'W' (White)</text>
       </g>
-      <!-- Block 2 -->
-      <g transform="translate(-20, -10)">
-        <polygon points="0,-16 20,-6 0,4 -20,-6" fill="#7DD3FC"/>
-        <polygon points="0,4 20,-6 20,14 0,24" fill="#0284C7"/>
-        <polygon points="0,4 -20,-6 -20,14 0,24" fill="#0369A1"/>
+
+      <!-- Run 2: 12 Black Blocks -->
+      <g transform="translate(366, 0)">
+        <rect x="0" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="20" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
+        <rect x="44" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="64" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
+        <rect x="88" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="108" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
+        <rect x="132" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="152" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
+        <rect x="176" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="196" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
+        <rect x="220" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="240" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
+        <rect x="264" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="284" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
+        <rect x="308" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="328" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
+        <rect x="352" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="372" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
+        <rect x="396" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="416" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
+        <rect x="440" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="460" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
+        <rect x="484" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="504" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
+        <path d="M 0 50 L 262 60 L 524 50" stroke="#0284C7" stroke-width="1.8" fill="none"/>
+        <text x="262" y="76" fill="#38BDF8" font-size="11" text-anchor="middle">12 Consecutive 'B' (Black)</text>
       </g>
-      <!-- Block 3 -->
-      <g transform="translate(10, 5)">
-        <polygon points="0,-16 20,-6 0,4 -20,-6" fill="#7DD3FC"/>
-        <polygon points="0,4 20,-6 20,14 0,24" fill="#0284C7"/>
-        <polygon points="0,4 -20,-6 -20,14 0,24" fill="#0369A1"/>
-      </g>
-      <!-- Block 4 -->
-      <g transform="translate(40, 20)">
-        <polygon points="0,-16 20,-6 0,4 -20,-6" fill="#7DD3FC"/>
-        <polygon points="0,4 20,-6 20,14 0,24" fill="#0284C7"/>
-        <polygon points="0,4 -20,-6 -20,14 0,24" fill="#0369A1"/>
+
+      <!-- Run 3: 4 White Blocks -->
+      <g transform="translate(908, 0)">
+        <rect x="0" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="20" y="26" fill="#0F172A" text-anchor="middle">W</text>
+        <rect x="44" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="64" y="26" fill="#0F172A" text-anchor="middle">W</text>
+        <rect x="88" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="108" y="26" fill="#0F172A" text-anchor="middle">W</text>
+        <rect x="132" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="152" y="26" fill="#0F172A" text-anchor="middle">W</text>
+        <path d="M 0 50 L 86 60 L 172 50" stroke="#38BDF8" stroke-width="1.8" fill="none"/>
+        <text x="86" y="76" fill="#38BDF8" font-size="11" text-anchor="middle">4 'W' (White)</text>
       </g>
     </g>
+  </g>
 
-    <!-- Center: Mechanical Voxel Piston Compressor (Compressing Data Stream) -->
-    <g transform="translate(0, -90)">
-      <!-- Top Piston Mount -->
-      <polygon points="0,-70 50,-95 100,-70 50,-45" fill="#1E293B"/>
-      <polygon points="0,-70 -50,-95 -100,-70 -50,-45" fill="#0F172A"/>
+  <!-- Central Compression Arrow -->
+  <g transform="translate(640, 316)">
+    <circle cx="0" cy="0" r="18" fill="#1E293B" stroke="#10B981" stroke-width="2"/>
+    <path d="M -6 -8 L 0 0 L -6 8 M 2 -8 L 8 0 L 2 8" stroke="#10B981" stroke-width="2.2" fill="none" transform="rotate(90)"/>
+  </g>
 
-      <!-- Piston Arm Shaft -->
-      <polygon points="-15,-50 15,-50 15,10 -15,10" fill="#94A3B8"/>
+  <!-- ==================== STAGE 2: RLE COMPRESSED BITSTREAM ==================== -->
+  <g transform="translate(64, 350)" filter="url(#shadow16)">
+    <rect width="1152" height="170" rx="12" fill="#141C2E" stroke="#10B981" stroke-width="1.5"/>
+    <path d="M 0 12 Q 0 0 12 0 L 1140 0 Q 1152 0 1152 12 L 1152 42 L 0 42 Z" fill="url(#headerGrad16)"/>
+    <text x="20" y="26" fill="#FFFFFF" font-size="14" font-weight="700" class="mono">2. RLE COMPRESSED STREAM: 6 BYTES (RUN-LENGTH PAIRS: [COUNT, SYMBOL])</text>
+    <rect x="990" y="10" width="144" height="22" rx="4" fill="#065F46"/>
+    <text x="1006" y="25" fill="#A7F3D0" font-size="11" font-weight="800" class="mono">FILE SIZE: 6 BYTES</text>
 
-      <!-- Piston Wooden/Iron Head (Pressing Downwards) -->
-      <polygon points="0,-5 50,-30 0,-55 -50,-30" fill="#D97706"/>
-      <polygon points="0,-5 50,-30 50,-15 0,10" fill="#B45309"/>
-      <polygon points="0,-5 -50,-30 -50,-15 0,10" fill="#92400E"/>
+    <!-- 3 Encoded Pairs -->
+    <g transform="translate(20, 60)" class="mono" font-size="14">
+      <!-- Pair 1 -->
+      <g transform="translate(0, 0)">
+        <rect width="320" height="84" rx="8" fill="#0B1329" stroke="#38BDF8" stroke-width="1.5"/>
+        <text x="18" y="30" fill="#94A3B8" font-size="11">PAIR 1: (COUNT: 8, CHAR: 'W')</text>
+        <rect x="18" y="40" width="50" height="32" rx="4" fill="#0284C7"/><text x="43" y="62" fill="#FFFFFF" font-weight="800" text-anchor="middle">8</text>
+        <rect x="74" y="40" width="50" height="32" rx="4" fill="#F8FAFC"/><text x="99" y="62" fill="#0F172A" font-weight="800" text-anchor="middle">W</text>
+        <text x="140" y="61" fill="#38BDF8" font-size="16" font-weight="700">➔ "8W" (2 Bytes)</text>
+      </g>
 
-      <!-- Compression Energy Aura -->
-      <g filter="url(#glow16)">
-        <ellipse cx="0" cy="20" rx="45" ry="15" fill="#00E5FF" opacity="0.6"/>
-        <line x1="-35" y1="20" x2="35" y2="20" stroke="#FFFFFF" stroke-width="3" stroke-dasharray="4 4"/>
+      <!-- Pair 2 -->
+      <g transform="translate(366, 0)">
+        <rect width="320" height="84" rx="8" fill="#0B1329" stroke="#0284C7" stroke-width="1.5"/>
+        <text x="18" y="30" fill="#94A3B8" font-size="11">PAIR 2: (COUNT: 12, CHAR: 'B')</text>
+        <rect x="18" y="40" width="50" height="32" rx="4" fill="#0284C7"/><text x="43" y="62" fill="#FFFFFF" font-weight="800" text-anchor="middle">12</text>
+        <rect x="74" y="40" width="50" height="32" rx="4" fill="#1E293B" stroke="#38BDF8"/><text x="99" y="62" fill="#FFFFFF" font-weight="800" text-anchor="middle">B</text>
+        <text x="140" y="61" fill="#38BDF8" font-size="16" font-weight="700">➔ "12B" (2 Bytes)</text>
+      </g>
+
+      <!-- Pair 3 -->
+      <g transform="translate(732, 0)">
+        <rect width="320" height="84" rx="8" fill="#0B1329" stroke="#38BDF8" stroke-width="1.5"/>
+        <text x="18" y="30" fill="#94A3B8" font-size="11">PAIR 3: (COUNT: 4, CHAR: 'W')</text>
+        <rect x="18" y="40" width="50" height="32" rx="4" fill="#0284C7"/><text x="43" y="62" fill="#FFFFFF" font-weight="800" text-anchor="middle">4</text>
+        <rect x="74" y="40" width="50" height="32" rx="4" fill="#F8FAFC"/><text x="99" y="62" fill="#0F172A" font-weight="800" text-anchor="middle">W</text>
+        <text x="140" y="61" fill="#38BDF8" font-size="16" font-weight="700">➔ "4W" (2 Bytes)</text>
       </g>
     </g>
+  </g>
 
-    <!-- Right Side: Compressed Compact Package (Single High-Density Voxel Crate with Golden Run-Length Token) -->
-    <g transform="translate(240, -40)">
-      <polygon points="-60,-30 80,40 80,60 -60,-10" fill="#334155"/>
+  <!-- ==================== STAGE 3: EFFICIENCY & LOSSLESS PROOF PANEL ==================== -->
+  <g transform="translate(64, 540)" filter="url(#shadow16)">
+    <rect width="1152" height="140" rx="12" fill="#0A0F1D" stroke="#334155" stroke-width="1.5"/>
 
-      <!-- Ultra-Compact High Density Compressed Block -->
-      <g transform="translate(10, 5)" filter="url(#glow16)">
-        <polygon points="0,-26 34,-10 0,7 -34,-10" fill="#38BDF8"/>
-        <polygon points="0,7 34,-10 34,24 0,41" fill="#0284C7"/>
-        <polygon points="0,7 -34,-10 -34,24 0,41" fill="#0C4A6E"/>
+    <g transform="translate(30, 24)">
+      <!-- Efficiency Ratio -->
+      <g transform="translate(0, 0)">
+        <text x="0" y="24" fill="#94A3B8" font-size="12" class="mono">COMPRESSION RATIO (พื้นที่ประหยัดได้):</text>
+        <text x="0" y="66" fill="#10B981" font-size="38" font-weight="800" class="mono">75.0% SAVINGS</text>
+        <text x="0" y="88" fill="#E2E8F0" class="thai" font-size="12">ลดขนาดจาก 24 ไบต์ เหลือเพียง 6 ไบต์ ประหยัดแบนด์วิธในการส่งข้อมูล 4 เท่า</text>
+      </g>
 
-        <!-- Golden Run-Length Multiplier Token atop the compressed block -->
-        <g transform="translate(0, -32)">
-          <circle cx="0" cy="0" r="14" fill="#FACC15"/>
-          <circle cx="0" cy="0" r="10" fill="#FEF08A"/>
-        </g>
+      <!-- Lossless Proof -->
+      <g transform="translate(560, 0)">
+        <rect width="520" height="92" rx="8" fill="#042F2E" stroke="#10B981" stroke-width="1.2"/>
+        <circle cx="28" cy="46" r="14" fill="#10B981"/>
+        <path d="M 22 46 L 26 50 L 34 42" stroke="#FFFFFF" stroke-width="2.5" fill="none"/>
+        <text x="54" y="34" fill="#34D399" font-size="13" font-weight="700" class="mono">100% BIT-EXACT LOSSLESS RECONSTRUCTION</text>
+        <text x="54" y="56" fill="#E2E8F0" class="thai" font-size="12">เมื่อ Decompress คลายข้อมูลกลับ จะได้ 24 ไบต์เดิมตรงกันทุกบิต 100%</text>
+        <text x="54" y="74" fill="#94A3B8" class="thai" font-size="11">เหมาะสำหรับเอกสารข้อความ ภาพบาร์โค้ด และรหัสโปรแกรมที่ห้ามสูญเสียข้อมูล</text>
       </g>
     </g>
   </g>

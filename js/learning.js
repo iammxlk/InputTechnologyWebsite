@@ -22,9 +22,11 @@
   let currentStepIdx = 0;
   let maxStepReachedInSession = 1;
 
-  // Quiz state
+  // Quiz & Countdown state
   let quizState = null;
   let quizTimerId = null;
+  let countdownTimerId = null;
+  let countdownSecondsLeft = 5;
 
   /* ==========================================================================
      1. HELPERS & TIMER MANAGEMENT
@@ -44,7 +46,16 @@
     );
   }
 
+  function stopCountdownTimer() {
+    if (countdownTimerId) {
+      clearInterval(countdownTimerId);
+      countdownTimerId = null;
+    }
+  }
+
   function stopQuizTimer() {
+    stopCountdownTimer();
+    setQuizFocusMode(false);
     if (quizTimerId) {
       clearInterval(quizTimerId);
       quizTimerId = null;
@@ -82,8 +93,20 @@
     timerEl.textContent = window.AppUtils.formatDuration(getQuizElapsedSeconds());
   }
 
+  function setQuizFocusMode(active) {
+    if (active) {
+      document.body.classList.add("is-quiz-active");
+      window.scrollTo({ top: 0, behavior: "auto" });
+    } else {
+      document.body.classList.remove("is-quiz-active");
+    }
+  }
+
   function toggleLessonsContainers(isDirectory) {
     window.MiniGameEngine?.stopActiveGame();
+    if (isDirectory) {
+      setQuizFocusMode(false);
+    }
     const dirShell = document.getElementById("lessons-directory-shell");
     const workspace = document.getElementById("lesson-workspace");
     if (dirShell) dirShell.classList.toggle("hidden", !isDirectory);
@@ -97,6 +120,30 @@
   async function syncStepProgress(unitNo, stepsCompleted, isContentRead) {
     const user = window.AuthManager?.getCurrentUser();
     if (!user) return;
+
+    // Immediately update in-memory AuthManager unitProgressMap so UI checks are instantaneous
+    const unitMap = window.AuthManager.getUnitProgressMap();
+    if (unitMap) {
+      if (!unitMap[unitNo]) {
+        unitMap[unitNo] = {
+          unit_no: unitNo,
+          steps_completed: stepsCompleted,
+          is_content_read: Boolean(isContentRead),
+          best_quiz_score: 0,
+          best_quiz_time_sec: 0,
+          is_passed: false,
+          attempts_count: 0
+        };
+      } else {
+        unitMap[unitNo].steps_completed = Math.max(
+          Number(unitMap[unitNo].steps_completed || 0),
+          stepsCompleted
+        );
+        if (isContentRead) {
+          unitMap[unitNo].is_content_read = true;
+        }
+      }
+    }
 
     try {
       const res = await window.BackendAPI.saveStepProgress({
@@ -149,12 +196,13 @@
     const currentMod = CFG.MODULES_SYLLABUS.find((m) => m.id === currentUnit.moduleId);
     const currentProg = unitMap[currentUnit.no] || {};
     const isPassed = Boolean(currentProg.is_passed);
+    const isContentRead = Boolean(currentProg.is_content_read || isPassed);
     const isAvailable = hasUnitCurriculum(currentUnit.no);
     const unitData = getUnitCurriculum(currentUnit.no);
     const totalSteps = unitData ? unitData.steps.length : 5;
     const stepsDone = Math.min(
       totalSteps,
-      currentProg.is_content_read ? totalSteps : Number(currentProg.steps_completed || 0)
+      isContentRead ? totalSteps : Number(currentProg.steps_completed || 0)
     );
 
     // 1. Selected Unit Banner
@@ -167,13 +215,15 @@
               <span class="unit-number-badge ${isPassed ? "is-done" : ""}">${esc(currentUnit.code)}</span>
               <span class="status-pill is-neutral">${esc(currentMod ? currentMod.title : "")}</span>
               <span class="status-pill ${
-                isPassed ? "is-pass" : isAvailable ? "is-info" : "is-warn"
+                isPassed ? "is-pass" : isContentRead ? "is-info" : isAvailable ? "is-info" : "is-warn"
               }">
                 ${
                   isPassed
                     ? `สอบผ่านแล้ว (${currentProg.best_quiz_score}/10)`
+                    : isContentRead
+                    ? `อ่านครบ ${totalSteps} สเต็ปแล้ว • พร้อมทำควิซ`
                     : isAvailable
-                    ? `เนื้อหา ${totalSteps} สเต็ป • ควิซ 10 ข้อ`
+                    ? `เนื้อหา ${totalSteps} สเต็ป (อ่านให้ครบก่อนทำควิซ)`
                     : "รออัปเดตเนื้อหา"
                 }
               </span>
@@ -191,15 +241,21 @@
             ${
               isAvailable
                 ? `
-                  <button type="button" class="btn-secondary" data-start-unit-quiz="${currentUnit.no}">
-                    ทำแบบทดสอบ (10 ข้อ)
-                  </button>
+                  ${
+                    isContentRead
+                      ? `
+                        <button type="button" class="btn-secondary" data-start-unit-quiz="${currentUnit.no}">
+                          ทำแบบทดสอบ (10 ข้อ)
+                        </button>
+                      `
+                      : ""
+                  }
                   <button type="button" class="btn-primary" data-enter-unit="${currentUnit.no}">
                     ${
-                      stepsDone > 0 && !currentProg.is_content_read
-                        ? `เรียนต่อสเต็ปที่ ${Math.min(totalSteps, stepsDone + 1)}`
-                        : isPassed
+                      isPassed || isContentRead
                         ? "ทบทวนเนื้อหาบทเรียน"
+                        : stepsDone > 0
+                        ? `เรียนต่อสเต็ปที่ ${Math.min(totalSteps, stepsDone + 1)}`
                         : "เริ่มเรียนเนื้อหาทีละสเต็ป"
                     }
                   </button>
@@ -228,13 +284,14 @@
         .map((u) => {
           const prog = unitMap[u.no] || {};
           const passed = Boolean(prog.is_passed);
+          const isContentRead = Boolean(prog.is_content_read || passed);
           const attempts = Number(prog.attempts_count || 0);
           const available = hasUnitCurriculum(u.no);
           const uData = getUnitCurriculum(u.no);
           const uTotalSteps = uData ? uData.steps.length : 5;
           const uStepsDone = Math.min(
             uTotalSteps,
-            prog.is_content_read ? uTotalSteps : Number(prog.steps_completed || 0)
+            isContentRead ? uTotalSteps : Number(prog.steps_completed || 0)
           );
           const isSelected = u.no === activeUnitNo;
 
@@ -246,15 +303,16 @@
           } else if (attempts > 0) {
             statusClass = "is-warn";
             statusLabel = `สูงสุด ${prog.best_quiz_score}/10`;
+          } else if (isContentRead) {
+            statusClass = "is-info";
+            statusLabel = "อ่านครบแล้ว • พร้อมทำควิซ";
           } else if (uStepsDone > 0) {
             statusClass = "is-info";
-            statusLabel = prog.is_content_read
-              ? "อ่านครบแล้ว • รอทำควิซ"
-              : `อ่านแล้ว ${uStepsDone}/${uTotalSteps} สเต็ป`;
+            statusLabel = `อ่านแล้ว ${uStepsDone}/${uTotalSteps} สเต็ป`;
           }
 
           const unitCardHtml = `
-            <article class="module-overview-card ${isSelected ? "is-selected-unit" : ""}">
+            <article class="module-overview-card module-theme-${u.moduleId} ${isSelected ? "is-selected-unit" : ""}">
               <div>
                 <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
                   <span class="unit-number-badge ${passed ? "is-done" : ""}">${esc(u.code)}</span>
@@ -269,7 +327,7 @@
                 </p>
               </div>
 
-              <div style="padding-top: 12px; border-top: 1px solid #F1F5F9; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+              <div style="padding-top: 12px; border-top: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
                 <span class="font-notch tabular-nums" style="font-size: 0.8rem; color: var(--text-muted);">
                   ${
                     attempts > 0 && prog.best_quiz_time_sec > 0
@@ -284,21 +342,33 @@
                   ${
                     available
                       ? `
-                        <button
-                          type="button"
-                          class="btn-secondary"
-                          style="min-height: 36px; padding: 6px 12px; font-size: 0.8rem;"
-                          data-start-unit-quiz="${u.no}"
-                        >
-                          ทำควิซ
-                        </button>
+                        ${
+                          isContentRead
+                            ? `
+                              <button
+                                type="button"
+                                class="btn-secondary"
+                                style="min-height: 36px; padding: 6px 12px; font-size: 0.8rem;"
+                                data-start-unit-quiz="${u.no}"
+                              >
+                                ทำควิซ
+                              </button>
+                            `
+                            : ""
+                        }
                         <button
                           type="button"
                           class="btn-primary"
                           style="min-height: 36px; padding: 6px 14px; font-size: 0.82rem;"
                           data-enter-unit="${u.no}"
                         >
-                          ${passed ? "ทบทวน" : "เข้าเรียน"}
+                          ${
+                            passed || isContentRead
+                              ? "ทบทวน"
+                              : uStepsDone > 0
+                              ? "เรียนต่อ"
+                              : "เข้าเรียน"
+                          }
                         </button>
                       `
                       : `
@@ -384,16 +454,25 @@
     const unitMap = window.AuthManager?.getUnitProgressMap() || {};
     const prog = unitMap[targetNo] || {};
     const totalSteps = unitData.steps.length;
+    const isContentRead = Boolean(prog.is_content_read || prog.is_passed);
 
     if (startSubMode === "quiz") {
-      startUnitQuiz(targetNo);
-      return;
+      if (!isContentRead) {
+        window.AppUtils?.showToast(
+          `กรุณาเรียนเนื้อหาหน่วยที่ ${targetNo} ให้ครบทุกสเต็ปก่อนทำแบบทดสอบ`,
+          "warn"
+        );
+        startSubMode = "reader";
+      } else {
+        startUnitQuiz(targetNo);
+        return;
+      }
     }
 
     currentMode = "reader";
 
     // Resume at next unread step if partially read, otherwise start cleanly at step 0
-    if (prog.steps_completed > 0 && !prog.is_content_read && prog.steps_completed < totalSteps) {
+    if (prog.steps_completed > 0 && !isContentRead && prog.steps_completed < totalSteps) {
       currentStepIdx = Math.max(0, Math.min(totalSteps - 1, Number(prog.steps_completed)));
     } else {
       currentStepIdx = 0;
@@ -401,13 +480,13 @@
 
     maxStepReachedInSession = Math.max(
       currentStepIdx + 1,
-      prog.is_content_read ? totalSteps : Number(prog.steps_completed || 1)
+      isContentRead ? totalSteps : Number(prog.steps_completed || 1)
     );
 
     toggleLessonsContainers(false);
     renderReaderWorkspace();
 
-    const reachedAll = maxStepReachedInSession >= totalSteps;
+    const reachedAll = maxStepReachedInSession >= totalSteps || isContentRead;
     syncStepProgress(targetNo, maxStepReachedInSession, reachedAll);
   }
 
@@ -415,14 +494,28 @@
     const unitData = getUnitCurriculum(activeUnitNo);
     if (!unitData) return;
 
+    const unitMap = window.AuthManager?.getUnitProgressMap() || {};
+    const prog = unitMap[activeUnitNo] || {};
+    const isContentRead = Boolean(prog.is_content_read || prog.is_passed);
+
     const prevIdx = currentStepIdx;
     const totalSteps = unitData.steps.length;
     const bounded = Math.max(0, Math.min(totalSteps - 1, Number(stepIdx) || 0));
+
+    // If content not read yet, prevent skipping ahead past highest reached step
+    if (!isContentRead && bounded > maxStepReachedInSession) {
+      window.AppUtils?.showToast("กรุณาเรียนเนื้อหาตามลำดับทีละสเต็ป", "info");
+      return;
+    }
+
+    if (bounded !== prevIdx) {
+      window.SoundEngine?.playPop();
+    }
     const direction = bounded < prevIdx ? "prev" : "next";
     currentStepIdx = bounded;
     maxStepReachedInSession = Math.max(maxStepReachedInSession, currentStepIdx + 1);
 
-    const isAllRead = maxStepReachedInSession >= totalSteps;
+    const isAllRead = maxStepReachedInSession >= totalSteps || isContentRead;
     renderReaderWorkspace();
     const readerCard = document.querySelector("#lesson-workspace .lesson-reader-card");
     window.MotionEngine?.animateStepSlide(readerCard, direction);
@@ -561,6 +654,7 @@
     const unitMap = window.AuthManager?.getUnitProgressMap() || {};
     const prog = unitMap[activeUnitNo] || {};
     const isPassed = Boolean(prog.is_passed);
+    const isContentRead = Boolean(prog.is_content_read || isPassed);
     const totalSteps = unitData ? unitData.steps.length : 5;
 
     return `
@@ -574,11 +668,13 @@
               <span>หน้ารวมบทเรียน</span>
             </button>
             <span class="unit-number-badge ${isPassed ? "is-done" : ""}">${esc(meta.code)}</span>
-            <span class="status-pill ${isPassed ? "is-pass" : "is-info"}">
+            <span class="status-pill ${isPassed ? "is-pass" : isContentRead ? "is-info" : "is-warn"}">
               ${
                 isPassed
                   ? `ผ่านเกณฑ์แล้ว (${prog.best_quiz_score}/10)`
-                  : "เกณฑ์ผ่าน 8 / 10 (80%)"
+                  : isContentRead
+                  ? "อ่านเนื้อหาครบแล้ว • พร้อมทำควิซ"
+                  : "อ่านให้ครบทุกสเต็ปก่อนทำควิซ"
               }
             </span>
           </div>
@@ -591,13 +687,19 @@
             >
               เนื้อหาบทเรียน (${totalSteps} สเต็ป)
             </button>
-            <button
-              type="button"
-              class="filter-pill-btn ${activeTab !== "reader" ? "is-active" : ""}"
-              id="tab-switch-quiz"
-            >
-              แบบทดสอบท้ายหน่วย (10 ข้อ)
-            </button>
+            ${
+              isContentRead
+                ? `
+                  <button
+                    type="button"
+                    class="filter-pill-btn ${activeTab !== "reader" ? "is-active" : ""}"
+                    id="tab-switch-quiz"
+                  >
+                    แบบทดสอบท้ายหน่วย (10 ข้อ)
+                  </button>
+                `
+                : ""
+            }
           </div>
         </div>
 
@@ -626,21 +728,28 @@
     const stepPercent = Math.round(((currentStepIdx + 1) / totalSteps) * 100);
     const isFirstStep = currentStepIdx === 0;
     const isLastStep = currentStepIdx === totalSteps - 1;
+    const unitMap = window.AuthManager?.getUnitProgressMap() || {};
+    const prog = unitMap[activeUnitNo] || {};
+    const isContentRead = Boolean(prog.is_content_read || prog.is_passed);
 
     const stepPillsHtml = unitData.steps
       .map((s, idx) => {
         const isCurrent = idx === currentStepIdx;
-        const isVisited = idx + 1 <= maxStepReachedInSession;
+        const isVisited = idx + 1 <= maxStepReachedInSession || isContentRead;
+        const isLocked = !isContentRead && idx > maxStepReachedInSession;
         const stateCls = isCurrent
           ? "is-current"
           : isVisited
           ? "is-visited"
+          : isLocked
+          ? "is-locked"
           : "";
         return `
           <button
             type="button"
             class="step-rail-btn ${stateCls}"
             data-goto-step="${idx}"
+            ${isLocked ? "disabled title=\"กรุณาเรียนเนื้อหาตามลำดับทีละสเต็ป\"" : ""}
           >
             <span class="font-notch tabular-nums">สเต็ปที่ ${idx + 1}</span>
           </button>
@@ -720,7 +829,7 @@
               `
               : `
                 <button type="button" class="btn-primary" id="btn-finish-steps-start-quiz">
-                  <span>เริ่มทำแบบทดสอบท้ายหน่วย (10 ข้อ)</span>
+                  <span>เรียนครบเนื้อหาแล้ว • เริ่มทำแบบทดสอบ (10 ข้อ)</span>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="9 18 15 12 9 6"></polyline>
                   </svg>
@@ -733,7 +842,7 @@
   }
 
   /* ==========================================================================
-     5. 10-QUESTION TIMED INSTANT-GRADING QUIZ MODE
+     5. 10-QUESTION TIMED INSTANT-GRADING QUIZ MODE (WITH 5-SEC COUNTDOWN)
      ========================================================================== */
 
   function startUnitQuiz(unitNo) {
@@ -742,9 +851,30 @@
 
     activeUnitNo = targetNo;
     const unitData = getUnitCurriculum(targetNo);
+    const unitMap = window.AuthManager?.getUnitProgressMap() || {};
+    const prog = unitMap[targetNo] || {};
+    const totalSteps = unitData ? unitData.steps.length : 5;
+
+    // Check if user has completed content:
+    const isCompleted = Boolean(
+      prog.is_content_read ||
+      prog.is_passed ||
+      (targetNo === activeUnitNo && maxStepReachedInSession >= totalSteps)
+    );
+
+    if (!isCompleted) {
+      window.AppUtils?.showToast(
+        `กรุณาเรียนเนื้อหาหน่วยที่ ${targetNo} ให้ครบทุกสเต็ปก่อนทำแบบทดสอบ`,
+        "warn"
+      );
+      openUnit(targetNo, "reader");
+      return;
+    }
+
     stopQuizTimer();
 
-    currentMode = "quiz";
+    currentMode = "quiz-countdown";
+    countdownSecondsLeft = 5;
     quizState = {
       unitNo: targetNo,
       questions: unitData.quiz.slice(0, CFG.QUESTIONS_PER_UNIT),
@@ -760,10 +890,123 @@
     };
 
     toggleLessonsContainers(false);
-    renderQuizWorkspace();
-    startQuizTimer();
+    renderQuizCountdownWorkspace();
+    startCountdownSequence();
 
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function startCountdownSequence() {
+    stopCountdownTimer();
+    countdownSecondsLeft = 5;
+    updateCountdownDom(5);
+    window.SoundEngine?.playCountdownTick(5);
+
+    countdownTimerId = setInterval(() => {
+      countdownSecondsLeft -= 1;
+      if (countdownSecondsLeft > 0) {
+        updateCountdownDom(countdownSecondsLeft);
+        window.SoundEngine?.playCountdownTick(countdownSecondsLeft);
+      } else {
+        stopCountdownTimer();
+        showCountdownGoAndLaunch();
+      }
+    }, 1000);
+  }
+
+  function updateCountdownDom(secondsLeft) {
+    const numEl = document.getElementById("quiz-countdown-num");
+    const hintEl = document.getElementById("quiz-countdown-hint");
+    if (numEl) {
+      numEl.textContent = String(secondsLeft);
+      numEl.classList.remove("animate-pop");
+      void numEl.offsetWidth; // Reflow for restart animation
+      numEl.classList.add("animate-pop");
+    }
+    if (hintEl) {
+      hintEl.textContent = `แบบทดสอบจะเริ่มในอีก ${secondsLeft} วินาที...`;
+    }
+  }
+
+  function showCountdownGoAndLaunch() {
+    const ringEl = document.getElementById("quiz-countdown-ring");
+    const numEl = document.getElementById("quiz-countdown-num");
+    const hintEl = document.getElementById("quiz-countdown-hint");
+
+    if (ringEl) ringEl.classList.add("is-go");
+    if (numEl) {
+      numEl.textContent = "GO!";
+      numEl.classList.add("is-go");
+      numEl.classList.remove("animate-pop");
+      void numEl.offsetWidth;
+      numEl.classList.add("animate-pop");
+    }
+    if (hintEl) {
+      hintEl.textContent = "ลุยเลย! เริ่มทำแบบทดสอบ";
+    }
+
+    window.SoundEngine?.playCountdownGo();
+
+    setTimeout(() => {
+      if (currentMode !== "quiz-countdown") return;
+      currentMode = "quiz";
+      renderQuizWorkspace();
+      startQuizTimer();
+    }, 450);
+  }
+
+  function renderQuizCountdownWorkspace() {
+    const workspace = document.getElementById("lesson-workspace");
+    if (!workspace || !quizState) return;
+
+    const esc = window.AppUtils.escapeHtml;
+    const meta = getUnitMeta(quizState.unitNo);
+
+    workspace.innerHTML = `
+      ${renderWorkspaceTopBar("quiz")}
+
+      <div class="surface-card quiz-countdown-card">
+        <div class="quiz-countdown-badge-row">
+          <span class="status-pill is-info font-notch">SPEEDRUN CHALLENGE • 10 QUESTIONS</span>
+          <span class="status-pill is-pass font-notch">เกณฑ์ผ่าน 8 / 10 (80%)</span>
+          <span class="status-pill is-neutral font-notch">จับเวลาความเร็วชิงอันดับ LEADERBOARD</span>
+        </div>
+
+        <div class="quiz-countdown-meta">
+          <span class="unit-number-badge font-notch">${esc(meta.code)}</span>
+          <h2 class="quiz-countdown-title">เตรียมพร้อมทำแบบทดสอบ: หน่วยที่ ${meta.no}</h2>
+          <p class="quiz-countdown-subtitle">${esc(meta.title)} — ${esc(meta.subtitle)}</p>
+        </div>
+
+        <div class="quiz-countdown-display-wrap">
+          <div class="quiz-countdown-ring" id="quiz-countdown-ring">
+            <span class="quiz-countdown-number font-notch animate-pop" id="quiz-countdown-num">5</span>
+          </div>
+          <span class="quiz-countdown-hint font-notch" id="quiz-countdown-hint">แบบทดสอบจะเริ่มในอีก 5 วินาที...</span>
+        </div>
+
+        <div class="quiz-countdown-tips">
+          <div class="quiz-countdown-tip-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span><strong>เวลาเริ่มนับหลังครบ 5 วิ:</strong> เวลาทำข้อสอบจะไม่ถูกหักระหว่างนับถอยหลัง</span>
+          </div>
+          <div class="quiz-countdown-tip-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            <span><strong>ตรวจผลทันที:</strong> รู้คะแนนข้อต่อข้อ พร้อมคำอธิบายและแนวคิดทางเทคนิค</span>
+          </div>
+        </div>
+
+        <div class="quiz-countdown-actions">
+          <button type="button" class="btn-primary" id="btn-skip-countdown">
+            <span>เริ่มทำทันที (Skip)</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          </button>
+          <button type="button" class="btn-secondary" id="btn-cancel-countdown">
+            <span>ย้อนกลับหน้ารวม</span>
+          </button>
+        </div>
+      </div>
+    `;
   }
 
   function handleSelectQuizChoice(choiceIdx) {
@@ -794,7 +1037,10 @@
     };
 
     renderQuizWorkspace();
-    if (!isCorrect) {
+    if (isCorrect) {
+      window.SoundEngine?.playSuccess();
+    } else {
+      window.SoundEngine?.playError();
       const qCard = document.querySelector("#lesson-workspace .quiz-question-card");
       window.MotionEngine?.shakeElement(qCard);
     }
@@ -896,88 +1142,94 @@
       `;
     }
 
+    setQuizFocusMode(true);
     workspace.innerHTML = `
-      ${renderWorkspaceTopBar("quiz")}
+      <div class="quiz-cockpit-shell">
+        <!-- Compact HUD Bar -->
+        <div class="surface-card quiz-cockpit-hud">
+          <div class="quiz-cockpit-hud-top">
+            <div class="quiz-cockpit-hud-left">
+              <button type="button" class="btn-secondary quiz-back-btn" id="btn-abort-quiz" title="ออกจากการทำข้อสอบ">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+                <span>ออก</span>
+              </button>
+              <span class="unit-number-badge font-notch">UNIT ${quizState.unitNo}</span>
+              <span class="quiz-hud-tag font-notch">ข้อที่ ${qIdx + 1}/${totalQ}</span>
+            </div>
 
-      <!-- Quiz Live HUD Bar -->
-      <div class="surface-card quiz-hud-card">
-        <div class="quiz-hud-metrics">
-          <div>
-            <span class="quiz-hud-label">ข้อปัจจุบัน</span>
-            <strong class="font-notch tabular-nums quiz-hud-value">
-              ${qIdx + 1} / ${totalQ}
-            </strong>
+            <div class="quiz-cockpit-hud-center">
+              <div class="quiz-hud-timer-badge font-notch tabular-nums">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="13" r="8"></circle>
+                  <path d="M12 9v4l2.5 2.5"></path>
+                  <path d="M9 2h6"></path>
+                </svg>
+                <span id="quiz-live-timer">${elapsedFormatted}</span>
+              </div>
+            </div>
+
+            <div class="quiz-cockpit-hud-right">
+              <span class="quiz-hud-score-badge font-notch">
+                คะแนน: <strong>${quizState.score}/${totalQ}</strong>
+              </span>
+            </div>
           </div>
 
-          <div>
-            <span class="quiz-hud-label">คะแนนสะสมรอบนี้</span>
-            <strong class="font-notch tabular-nums quiz-hud-value" style="color: var(--blue-600);">
-              ${quizState.score} / ${totalQ}
-            </strong>
-          </div>
-
-          <div>
-            <span class="quiz-hud-label">เวลาที่ใช้ทำแบบทดสอบ</span>
-            <strong class="font-notch tabular-nums quiz-hud-value" style="display: inline-flex; align-items: center; gap: 6px;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="13" r="8"></circle>
-                <path d="M12 9v4l2.5 2.5"></path>
-                <path d="M9 2h6"></path>
-              </svg>
-              <span id="quiz-live-timer">${elapsedFormatted}</span>
-            </strong>
+          <!-- 10 Slim Progress Dots -->
+          <div class="quiz-dots-row quiz-cockpit-dots">
+            ${dotsHtml}
           </div>
         </div>
 
-        <div class="quiz-dots-row" style="margin-top: 14px;">
-          ${dotsHtml}
-        </div>
-      </div>
+        <!-- Question & Options Cockpit Card -->
+        <article class="surface-card quiz-cockpit-card">
+          <div class="quiz-cockpit-q-header">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+              <span class="font-notch quiz-q-chip">QUESTION ${qIdx + 1} OF ${totalQ} • เกณฑ์ผ่าน 8/10</span>
+              <span class="status-pill is-info font-notch" style="font-size: 0.7rem; padding: 2px 8px;">ตรวจคำตอบทันที</span>
+            </div>
+            <h2 class="quiz-cockpit-question-title">
+              ข้อที่ ${qIdx + 1}. ${esc(qObj.q)}
+            </h2>
+          </div>
 
-      <!-- Active Question Card -->
-      <article class="surface-card quiz-question-card">
-        <div>
-          <span class="font-notch" style="font-size: 0.78rem; font-weight: 700; color: var(--blue-600);">
-            QUESTION ${qIdx + 1} OF ${totalQ}  •  ตรวจคำตอบทันที
-          </span>
-          <h2 class="quiz-question-title">
-            ข้อที่ ${qIdx + 1}. ${esc(qObj.q)}
-          </h2>
-        </div>
+          <!-- 2x2 Options on Desktop/Tablet, 4 Compact Rows on Mobile -->
+          <div class="quiz-cockpit-options-grid">
+            ${choicesHtml}
+          </div>
 
-        <div class="quiz-options-stack">
-          ${choicesHtml}
-        </div>
+          ${feedbackHtml ? `<div class="quiz-cockpit-feedback-wrap">${feedbackHtml}</div>` : ""}
 
-        ${feedbackHtml}
+          <div class="quiz-cockpit-footer">
+            <span class="quiz-hint-text">
+              ${
+                hasAnswered
+                  ? "ตรวจคำอธิบายแล้ว กดปุ่มเพื่อไปข้อถัดไป"
+                  : "คลิกตัวเลือกที่ถูกต้องที่สุดเพียงข้อเดียว (เกณฑ์ผ่าน 8/10 คะแนน)"
+              }
+            </span>
 
-        <div class="quiz-card-footer">
-          <span style="font-size: 0.82rem; color: var(--text-muted);">
             ${
               hasAnswered
-                ? "ตรวจสอบคำอธิบายเรียบร้อยแล้ว กดปุ่มด้านขวาเพื่อไปต่อ"
-                : "คลิกเลือกคำตอบที่ถูกต้องที่สุดเพียงข้อเดียว (เกณฑ์ผ่าน 8/10 คะแนน)"
+                ? `
+                  <button type="button" class="btn-primary" id="btn-quiz-next-question">
+                    <span>${
+                      qIdx < totalQ - 1
+                        ? `ข้อถัดไป (${qIdx + 2}/${totalQ})`
+                        : "ตรวจผลสอบและบันทึกคะแนน"
+                    }</span>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </button>
+                `
+                : ""
             }
-          </span>
-
-          ${
-            hasAnswered
-              ? `
-                <button type="button" class="btn-primary" id="btn-quiz-next-question">
-                  <span>${
-                    qIdx < totalQ - 1
-                      ? `ข้อถัดไป (ข้อที่ ${qIdx + 2}/${totalQ})`
-                      : "บันทึกผลคะแนนและดูสรุปผล"
-                  }</span>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                  </svg>
-                </button>
-              `
-              : ""
-          }
-        </div>
-      </article>
+          </div>
+        </article>
+      </div>
     `;
   }
 
@@ -1022,6 +1274,7 @@
       const passed = quizState.score >= CFG.PASS_SCORE_PER_UNIT;
       if (passed) {
         window.MotionEngine?.burstCelebration();
+        window.SoundEngine?.playSuccess();
       }
       window.AppUtils.showToast(
         passed
@@ -1312,9 +1565,36 @@
         return;
       }
 
-      if (e.target.closest("#tab-switch-quiz") || e.target.closest("#btn-finish-steps-start-quiz")) {
+      if (e.target.closest("#btn-finish-steps-start-quiz")) {
+        e.preventDefault();
+        const unitData = getUnitCurriculum(activeUnitNo);
+        const totalSteps = unitData ? unitData.steps.length : 5;
+        syncStepProgress(activeUnitNo, totalSteps, true);
+        startUnitQuiz(activeUnitNo);
+        return;
+      }
+
+      if (e.target.closest("#tab-switch-quiz")) {
         e.preventDefault();
         startUnitQuiz(activeUnitNo);
+        return;
+      }
+
+      // Quiz Countdown Controls (Skip to start or Cancel back)
+      if (e.target.closest("#btn-skip-countdown")) {
+        e.preventDefault();
+        stopCountdownTimer();
+        window.SoundEngine?.playCountdownGo();
+        currentMode = "quiz";
+        renderQuizWorkspace();
+        startQuizTimer();
+        return;
+      }
+
+      if (e.target.closest("#btn-cancel-countdown")) {
+        e.preventDefault();
+        stopCountdownTimer();
+        openDirectory({ unitNo: activeUnitNo });
         return;
       }
 
@@ -1336,6 +1616,15 @@
       if (e.target.closest("#btn-next-step")) {
         e.preventDefault();
         goToStep(currentStepIdx + 1);
+        return;
+      }
+
+      // Abort Quiz Back to Reader / Directory
+      if (e.target.closest("#btn-abort-quiz")) {
+        e.preventDefault();
+        stopQuizTimer();
+        setQuizFocusMode(false);
+        openUnit(activeUnitNo, "reader");
         return;
       }
 
@@ -1380,6 +1669,9 @@
       if (currentMode === "reader") {
         toggleLessonsContainers(false);
         renderReaderWorkspace();
+      } else if (currentMode === "quiz-countdown") {
+        toggleLessonsContainers(false);
+        renderQuizCountdownWorkspace();
       } else if (currentMode === "quiz") {
         toggleLessonsContainers(false);
         renderQuizWorkspace();

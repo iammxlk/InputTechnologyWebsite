@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B132B"/>
+      <stop offset="100%" stop-color="#1C2541"/>
+    </linearGradient>
+    <linearGradient id="chassisGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+  <rect width="800" height="500" rx="16" fill="url(#bgGrad)"/>
+  <g stroke="#334155" stroke-width="0.5" stroke-opacity="0.25">
+    <line x1="0" y1="100" x2="800" y2="100"/><line x1="0" y1="200" x2="800" y2="200"/>
+    <line x1="0" y1="300" x2="800" y2="300"/><line x1="0" y1="400" x2="800" y2="400"/>
+    <line x1="200" y1="0" x2="200" y2="500"/><line x1="400" y1="0" x2="400" y2="500"/>
+    <line x1="600" y1="0" x2="600" y2="500"/>
+  </g>
+  <rect x="36" y="28" width="310" height="32" rx="6" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/>
+  <circle cx="52" cy="44" r="5" fill="#38BDF8"/>
+  <text x="68" y="49" fill="#38BDF8" font-family="'Stack Sans Notch', sans-serif" font-weight="700" font-size="12" letter-spacing="1">UNIT 12 HARDWARE SPECIMEN</text>
+  <text x="36" y="86" fill="#F8FAFC" font-family="'Mitr', sans-serif" font-weight="600" font-size="18">FBI PIV Certified Optical Fingerprint & 3D Face Recognition Terminal</text>
+  <text x="36" y="108" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="12">เครื่องสแกนลายนิ้วมือความแม่นยำสูงสกัดจุด Minutiae พร้อมกล้องอินฟราเรด 3D Face Mesh Mapping</text>
+  
+  <g filter="url(#shadow)" transform="translate(100, 160)">
+    <rect x="0" y="50" width="220" height="190" rx="16" fill="#1E293B" stroke="#475569" stroke-width="2"/>
+    <ellipse cx="110" cy="130" rx="50" ry="60" fill="#020617" stroke="#38BDF8" stroke-width="3"/>
+    <ellipse cx="110" cy="130" rx="42" ry="52" fill="#0284C7" opacity="0.45"/>
+    
+    <g stroke="#38BDF8" stroke-width="1.5" fill="none">
+      <path d="M 85 110 Q 110 80, 135 110"/>
+      <path d="M 80 125 Q 110 95, 140 125"/>
+      <path d="M 78 140 Q 110 110, 142 140"/>
+      <path d="M 82 155 Q 110 130, 138 155"/>
+      <path d="M 90 170 Q 110 150, 130 170"/>
+    </g>
+    <g fill="#EF4444">
+      <circle cx="100" cy="102" r="3"/><circle cx="120" cy="102" r="3"/>
+      <circle cx="92" cy="122" r="3"/><circle cx="128" cy="122" r="3"/>
+      <circle cx="110" cy="135" r="3"/>
+    </g>
+
+    <rect x="30" y="210" width="160" height="24" rx="4" fill="#0F172A" stroke="#10B981" stroke-width="1"/>
+    <text x="110" y="226" fill="#34D399" font-family="'Stack Sans Notch', sans-serif" font-size="9" font-weight="700" text-anchor="middle">FBI PIV / FIPS 201 CERTIFIED</text>
+  </g>
+
+  <g filter="url(#shadow)" transform="translate(420, 130)">
+    <rect x="0" y="0" width="260" height="310" rx="18" fill="#1E293B" stroke="#64748B" stroke-width="2"/>
+    <rect x="15" y="15" width="230" height="280" rx="12" fill="#0F172A"/>
+
+    <g transform="translate(45, 30)">
+      <circle cx="20" cy="15" r="10" fill="#020617" stroke="#94A3B8" stroke-width="1.5"/><circle cx="20" cy="15" r="4" fill="#EF4444"/>
+      <circle cx="85" cy="15" r="12" fill="#020617" stroke="#38BDF8" stroke-width="2"/><circle cx="85" cy="15" r="5" fill="#38BDF8"/>
+      <circle cx="150" cy="15" r="10" fill="#020617" stroke="#94A3B8" stroke-width="1.5"/><circle cx="150" cy="15" r="4" fill="#EF4444"/>
+      <text x="85" y="40" fill="#94A3B8" font-family="'Stack Sans Notch', sans-serif" font-size="8" text-anchor="middle">DUAL IR DEPTH + RGB</text>
+    </g>
+
+    <rect x="30" y="90" width="200" height="150" rx="6" fill="#020617" stroke="#38BDF8" stroke-width="1"/>
+    <g stroke="#10B981" stroke-width="0.8" opacity="0.8" fill="none">
+      <ellipse cx="130" cy="160" rx="40" ry="50"/>
+      <circle cx="115" cy="150" r="6"/><circle cx="145" cy="150" r="6"/>
+      <path d="M 130 145 L 126 165 L 134 165 Z"/>
+      <path d="M 120 180 Q 130 190, 140 180"/>
+      <line x1="90" y1="160" x2="115" y2="150"/><line x1="170" y1="160" x2="145" y2="150"/>
+      <line x1="115" y1="150" x2="130" y2="145"/><line x1="145" y1="150" x2="130" y2="145"/>
+      <line x1="126" y1="165" x2="120" y2="180"/><line x1="134" y1="165" x2="140" y2="180"/>
+    </g>
+    <text x="130" y="225" fill="#10B981" font-family="'Stack Sans Notch', sans-serif" font-size="10" font-weight="700" text-anchor="middle">VERIFIED • 99.98% MATCH</text>
+
+    <rect x="75" y="260" width="110" height="22" rx="4" fill="#1E293B" stroke="#38BDF8" stroke-width="1"/>
+    <text x="130" y="275" fill="#38BDF8" font-family="'Stack Sans Notch', sans-serif" font-size="9" text-anchor="middle">NFC / RFID EMBEDDED</text>
+  </g>
+
+</svg>

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B132B"/>
+      <stop offset="100%" stop-color="#1C2541"/>
+    </linearGradient>
+    <linearGradient id="chassisGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+  <rect width="800" height="500" rx="16" fill="url(#bgGrad)"/>
+  <g stroke="#334155" stroke-width="0.5" stroke-opacity="0.25">
+    <line x1="0" y1="100" x2="800" y2="100"/><line x1="0" y1="200" x2="800" y2="200"/>
+    <line x1="0" y1="300" x2="800" y2="300"/><line x1="0" y1="400" x2="800" y2="400"/>
+    <line x1="200" y1="0" x2="200" y2="500"/><line x1="400" y1="0" x2="400" y2="500"/>
+    <line x1="600" y1="0" x2="600" y2="500"/>
+  </g>
+  <rect x="36" y="28" width="310" height="32" rx="6" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/>
+  <circle cx="52" cy="44" r="5" fill="#38BDF8"/>
+  <text x="68" y="49" fill="#38BDF8" font-family="'Stack Sans Notch', sans-serif" font-weight="700" font-size="12" letter-spacing="1">UNIT 9 HARDWARE SPECIMEN</text>
+  <text x="36" y="86" fill="#F8FAFC" font-family="'Mitr', sans-serif" font-weight="600" font-size="18">Hardware Security Key FIDO2 & Banking PIN Pad Terminal</text>
+  <text x="36" y="108" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="12">กุญแจฮาร์ดแวร์ยืนยันตัวตน FIDO2 / WebAuthn ไร้รหัสผ่าน พร้อมเครื่องรูดสมาร์ตการ์ด PIN Pad เข้ารหัส</text>
+  
+  <g filter="url(#shadow)" transform="translate(100, 160)">
+    <rect x="40" y="40" width="80" height="210" rx="14" fill="#0F172A" stroke="#475569" stroke-width="2.5"/>
+    <circle cx="80" cy="70" r="14" fill="#0B132B" stroke="#64748B" stroke-width="2"/>
+    <circle cx="80" cy="140" r="22" fill="#F59E0B" stroke="#FBBF24" stroke-width="2.5"/>
+    <circle cx="80" cy="140" r="14" fill="#0F172A"/>
+    <path d="M 75 140 L 85 140 M 80 135 L 80 145" stroke="#FBBF24" stroke-width="2"/>
+    <rect x="62" y="225" width="36" height="30" rx="4" fill="#D97706" stroke="#FBBF24" stroke-width="1.5"/>
+    <line x1="70" y1="230" x2="70" y2="250" stroke="#FEF3C7" stroke-width="2"/>
+    <line x1="76" y1="230" x2="76" y2="250" stroke="#FEF3C7" stroke-width="2"/>
+    <line x1="84" y1="230" x2="84" y2="250" stroke="#FEF3C7" stroke-width="2"/>
+    <line x1="90" y1="230" x2="90" y2="250" stroke="#FEF3C7" stroke-width="2"/>
+    <text x="80" y="195" fill="#38BDF8" font-family="'Stack Sans Notch', sans-serif" font-size="11" font-weight="700" text-anchor="middle">FIDO2 / U2F</text>
+  </g>
+
+  <g filter="url(#shadow)" transform="translate(380, 150)">
+    <rect x="0" y="0" width="280" height="260" rx="14" fill="#1E293B" stroke="#475569" stroke-width="2"/>
+    <path d="M 20 20 L 260 20 L 240 70 L 40 70 Z" fill="#0F172A"/>
+    <rect x="60" y="235" width="160" height="8" rx="2" fill="#020617"/>
+    <rect x="75" y="240" width="130" height="50" rx="4" fill="#0284C7" stroke="#38BDF8" stroke-width="1.5"/>
+    <rect x="95" y="250" width="26" height="20" rx="2" fill="#F59E0B"/>
+    
+    <rect x="40" y="85" width="200" height="40" rx="4" fill="#020617" stroke="#38BDF8" stroke-width="1"/>
+    <text x="140" y="110" fill="#38BDF8" font-family="'Stack Sans Notch', sans-serif" font-size="14" text-anchor="middle">ENTER PIN: ****</text>
+
+    <g fill="#334155" stroke="#64748B" stroke-width="1" font-family="'Stack Sans Notch', sans-serif" font-size="12" font-weight="700">
+      <rect x="55" y="140" width="45" height="24" rx="3"/><text x="77" y="156" fill="#F8FAFC" text-anchor="middle">1</text>
+      <rect x="115" y="140" width="45" height="24" rx="3"/><text x="137" y="156" fill="#F8FAFC" text-anchor="middle">2</text>
+      <rect x="175" y="140" width="45" height="24" rx="3"/><text x="197" y="156" fill="#F8FAFC" text-anchor="middle">3</text>
+      <rect x="55" y="170" width="45" height="24" rx="3"/><text x="77" y="186" fill="#F8FAFC" text-anchor="middle">4</text>
+      <rect x="115" y="170" width="45" height="24" rx="3"/><text x="137" y="186" fill="#F8FAFC" text-anchor="middle">5</text>
+      <rect x="175" y="170" width="45" height="24" rx="3"/><text x="197" y="186" fill="#F8FAFC" text-anchor="middle">6</text>
+      <rect x="55" y="200" width="45" height="24" rx="3" fill="#EF4444"/><text x="77" y="216" fill="#FFF" text-anchor="middle">X</text>
+      <rect x="115" y="200" width="45" height="24" rx="3"/><text x="137" y="216" fill="#F8FAFC" text-anchor="middle">0</text>
+      <rect x="175" y="200" width="45" height="24" rx="3" fill="#10B981"/><text x="197" y="216" fill="#FFF" text-anchor="middle">OK</text>
+    </g>
+  </g>
+
+</svg>

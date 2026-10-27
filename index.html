@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>21901-2017 เทคโนโลยีการนำเข้าข้อมูลสู่ระบบคอมพิวเตอร์ | สถาบันเทคโนโลยีจิตรลดา</title>
 
   <!-- Google Fonts: Stack Sans Notch (Headings/Numbers) & Mitr (Thai) -->
@@ -15,6 +15,23 @@
 
   <!-- Modern Blue & White Stylesheet -->
   <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- Immediate Theme Initializer (Prevents Flash of Light/Dark Theme on Load) -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("cdti_theme");
+        if (!saved && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+          saved = "dark";
+        }
+        if (saved === "dark") {
+          document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
 
@@ -25,6 +42,39 @@
        1. ROUTE-PROTECTED AUTH SCREEN (LOGIN & REGISTER WITH AVATAR UPLOAD)
        ======================================================================== -->
   <section id="auth-screen" class="auth-wrapper">
+    <!-- Floating Top-Right Controls (Dark Mode & Sound FX) -->
+    <div class="auth-floating-actions" aria-label="ตั้งค่าเสียงและโหมดการแสดงผล">
+      <button id="auth-sound-toggle-btn" type="button" class="floating-action-btn" aria-label="เปิด/ปิดเสียงคลิก (Sound FX)" title="เปิด/ปิดเสียงคลิก (Sound FX)">
+        <svg class="sound-icon-on" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+        </svg>
+        <svg class="sound-icon-off hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <line x1="23" y1="9" x2="17" y2="15"></line>
+          <line x1="17" y1="9" x2="23" y2="15"></line>
+        </svg>
+      </button>
+
+      <button id="auth-theme-toggle-btn" type="button" class="floating-action-btn" aria-label="สลับโหมดสี (Dark / Light Mode)" title="สลับโหมดสี (Dark / Light Mode)">
+        <svg class="theme-icon-sun hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+    </div>
+
     <div class="auth-shell">
       <!-- Left Editorial Course Showcase with Multi-Layer SVG Parallax -->
       <div class="auth-showcase">
@@ -57,34 +107,38 @@
           <div class="auth-logo-chip">
             <img src="cdti-logo.png" alt="โลโก้สถาบันเทคโนโลยีจิตรลดา" />
             <div>
-              <span class="font-notch" style="font-size: 0.72rem; font-weight: 700; color: var(--blue-600); display: block;">COURSE 21901-2017</span>
-              <span style="font-size: 0.82rem; font-weight: 600;">สถาบันเทคโนโลยีจิตรลดา</span>
+              <span class="font-notch" style="font-size: 0.72rem; font-weight: 700; color: var(--accent-signal); display: block;">SYS // 21901-2017</span>
+              <span style="font-size: 0.82rem; font-weight: 600;">สถาบันเทคโนโลยีจิตรลดา (CDTI)</span>
             </div>
           </div>
 
-          <h1>ระบบบทเรียนออนไลน์รายวิชา เทคโนโลยีการนำเข้าข้อมูลสู่ระบบคอมพิวเตอร์</h1>
+          <div class="hw-serial-tag font-notch">
+            <span class="hw-led-dot is-online"></span>
+            <span>HARDWARE INPUT LAB • VOCATIONAL CERT.</span>
+          </div>
+
+          <h1>เทคโนโลยีการนำเข้าข้อมูลสู่ระบบคอมพิวเตอร์</h1>
           <p>
-            เรียนรู้แบบแบ่งย่อยทีละขั้นตอน (Bite-sized Learning) ครบทั้ง 16 หน่วยการเรียนรู้
-            ฝึกทำแบบทดสอบท้ายหน่วย สะสมสถิติความเร็วจากมินิเกมจับเวลา และรับเกียรติบัตรอิเล็กทรอนิกส์เมื่อเรียนผ่านครบ 100%
+            เรียนรู้ผ่านห้องปฏิบัติการฮาร์ดแวร์เสมือนจริงครบ 16 หน่วย ทดลองยิงเลเซอร์บาร์โค้ด สแกน RFID ทำแบบทดสอบท้ายบท และประลองความไวชิงอันดับ Top 10
           </p>
         </div>
 
         <div class="auth-spec-list auth-showcase-fg">
-          <div>
-            <span class="auth-spec-num">16 Units</span>
-            <span class="auth-spec-text">เนื้อหาย่อยเข้าใจง่ายทีละสเต็ป</span>
+          <div class="auth-spec-box">
+            <span class="auth-spec-num">16 UNITS</span>
+            <span class="auth-spec-text">บทเรียนย่อย + สเปกอุปกรณ์จริง</span>
           </div>
-          <div>
-            <span class="auth-spec-num">80% Pass</span>
-            <span class="auth-spec-text">เกณฑ์ผ่านแบบทดสอบท้ายหน่วย (8/10)</span>
+          <div class="auth-spec-box">
+            <span class="auth-spec-num">80% PASS</span>
+            <span class="auth-spec-text">เกณฑ์สอบผ่านท้ายหน่วย (8/10)</span>
           </div>
-          <div>
-            <span class="auth-spec-num">Time-Attack</span>
-            <span class="auth-spec-text">มินิเกมแข่งความเร็วและแม่นยำ</span>
+          <div class="auth-spec-box">
+            <span class="auth-spec-num">4 ARENAS</span>
+            <span class="auth-spec-text">มินิเกมจับเวลา 60 วินาที</span>
           </div>
-          <div>
-            <span class="auth-spec-num">Top 10 Live</span>
-            <span class="auth-spec-text">จัดอันดับคะแนนรวมและเวลาจริง</span>
+          <div class="auth-spec-box">
+            <span class="auth-spec-num">E-CERT</span>
+            <span class="auth-spec-text">ออกใบเกียรติบัตรทันทีที่ครบ 100%</span>
           </div>
         </div>
       </div>
@@ -261,67 +315,136 @@
        2. PROTECTED APPLICATION SHELL (STICKY NAVBAR + 4 CORE VIEWS)
        ======================================================================== -->
   <div id="app-shell" class="hidden">
-    <!-- Sticky Top Navbar -->
+    <!-- Sticky Top Navbar: Hardware Control Deck -->
     <header class="sticky-navbar">
+      <!-- Industrial Hardware Telemetry Micro-Bar -->
+      <div class="hw-telemetry-strip" aria-hidden="true">
+        <div class="hw-telemetry-inner">
+          <span class="hw-telemetry-item font-notch">
+            <span class="hw-led-dot is-online"></span>
+            SYS // 21901-2017 DATA INPUT WORKBENCH
+          </span>
+          <span class="hw-telemetry-item hw-hide-mobile font-notch">
+            CHITRALADA TECHNOLOGY INSTITUTE (CDTI) • VOCATIONAL EDUCATION
+          </span>
+          <span class="hw-telemetry-item font-notch">
+            BUS: <strong style="color: var(--accent-signal);">READY</strong> • KEYBIND: [1–4]
+          </span>
+        </div>
+      </div>
+
       <div class="navbar-inner">
         <!-- Left Brand -->
         <a id="navbar-brand-home" href="#home" class="brand-cluster">
-          <img src="cdti-logo.png" alt="โลโก้สถาบันเทคโนโลยีจิตรลดา" class="brand-logo" />
+          <div class="brand-logo-box">
+            <img src="cdti-logo.png" alt="โลโก้สถาบันเทคโนโลยีจิตรลดา" class="brand-logo" />
+          </div>
           <div>
             <span class="brand-code">COURSE 21901-2017</span>
             <span class="brand-title">เทคโนโลยีการนำเข้าข้อมูลฯ</span>
           </div>
         </a>
 
-        <!-- Center Navigation Links (Desktop) -->
+        <!-- Center Navigation Links (Desktop Mechanical Keycaps) -->
         <nav class="nav-links nav-links-desktop" aria-label="เมนูหลัก">
-          <button type="button" class="nav-btn is-active" data-nav-view="home">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5.5v-6h-5v6H4a1 1 0 0 1-1-1v-9.5Z"/>
-            </svg>
+          <button type="button" class="nav-btn is-active" data-nav-view="home" title="คีย์ลัด: กดปุ่ม 1">
+            <span class="nav-keycap font-notch">1</span>
             <span>หน้าหลัก</span>
           </button>
 
-          <button type="button" class="nav-btn" data-nav-view="lessons">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 0 4 22.5V5.5Z"/>
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-            </svg>
-            <span>บทเรียน</span>
+          <button type="button" class="nav-btn" data-nav-view="lessons" title="คีย์ลัด: กดปุ่ม 2">
+            <span class="nav-keycap font-notch">2</span>
+            <span>บทเรียน 16 หน่วย</span>
           </button>
 
-          <button type="button" class="nav-btn" data-nav-view="progress">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <path d="M9 12l2 2 4-4"/>
-              <circle cx="12" cy="12" r="9"/>
-            </svg>
+          <button type="button" class="nav-btn" data-nav-view="progress" title="คีย์ลัด: กดปุ่ม 3">
+            <span class="nav-keycap font-notch">3</span>
             <span>ความคืบหน้า</span>
           </button>
 
-          <button type="button" class="nav-btn" data-nav-view="leaderboard">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <path d="M8 21V11M16 21V7M12 21V3"/>
-            </svg>
+          <button type="button" class="nav-btn" data-nav-view="leaderboard" title="คีย์ลัด: กดปุ่ม 4">
+            <span class="nav-keycap font-notch">4</span>
             <span>Leaderboard</span>
           </button>
         </nav>
 
-        <!-- Top-Right Profile Trigger (Opens Profile & Change Password Modal) -->
-        <button id="navbar-profile-btn" type="button" class="profile-trigger" aria-label="ข้อมูลบัญชีและเปลี่ยนรหัสผ่าน">
-          <img id="navbar-avatar-img" src="" alt="รูปโปรไฟล์" class="avatar-circle" />
-          <span class="profile-trigger-meta">
-            <span id="navbar-user-name" class="profile-trigger-name">ชื่อ-นามสกุล</span>
-            <span id="navbar-user-id" class="profile-trigger-id">0000000000</span>
-          </span>
-        </button>
+        <!-- Top-Right Actions Cluster (Sound FX, Theme Mode & Profile Trigger) -->
+        <div class="navbar-actions-cluster">
+          <button id="sound-toggle-btn" type="button" class="nav-icon-btn" aria-label="เปิด/ปิดเสียงคลิก (Sound FX)" title="เปิด/ปิดเสียงคลิก (Sound FX)">
+            <svg class="sound-icon-on" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+            <svg class="sound-icon-off hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <line x1="23" y1="9" x2="17" y2="15"></line>
+              <line x1="17" y1="9" x2="23" y2="15"></line>
+            </svg>
+          </button>
+
+          <button id="theme-toggle-btn" type="button" class="nav-icon-btn" aria-label="สลับโหมดสี (Dark / Light Mode)" title="สลับโหมดสี (Dark / Light Mode)">
+            <svg class="theme-icon-sun hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </button>
+
+          <button id="navbar-profile-btn" type="button" class="profile-trigger" aria-label="ข้อมูลบัญชีและเปลี่ยนรหัสผ่าน">
+            <img id="navbar-avatar-img" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%231447BC'/%3E%3Ccircle cx='32' cy='24' r='11' fill='%23FFFFFF'/%3E%3Cpath d='M14 54c3-10 11-15 18-15s15 5 18 15' fill='%23FFFFFF'/%3E%3C/svg%3E" alt="รูปโปรไฟล์" class="avatar-circle" />
+            <span class="profile-trigger-meta">
+              <span id="navbar-user-name" class="profile-trigger-name">ชื่อ-นามสกุล</span>
+              <span id="navbar-user-id" class="profile-trigger-id">0000000000</span>
+            </span>
+          </button>
+        </div>
       </div>
 
-      <!-- Mobile Horizontal Nav Row -->
+      <!-- Mobile App Bottom Navigation Bar -->
       <nav class="mobile-nav-bar" aria-label="เมนูมือถือ">
-        <button type="button" class="nav-btn is-active" data-nav-view="home">หน้าหลัก</button>
-        <button type="button" class="nav-btn" data-nav-view="lessons">บทเรียน</button>
-        <button type="button" class="nav-btn" data-nav-view="progress">ความคืบหน้า</button>
-        <button type="button" class="nav-btn" data-nav-view="leaderboard">Leaderboard</button>
+        <button type="button" class="nav-btn is-active" data-nav-view="home">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <span>หน้าหลัก</span>
+        </button>
+        <button type="button" class="nav-btn" data-nav-view="lessons">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
+          <span>บทเรียน</span>
+        </button>
+        <button type="button" class="nav-btn" data-nav-view="progress">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+          <span>ความคืบหน้า</span>
+        </button>
+        <button type="button" class="nav-btn" data-nav-view="leaderboard">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+            <path d="M4 22h16"/>
+            <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+            <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+            <path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/>
+          </svg>
+          <span>อันดับ</span>
+        </button>
       </nav>
 
       <!-- Scroll Reading Progress Indicator -->
@@ -366,35 +489,78 @@
 
             <div class="home-hero-fg">
               <div class="home-meta-row">
-                <span class="status-pill is-info font-notch">COURSE 21901-2017</span>
+                <span class="status-pill is-info font-notch">SYS // 21901-2017</span>
                 <span class="status-pill is-neutral">2 หน่วยกิต (3 ชม./สัปดาห์)</span>
                 <span class="status-pill is-neutral">ปวช.1 เทคโนโลยีสารสนเทศ</span>
               </div>
 
-              <p style="font-size: 0.92rem; font-weight: 500; color: var(--blue-600); margin-top: 16px;">
-                ยินดีต้อนรับสู่ห้องเรียนออนไลน์, <span id="home-welcome-name">ผู้เรียน</span>
+              <p style="font-size: 0.92rem; font-weight: 500; color: var(--accent-signal); margin-top: 14px;">
+                OPERATOR ONLINE: <span id="home-welcome-name" style="color: var(--text-main); font-weight: 600;">ผู้เรียน</span>
               </p>
 
-              <h1 style="font-size: 1.68rem; font-weight: 600; margin-top: 6px; line-height: 1.32;">
-                รายวิชา เทคโนโลยีการนำเข้าข้อมูลสู่ระบบคอมพิวเตอร์
+              <h1 style="font-size: 1.75rem; font-weight: 700; margin-top: 4px; line-height: 1.28;">
+                เทคโนโลยีการนำเข้าข้อมูลสู่ระบบคอมพิวเตอร์
               </h1>
 
-              <p style="font-size: 0.92rem; color: var(--text-secondary); margin-top: 12px; line-height: 1.68;">
-                ศึกษาหลักการของข้อมูลดิบและสารสนเทศ วงจรการทำงาน IPO อุปกรณ์นำเข้าข้อมูลพื้นฐาน
-                เทคโนโลยีบาร์โค้ด 1 มิติ รหัสภาพ 2 มิติ (QR Code) ความปลอดภัยและการเข้ารหัส SSL/TLS
-                ระบบคลื่นความถี่วิทยุ (RFID) ชีวมิติ (Biometric) ซอฟต์แวร์จัดการฐานข้อมูล การแปลงรหัสอักขระ
-                การบีบอัดข้อมูล และการประยุกต์ใช้งานจริงในองค์กร
+              <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 10px; line-height: 1.62;">
+                ปฏิบัติการเรียนรู้วงจร IPO อุปกรณ์นำเข้าข้อมูล สวิตช์กลไก เซนเซอร์ CMOS บาร์โค้ด 1D/2D
+                การเข้ารหัส SSL/TLS คลื่นวิทยุ RFID ชีวมิติ ระบบฐานข้อมูล และการบีบอัดข้อมูลระดับฮาร์ดแวร์
               </p>
+
+              <!-- LIVE INTERACTIVE HARDWARE SIGNAL BUS ("One Live Thing" on First Screen) -->
+              <div id="hero-hardware-bus" class="hw-bus-console" data-ui="true">
+                <div class="hw-bus-header">
+                  <span class="hw-bus-title font-notch">
+                    <span class="hw-led-dot is-online"></span>
+                    LIVE SIGNAL ANALYZER // กดปุ่มจำลองสัญญาณนำเข้าข้อมูลจริง
+                  </span>
+                  <span id="hw-bus-protocol-badge" class="hw-bus-badge font-notch">USB-HID / 1000Hz</span>
+                </div>
+
+                <div class="hw-bus-triggers" role="group" aria-label="ทดลองกดส่งสัญญาณอุปกรณ์นำเข้าข้อมูล">
+                  <button type="button" class="hw-trigger-key is-active" data-hw-mode="key">
+                    <span class="hw-key-code font-notch">[01] KEY MATRIX</span>
+                    <span class="hw-key-name">แป้นพิมพ์กลไก</span>
+                  </button>
+                  <button type="button" class="hw-trigger-key" data-hw-mode="laser">
+                    <span class="hw-key-code font-notch">[02] 650nm LASER</span>
+                    <span class="hw-key-name">ยิงบาร์โค้ด 1D</span>
+                  </button>
+                  <button type="button" class="hw-trigger-key" data-hw-mode="rfid">
+                    <span class="hw-key-code font-notch">[03] UHF 920MHz</span>
+                    <span class="hw-key-name">คลื่นวิทยุ RFID</span>
+                  </button>
+                  <button type="button" class="hw-trigger-key" data-hw-mode="hash">
+                    <span class="hw-key-code font-notch">[04] SHA-256</span>
+                    <span class="hw-key-name">ตรวจสอบค่าแฮช</span>
+                  </button>
+                </div>
+
+                <div class="hw-bus-screen">
+                  <div class="hw-bus-screen-row">
+                    <span class="hw-screen-label font-notch">RAW INPUT:</span>
+                    <code id="hw-bus-raw" class="hw-screen-val font-notch">KEY_PRESS [A] -> MATRIX(ROW_2, COL_1) @ 4.2ms DEBOUNCE</code>
+                  </div>
+                  <div class="hw-bus-screen-row">
+                    <span class="hw-screen-label font-notch">ENCODED STREAM:</span>
+                    <code id="hw-bus-binary" class="hw-screen-val is-accent font-notch">SCAN_CODE: 0x1E  |  ASCII: 0x41  |  BIN: 01000001</code>
+                  </div>
+                  <div class="hw-bus-screen-row">
+                    <span class="hw-screen-label font-notch">IPO OUTPUT:</span>
+                    <span id="hw-bus-output" class="hw-screen-output">แปลงแรงกดสวิตช์กลไกเป็นรหัสไบนารีส่งเข้าหน่วยประมวลผลสำเร็จ (Verified)</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="home-hero-fg">
-              <div style="display: flex; flex-wrap: wrap; gap: 16px; padding: 14px 0; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); font-size: 0.83rem; color: var(--text-secondary);">
-                <span><strong style="color: var(--text-main); font-weight: 500;">สถานศึกษา:</strong> โรงเรียนจิตรลดาวิชาชีพ สถาบันเทคโนโลยีจิตรลดา</span>
-                <span><strong style="color: var(--text-main); font-weight: 500;">ผู้สอน:</strong> นายอนุพงศ์ พลายรักษา</span>
-                <span><strong style="color: var(--text-main); font-weight: 500;">ปีการศึกษา:</strong> <span class="font-notch">2569</span></span>
+              <div class="hw-meta-strip">
+                <span><strong>สถานศึกษา:</strong> โรงเรียนจิตรลดาวิชาชีพ สถาบันเทคโนโลยีจิตรลดา</span>
+                <span><strong>ผู้สอน:</strong> นายอนุพงศ์ พลายรักษา</span>
+                <span><strong>ปีการศึกษา:</strong> <span class="font-notch">2569</span></span>
               </div>
 
-              <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px;">
+              <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px;">
                 <button id="home-cta-continue-btn" type="button" class="btn-primary">
                   เริ่มเรียนหน่วยที่ 1
                 </button>
@@ -444,25 +610,37 @@
           </div>
         </div>
 
-        <!-- Divided KPI Metric Strip -->
+        <!-- Divided KPI Metric Strip with Vibrant Accents -->
         <div class="metric-strip">
-          <div class="metric-cell">
-            <span class="metric-label">หน่วยที่ผ่านเกณฑ์</span>
+          <div class="metric-cell is-units">
+            <div class="metric-head">
+              <span class="metric-label">หน่วยที่ผ่านเกณฑ์</span>
+              <span class="metric-indicator is-units" aria-hidden="true"></span>
+            </div>
             <span id="home-metric-units" class="metric-value">0 / 16</span>
             <span class="metric-sub">เกณฑ์สอบผ่าน 80% ต่อหน่วย</span>
           </div>
-          <div class="metric-cell">
-            <span class="metric-label">ความคืบหน้ารวม</span>
+          <div class="metric-cell is-percent">
+            <div class="metric-head">
+              <span class="metric-label">ความคืบหน้ารวม</span>
+              <span class="metric-indicator is-percent" aria-hidden="true"></span>
+            </div>
             <span id="home-metric-percent" class="metric-value">0%</span>
             <span class="metric-sub">ครบ 100% รับเกียรติบัตร</span>
           </div>
-          <div class="metric-cell">
-            <span class="metric-label">คะแนนสะสมรวม</span>
+          <div class="metric-cell is-score">
+            <div class="metric-head">
+              <span class="metric-label">คะแนนสะสมรวม</span>
+              <span class="metric-indicator is-score" aria-hidden="true"></span>
+            </div>
             <span id="home-metric-score" class="metric-value">0</span>
             <span class="metric-sub">แบบทดสอบ + มินิเกมจับเวลา</span>
           </div>
-          <div class="metric-cell">
-            <span class="metric-label">เวลารวมที่ใช้</span>
+          <div class="metric-cell is-time">
+            <div class="metric-head">
+              <span class="metric-label">เวลารวมที่ใช้</span>
+              <span class="metric-indicator is-time" aria-hidden="true"></span>
+            </div>
             <span id="home-metric-time" class="metric-value">00:00</span>
             <span class="metric-sub">ใช้ตัดสินอันดับเมื่อคะแนนเท่ากัน</span>
           </div>
@@ -483,23 +661,23 @@
           </div>
 
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; padding-top: 18px;">
-            <div>
-              <span class="font-notch" style="font-size: 0.78rem; font-weight: 700; color: var(--blue-600);">STEP 1  •  BITE-SIZED CONTENT</span>
-              <h3 style="font-size: 0.98rem; font-weight: 600; margin-top: 4px;">บทเรียนย่อยทีละสเต็ป (16 หน่วย)</h3>
+            <div class="learning-step-card step-color-1">
+              <span class="font-notch step-pill step-pill-1">STEP 1  •  BITE-SIZED CONTENT</span>
+              <h3 style="font-size: 0.98rem; font-weight: 600; margin-top: 8px;">บทเรียนย่อยทีละสเต็ป (16 หน่วย)</h3>
               <p style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 6px; line-height: 1.6;">
                 แบ่งเนื้อหาแต่ละหน่วยออกเป็นสเต็ปสั้นๆ กดถัดไปทีละหัวข้อ อ่านสบายตา ไม่ยาวติดกันจนล้า
               </p>
             </div>
-            <div>
-              <span class="font-notch" style="font-size: 0.78rem; font-weight: 700; color: var(--blue-600);">STEP 2  •  80% UNIT MASTERY</span>
-              <h3 style="font-size: 0.98rem; font-weight: 600; margin-top: 4px;">แบบทดสอบท้ายหน่วย หน่วยละ 10 ข้อ</h3>
+            <div class="learning-step-card step-color-2">
+              <span class="font-notch step-pill step-pill-2">STEP 2  •  80% UNIT MASTERY</span>
+              <h3 style="font-size: 0.98rem; font-weight: 600; margin-top: 8px;">แบบทดสอบท้ายหน่วย หน่วยละ 10 ข้อ</h3>
               <p style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 6px; line-height: 1.6;">
                 ตรวจคำตอบทันทีพร้อมจับเวลา ต้องทำได้ตั้งแต่ 8 คะแนนขึ้นไป (80%) จึงจะนับว่าผ่านหน่วยการเรียนรู้นั้น
               </p>
             </div>
-            <div>
-              <span class="font-notch" style="font-size: 0.78rem; font-weight: 700; color: var(--blue-600);">STEP 3  •  TIME-ATTACK &amp; CERTIFICATE</span>
-              <h3 style="font-size: 0.98rem; font-weight: 600; margin-top: 4px;">มินิเกมจับเวลาและเกียรติบัตรออนไลน์</h3>
+            <div class="learning-step-card step-color-3">
+              <span class="font-notch step-pill step-pill-3">STEP 3  •  TIME-ATTACK &amp; CERTIFICATE</span>
+              <h3 style="font-size: 0.98rem; font-weight: 600; margin-top: 8px;">มินิเกมจับเวลาและเกียรติบัตรออนไลน์</h3>
               <p style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 6px; line-height: 1.6;">
                 ท้าทายความไวด้วยมินิเกมคั่นหมวด 4 เกม สะสมคะแนนชิง Top 10 และดาวน์โหลดเกียรติบัตรเมื่อผ่านครบ 100%
               </p>
@@ -970,6 +1148,7 @@
 
   <!-- Application Scripts -->
   <script src="js/config.js"></script>
+  <script src="js/sound.js"></script>
   <script src="js/api.js"></script>
   <script src="js/motion.js"></script>
   <script src="js/auth.js"></script>
