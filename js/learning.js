@@ -1056,6 +1056,13 @@
       const qCard = document.querySelector("#lesson-workspace .quiz-question-card");
       window.MotionEngine?.shakeElement(qCard);
     }
+
+    setTimeout(() => {
+      const inlineBtn = document.getElementById("btn-quiz-advance-inline");
+      if (inlineBtn) {
+        inlineBtn.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+    }, 40);
   }
 
   function advanceQuizOrSubmit() {
@@ -1133,21 +1140,32 @@
     let feedbackHtml = "";
     if (hasAnswered) {
       const correctLetter = CHOICE_LABELS[answerRecord.correctIdx];
+      const isLastQ = qIdx >= totalQ - 1;
+      const nextBtnText = isLastQ ? "ตรวจผลสอบและบันทึกคะแนน" : `ข้อถัดไป (${qIdx + 2}/${totalQ})`;
       feedbackHtml = `
-        <div class="quiz-feedback-box ${answerRecord.isCorrect ? "is-correct" : "is-wrong"}">
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
-            <strong style="font-size: 0.96rem; font-weight: 600;">
-              ${
-                answerRecord.isCorrect
-                  ? "คำตอบถูกต้อง (+1 คะแนน)"
-                  : `ยังไม่ถูกต้อง • คำตอบที่ถูกคือข้อ ${correctLetter}`
-              }
-            </strong>
-            <span style="font-size: 0.78rem; opacity: 0.9;">
-              หยุดเวลาชั่วคราวขณะอ่านคำอธิบาย
-            </span>
+        <div class="quiz-feedback-box ${answerRecord.isCorrect ? "is-correct" : "is-wrong"}" id="quiz-feedback-banner">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
+            <div style="min-width: 0;">
+              <strong style="font-size: 0.98rem; font-weight: 700; display: block;">
+                ${
+                  answerRecord.isCorrect
+                    ? "คำตอบถูกต้อง (+1 คะแนน)"
+                    : `ยังไม่ถูกต้อง • คำตอบที่ถูกคือข้อ ${correctLetter}`
+                }
+              </strong>
+              <span style="font-size: 0.76rem; opacity: 0.85;">
+                หยุดเวลาชั่วคราวขณะอ่านคำอธิบาย
+              </span>
+            </div>
+
+            <button type="button" class="btn-primary quiz-advance-btn" id="btn-quiz-advance-inline" style="min-height: 40px; padding: 7px 16px; font-size: 0.88rem; box-shadow: 2px 2px 0px var(--shadow-ink); margin-left: auto;">
+              <span>${nextBtnText}</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
           </div>
-          <p style="font-size: 0.88rem; margin-top: 6px; line-height: 1.6;">
+          <p style="font-size: 0.88rem; margin-top: 8px; line-height: 1.55;">
             ${esc(qObj.explanation)}
           </p>
         </div>
@@ -1680,7 +1698,10 @@
       }
 
       // Next Question / Finish Quiz
-      if (e.target.closest("#btn-quiz-next-question")) {
+      if (
+        e.target.closest("#btn-quiz-next-question") ||
+        e.target.closest("#btn-quiz-advance-inline")
+      ) {
         e.preventDefault();
         advanceQuizOrSubmit();
         return;

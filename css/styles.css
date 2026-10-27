@@ -4362,6 +4362,11 @@ body.is-minigame-active main.app-container {
 }
 
 @media (max-width: 860px) {
+  body.is-quiz-active,
+  body.is-minigame-active {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
   body.is-quiz-active .mobile-nav-bar,
   body.is-minigame-active .mobile-nav-bar {
     display: none !important;
