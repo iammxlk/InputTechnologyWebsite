@@ -483,26 +483,27 @@
 
     currentMode = "reader";
 
-    // Resume at next unread step if partially read, otherwise start cleanly at step 0
-    if (prog.steps_completed > 0 && !isContentRead && prog.steps_completed < totalSteps) {
-      currentStepIdx = Math.max(0, Math.min(totalSteps - 1, Number(prog.steps_completed)));
-    } else {
-      currentStepIdx = 0;
-    }
+    // Always start at step 0 (Step 1)
+    currentStepIdx = 0;
 
-    maxStepReachedInSession = Math.max(
-      currentStepIdx + 1,
-      isContentRead ? totalSteps : Number(prog.steps_completed || 1)
-    );
+    // Highest step unlocked:
+    // If unit was already passed or fully read, user can review all steps
+    // Otherwise, start strictly with ONLY step 0 (Step 1) unlocked, or up to partially completed steps
+    if (isContentRead) {
+      maxStepReachedInSession = totalSteps - 1;
+    } else {
+      const savedSteps = Math.max(0, Number(prog.steps_completed || 0));
+      maxStepReachedInSession = Math.max(0, Math.min(totalSteps - 1, savedSteps > 0 ? savedSteps - 1 : 0));
+    }
 
     toggleLessonsContainers(false);
     renderReaderWorkspace();
 
-    const reachedAll = maxStepReachedInSession >= totalSteps || isContentRead;
-    syncStepProgress(targetNo, maxStepReachedInSession, reachedAll);
+    const reachedAll = maxStepReachedInSession >= totalSteps - 1 || isContentRead;
+    syncStepProgress(targetNo, maxStepReachedInSession + 1, reachedAll);
   }
 
-  function goToStep(stepIdx) {
+  function goToStep(stepIdx, isAdvancing = false) {
     const unitData = getUnitCurriculum(activeUnitNo);
     if (!unitData) return;
 
@@ -514,24 +515,29 @@
     const totalSteps = unitData.steps.length;
     const bounded = Math.max(0, Math.min(totalSteps - 1, Number(stepIdx) || 0));
 
-    // If content not read yet, prevent skipping ahead past highest reached step
-    if (!isContentRead && bounded > maxStepReachedInSession) {
-      window.AppUtils?.showToast("กรุณาเรียนเนื้อหาตามลำดับทีละสเต็ป", "info");
+    // If advancing forward via Next Step button, unlock the next step
+    if (isAdvancing && bounded === currentStepIdx + 1) {
+      maxStepReachedInSession = Math.max(maxStepReachedInSession, bounded);
+    }
+
+    // STRICT CHECK: Cannot skip ahead past unlocked steps
+    if (bounded > maxStepReachedInSession) {
+      window.AppUtils?.showToast("ไม่อนุญาตให้กดข้ามสเต็ป กรุณาเรียนเนื้อหาตามลำดับทีละขั้นตอน", "warn");
+      window.SoundEngine?.playError?.();
       return;
     }
 
     if (bounded !== prevIdx) {
-      window.SoundEngine?.playPop();
+      window.SoundEngine?.playPop?.();
     }
     const direction = bounded < prevIdx ? "prev" : "next";
     currentStepIdx = bounded;
-    maxStepReachedInSession = Math.max(maxStepReachedInSession, currentStepIdx + 1);
 
-    const isAllRead = maxStepReachedInSession >= totalSteps || isContentRead;
+    const isAllRead = maxStepReachedInSession >= totalSteps - 1 || isContentRead;
     renderReaderWorkspace();
     const readerCard = document.querySelector("#lesson-workspace .lesson-reader-card");
     window.MotionEngine?.animateStepSlide(readerCard, direction);
-    syncStepProgress(activeUnitNo, maxStepReachedInSession, isAllRead);
+    syncStepProgress(activeUnitNo, maxStepReachedInSession + 1, isAllRead);
 
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -747,23 +753,21 @@
     const stepPillsHtml = unitData.steps
       .map((s, idx) => {
         const isCurrent = idx === currentStepIdx;
-        const isVisited = idx + 1 <= maxStepReachedInSession || isContentRead;
-        const isLocked = !isContentRead && idx > maxStepReachedInSession;
+        const isLocked = idx > maxStepReachedInSession;
+        const isVisited = idx <= maxStepReachedInSession;
         const stateCls = isCurrent
           ? "is-current"
           : isVisited
           ? "is-visited"
-          : isLocked
-          ? "is-locked"
-          : "";
+          : "is-locked";
         return `
           <button
             type="button"
             class="step-rail-btn ${stateCls}"
             data-goto-step="${idx}"
-            ${isLocked ? "disabled title=\"กรุณาเรียนเนื้อหาตามลำดับทีละสเต็ป\"" : ""}
+            ${isLocked ? 'disabled title="ไม่อนุญาตให้กดข้ามสเต็ป กรุณาเรียนตามลำดับ"' : `title="ไปยังสเต็ปที่ ${idx + 1}"`}
           >
-            <span class="font-notch tabular-nums">สเต็ปที่ ${idx + 1}</span>
+            <span class="font-notch tabular-nums">${isLocked ? "🔒 " : ""}สเต็ปที่ ${idx + 1}</span>
           </button>
         `;
       })
@@ -871,7 +875,7 @@
     const isCompleted = Boolean(
       prog.is_content_read ||
       prog.is_passed ||
-      (targetNo === activeUnitNo && maxStepReachedInSession >= totalSteps)
+      (targetNo === activeUnitNo && maxStepReachedInSession >= totalSteps - 1)
     );
 
     if (!isCompleted) {
@@ -1659,24 +1663,31 @@
         return;
       }
 
-      // Step Rail jump
+      // Step Rail jump (strictly cannot jump ahead to unreached steps)
       const stepBtn = e.target.closest("[data-goto-step]");
       if (stepBtn) {
         e.preventDefault();
-        goToStep(Number(stepBtn.getAttribute("data-goto-step")));
+        const targetIdx = Number(stepBtn.getAttribute("data-goto-step"));
+        if (targetIdx > maxStepReachedInSession) {
+          window.AppUtils?.showToast("ไม่อนุญาตให้กดข้ามสเต็ป กรุณาเรียนตามลำดับทีละขั้นตอน", "warn");
+          window.SoundEngine?.playError?.();
+          return;
+        }
+        goToStep(targetIdx, false);
         return;
       }
 
-      // Previous / Next Step buttons
+      // Previous Step button (always allowed to go backward)
       if (e.target.closest("#btn-prev-step")) {
         e.preventDefault();
-        goToStep(currentStepIdx - 1);
+        goToStep(currentStepIdx - 1, false);
         return;
       }
 
+      // Next Step button (advances and unlocks next step)
       if (e.target.closest("#btn-next-step")) {
         e.preventDefault();
-        goToStep(currentStepIdx + 1);
+        goToStep(currentStepIdx + 1, true);
         return;
       }
 
