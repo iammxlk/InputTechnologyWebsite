@@ -15,6 +15,27 @@
 (function () {
   "use strict";
 
+  // Anti-Slop Clean Inline SVG Icons (Replacing AI Slop Emojis)
+  const SVG = {
+    pos: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>',
+    digits: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>',
+    weight: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v18"></path><path d="M6 8l6-5 6 5"></path><path d="M4 14l4 4 4-4"></path><path d="M16 14l4 4 4-4"></path></svg>',
+    prod: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>',
+    check: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>',
+    checkGreen: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>',
+    crossRed: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>',
+    keyBlue: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2"><circle cx="7.5" cy="15.5" r="5.5"></circle><path d="M21 2l-9.6 9.6"></path><path d="M15.5 7.5l3 3L22 7l-3-3"></path></svg>',
+    keyboard: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.2"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="6" y1="8" x2="6" y2="8"></line><line x1="10" y1="8" x2="10" y2="8"></line><line x1="14" y1="8" x2="14" y2="8"></line><line x1="18" y1="8" x2="18" y2="8"></line><line x1="6" y1="12" x2="6" y2="12"></line><line x1="10" y1="12" x2="10" y2="12"></line><line x1="14" y1="12" x2="14" y2="12"></line><line x1="18" y1="12" x2="18" y2="12"></line><line x1="7" y1="16" x2="17" y2="16"></line></svg>',
+    shuffle: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>',
+    spark: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>',
+    bulb: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"></path></svg>',
+    arrowLeft: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>',
+    arrowRight: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>',
+    globe: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>',
+    package: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>'
+  };
+
+
   // EAN-13 Standard Barcode Encoding Tables (GS1 Specifications)
   const L_CODE = [
     "0001101", "0011001", "0010011", "0111101", "0100011",
@@ -120,10 +141,10 @@
           </g>
         </svg>
         <div class="ean13-barcode-meta">
-          <span class="ean13-meta-tag is-country" title="รหัสประเทศ 3 หลักแรก">🇹🇭 ประเทศ: ${esc(code13.slice(0, 3))}</span>
-          <span class="ean13-meta-tag is-product" title="รหัสผู้ผลิตและสินค้า 9 หลักถัดมา">📦 รหัสสินค้า: ${esc(code13.slice(3, 12))}</span>
+          <span class="ean13-meta-tag is-country" title="รหัสประเทศ 3 หลักแรก">${SVG.globe} ประเทศ: ${esc(code13.slice(0, 3))}</span>
+          <span class="ean13-meta-tag is-product" title="รหัสผู้ผลิตและสินค้า 9 หลักถัดมา">${SVG.package} รหัสสินค้า: ${esc(code13.slice(3, 12))}</span>
           <span class="ean13-meta-tag ${isInvalid ? "is-err" : "is-check"}" title="เลขตรวจสอบหลักสุดท้าย">
-            ${isInvalid ? "❌" : "🔑"} Check Digit: <strong>${esc(code13[12])}</strong>
+            ${isInvalid ? SVG.crossRed : SVG.keyBlue} Check Digit: <strong>${esc(code13[12])}</strong>
           </span>
         </div>
       </div>
@@ -221,7 +242,7 @@
           callout: {
             type: "success",
             title: "สูตรคำนวณ Check Digit และวิธีคิดลัด",
-            text: "• สูตรมาตรฐาน: 10 - เศษ = 10 - 2 = 8\n• 💡 วิธีคิดลัด (Short Cut): ปัดผลรวม 132 ขึ้นเป็นจำนวนเต็มสิบถัดไป คือ 140 แล้วนำ 140 - 132 = 8 ได้ผลลัพธ์เท่ากันทันที!"
+            text: "• สูตรมาตรฐาน: 10 - เศษ = 10 - 2 = 8\n• วิธีคิดลัด (Short Cut): ปัดผลรวม 132 ขึ้นเป็นจำนวนเต็มสิบถัดไป คือ 140 แล้วนำ 140 - 132 = 8 ได้ผลลัพธ์เท่ากันทันที!"
           }
         },
         {
@@ -328,8 +349,8 @@
           revealProduct: true,
           callout: {
             type: "danger",
-            title: "⚠️ ข้อควรระวังสำคัญมากที่ผู้เรียนมักพลาด!",
-            text: "• เมื่อเศษเป็น 0 ให้ตอบ Check Digit = 0 ทันที!\n• ❌ ห้ามนำ 10 - 0 = 10 เด็ดขาด! เพราะ Check Digit ของระบบบาร์โค้ดจะต้องเป็นเลขโดดหลักเดียว (0 ถึง 9) เท่านั้น ไม่มีช่องสำหรับเลข 10\n• 💡 วิธีคิดลัด: ผลรวม 120 เป็นจำนวนเต็มสิบอยู่แล้ว ผลต่างคือ 120 - 120 = 0"
+            title: "ข้อควรระวังสำคัญที่ผู้เรียนมักพลาด!",
+            text: "• เมื่อเศษเป็น 0 ให้ตอบ Check Digit = 0 ทันที!\n• ข้อห้าม: ห้ามนำ 10 - 0 = 10 เด็ดขาด! เพราะ Check Digit ของระบบบาร์โค้ดจะต้องเป็นเลขโดดหลักเดียว (0 ถึง 9) เท่านั้น ไม่มีช่องสำหรับเลข 10\n• วิธีคิดลัด: ผลรวม 120 เป็นจำนวนเต็มสิบอยู่แล้ว ผลต่างคือ 120 - 120 = 0"
           }
         },
         {
@@ -424,8 +445,8 @@
           revealProduct: true,
           callout: {
             type: "danger",
-            title: "🚨 ผลการตรวจสอบ: รหัสนี้ 'ไม่ถูกต้อง' (INVALID)!",
-            text: "• Check Digit ที่คำนวณได้จริง: 9\n• เลขหลักที่ 13 ที่พิมพ์มาบนสินค้า: 7\n• การเปรียบเทียบ: 9 ≠ 7 (ไม่ตรงกัน!)\n\n📌 บทวิเคราะห์: บาร์โค้ดนี้เกิดข้อผิดพลาด อาจเกิดจากผู้ใช้งานคีย์ข้อมูลสลับหลัก พิมพ์ผิด หรือเครื่องอ่านอ่านแถบเส้นบาร์โค้ดที่ชำรุด ระบบ POS จะปฏิเสธการทำรายการทันทีเพื่อป้องกันข้อมูลผิดพลาด!"
+            title: "ผลการตรวจสอบ: รหัสนี้ 'ไม่ถูกต้อง' (INVALID)!",
+            text: "• Check Digit ที่คำนวณได้จริง: 9\n• เลขหลักที่ 13 ที่พิมพ์มาบนสินค้า: 7\n• การเปรียบเทียบ: 9 ≠ 7 (ไม่ตรงกัน!)\n\nบทวิเคราะห์เชิงเทคนิค: บาร์โค้ดนี้เกิดข้อผิดพลาด อาจเกิดจากผู้ใช้งานคีย์ข้อมูลสลับหลัก พิมพ์ผิด หรือเครื่องอ่านอ่านแถบเส้นบาร์โค้ดที่ชำรุด ระบบ POS จะปฏิเสธการทำรายการทันทีเพื่อป้องกันข้อมูลผิดพลาด!"
           }
         }
       ]
@@ -440,15 +461,17 @@
     isCustomTouched: false
   };
 
-  // Render 12-Column Calculation Matrix Table
-  function renderCalculationMatrix(calc, currentStepObj, highlightRow) {
+  // Render 13-Column Calculation Matrix Table (12 Payload Digits + 1 Check Digit Column)
+  function renderCalculationMatrix(calc, currentStepObj, highlightRow, example) {
     const esc = window.AppUtils?.escapeHtml || ((s) => String(s));
     if (!calc) return "";
 
     const { digits, weights, products } = calc;
-    const isStepWeight = currentStepObj.revealWeight;
-    const isStepProd = currentStepObj.revealProduct;
+    const isStepWeight = !!currentStepObj?.revealWeight;
+    const isStepProd = !!currentStepObj?.revealProduct;
+    const focus = currentStepObj?.focus || highlightRow || "all";
 
+    // 12 Payload Columns (#1 to #12)
     const colsHtml = digits
       .map((d, idx) => {
         const pos = idx + 1;
@@ -462,19 +485,38 @@
         if (highlightRow === "products") colCls += " is-highlight-prod";
         if (highlightRow === "sum") colCls += " is-highlight-sum";
 
+        // Animated classes that trigger scale-pop + glowing pulse on step change
+        let digitAnimCls = "";
+        let weightAnimCls = "";
+        let prodAnimCls = "";
+
+        if (focus === "digits" || focus === "split") {
+          digitAnimCls = "ean-cell-changed is-anim-digit";
+        }
+        if (focus === "weights") {
+          weightAnimCls = "ean-cell-changed is-anim-weight";
+        }
+        if (focus === "products") {
+          prodAnimCls = "ean-cell-changed is-anim-product";
+        } else if (focus === "sum" || focus === "sum_mod") {
+          prodAnimCls = "is-anim-sum-focus";
+        }
+
+        const staggerStyle = `--col-idx:${idx};`;
+
         return `
           <div class="${colCls}" data-col="${pos}">
             <div class="ean13-cell cell-pos" title="ตำแหน่งหลักที่ ${pos}">
               <span class="font-notch">#${pos}</span>
               <span class="cell-sub">${isOdd ? "คี่" : "คู่"}</span>
             </div>
-            <div class="ean13-cell cell-digit font-notch" title="ตัวเลขหลักที่ ${pos}: ${d}">
+            <div class="ean13-cell cell-digit font-notch ${digitAnimCls}" style="${staggerStyle}" title="ตัวเลขหลักที่ ${pos}: ${d}">
               ${d}
             </div>
-            <div class="ean13-cell cell-weight ${isOdd ? "is-odd-weight" : "is-even-weight"} ${isStepWeight ? "is-visible" : "is-dim"}">
+            <div class="ean13-cell cell-weight ${isOdd ? "is-odd-weight" : "is-even-weight"} ${isStepWeight ? "is-visible" : "is-dim"} ${weightAnimCls}" style="${staggerStyle}">
               <span class="weight-badge font-notch">×${w}</span>
             </div>
-            <div class="ean13-cell cell-prod font-notch ${isStepProd ? "is-visible" : "is-dim"}">
+            <div class="ean13-cell cell-prod font-notch ${isStepProd ? "is-visible" : "is-dim"} ${prodAnimCls}" style="${staggerStyle}">
               ${isStepProd ? p : "—"}
             </div>
           </div>
@@ -482,21 +524,99 @@
       })
       .join("");
 
+    // 13th Column: Check Digit Target Slot
+    let checkDigitContent = "";
+    let checkDigitAnimCls = "";
+    let checkDigitProdHtml = "";
+    const isEx3 = example && example.id === "ex3";
+
+    if (focus === "checkDigit") {
+      checkDigitContent = `<span class="badge-solved-val font-notch">${calc.checkDigit}</span>`;
+      checkDigitAnimCls = "ean-cell-changed is-anim-checkdigit-solved";
+      checkDigitProdHtml = `<span class="prod-badge-solved font-notch">= ${calc.checkDigit}</span>`;
+    } else if (focus === "complete") {
+      checkDigitContent = `<span class="badge-solved-val font-notch">${calc.checkDigit}</span>`;
+      checkDigitAnimCls = "is-anim-checkdigit-sealed";
+      checkDigitProdHtml = `<span class="prod-badge-solved font-notch">= ${calc.checkDigit}</span>`;
+    } else if (focus === "verdict" && isEx3) {
+      checkDigitContent = `<span class="badge-mismatch-val font-notch">${example.givenCheckDigit}</span>`;
+      checkDigitAnimCls = "ean-cell-changed is-anim-invalid-shake";
+      checkDigitProdHtml = `<span class="font-notch" style="color:#b91c1c; font-weight:800;">≠ ${calc.checkDigit}</span>`;
+    } else if (highlightRow === "all") {
+      // In Tab 4 (Live Validator)
+      checkDigitContent = `<span class="badge-solved-val font-notch">${calc.checkDigit}</span>`;
+      checkDigitAnimCls = "ean-cell-changed is-anim-checkdigit-solved";
+      checkDigitProdHtml = `<span class="prod-badge-solved font-notch">= ${calc.checkDigit}</span>`;
+    } else {
+      checkDigitContent = `<span class="font-notch" title="หลักที่ 13: รอคำนวณ Check Digit">?</span>`;
+      checkDigitAnimCls = "is-waiting-check";
+      checkDigitProdHtml = `—`;
+    }
+
+    const col13Html = `
+      <div class="ean13-matrix-col is-col-checkdigit" data-col="13">
+        <div class="ean13-cell cell-pos" title="หลักที่ 13: เลขตรวจสอบ Check Digit">
+          <span class="font-notch">#13</span>
+          <span class="cell-sub">ตรวจ</span>
+        </div>
+        <div class="ean13-cell cell-digit font-notch ${checkDigitAnimCls}" style="--col-idx:12;" title="เลขตรวจสอบ Check Digit">
+          ${checkDigitContent}
+        </div>
+        <div class="ean13-cell cell-weight is-visible font-notch" style="--col-idx:12;">
+          <span class="weight-badge is-check-slot">CHECK</span>
+        </div>
+        <div class="ean13-cell cell-prod font-notch is-visible" style="--col-idx:12;">
+          ${checkDigitProdHtml}
+        </div>
+      </div>
+    `;
+
+    // Dynamic Legend Badges showing active changed status
+    const isDigitActive = focus === "digits" || focus === "split";
+    const isWeightActive = focus === "weights";
+    const isProdActive = focus === "products";
+    const isCheckActive = focus === "checkDigit" || focus === "complete" || focus === "verdict";
+
     return `
       <div class="ean13-matrix-wrapper">
         <div class="ean13-matrix-legend">
-          <span class="legend-chip"><strong class="font-notch">#</strong> ตำแหน่งหลัก</span>
-          <span class="legend-chip is-digit">🔢 ตัวเลข (Digits)</span>
-          <span class="legend-chip is-weight">⚖️ ตัวคูณ (คี่ ×1, คู่ ×3)</span>
-          <span class="legend-chip is-prod">✖️ ผลคูณ (Product)</span>
+          <span class="legend-chip">
+            ${SVG.pos}
+            <span>ตำแหน่งหลัก (1–13)</span>
+          </span>
+          <span class="legend-chip is-digit ${isDigitActive ? "is-active-changed" : ""}">
+            ${SVG.digits}
+            <span>ตัวเลข (Digits)</span>
+            ${isDigitActive ? '<span class="legend-pulse-badge">● ค่าตั้งต้น</span>' : ''}
+          </span>
+          <span class="legend-chip is-weight ${isWeightActive ? "is-active-changed" : ""}">
+            ${SVG.weight}
+            <span>ตัวคูณ (คี่ ×1, คู่ ×3)</span>
+            ${isWeightActive ? '<span class="legend-pulse-badge">● เพิ่มตัวคูณใหม่</span>' : ''}
+          </span>
+          <span class="legend-chip is-prod ${isProdActive ? "is-active-changed" : ""}">
+            ${SVG.prod}
+            <span>ผลคูณ (Product)</span>
+            ${isProdActive ? '<span class="legend-pulse-badge">● คำนวณผลลัพธ์</span>' : ''}
+          </span>
+          <span class="legend-chip is-check ${isCheckActive ? "is-active-changed" : ""}">
+            ${SVG.check}
+            <span>หลักที่ 13 (Check Digit)</span>
+            ${focus === "checkDigit" ? '<span class="legend-pulse-badge is-green">● คำนวณสำเร็จ</span>' : ''}
+          </span>
         </div>
+
         <div class="ean13-matrix-scroll-pane">
           <div class="ean13-matrix-grid">
             ${colsHtml}
+            ${col13Html}
           </div>
         </div>
+
         <div class="ean13-scroll-hint">
-          <span>👈 เลื่อนแนวนอนเพื่อตรวจดูหลักที่ 1 ถึง 12 👉</span>
+          ${SVG.arrowLeft}
+          <span>เลื่อนแนวนอนเพื่อตรวจดูหลักที่ 1 ถึง 13 ครบทั้งตาราง</span>
+          ${SVG.arrowRight}
         </div>
       </div>
     `;
@@ -644,7 +764,7 @@
               isZeroCase
                 ? `
                   <div class="zero-case-banner">
-                    <span class="zero-alert-icon">⚡</span>
+                    <span class="zero-alert-icon">${SVG.spark}</span>
                     <div>
                       <strong class="zero-alert-title font-notch">กรณีเศษเป็น 0 (Remainder = 0)</strong>
                       <p class="zero-alert-text">กฎสากลระบุว่า: ถ้าเศษจากการหารด้วย 10 เท่ากับ 0 ให้ Check Digit มีค่าเท่ากับ <strong>0</strong> ทันที!</p>
@@ -663,7 +783,7 @@
                       <span class="f-part is-target">= ${calc.checkDigit}</span>
                     </div>
                     <div class="shortcut-tip-box">
-                      <span class="shortcut-icon">💡</span>
+                      <span class="shortcut-icon">${SVG.bulb}</span>
                       <span><strong>วิธีคิดลัด (Short Cut):</strong> ปัดผลรวม ${calc.totalSum} ขึ้นเป็นจำนวนเต็มสิบถัดไปคือ <strong>${calc.nextMultiple10}</strong> แล้วนำ <strong>${calc.nextMultiple10} - ${calc.totalSum} = ${calc.checkDigit}</strong> ได้ผลลัพธ์ตรงกันทันที!</span>
                     </div>
                   </div>
@@ -725,7 +845,7 @@
           <div class="formula-body">
             <div class="math-split-box">
               <span class="split-pill">ผลรวม 12 หลักแรก = <strong>${calc.totalSum}</strong></span>
-              <span class="split-plus">➔</span>
+              <span class="split-plus">→</span>
               <span class="split-pill">หารด้วย 10: ${calc.totalSum} ÷ 10 = ${Math.floor(calc.totalSum / 10)} <strong>เศษ ${calc.remainder}</strong></span>
             </div>
           </div>
@@ -752,7 +872,7 @@
               </div>
             </div>
             <div class="verdict-banner-invalid">
-              <div class="v-icon">❌</div>
+              <div class="v-icon">${SVG.crossRed}</div>
               <div>
                 <strong class="v-title font-notch">รหัสบาร์โค้ดนี้ไม่ถูกต้อง (INVALID)!</strong>
                 <p class="v-desc">เลขตรวจสอบที่ถูกต้องคือ <strong>9</strong> แต่บนสินค้ากลับพิมพ์ <strong>7</strong> ระบบนำเข้าข้อมูลจะปฏิเสธการสแกนทันที</p>
@@ -803,7 +923,7 @@
           title="ไปยังขั้นตอนที่ ${idx + 1}"
           aria-label="ขั้นตอนที่ ${idx + 1}"
         >
-          <span>${isDone ? "✓" : idx + 1}</span>
+          <span>${isDone ? SVG.checkGreen : idx + 1}</span>
         </button>
       `;
     }).join("");
@@ -834,7 +954,7 @@
           ${isLast ? "disabled" : ""}
           title="${isLast ? "สิ้นสุดขั้นตอนตัวอย่างนี้แล้ว" : "ดูขั้นตอนถัดไป (Next Step)"}"
         >
-          <span>${isLast ? "ครบทุกขั้นตอนแล้ว ✓" : "ขั้นตอนถัดไป (Next) >"}</span>
+          <span>${isLast ? "ครบทุกขั้นตอนแล้ว" : "ขั้นตอนถัดไป (Next)"}</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
             <polyline points="9 18 15 12 9 6"></polyline>
           </svg>
@@ -867,7 +987,7 @@
           if (isValid13) {
             alertHtml = `
               <div class="live-verdict-banner is-valid">
-                <span class="lv-icon">✅</span>
+                <span class="lv-icon">${SVG.checkGreen}</span>
                 <div style="flex:1;">
                   <strong class="lv-title font-notch">รหัสบาร์โค้ดถูกต้องสมบูรณ์ (VALID BARCODE)</strong>
                   <p class="lv-desc">เลขตรวจสอบหลักที่ 13 ที่ป้อนมา (<strong class="font-notch">${given13th}</strong>) ตรงกับค่าที่คำนวณได้จริงจาก 12 หลักแรก (<strong class="font-notch">${calculated13th}</strong>)</p>
@@ -878,7 +998,7 @@
           } else {
             alertHtml = `
               <div class="live-verdict-banner is-invalid">
-                <span class="lv-icon">❌</span>
+                <span class="lv-icon">${SVG.crossRed}</span>
                 <div style="flex:1;">
                   <strong class="lv-title font-notch">รหัสบาร์โค้ดไม่ถูกต้อง (INVALID BARCODE)</strong>
                   <p class="lv-desc">เลขหลักที่ 13 ที่ป้อนมาคือ <strong class="font-notch" style="color:#ef4444;">${given13th}</strong> แต่ค่าที่คำนวณได้จริงคือ <strong class="font-notch" style="color:#2563eb;">${calculated13th}</strong> (ระบบจะไม่อนุญาตให้ผ่าน)</p>
@@ -890,7 +1010,7 @@
         } else {
           alertHtml = `
             <div class="live-verdict-banner is-info">
-              <span class="lv-icon">🔑</span>
+              <span class="lv-icon">${SVG.keyBlue}</span>
               <div style="flex:1;">
                 <strong class="lv-title font-notch">คำนวณ Check Digit หลักที่ 13 สำเร็จ!</strong>
                 <p class="lv-desc">จากรหัส 12 หลักที่ป้อนมา เลขตรวจสอบที่ต้องใช้ต่อท้ายคือ <strong class="font-notch" style="color:var(--blue-600); font-size:1.15rem;">${calc.checkDigit}</strong> (รหัสสมบูรณ์คือ ${calc.fullCode})</p>
@@ -903,7 +1023,7 @@
     } else {
       alertHtml = `
         <div class="live-verdict-banner is-pending">
-          <span class="lv-icon">⌨️</span>
+          <span class="lv-icon">${SVG.keyboard}</span>
           <div style="flex:1;">
             <strong class="lv-title font-notch">กรุณาพิมพ์ตัวเลขให้ครบอย่างน้อย 12 หลัก</strong>
             <p class="lv-desc">ปัจจุบันพิมพ์แล้ว ${len} หลัก (พิมพ์ 12 หลักเพื่อคำนวณ Check Digit หรือพิมพ์ 13 หลักเพื่อตรวจสอบความถูกต้อง)</p>
@@ -947,7 +1067,7 @@
                   autocomplete="off"
                 />
                 <button type="button" class="btn-secondary live-random-btn" id="ean13-btn-random" title="สุ่มรหัสบาร์โค้ด 12 หลักเพื่อทดสอบ">
-                  <span>🎲 สุ่มเลข</span>
+                  ${SVG.shuffle}<span>สุ่มรหัส 12 หลัก</span>
                 </button>
               </div>
             </div>
@@ -958,19 +1078,19 @@
             <span class="presets-label">เลือกตัวอย่างโจทย์คลิกเดียว:</span>
             <div class="presets-buttons-row">
               <button type="button" class="preset-pill-btn" data-ean13-preset="885123456789">
-                <span>📘 ตัวอย่าง 1 (885123456789)</span>
+                <span>ตัวอย่าง 1 (885123456789)</span>
               </button>
               <button type="button" class="preset-pill-btn" data-ean13-preset="885135790246">
-                <span>⚡ ตัวอย่าง 2 เศษ 0 (885135790246)</span>
+                <span>ตัวอย่าง 2 เศษ 0 (885135790246)</span>
               </button>
               <button type="button" class="preset-pill-btn is-wrong" data-ean13-preset="8850010020037">
-                <span>🔍 ตัวอย่าง 3 รหัสผิด (8850010020037)</span>
+                <span>ตัวอย่าง 3 รหัสผิด (8850010020037)</span>
               </button>
               <button type="button" class="preset-pill-btn" data-ean13-preset="8850987101014">
-                <span>🍜 มาม่าต้มยำกุ้ง (8850987101014)</span>
+                <span>มาม่าต้มยำกุ้ง (8850987101014)</span>
               </button>
               <button type="button" class="preset-pill-btn" data-ean13-preset="8850188800051">
-                <span>🥛 นมโฟร์โมสต์ (8850188800051)</span>
+                <span>นมโฟร์โมสต์ (8850188800051)</span>
               </button>
             </div>
           </div>
@@ -984,7 +1104,7 @@
               ? `
                 <div style="margin-top:20px;">
                   <span class="live-section-title font-notch">ตารางคำนวณและแจกแจงน้ำหนัก 12 หลักแรก:</span>
-                  ${renderCalculationMatrix(calc, dummyStep, "all")}
+                  ${renderCalculationMatrix(calc, dummyStep, "all", { id: "live" })}
                   
                   <div class="live-summary-cards-row">
                     <div class="live-summary-box">
@@ -1025,10 +1145,10 @@
 
     // Tabs Header
     const tabs = [
-      { id: 0, title: "📘 ตัวอย่างที่ 1: คำนวณทีละขั้นตอน (885123456789)" },
-      { id: 1, title: "⚡ ตัวอย่างที่ 2: กรณีเศษเป็นศูนย์ (885135790246)" },
-      { id: 2, title: "🔍 ตัวอย่างที่ 3: ตรวจสอบความถูกต้อง (8850010020037)" },
-      { id: 3, title: "🛠️ เครื่องมือคำนวณ & ตรวจสอบบาร์โค้ดสด" }
+      { id: 0, title: "ตัวอย่างที่ 1: คำนวณทีละขั้นตอน (885123456789)" },
+      { id: 1, title: "ตัวอย่างที่ 2: กรณีเศษเป็นศูนย์ (885135790246)" },
+      { id: 2, title: "ตัวอย่างที่ 3: ตรวจสอบความถูกต้อง (8850010020037)" },
+      { id: 3, title: "เครื่องมือคำนวณ & ตรวจสอบบาร์โค้ดสด" }
     ];
 
     const tabsHtml = tabs
@@ -1072,7 +1192,7 @@
           ${renderStepperControls(example, curStepIdx)}
 
           <!-- Dynamic 12-Column Calculation Matrix -->
-          ${renderCalculationMatrix(calc, curStep, curStep.focus)}
+          ${renderCalculationMatrix(calc, curStep, curStep.focus, example)}
 
           <!-- Step Detail Board -->
           ${renderStepDetailBoard(example, curStepIdx)}

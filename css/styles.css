@@ -6123,11 +6123,359 @@ body.is-minigame-active main.app-container {
   padding-bottom: 6px;
 }
 
+/* 13-Column Calculation Matrix Table (Accommodates 12 payload digits + 1 Check Digit) */
 .ean13-matrix-grid {
   display: grid;
-  grid-template-columns: repeat(12, minmax(56px, 1fr));
+  grid-template-columns: repeat(12, minmax(52px, 1fr)) minmax(70px, 1.25fr);
   gap: 6px;
-  min-width: 680px;
+  min-width: 760px;
+}
+
+/* 13th Check Digit Column Distinctive Styling */
+.ean13-matrix-col.is-col-checkdigit {
+  border-left: 2px dashed var(--border-ink, #111827);
+  padding-left: 6px;
+  background: rgba(0, 229, 255, 0.04);
+  border-radius: 8px;
+}
+
+.ean13-matrix-col.is-col-checkdigit .cell-pos {
+  background: #0f172a;
+  color: #00e5ff;
+  border-color: #00e5ff;
+}
+
+.ean13-matrix-col.is-col-checkdigit .cell-digit {
+  font-weight: 900;
+  border-width: 2px;
+}
+
+.ean13-matrix-col.is-col-checkdigit .cell-digit.is-waiting-check {
+  background: #f8fafc;
+  color: #94a3b8;
+  border-style: dashed;
+  border-color: #cbd5e1;
+}
+
+.ean13-matrix-col.is-col-checkdigit .cell-weight {
+  background: #f1f5f9;
+  color: #475569;
+  border-style: dashed;
+  font-size: 0.72rem;
+}
+
+.ean13-matrix-col.is-col-checkdigit .cell-prod {
+  font-size: 0.85rem;
+}
+
+/* Legend Chips with Active Changed Indicator */
+.legend-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  background: var(--surface-card, #ffffff);
+  border: 1.5px solid var(--border-subtle, #cbd5e1);
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.legend-chip.is-active-changed {
+  border-color: var(--border-ink, #111827);
+  background: var(--accent-yellow, #ffe600);
+  color: #111827;
+  font-weight: 700;
+  box-shadow: 2px 2px 0 var(--border-ink, #111827);
+  transform: translateY(-1px);
+}
+
+.legend-pulse-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: #111827;
+  color: #ffe600;
+  animation: eanLegendBadgePulse 1.4s ease-in-out infinite;
+}
+
+.legend-pulse-badge.is-green {
+  background: #15803d;
+  color: #ffffff;
+}
+
+@keyframes eanLegendBadgePulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.08); opacity: 0.85; }
+}
+
+/* ==========================================================================
+   EAN-13 STEP-AWARE NUMBER BLINK, PULSE & MOVEMENT ANIMATIONS
+   ========================================================================== */
+
+/* Animation 1: Digits Entrance & Blink (Step 1) */
+.ean-cell-changed.is-anim-digit {
+  animation: eanDigitBouncePop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+             eanDigitBlinkWave 1.4s ease-in-out 0.4s 2;
+  animation-delay: calc(var(--col-idx, 0) * 35ms), calc(var(--col-idx, 0) * 35ms + 0.4s);
+}
+
+@keyframes eanDigitBouncePop {
+  0% {
+    transform: scale(0.65) translateY(6px);
+    opacity: 0.2;
+    background-color: #fef08a;
+  }
+  60% {
+    transform: scale(1.18) translateY(-3px);
+    background-color: var(--accent-yellow, #ffe600);
+    box-shadow: 0 0 14px rgba(255, 230, 0, 0.7);
+    border-color: #111827;
+  }
+  80% {
+    transform: scale(0.96) translateY(1px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    background-color: #ffffff;
+  }
+}
+
+@keyframes eanDigitBlinkWave {
+  0%, 100% {
+    box-shadow: none;
+    border-color: var(--border-ink, #111827);
+  }
+  50% {
+    border-color: #0284c7;
+    background-color: #e0f2fe;
+    box-shadow: 0 0 10px rgba(2, 132, 199, 0.5);
+    transform: scale(1.06) translateY(-1px);
+  }
+}
+
+/* Animation 2: Weight Pop & Alternating Pulse (Step 2) */
+.ean-cell-changed.is-anim-weight {
+  animation: eanWeightBouncePop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+             eanWeightPulseBlink 1.4s ease-in-out 0.4s 2;
+  animation-delay: calc(var(--col-idx, 0) * 40ms), calc(var(--col-idx, 0) * 40ms + 0.4s);
+}
+
+@keyframes eanWeightBouncePop {
+  0% {
+    transform: scale(0.5) translateY(5px);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.22) translateY(-2px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes eanWeightPulseBlink {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: none;
+  }
+  50% {
+    transform: scale(1.14);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Animation 3: Product Calculation Pop & Neon Blue Blink (Step 3) */
+.ean-cell-changed.is-anim-product {
+  animation: eanProductCalculationPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+             eanProductPulseBlink 1.3s ease-in-out 0.45s 3;
+  animation-delay: calc(var(--col-idx, 0) * 45ms), calc(var(--col-idx, 0) * 45ms + 0.45s);
+}
+
+@keyframes eanProductCalculationPop {
+  0% {
+    transform: scale(0.4) translateY(8px);
+    opacity: 0;
+    background: #93c5fd;
+  }
+  60% {
+    transform: scale(1.24) translateY(-4px);
+    background: #bfdbfe;
+    border-color: #1d4ed8;
+    box-shadow: 0 0 16px rgba(37, 99, 235, 0.7);
+  }
+  80% {
+    transform: scale(0.95) translateY(1px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    background: #dbeafe;
+    border-color: #2563eb;
+    color: #1e40af;
+  }
+}
+
+@keyframes eanProductPulseBlink {
+  0%, 100% {
+    border-color: #2563eb;
+    background: #dbeafe;
+    box-shadow: none;
+  }
+  50% {
+    border-color: #1d4ed8;
+    background: #bfdbfe;
+    transform: scale(1.1) translateY(-2px);
+    box-shadow: 0 0 14px rgba(37, 99, 235, 0.65);
+  }
+}
+
+/* Animation 4: Sum Wave Harmony (Step 4) */
+.is-anim-sum-focus {
+  animation: eanSumCollectWave 1.8s ease-in-out infinite;
+  animation-delay: calc(var(--col-idx, 0) * 50ms);
+}
+
+@keyframes eanSumCollectWave {
+  0%, 100% {
+    transform: scale(1);
+    background: #dbeafe;
+    border-color: #2563eb;
+  }
+  50% {
+    transform: translateY(-3px) scale(1.07);
+    background: #bfdbfe;
+    border-color: #1d4ed8;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.45);
+  }
+}
+
+/* Animation 5: Check Digit Solved Victory Pop & Green Blink (Step 6 & 7) */
+.ean-cell-changed.is-anim-checkdigit-solved {
+  animation: eanCheckDigitSolvedPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+             eanCheckDigitBlink 1.4s ease-in-out 0.6s infinite;
+}
+
+@keyframes eanCheckDigitSolvedPop {
+  0% {
+    transform: scale(0.3) rotate(-6deg);
+    opacity: 0;
+    background: #fde047;
+  }
+  60% {
+    transform: scale(1.3) rotate(3deg);
+    background: #86efac;
+    border-color: #15803d;
+    box-shadow: 0 0 24px rgba(16, 185, 129, 0.85);
+  }
+  80% {
+    transform: scale(0.95) rotate(-1deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+    background: #dcfce7;
+    border-color: #15803d;
+    color: #15803d;
+  }
+}
+
+@keyframes eanCheckDigitBlink {
+  0%, 100% {
+    border-color: #15803d;
+    box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
+    transform: scale(1);
+  }
+  50% {
+    border-color: #16a34a;
+    box-shadow: 0 0 18px rgba(16, 185, 129, 0.8);
+    transform: scale(1.08);
+  }
+}
+
+.is-anim-checkdigit-sealed {
+  background: #dcfce7 !important;
+  border-color: #15803d !important;
+  color: #15803d !important;
+}
+
+/* Animation 6: Invalid Check Digit Shake & Red Blink (Tab 3 Step 5) */
+.ean-cell-changed.is-anim-invalid-shake {
+  animation: eanMismatchShake 0.6s ease-in-out both,
+             eanMismatchBlink 1.3s ease-in-out 0.6s infinite;
+}
+
+@keyframes eanMismatchShake {
+  0%, 100% { transform: translateX(0); }
+  15%, 45%, 75% { transform: translateX(-5px) scale(1.06); }
+  30%, 60%, 90% { transform: translateX(5px) scale(1.06); }
+}
+
+@keyframes eanMismatchBlink {
+  0%, 100% {
+    background: #fee2e2;
+    border-color: #dc2626;
+    color: #b91c1c;
+    box-shadow: 0 0 6px rgba(220, 38, 38, 0.4);
+  }
+  50% {
+    background: #fca5a5;
+    border-color: #b91c1c;
+    color: #7f1d1d;
+    box-shadow: 0 0 16px rgba(220, 38, 38, 0.8);
+    transform: scale(1.08);
+  }
+}
+
+/* Value Badges */
+.badge-solved-val {
+  font-weight: 900;
+  color: #15803d;
+}
+
+.badge-mismatch-val {
+  font-weight: 900;
+  color: #dc2626;
+}
+
+.prod-badge-solved {
+  font-weight: 800;
+  color: #15803d;
+}
+
+/* Dark Mode Support for Matrix Animations */
+html[data-theme="dark"] .ean13-matrix-col.is-col-checkdigit {
+  border-left-color: #334155;
+  background: rgba(0, 229, 255, 0.08);
+}
+
+html[data-theme="dark"] .ean13-matrix-col.is-col-checkdigit .cell-pos {
+  background: #0284c7;
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .ean13-matrix-col.is-col-checkdigit .cell-digit.is-waiting-check {
+  background: #0f172a;
+  color: #64748b;
+  border-color: #334155;
+}
+
+html[data-theme="dark"] .legend-chip {
+  background: #1e293b;
+  border-color: #334155;
+  color: #cbd5e1;
+}
+
+html[data-theme="dark"] .legend-chip.is-active-changed {
+  background: var(--accent-yellow, #ffe600);
+  color: #111827;
+  border-color: #334155;
 }
 
 .ean13-matrix-col {

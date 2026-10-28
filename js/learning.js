@@ -786,7 +786,7 @@
             data-goto-step="${idx}"
             ${isLocked ? 'disabled title="ไม่อนุญาตให้กดข้ามสเต็ป กรุณาเรียนตามลำดับ"' : `title="ไปยังสเต็ปที่ ${idx + 1}"`}
           >
-            <span class="font-notch tabular-nums">${isLocked ? "🔒 " : ""}สเต็ปที่ ${idx + 1}</span>
+            <span class="font-notch tabular-nums">${isLocked ? `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:middle; margin-right:4px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>` : ""}สเต็ปที่ ${idx + 1}</span>
           </button>
         `;
       })
