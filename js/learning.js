@@ -663,6 +663,10 @@
       `;
     }
 
+    if (block.type === "ean13-guide") {
+      return window.Ean13GuideEngine ? window.Ean13GuideEngine.renderRootHtml() : "";
+    }
+
     return "";
   }
 
@@ -1693,6 +1697,49 @@
         return;
       }
 
+      // EAN-13 Interactive Stepper & Validator Events
+      const eanTab = e.target.closest("[data-ean13-tab]");
+      if (eanTab) {
+        e.preventDefault();
+        const tabIdx = Number(eanTab.getAttribute("data-ean13-tab"));
+        window.Ean13GuideEngine?.setTab(tabIdx);
+        return;
+      }
+
+      if (e.target.closest("#ean13-btn-prev")) {
+        e.preventDefault();
+        window.Ean13GuideEngine?.prevStep();
+        return;
+      }
+
+      if (e.target.closest("#ean13-btn-next")) {
+        e.preventDefault();
+        window.Ean13GuideEngine?.nextStep();
+        return;
+      }
+
+      const eanDot = e.target.closest("[data-ean13-step-dot]");
+      if (eanDot) {
+        e.preventDefault();
+        const dotIdx = Number(eanDot.getAttribute("data-ean13-step-dot"));
+        window.Ean13GuideEngine?.goToStep(dotIdx);
+        return;
+      }
+
+      const eanPreset = e.target.closest("[data-ean13-preset]");
+      if (eanPreset) {
+        e.preventDefault();
+        const code = eanPreset.getAttribute("data-ean13-preset");
+        window.Ean13GuideEngine?.setCustomBarcode(code);
+        return;
+      }
+
+      if (e.target.closest("#ean13-btn-random")) {
+        e.preventDefault();
+        window.Ean13GuideEngine?.generateRandomBarcode();
+        return;
+      }
+
       // Abort Quiz Back to Reader / Directory
       if (e.target.closest("#btn-abort-quiz")) {
         e.preventDefault();
@@ -1730,6 +1777,13 @@
       if (e.target.closest("#btn-retry-save-quiz")) {
         e.preventDefault();
         finishAndSaveUnitQuiz();
+      }
+    });
+
+    // Real-time input handling for EAN-13 Live Barcode Validator
+    lessonsSection.addEventListener("input", (e) => {
+      if (e.target && e.target.id === "ean13-live-input") {
+        window.Ean13GuideEngine?.onCustomInputChange(e.target.value);
       }
     });
   }
