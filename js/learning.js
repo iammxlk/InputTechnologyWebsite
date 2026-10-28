@@ -229,15 +229,25 @@
               <span class="unit-number-badge ${isPassed ? "is-done" : ""}">${esc(currentUnit.code)}</span>
               <span class="status-pill is-neutral">${esc(currentMod ? currentMod.title : "")}</span>
               <span class="status-pill ${
-                isPassed ? "is-pass" : isContentRead ? "is-info" : isAvailable ? "is-info" : "is-warn"
+                isPassed
+                  ? "is-pass"
+                  : isContentRead
+                  ? "is-info"
+                  : isAvailable
+                  ? stepsDone > 0
+                    ? "is-warn"
+                    : "is-neutral"
+                  : "is-warn"
               }">
                 ${
                   isPassed
                     ? `สอบผ่านแล้ว (${currentProg.best_quiz_score}/10)`
                     : isContentRead
-                    ? `อ่านครบ ${totalSteps} สเต็ปแล้ว • พร้อมทำควิซ`
+                    ? "เรียนครบแล้ว • พร้อมทำควิซ"
                     : isAvailable
-                    ? `เนื้อหา ${totalSteps} สเต็ป (อ่านให้ครบก่อนทำควิซ)`
+                    ? stepsDone > 0
+                      ? `ยังเรียนไม่ครบหน่วย (${stepsDone}/${totalSteps} สเต็ป)`
+                      : "ยังเรียนไม่ครบหน่วย"
                     : "รออัปเดตเนื้อหา"
                 }
               </span>
@@ -310,7 +320,7 @@
           const isSelected = u.no === activeUnitNo;
 
           let statusClass = "is-neutral";
-          let statusLabel = available ? "พร้อมเข้าเรียน" : "รออัปเดต";
+          let statusLabel = available ? "ยังเรียนไม่ครบหน่วย" : "รออัปเดต";
           if (passed) {
             statusClass = "is-pass";
             statusLabel = `ผ่านเกณฑ์ (${prog.best_quiz_score}/10)`;
@@ -319,10 +329,13 @@
             statusLabel = `สูงสุด ${prog.best_quiz_score}/10`;
           } else if (isContentRead) {
             statusClass = "is-info";
-            statusLabel = "อ่านครบแล้ว • พร้อมทำควิซ";
+            statusLabel = "เรียนครบแล้ว • พร้อมทำควิซ";
           } else if (uStepsDone > 0) {
-            statusClass = "is-info";
-            statusLabel = `อ่านแล้ว ${uStepsDone}/${uTotalSteps} สเต็ป`;
+            statusClass = "is-warn";
+            statusLabel = `ยังเรียนไม่ครบหน่วย (${uStepsDone}/${uTotalSteps} สเต็ป)`;
+          } else if (available) {
+            statusClass = "is-neutral";
+            statusLabel = "ยังเรียนไม่ครบหน่วย";
           }
 
           const unitCardHtml = `
@@ -697,8 +710,8 @@
                 isPassed
                   ? `ผ่านเกณฑ์แล้ว (${prog.best_quiz_score}/10)`
                   : isContentRead
-                  ? "อ่านเนื้อหาครบแล้ว • พร้อมทำควิซ"
-                  : "อ่านให้ครบทุกสเต็ปก่อนทำควิซ"
+                  ? "เรียนครบแล้ว • พร้อมทำควิซ"
+                  : `ยังเรียนไม่ครบหน่วย (${currentStepIndex + 1}/${totalSteps} สเต็ป)`
               }
             </span>
           </div>

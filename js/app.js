@@ -418,14 +418,14 @@
             const bestScore = Number(prog.best_quiz_score || 0);
             const bestTime = Number(prog.best_quiz_time_sec || 0);
 
-            let readLabel = "ยังไม่เริ่ม";
+            let readLabel = "ยังเรียนไม่ครบหน่วย";
             let readColor = "var(--text-muted)";
             if (isRead) {
-              readLabel = "อ่านครบแล้ว";
+              readLabel = "เรียนครบแล้ว";
               readColor = "var(--status-pass-ink)";
             } else if (stepsDone > 0) {
-              readLabel = `อ่านถึงสเต็ป ${stepsDone}`;
-              readColor = "var(--blue-600)";
+              readLabel = `ยังเรียนไม่ครบ (${stepsDone} สเต็ป)`;
+              readColor = "var(--accent-signal)";
             }
 
             let statusPillClass = "is-neutral";
