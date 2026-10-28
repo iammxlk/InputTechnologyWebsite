@@ -73,7 +73,7 @@
         <text x="12" y="56" fill="#64748B" class="thai" font-size="10">สาเหตุ: กดส่งแบบฟอร์มซ้ำ 2 ครั้ง</text>
       </g>
 
-      <!-- Issue 4: Trailing Whitespaces & Encoding -->
+      <!-- Issue 4: Trailing Whitespaces &amp; Encoding -->
       <g transform="translate(0, 240)">
         <rect width="284" height="68" rx="8" fill="#1E192B" stroke="#F59E0B" stroke-width="1.2"/>
         <text x="12" y="22" fill="#FBBF24" font-weight="700">ERR 04: TRAILING SPACES &amp; MOJIBAKE</text>

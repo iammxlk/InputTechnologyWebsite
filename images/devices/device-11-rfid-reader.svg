@@ -22,7 +22,7 @@
   <rect x="36" y="28" width="310" height="32" rx="6" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/>
   <circle cx="52" cy="44" r="5" fill="#38BDF8"/>
   <text x="68" y="49" fill="#38BDF8" font-family="'Stack Sans Notch', sans-serif" font-weight="700" font-size="12" letter-spacing="1">UNIT 11 HARDWARE SPECIMEN</text>
-  <text x="36" y="86" fill="#F8FAFC" font-family="'Mitr', sans-serif" font-weight="600" font-size="18">Industrial 4-Port UHF RFID Portal Reader & RFID Scanner Gun</text>
+  <text x="36" y="86" fill="#F8FAFC" font-family="'Mitr', sans-serif" font-weight="600" font-size="18">Industrial 4-Port UHF RFID Portal Reader &amp; RFID Scanner Gun</text>
   <text x="36" y="108" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="12">เครื่องอ่านคลื่นความถี่วิทยุ UHF 860-960 MHz กำลังส่งสูงสำหรับคลังสินค้า พร้อมปืนยิง RFID และแท็กหลากหลายรูปแบบ</text>
   
   <g filter="url(#shadow)" transform="translate(80, 150)">

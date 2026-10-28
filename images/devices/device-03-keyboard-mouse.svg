@@ -35,7 +35,7 @@
   <circle cx="260" cy="250" r="220" fill="#3b82f6" opacity="0.05" filter="blur(40px)"/>
   <circle cx="620" cy="250" r="180" fill="#ff6b4a" opacity="0.05" filter="blur(40px)"/>
 
-  <!-- Left: Mechanical Keyboard Switch & 75% Layout -->
+  <!-- Left: Mechanical Keyboard Switch &amp; 75% Layout -->
   <g filter="url(#shadow03)">
     <!-- Keyboard Base -->
     <rect x="50" y="140" width="400" height="230" rx="14" fill="url(#kbBody)" stroke="#475569" stroke-width="2"/>
@@ -130,7 +130,7 @@
     <path d="M 90 20 C 130 20 170 50 175 140 C 180 230 160 300 90 300 C 20 300 0 230 5 140 C 10 50 50 20 90 20 Z" 
           fill="url(#mouseBody)" stroke="#475569" stroke-width="2.5"/>
 
-    <!-- Left & Right Click Separation -->
+    <!-- Left &amp; Right Click Separation -->
     <path d="M 90 20 L 90 120" stroke="#0f172a" stroke-width="3"/>
     <path d="M 50 120 C 80 135 100 135 130 120" stroke="#0f172a" stroke-width="2" fill="none"/>
 

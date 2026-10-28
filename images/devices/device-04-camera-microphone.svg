@@ -22,19 +22,19 @@
   <rect x="36" y="28" width="310" height="32" rx="6" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/>
   <circle cx="52" cy="44" r="5" fill="#38BDF8"/>
   <text x="68" y="49" fill="#38BDF8" font-family="'Stack Sans Notch', sans-serif" font-weight="700" font-size="12" letter-spacing="1">UNIT 4 HARDWARE SPECIMEN</text>
-  <text x="36" y="86" fill="#F8FAFC" font-family="'Mitr', sans-serif" font-weight="600" font-size="18">4K Studio CMOS Streaming Camera & Condenser Microphone</text>
+  <text x="36" y="86" fill="#F8FAFC" font-family="'Mitr', sans-serif" font-weight="600" font-size="18">4K Studio CMOS Streaming Camera &amp; Condenser Microphone</text>
   <text x="36" y="108" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="12">เซนเซอร์รับภาพ CMOS พร้อม Bayer Filter และไมโครโฟนคอนเดนเซอร์สตูดิโอคู่กับวงจร ADC 24-bit/96kHz</text>
   
   <!-- Camera Body -->
   <g filter="url(#shadow)" transform="translate(80, 150)">
     <!-- Main Camera Body -->
     <rect x="0" y="50" width="260" height="180" rx="14" fill="#1E293B" stroke="#475569" stroke-width="2"/>
-    <!-- Top Grip & Hot Shoe -->
+    <!-- Top Grip &amp; Hot Shoe -->
     <rect x="30" y="25" width="80" height="25" rx="4" fill="#0F172A" stroke="#475569" stroke-width="1.5"/>
     <rect x="55" y="15" width="30" height="10" rx="2" fill="#64748B"/>
     <!-- Red Accent Ring -->
     <circle cx="160" cy="140" r="75" fill="none" stroke="#EF4444" stroke-width="2"/>
-    <!-- Lens Mount & Glass Optics -->
+    <!-- Lens Mount &amp; Glass Optics -->
     <circle cx="160" cy="140" r="70" fill="#0F172A" stroke="#64748B" stroke-width="3"/>
     <circle cx="160" cy="140" r="50" fill="#0284C7" opacity="0.3"/>
     <!-- Exposed CMOS Sensor in Center -->
@@ -68,7 +68,7 @@
     <ellipse cx="140" cy="300" rx="60" ry="14" fill="#0F172A" stroke="#475569" stroke-width="1.5"/>
     <rect x="134" y="210" width="12" height="90" fill="#334155" stroke="#475569" stroke-width="1"/>
     
-    <!-- Shockmount Rings & Bands -->
+    <!-- Shockmount Rings &amp; Bands -->
     <circle cx="140" cy="180" r="42" fill="none" stroke="#475569" stroke-width="3"/>
     <line x1="102" y1="160" x2="120" y2="180" stroke="#EF4444" stroke-width="1.5"/>
     <line x1="178" y1="160" x2="160" y2="180" stroke="#EF4444" stroke-width="1.5"/>

@@ -82,7 +82,7 @@
     <text x="76" y="38" fill="#FFFFFF" font-size="20" font-weight="700" class="thai">สแกนข้อมูลชีวมิติ</text>
     <text x="76" y="58" fill="#7DD3FC" font-size="13" class="mono">BIOMETRIC CAPTURE</text>
 
-    <!-- Visual: Fingerprint & Face Mesh Illustration -->
+    <!-- Visual: Fingerprint &amp; Face Mesh Illustration -->
     <g transform="translate(45, 110)">
       <rect width="300" height="250" rx="14" fill="#08101E" stroke="#1E3A5F" stroke-width="1.5"/>
       
@@ -173,7 +173,7 @@
     <path d="M 12 20 L 26 20 M 20 14 L 26 20 L 20 26" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 
-  <!-- ==================== STAGE 3: VECTOR TEMPLATE & ENCRYPTION ==================== -->
+  <!-- ==================== STAGE 3: VECTOR TEMPLATE &amp; ENCRYPTION ==================== -->
   <g transform="translate(1000, 260)" filter="url(#shadow12)">
     <rect width="390" height="660" rx="20" fill="url(#cardGrad12)" stroke="#8B5CF6" stroke-width="2"/>
     <rect width="390" height="74" rx="20" fill="#4C1D95" fill-opacity="0.7"/>
@@ -182,7 +182,7 @@
     <text x="76" y="38" fill="#FFFFFF" font-size="20" font-weight="700" class="thai">แปลงเป็นเวกเตอร์ดิจิทัล</text>
     <text x="76" y="58" fill="#C4B5FD" font-size="13" class="mono">DIGITAL TEMPLATE &amp; HASH</text>
 
-    <!-- Visual: Microprocessor & Hash Stream -->
+    <!-- Visual: Microprocessor &amp; Hash Stream -->
     <g transform="translate(45, 110)">
       <rect width="300" height="250" rx="14" fill="#08101E" stroke="#3B0764" stroke-width="1.5"/>
       
@@ -218,7 +218,7 @@
     <path d="M 12 20 L 26 20 M 20 14 L 26 20 L 20 26" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 
-  <!-- ==================== STAGE 4: VERIFICATION & ACCESS ==================== -->
+  <!-- ==================== STAGE 4: VERIFICATION &amp; ACCESS ==================== -->
   <g transform="translate(1460, 260)" filter="url(#shadow12)">
     <rect width="390" height="660" rx="20" fill="url(#cardGrad12)" stroke="#10B981" stroke-width="2"/>
     <rect width="390" height="74" rx="20" fill="#064E3B" fill-opacity="0.7"/>
@@ -227,7 +227,7 @@
     <text x="76" y="38" fill="#FFFFFF" font-size="20" font-weight="700" class="thai">ตรวจสอบและอนุมัติ</text>
     <text x="76" y="58" fill="#6EE7B7" font-size="13" class="mono">MATCH &amp; ACCESS GRANTED</text>
 
-    <!-- Visual: Matching Score & Shield -->
+    <!-- Visual: Matching Score &amp; Shield -->
     <g transform="translate(45, 110)">
       <rect width="300" height="250" rx="14" fill="#08101E" stroke="#065F46" stroke-width="1.5"/>
       

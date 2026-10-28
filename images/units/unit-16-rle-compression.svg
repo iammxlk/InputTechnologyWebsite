@@ -130,7 +130,7 @@
     </g>
   </g>
 
-  <!-- ==================== STAGE 3: EFFICIENCY & LOSSLESS PROOF PANEL ==================== -->
+  <!-- ==================== STAGE 3: EFFICIENCY &amp; LOSSLESS PROOF PANEL ==================== -->
   <g transform="translate(64, 540)" filter="url(#shadow16)">
     <rect width="1152" height="140" rx="12" fill="#0A0F1D" stroke="#334155" stroke-width="1.5"/>
 
