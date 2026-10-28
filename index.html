@@ -14,7 +14,7 @@
   />
 
   <!-- Modern Blue & White Stylesheet -->
-  <link rel="stylesheet" href="css/styles.css?v=2.9" />
+  <link rel="stylesheet" href="css/styles.css?v=3.0" />
 
   <!-- Immediate Theme Initializer (Prevents Flash of Light/Dark Theme on Load) -->
   <script>
@@ -579,7 +579,7 @@
 
                 <!-- Visual Interactive Chamber -->
                 <div class="cyber-chamber-stage">
-                  <!-- Left: Target Visual with Real Scanning Beam Animation -->
+                  <!-- Visual Target with Real Scanning Beam Animation -->
                   <div class="cyber-target-frame" id="scanner-target-frame">
                     <!-- Dynamic Scanning Laser Beam -->
                     <div id="cyber-laser-beam" class="cyber-laser-beam"></div>
@@ -598,6 +598,7 @@
                         </div>
                         <span class="barcode-num font-notch">8 850123 456789</span>
                       </div>
+                      <span class="target-tech-pill font-notch">🔴 650nm RED LASER BEAM // EAN-13 BARCODE SCANNER</span>
                     </div>
 
                     <!-- Target 2: 2D QR Code -->
@@ -610,6 +611,7 @@
                         </div>
                         <span class="qr-caption font-notch">DENSO-WAVE 2D (33x33)</span>
                       </div>
+                      <span class="target-tech-pill font-notch">🟢 2D AREA IMAGER // REED-SOLOMON ERROR CORRECTION (30%)</span>
                     </div>
 
                     <!-- Target 3: RFID Wave -->
@@ -626,6 +628,7 @@
                         </div>
                         <span class="rfid-freq font-notch">13.56 MHz // ISO 14443A</span>
                       </div>
+                      <span class="target-tech-pill font-notch">🔵 13.56MHz WIRELESS INDUCTION // CONTACTLESS SMART CARD</span>
                     </div>
 
                     <!-- Target 4: Biometric Fingerprint -->
@@ -641,48 +644,7 @@
                         </div>
                         <span class="bio-status font-notch">MINUTIAE MATCH: 99.6%</span>
                       </div>
-                    </div>
-                  </div>
-
-                  <!-- Right: Real-time Data Ingestion & Binary Stream Pipeline -->
-                  <div class="cyber-pipeline-flow">
-                    <div class="pipeline-header">
-                      <span class="font-notch pipeline-label">DATA PIPELINE FLOW (IPO)</span>
-                      <span id="scanner-latency-badge" class="font-notch latency-badge">LATENCY: 1.2ms</span>
-                    </div>
-
-                    <!-- Visual Step Nodes: SENSOR -> ADC -> CPU BUFFER -->
-                    <div class="pipeline-step-nodes">
-                      <div class="p-node is-active" id="p-node-sensor">
-                        <span class="p-node-tag font-notch">STEP 1: SENSOR</span>
-                        <strong id="p-sensor-type" class="p-node-title">650nm Laser Photodiode</strong>
-                      </div>
-                      <div class="p-node-arrow">➔</div>
-                      <div class="p-node is-active" id="p-node-adc">
-                        <span class="p-node-tag font-notch">STEP 2: ADC / DECODE</span>
-                        <strong id="p-adc-type" class="p-node-title">Light/Dark Pulse to Binary</strong>
-                      </div>
-                      <div class="p-node-arrow">➔</div>
-                      <div class="p-node is-active" id="p-node-cpu">
-                        <span class="p-node-tag font-notch">STEP 3: SYSTEM BUS</span>
-                        <strong id="p-bus-type" class="p-node-title">USB-HID Barcode Stream</strong>
-                      </div>
-                    </div>
-
-                    <!-- Live Binary Stream Ticker -->
-                    <div class="pipeline-stream-box">
-                      <div class="stream-line">
-                        <span class="stream-label font-notch">RAW TELEMETRY:</span>
-                        <code id="scanner-stream-raw" class="stream-code font-notch">REFLECTANCE_PULSE: [1,0,1,1,0,0,1,0] @ 650nm RED BEAM</code>
-                      </div>
-                      <div class="stream-line">
-                        <span class="stream-label font-notch">BINARY CODED:</span>
-                        <code id="scanner-stream-binary" class="stream-code is-accent font-notch">UPC-A: 885012345678  |  MOD10 CHECK_DIGIT: 8 [VALID]</code>
-                      </div>
-                      <div class="stream-line">
-                        <span class="stream-label font-notch">PAYLOAD OUTPUT:</span>
-                        <span id="scanner-stream-output" class="stream-output">ยิงสแกนแถบรหัสแท่ง 1 มิติสำเร็จ: แปลงแถบสว่าง-มืดเป็นชุดรหัสตัวเลขส่งเข้าบัสระบบทันที</span>
-                      </div>
+                      <span class="target-tech-pill font-notch">🟣 500 DPI OPTICAL BIOMETRIC // RIDGE & MINUTIAE VECTOR</span>
                     </div>
                   </div>
                 </div>
@@ -1314,17 +1276,17 @@
   <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
 
   <!-- Application Scripts -->
-  <script src="js/config.js?v=2.9"></script>
-  <script src="js/sound.js?v=2.9"></script>
-  <script src="js/api.js?v=2.9"></script>
-  <script src="js/motion.js?v=2.9"></script>
-  <script src="js/auth.js?v=2.9"></script>
-  <script src="js/certificate.js?v=2.9"></script>
-  <script src="js/curriculum-part1.js?v=2.9"></script>
-  <script src="js/curriculum-part2.js?v=2.9"></script>
-  <script src="js/minigames.js?v=2.9"></script>
-  <script src="js/ean13-guide.js?v=2.9"></script>
-  <script src="js/learning.js?v=2.9"></script>
-  <script src="js/app.js?v=2.9"></script>
+  <script src="js/config.js?v=3.0"></script>
+  <script src="js/sound.js?v=3.0"></script>
+  <script src="js/api.js?v=3.0"></script>
+  <script src="js/motion.js?v=3.0"></script>
+  <script src="js/auth.js?v=3.0"></script>
+  <script src="js/certificate.js?v=3.0"></script>
+  <script src="js/curriculum-part1.js?v=3.0"></script>
+  <script src="js/curriculum-part2.js?v=3.0"></script>
+  <script src="js/minigames.js?v=3.0"></script>
+  <script src="js/ean13-guide.js?v=3.0"></script>
+  <script src="js/learning.js?v=3.0"></script>
+  <script src="js/app.js?v=3.0"></script>
 </body>
 </html>
