@@ -1108,8 +1108,26 @@
 
   async function persistMiniGameScore() {
     if (!gameState) return;
-    const user = window.AuthManager?.getCurrentUser();
-    if (!user) return;
+    let user = window.AuthManager?.getCurrentUser();
+    if (!user || !user.student_id) {
+      try {
+        const raw = localStorage.getItem(window.APP_CONFIG?.STORAGE_KEYS?.SESSION_USER || "cdti_session_user");
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.student_id) {
+            user = parsed;
+          }
+        }
+      } catch (e) {}
+    }
+
+    if (!user || !user.student_id) {
+      gameState.isSaving = false;
+      gameState.saveError = "ไม่พบข้อมูลผู้เรียนในระบบ กรุณาเข้าสู่ระบบก่อนบันทึกคะแนน";
+      renderResultWorkspace();
+      window.AppUtils?.showToast?.("กรุณาเข้าสู่ระบบก่อนบันทึกคะแนน", "warning");
+      return;
+    }
 
     gameState.isSaving = true;
     gameState.saveError = "";
@@ -1128,17 +1146,24 @@
         throw new Error((res && res.error) || "บันทึกคะแนนมินิเกมไม่สำเร็จ");
       }
 
-      window.AuthManager.updateSessionData(res.user, null, res.minigame_records);
+      if (res.user) {
+        window.AuthManager.updateSessionData(res.user, null, res.minigame_records);
+      }
       gameState.isSaving = false;
       renderResultWorkspace();
 
       window.AppUtils?.showToast?.(
-        "บันทึกผลมินิเกม " + gameState.gameDef.id + " สำเร็จ (" + gameState.score + " คะแนน • " + gameState.finalTimeSec + " วินาที)",
+        "บันทึกผลมินิเกม " + gameState.gameDef.id + " สำเร็จ (" + gameState.score.toLocaleString() + " คะแนน • " + gameState.finalTimeSec + " วินาที)",
         "success"
       );
     } catch (err) {
       gameState.isSaving = false;
-      gameState.saveError = err.message || "เกิดข้อผิดพลาดขณะบันทึกคะแนนมินิเกม";
+      const rawMsg = (err && err.message) ? err.message : String(err);
+      if (rawMsg.includes("Cannot read properties of null") || rawMsg.includes("student_id")) {
+        gameState.saveError = "เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล กรุณากดลองบันทึกซ้ำ";
+      } else {
+        gameState.saveError = rawMsg || "เกิดข้อผิดพลาดขณะบันทึกคะแนนมินิเกม";
+      }
       renderResultWorkspace();
       window.AppUtils?.showToast?.(gameState.saveError, "error");
     } finally {

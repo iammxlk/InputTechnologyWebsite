@@ -633,7 +633,7 @@
 
   async function renderLeaderboardView(showManualToast = false) {
     const user = window.AuthManager?.getCurrentUser();
-    if (!user || isFetchingLeaderboard) return;
+    if (!user || !user.student_id || isFetchingLeaderboard) return;
 
     const refreshBtn = document.getElementById("btn-refresh-leaderboard");
     const syncLabel = document.getElementById("leaderboard-sync-label");
@@ -711,7 +711,8 @@
     const gameInfo = cachedLeaderboardData.games[gameId] || cachedLeaderboardData.games["G01"];
     if (!gameInfo) return;
 
-    const user = window.AuthManager.getCurrentUser();
+    const user = window.AuthManager?.getCurrentUser();
+    if (!user) return;
     const esc = window.AppUtils.escapeHtml;
 
     // 1. Update Category Tabs Active Class
@@ -816,7 +817,7 @@
           }
 
           const fallback = window.AppUtils.buildInitialsAvatarDataUrl(item.full_name);
-          const isMe = item.student_id.toLowerCase() === user.student_id.toLowerCase();
+          const isMe = Boolean(user && user.student_id && item && item.student_id && item.student_id.toLowerCase() === user.student_id.toLowerCase());
 
           return `
             <div class="podium-cell is-rank-${rankNo}" style="${isMe ? "background-color: var(--blue-50);" : ""}">
@@ -868,7 +869,7 @@
       } else {
         tbody.innerHTML = top10
           .map((entry) => {
-            const isMe = entry.student_id.toLowerCase() === user.student_id.toLowerCase();
+            const isMe = Boolean(user && user.student_id && entry && entry.student_id && entry.student_id.toLowerCase() === user.student_id.toLowerCase());
             const fallback = window.AppUtils.buildInitialsAvatarDataUrl(entry.full_name);
             const rankChipClass =
               entry.rank <= 3 ? `rank-number-chip rank-${entry.rank}` : "rank-number-chip";

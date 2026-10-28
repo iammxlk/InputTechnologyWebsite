@@ -340,7 +340,7 @@
 
     const dataUrl = exportCanvas.toDataURL("image/png");
     const link = document.createElement("a");
-    const safeId = String(latestUser.student_id || "student").replace(/[^a-zA-Z0-9_-]/g, "");
+    const safeId = String((latestUser && latestUser.student_id) || (user && user.student_id) || "student").replace(/[^a-zA-Z0-9_-]/g, "");
     link.download = `Certificate_21901-2017_${safeId}.png`;
     link.href = dataUrl;
     document.body.appendChild(link);

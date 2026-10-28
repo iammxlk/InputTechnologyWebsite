@@ -265,10 +265,11 @@
   }
 
   function sanitizeUser(u) {
+    if (!u) return null;
     return {
-      student_id: u.student_id,
-      full_name: u.full_name,
-      avatar_url: u.avatar_url || window.AppUtils.buildInitialsAvatarDataUrl(u.full_name),
+      student_id: String(u.student_id || ""),
+      full_name: u.full_name || "นักเรียน",
+      avatar_url: u.avatar_url || (u.full_name ? window.AppUtils.buildInitialsAvatarDataUrl(u.full_name) : ""),
       passed_units_count: Number(u.passed_units_count || 0),
       progress_percent: Number(u.progress_percent || 0),
       total_quiz_score: Number(u.total_quiz_score || 0),
@@ -283,9 +284,54 @@
   }
 
   function recalculateLocalUser(db, studentId) {
-    const key = String(studentId).trim().toLowerCase();
-    const user = db.users.find((x) => x.student_id.toLowerCase() === key);
-    if (!user) return null;
+    const key = String(studentId || "").trim().toLowerCase();
+    if (!key) return null;
+    let user = db.users.find((x) => x && x.student_id && x.student_id.toLowerCase() === key);
+    if (!user) {
+      const current = window.AuthManager?.getCurrentUser();
+      if (current && current.student_id && current.student_id.toLowerCase() === key) {
+        user = {
+          student_id: current.student_id,
+          full_name: current.full_name || "นักเรียน " + current.student_id,
+          avatar_url: current.avatar_url || "",
+          password_hash: "",
+          salt: "",
+          passed_units_count: Number(current.passed_units_count || 0),
+          progress_percent: Number(current.progress_percent || 0),
+          total_quiz_score: Number(current.total_quiz_score || 0),
+          total_game_score: Number(current.total_game_score || 0),
+          grand_total_score: Number(current.grand_total_score || 0),
+          total_time_sec: Number(current.total_time_sec || 0),
+          cert_unlocked: Boolean(current.cert_unlocked),
+          cert_issued_at: current.cert_issued_at || "",
+          created_at: current.created_at || new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        };
+        db.users.push(user);
+      } else {
+        user = {
+          student_id: String(studentId).trim(),
+          full_name: "นักเรียน " + String(studentId).trim(),
+          avatar_url: "",
+          password_hash: "",
+          salt: "",
+          passed_units_count: 0,
+          progress_percent: 0,
+          total_quiz_score: 0,
+          total_game_score: 0,
+          grand_total_score: 0,
+          total_time_sec: 0,
+          cert_unlocked: false,
+          cert_issued_at: "",
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        };
+        db.users.push(user);
+      }
+    }
+
+    if (!db.unit_progress[user.student_id]) db.unit_progress[user.student_id] = {};
+    if (!db.minigame_records[user.student_id]) db.minigame_records[user.student_id] = {};
 
     const uMap = db.unit_progress[user.student_id] || {};
     const gMap = db.minigame_records[user.student_id] || {};
@@ -296,9 +342,9 @@
 
     Object.keys(uMap).forEach((uNo) => {
       const item = uMap[uNo];
-      if (item.is_passed) passedCount += 1;
-      totalQuiz += Number(item.best_quiz_score || 0);
-      if (item.attempts_count > 0) {
+      if (item && item.is_passed) passedCount += 1;
+      totalQuiz += Number((item && item.best_quiz_score) || 0);
+      if (item && item.attempts_count > 0) {
         totalTime += Number(item.best_quiz_time_sec || 0);
       }
     });
@@ -306,8 +352,8 @@
     let totalGame = 0;
     Object.keys(gMap).forEach((gId) => {
       const item = gMap[gId];
-      totalGame += Number(item.best_score || 0);
-      if (item.play_count > 0) {
+      totalGame += Number((item && item.best_score) || 0);
+      if (item && item.play_count > 0) {
         totalTime += Number(item.best_time_sec || 0);
       }
     });
@@ -555,7 +601,7 @@
       return {
         ok: true,
         passed_attempt: score >= CFG.PASS_SCORE_PER_UNIT,
-        user: sanitizeUser(updated),
+        user: sanitizeUser(updated) || { student_id: studentId },
         unit_progress: db.unit_progress[studentId]
       };
     }
@@ -565,6 +611,10 @@
       const gameId = String(payload.game_id || "").trim();
       const score = Math.max(0, Number(payload.score || 0));
       const timeSec = Math.max(1, Math.round(Number(payload.time_sec || 1)));
+
+      if (!studentId || !gameId) {
+        return { ok: false, error: "ข้อมูลไม่ครบถ้วน กรุณาระบุรหัสนักเรียนและรหัสเกม" };
+      }
 
       if (!db.minigame_records[studentId]) db.minigame_records[studentId] = {};
       const prev = db.minigame_records[studentId][gameId] || {
@@ -591,7 +641,7 @@
 
       return {
         ok: true,
-        user: sanitizeUser(updated),
+        user: sanitizeUser(updated) || { student_id: studentId },
         minigame_records: db.minigame_records[studentId]
       };
     }
@@ -606,7 +656,7 @@
         };
       }
       saveLocalDb(db);
-      return { ok: true, user: sanitizeUser(updated) };
+      return { ok: true, user: sanitizeUser(updated) || { student_id: studentId } };
     }
 
     if (action === "get_leaderboard") {
@@ -741,7 +791,7 @@
 
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 4500);
+      const timeoutId = setTimeout(() => controller.abort(), 6500);
 
       const response = await fetch(CFG.GAS_WEB_APP_URL.trim(), {
         method: "POST",
@@ -756,7 +806,32 @@
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
-      return await response.json();
+      const data = await response.json();
+
+      // Keep local DB mirror seamlessly synced with cloud state
+      if (data && data.ok && data.user) {
+        try {
+          const db = loadLocalDb();
+          const sid = String(data.user.student_id || "").toLowerCase();
+          const idx = db.users.findIndex((u) => u && u.student_id && u.student_id.toLowerCase() === sid);
+          if (idx >= 0) {
+            db.users[idx] = Object.assign(db.users[idx], data.user);
+          } else {
+            db.users.push(Object.assign({}, data.user));
+          }
+          if (data.unit_progress && data.user.student_id) {
+            db.unit_progress[data.user.student_id] = data.unit_progress;
+          }
+          if (data.minigame_records && data.user.student_id) {
+            db.minigame_records[data.user.student_id] = data.minigame_records;
+          }
+          saveLocalDb(db);
+        } catch (syncErr) {
+          console.warn("[Local DB Mirror Sync]", syncErr);
+        }
+      }
+
+      return data;
     } catch (err) {
       console.warn(`[Cloud API] ${action} fallback to local DB: ${err.message}`);
       return executeLocalRequest(payload);

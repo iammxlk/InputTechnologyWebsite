@@ -111,8 +111,10 @@
     }
     const dirShell = document.getElementById("lessons-directory-shell");
     const workspace = document.getElementById("lesson-workspace");
+    const mgWs = document.getElementById("minigame-workspace");
     if (dirShell) dirShell.classList.toggle("hidden", !isDirectory);
     if (workspace) workspace.classList.toggle("hidden", isDirectory);
+    if (mgWs) mgWs.classList.add("hidden");
   }
 
   /* ==========================================================================
@@ -711,7 +713,7 @@
                   ? `ผ่านเกณฑ์แล้ว (${prog.best_quiz_score}/10)`
                   : isContentRead
                   ? "เรียนครบแล้ว • พร้อมทำควิซ"
-                  : `ยังเรียนไม่ครบหน่วย (${currentStepIndex + 1}/${totalSteps} สเต็ป)`
+                  : `ยังเรียนไม่ครบหน่วย (${currentStepIdx + 1}/${totalSteps} สเต็ป)`
               }
             </span>
           </div>
@@ -1303,8 +1305,26 @@
     renderQuizResultWorkspace();
     window.scrollTo({ top: 0, behavior: "smooth" });
 
-    const user = window.AuthManager?.getCurrentUser();
-    if (!user) return;
+    let user = window.AuthManager?.getCurrentUser();
+    if (!user || !user.student_id) {
+      try {
+        const raw = localStorage.getItem(window.APP_CONFIG?.STORAGE_KEYS?.SESSION_USER || "cdti_session_user");
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.student_id) {
+            user = parsed;
+          }
+        }
+      } catch (e) {}
+    }
+
+    if (!user || !user.student_id) {
+      quizState.isSubmitting = false;
+      quizState.saveError = "ไม่พบข้อมูลผู้เรียนในระบบ กรุณาเข้าสู่ระบบก่อนบันทึกคะแนน";
+      renderQuizResultWorkspace();
+      window.AppUtils?.showToast?.("กรุณาเข้าสู่ระบบก่อนบันทึกคะแนน", "warning");
+      return;
+    }
 
     window.MotionEngine?.startTopLoader();
     try {
@@ -1319,7 +1339,9 @@
         throw new Error((res && res.error) || "บันทึกผลคะแนนไม่สำเร็จ");
       }
 
-      window.AuthManager.updateSessionData(res.user, res.unit_progress, null);
+      if (res.user) {
+        window.AuthManager.updateSessionData(res.user, res.unit_progress, null);
+      }
       quizState.isSubmitting = false;
       quizState.savedResult = res;
       renderQuizResultWorkspace();
@@ -1337,7 +1359,12 @@
       );
     } catch (err) {
       quizState.isSubmitting = false;
-      quizState.saveError = err.message || "เกิดข้อผิดพลาดในการบันทึกคะแนน";
+      const rawMsg = (err && err.message) ? err.message : String(err);
+      if (rawMsg.includes("Cannot read properties of null") || rawMsg.includes("student_id")) {
+        quizState.saveError = "เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล กรุณากดลองบันทึกซ้ำ";
+      } else {
+        quizState.saveError = rawMsg || "เกิดข้อผิดพลาดในการบันทึกคะแนน";
+      }
       renderQuizResultWorkspace();
       window.AppUtils.showToast(quizState.saveError, "error");
     } finally {
@@ -1586,18 +1613,14 @@
         return;
       }
 
-      // Click card to select unit preview in Directory
-      const unitCard = e.target.closest(".module-overview-card");
-      if (unitCard && !e.target.closest("button")) {
-        const uNo = Number(unitCard.getAttribute("data-unit-no"));
+      // Click card to open unit in reader mode directly
+      const cardEl = e.target.closest(".module-overview-card, [data-unit-no]");
+      if (cardEl && !e.target.closest("button")) {
+        const uNo = Number(cardEl.getAttribute("data-unit-no"));
         if (uNo) {
-          activeUnitNo = uNo;
-          renderDirectory();
-          window.SoundEngine?.playPop?.();
-          const bannerEl = document.getElementById("lessons-selected-unit-banner");
-          if (bannerEl) {
-            bannerEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
-          }
+          e.preventDefault();
+          openUnit(uNo, "reader");
+          window.scrollTo({ top: 0, behavior: "smooth" });
           return;
         }
       }
