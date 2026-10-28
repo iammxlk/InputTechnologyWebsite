@@ -14,7 +14,7 @@
   />
 
   <!-- Modern Blue & White Stylesheet -->
-  <link rel="stylesheet" href="css/styles.css?v=3.0" />
+  <link rel="stylesheet" href="css/styles.css?v=3.1" />
 
   <!-- Immediate Theme Initializer (Prevents Flash of Light/Dark Theme on Load) -->
   <script>
@@ -494,7 +494,6 @@
                 <span class="status-pill is-info font-notch">SYS // 21901-2017</span>
                 <span class="status-pill is-neutral">2 หน่วยกิต (3 ชม./สัปดาห์)</span>
                 <span class="status-pill is-neutral">ปวช.1 สาขาวิชาเทคโนโลยีสารสนเทศ</span>
-                <span class="pixel-sticker-badge">👾 8-BIT RETRO LAB</span>
               </div>
               <div class="home-operator-badge">
                 <span class="pixel-led-dot"></span>
@@ -527,13 +526,13 @@
           <div class="home-hero-card home-hero-scanner-card">
             <div class="home-card-header">
               <div class="home-card-header-left">
-                <span class="status-pill is-info font-notch">👾 DATA INPUT SIMULATOR</span>
-                <span class="pixel-badge-8bit">8-BIT LAB</span>
+                <span class="status-pill is-info font-notch">DATA INPUT SIMULATOR</span>
               </div>
               <div class="home-card-header-right">
                 <span id="scanner-fps-badge" class="cyber-scanner-badge font-notch"><span class="pixel-led-dot"></span> OPTICAL 60FPS</span>
                 <button id="scanner-scan-trigger-btn" type="button" class="btn-pixel-action" title="กดเพื่อจำลองการสแกนทันที">
-                  <span>⚡</span> สแกนทันที
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  <span>สแกนทันที</span>
                 </button>
               </div>
             </div>
@@ -543,33 +542,33 @@
                 จำลองการสแกนและแปลงคลื่นกายภาพเป็นสัญญาณดิจิทัลส่งเข้าสู่บัสระบบคอมพิวเตอร์
               </p>
 
-              <!-- The Embedded Cyber Scanner Console -->
+              <!-- The Embedded Cyber Scanner Console (Full-Height Chamber) -->
               <div id="hero-input-scanner" class="cyber-scanner-console is-embedded" data-ui="true">
                 <!-- 4 Selectable Scanner Modes -->
                 <div class="cyber-scanner-modes" role="tablist" aria-label="เลือกโหมดจำลองการสแกน">
                   <button type="button" class="cyber-mode-btn is-active" data-scanner-mode="laser">
-                    <span class="cyber-mode-icon">🔴</span>
+                    <span class="mode-led-indicator is-red"></span>
                     <span class="cyber-mode-text">
                       <strong class="font-notch">[01] 1D LASER</strong>
                       <span>สแกนบาร์โค้ด</span>
                     </span>
                   </button>
                   <button type="button" class="cyber-mode-btn" data-scanner-mode="qr">
-                    <span class="cyber-mode-icon">🟢</span>
+                    <span class="mode-led-indicator is-green"></span>
                     <span class="cyber-mode-text">
                       <strong class="font-notch">[02] 2D QR CODE</strong>
                       <span>แมทริกซ์ 2 มิติ</span>
                     </span>
                   </button>
                   <button type="button" class="cyber-mode-btn" data-scanner-mode="rfid">
-                    <span class="cyber-mode-icon">🔵</span>
+                    <span class="mode-led-indicator is-blue"></span>
                     <span class="cyber-mode-text">
                       <strong class="font-notch">[03] RFID WAVE</strong>
                       <span>คลื่นวิทยุ 13.56M</span>
                     </span>
                   </button>
                   <button type="button" class="cyber-mode-btn" data-scanner-mode="bio">
-                    <span class="cyber-mode-icon">🟣</span>
+                    <span class="mode-led-indicator is-purple"></span>
                     <span class="cyber-mode-text">
                       <strong class="font-notch">[04] BIOMETRIC</strong>
                       <span>สแกนลายนิ้วมือ</span>
@@ -577,9 +576,8 @@
                   </button>
                 </div>
 
-                <!-- Visual Interactive Chamber -->
+                <!-- Visual Interactive Chamber (Full-Height Stage) -->
                 <div class="cyber-chamber-stage">
-                  <!-- Visual Target with Real Scanning Beam Animation -->
                   <div class="cyber-target-frame" id="scanner-target-frame">
                     <!-- Dynamic Scanning Laser Beam -->
                     <div id="cyber-laser-beam" class="cyber-laser-beam"></div>
@@ -598,7 +596,7 @@
                         </div>
                         <span class="barcode-num font-notch">8 850123 456789</span>
                       </div>
-                      <span class="target-tech-pill font-notch">🔴 650nm RED LASER BEAM // EAN-13 BARCODE SCANNER</span>
+                      <span class="target-tech-pill font-notch"><span class="tech-dot is-red"></span>650nm RED LASER BEAM // EAN-13 BARCODE SCANNER</span>
                     </div>
 
                     <!-- Target 2: 2D QR Code -->
@@ -611,7 +609,7 @@
                         </div>
                         <span class="qr-caption font-notch">DENSO-WAVE 2D (33x33)</span>
                       </div>
-                      <span class="target-tech-pill font-notch">🟢 2D AREA IMAGER // REED-SOLOMON ERROR CORRECTION (30%)</span>
+                      <span class="target-tech-pill font-notch"><span class="tech-dot is-green"></span>2D AREA IMAGER // REED-SOLOMON ERROR CORRECTION (30%)</span>
                     </div>
 
                     <!-- Target 3: RFID Wave -->
@@ -628,7 +626,7 @@
                         </div>
                         <span class="rfid-freq font-notch">13.56 MHz // ISO 14443A</span>
                       </div>
-                      <span class="target-tech-pill font-notch">🔵 13.56MHz WIRELESS INDUCTION // CONTACTLESS SMART CARD</span>
+                      <span class="target-tech-pill font-notch"><span class="tech-dot is-blue"></span>13.56MHz WIRELESS INDUCTION // CONTACTLESS SMART CARD</span>
                     </div>
 
                     <!-- Target 4: Biometric Fingerprint -->
@@ -644,7 +642,7 @@
                         </div>
                         <span class="bio-status font-notch">MINUTIAE MATCH: 99.6%</span>
                       </div>
-                      <span class="target-tech-pill font-notch">🟣 500 DPI OPTICAL BIOMETRIC // RIDGE & MINUTIAE VECTOR</span>
+                      <span class="target-tech-pill font-notch"><span class="tech-dot is-purple"></span>500 DPI OPTICAL BIOMETRIC // RIDGE & MINUTIAE VECTOR</span>
                     </div>
                   </div>
                 </div>
@@ -661,12 +659,11 @@
             </div>
           </div>
 
-          <!-- RIGHT CARD: Live E-Certificate Showcase & Official Verification Criteria -->
+          <!-- RIGHT CARD: Live E-Certificate Showcase -->
           <div class="home-hero-card home-hero-cert-card">
             <div class="home-card-header">
               <div class="home-card-header-left">
-                <span class="status-pill is-info font-notch">🏆 E-CERTIFICATE SHOWCASE</span>
-                <span class="pixel-badge-8bit" style="background: #FEF3C7; color: #92400E; border-color: #F59E0B;">CDTI OFFICIAL</span>
+                <span class="status-pill is-info font-notch">E-CERTIFICATE SHOWCASE</span>
               </div>
               <div class="home-card-header-right">
                 <span id="home-cert-status-pill" class="status-pill is-warn">รอปลดล็อก 100%</span>
@@ -678,10 +675,10 @@
                 เกียรติบัตรรับรองสมรรถนะรายวิชา ออกโดยโรงเรียนจิตรลดาวิชาชีพ สถาบันเทคโนโลยีจิตรลดา
               </p>
 
-              <!-- Certificate Preview Canvas Frame -->
+              <!-- Certificate Preview Canvas Frame (Expanded Full-Height) -->
               <div
                 id="home-cert-frame-trigger"
-                class="cert-canvas-frame"
+                class="cert-canvas-frame is-hero-expanded"
                 role="button"
                 tabindex="0"
                 aria-label="คลิกเพื่อขยายดูตัวอย่างเกียรติบัตร"
@@ -689,37 +686,8 @@
               >
                 <canvas id="home-cert-preview-canvas" width="1600" height="1131"></canvas>
                 <div class="cert-canvas-badge font-notch">
-                  <span>🔍 คลิกเพื่อขยายดูเกียรติบัตร</span>
-                </div>
-              </div>
-
-              <!-- Structured Certificate Criteria Checklist to balance vertical height -->
-              <div class="home-cert-criteria-box">
-                <div class="cert-criteria-title font-notch">
-                  <span>เงื่อนไขการสำเร็จการศึกษาและรับเกียรติบัตร:</span>
-                </div>
-                <div class="cert-criteria-list">
-                  <div class="cert-criteria-item">
-                    <span class="cert-criteria-icon">📚</span>
-                    <div class="cert-criteria-text">
-                      <strong>16 หน่วยการเรียนรู้</strong>
-                      <span>ศึกษาเนื้อหาและสอบผ่านเกณฑ์ร้อยละ 80 (8/10 คะแนน) ทุกหน่วย</span>
-                    </div>
-                  </div>
-                  <div class="cert-criteria-item">
-                    <span class="cert-criteria-icon">🎮</span>
-                    <div class="cert-criteria-text">
-                      <strong>4 อารีน่ามินิเกม</strong>
-                      <span>ผ่านภารกิจและทำคะแนนได้ตามเกณฑ์มาตรฐานประจำหมวด</span>
-                    </div>
-                  </div>
-                  <div class="cert-criteria-item">
-                    <span class="cert-criteria-icon">📜</span>
-                    <div class="cert-criteria-text">
-                      <strong>การรับรองมาตรฐาน CDTI</strong>
-                      <span>ระบุชื่อ-นามสกุลจริง พร้อมรหัสยืนยันเกียรติบัตรอิเล็กทรอนิกส์</span>
-                    </div>
-                  </div>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  <span>คลิกเพื่อขยายดูเกียรติบัตร</span>
                 </div>
               </div>
 
@@ -1276,17 +1244,17 @@
   <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
 
   <!-- Application Scripts -->
-  <script src="js/config.js?v=3.0"></script>
-  <script src="js/sound.js?v=3.0"></script>
-  <script src="js/api.js?v=3.0"></script>
-  <script src="js/motion.js?v=3.0"></script>
-  <script src="js/auth.js?v=3.0"></script>
-  <script src="js/certificate.js?v=3.0"></script>
-  <script src="js/curriculum-part1.js?v=3.0"></script>
-  <script src="js/curriculum-part2.js?v=3.0"></script>
-  <script src="js/minigames.js?v=3.0"></script>
-  <script src="js/ean13-guide.js?v=3.0"></script>
-  <script src="js/learning.js?v=3.0"></script>
-  <script src="js/app.js?v=3.0"></script>
+  <script src="js/config.js?v=3.1"></script>
+  <script src="js/sound.js?v=3.1"></script>
+  <script src="js/api.js?v=3.1"></script>
+  <script src="js/motion.js?v=3.1"></script>
+  <script src="js/auth.js?v=3.1"></script>
+  <script src="js/certificate.js?v=3.1"></script>
+  <script src="js/curriculum-part1.js?v=3.1"></script>
+  <script src="js/curriculum-part2.js?v=3.1"></script>
+  <script src="js/minigames.js?v=3.1"></script>
+  <script src="js/ean13-guide.js?v=3.1"></script>
+  <script src="js/learning.js?v=3.1"></script>
+  <script src="js/app.js?v=3.1"></script>
 </body>
 </html>

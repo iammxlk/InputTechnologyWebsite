@@ -1358,19 +1358,56 @@ html[data-theme="dark"] .home-hero-header-card {
   gap: 12px;
 }
 
-/* Embedded scanner console adaptations */
+/* Embedded scanner console adaptations (Full-Height Chamber Expansion) */
+.home-hero-scanner-card .home-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
 .home-hero-scanner-card .cyber-scanner-console {
   border: 1.5px solid var(--border-ink) !important;
   box-shadow: 2px 2px 0 var(--border-ink) !important;
   margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
 }
 
-/* Right Certificate Preview Canvas Frame */
+.home-hero-scanner-card .cyber-chamber-stage {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+  margin-top: 10px;
+}
+
+.home-hero-scanner-card .cyber-target-frame {
+  flex: 1;
+  min-height: 290px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 18px;
+}
+
+/* Right Certificate Preview Canvas Frame (Expanded Full-Height) */
+.home-hero-cert-card .home-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
 .home-hero-cert-card .cert-canvas-frame {
   position: relative;
   width: 100%;
   aspect-ratio: 1600 / 1131;
-  max-height: 290px;
+  flex: 1;
+  min-height: 290px;
+  max-height: 380px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1396,80 +1433,73 @@ html[data-theme="dark"] .home-hero-header-card {
 
 .cert-canvas-badge {
   position: absolute;
-  bottom: 8px;
-  right: 8px;
-  background-color: rgba(15, 23, 42, 0.85);
+  bottom: 10px;
+  right: 10px;
+  background-color: rgba(15, 23, 42, 0.88);
   color: #FFFFFF;
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: 999px;
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   font-weight: 600;
   backdrop-filter: blur(4px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   pointer-events: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
-/* Certificate Criteria Box to balance vertical height */
-.home-cert-criteria-box {
-  background-color: var(--bg-ground);
-  border: 1.5px solid var(--border-ink);
-  border-radius: var(--radius-md);
-  padding: 12px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  box-shadow: 2px 2px 0 var(--border-ink);
-}
-
-.cert-criteria-title {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--accent-signal);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.cert-criteria-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.cert-criteria-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  font-size: 0.8rem;
-  line-height: 1.4;
-}
-
-.cert-criteria-icon {
-  font-size: 1.1rem;
+/* Hardware Mode LED Indicator Dots (Pure CSS, Replaces Emojis) */
+.mode-led-indicator {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
   flex-shrink: 0;
-  line-height: 1.2;
+  box-shadow: 0 0 6px currentColor;
 }
 
-.cert-criteria-text {
-  display: flex;
-  flex-direction: column;
+.mode-led-indicator.is-red {
+  background-color: #EF4444;
+  color: #EF4444;
 }
 
-.cert-criteria-text strong {
-  color: var(--text-main);
-  font-weight: 600;
-  font-size: 0.82rem;
+.mode-led-indicator.is-green {
+  background-color: #10B981;
+  color: #10B981;
 }
 
-.cert-criteria-text span {
-  color: var(--text-secondary);
-  font-size: 0.77rem;
+.mode-led-indicator.is-blue {
+  background-color: #38BDF8;
+  color: #38BDF8;
 }
+
+.mode-led-indicator.is-purple {
+  background-color: #A855F7;
+  color: #A855F7;
+}
+
+.tech-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+  margin-right: 6px;
+  box-shadow: 0 0 5px currentColor;
+}
+
+.tech-dot.is-red { background-color: #EF4444; color: #EF4444; }
+.tech-dot.is-green { background-color: #10B981; color: #10B981; }
+.tech-dot.is-blue { background-color: #38BDF8; color: #38BDF8; }
+.tech-dot.is-purple { background-color: #A855F7; color: #A855F7; }
 
 .home-cert-caption {
   font-size: 0.78rem;
   color: var(--text-muted);
   line-height: 1.5;
-  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 0;
 }
 
 /* Legacy Fallbacks */
@@ -4574,11 +4604,13 @@ html[data-theme="dark"] .cyber-scanner-console {
   text-overflow: ellipsis;
 }
 
-/* Visual Interactive Chamber Stage */
+/* Visual Interactive Chamber Stage (Expanded Full-Height) */
 .cyber-chamber-stage {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   width: 100%;
-  margin-top: 14px;
+  margin-top: 10px;
   position: relative;
   z-index: 2;
 }
@@ -4598,7 +4630,9 @@ html[data-theme="dark"] .cyber-scanner-console {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 250px;
+  flex: 1;
+  min-height: 290px;
+  height: 100%;
   overflow: hidden;
   box-shadow: inset 0 2px 14px rgba(0, 0, 0, 0.8), 0 4px 12px rgba(0, 0, 0, 0.2);
 }
