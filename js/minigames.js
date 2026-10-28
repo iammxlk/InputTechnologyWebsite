@@ -1958,6 +1958,16 @@ const G04_CHALLENGES = [
     const ws = document.getElementById("minigame-workspace");
     if (!ws || !gameState) return;
 
+    const lessonWs = document.getElementById("lesson-workspace");
+    if (lessonWs && !lessonWs.classList.contains("hidden")) {
+      clearGameTimers();
+      setMiniGameFocusMode(false);
+      gameState = null;
+      ws.classList.add("hidden");
+      ws.innerHTML = "";
+      return;
+    }
+
     const esc = window.AppUtils?.escapeHtml || ((s) => String(s));
     const def = gameState.gameDef;
     const round = gameState.currentRound;
@@ -2203,6 +2213,13 @@ const G04_CHALLENGES = [
     const ws = document.getElementById("minigame-workspace");
     if (!ws || !gameState) return;
 
+    const lessonWs = document.getElementById("lesson-workspace");
+    if (lessonWs && !lessonWs.classList.contains("hidden")) {
+      ws.classList.add("hidden");
+      ws.innerHTML = "";
+      return;
+    }
+
     const esc = window.AppUtils?.escapeHtml || ((s) => String(s));
     const def = gameState.gameDef;
     const totalAnswered = gameState.history.length;
@@ -2419,6 +2436,11 @@ const G04_CHALLENGES = [
       clearGameTimers();
       setMiniGameFocusMode(false);
       gameState = null;
+      const ws = document.getElementById("minigame-workspace");
+      if (ws) {
+        ws.classList.add("hidden");
+        ws.innerHTML = "";
+      }
     },
     isMiniGameActive: () =>
       Boolean(

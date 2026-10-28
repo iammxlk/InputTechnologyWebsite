@@ -30,9 +30,16 @@
     if (activeView !== target && !options.silent) {
       window.SoundEngine?.playPop();
     }
+    if (target !== "lessons" || options.openReaderUnit || options.resetToDirectory) {
+      window.MiniGameEngine?.stopActiveGame();
+      const mgWs = document.getElementById("minigame-workspace");
+      if (mgWs) {
+        mgWs.classList.add("hidden");
+        mgWs.innerHTML = "";
+      }
+    }
     if (target !== "lessons") {
       window.LearningEngine?.stopActiveTimer();
-      window.MiniGameEngine?.stopActiveGame();
     }
     activeView = target;
 
@@ -72,6 +79,12 @@
   }
 
   function openUnitInLessons(unitNo, startSubMode = "reader") {
+    window.MiniGameEngine?.stopActiveGame();
+    const mgWs = document.getElementById("minigame-workspace");
+    if (mgWs) {
+      mgWs.classList.add("hidden");
+      mgWs.innerHTML = "";
+    }
     selectedUnitNo = Math.max(1, Math.min(CFG.TOTAL_UNITS, Number(unitNo) || 1));
     lessonsModuleFilter = "all";
     switchView("lessons", {

@@ -211,6 +211,14 @@ h1, h2, h3, h4, p {
   display: none !important;
 }
 
+/* Strict Mutual Exclusivity for Lessons Shell, Lesson Workspace, and Mini-Game Workspace */
+#lesson-workspace:not(.hidden) ~ #minigame-workspace,
+#minigame-workspace:not(.hidden) ~ #lesson-workspace,
+#lessons-directory-shell:not(.hidden) ~ #minigame-workspace,
+#lessons-directory-shell:not(.hidden) ~ #lesson-workspace {
+  display: none !important;
+}
+
 /* ============================================================================
    2. LAYOUT SHELL & STICKY NAVBAR
    ============================================================================ */

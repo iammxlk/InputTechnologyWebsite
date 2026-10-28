@@ -114,7 +114,10 @@
     const mgWs = document.getElementById("minigame-workspace");
     if (dirShell) dirShell.classList.toggle("hidden", !isDirectory);
     if (workspace) workspace.classList.toggle("hidden", isDirectory);
-    if (mgWs) mgWs.classList.add("hidden");
+    if (mgWs) {
+      mgWs.classList.add("hidden");
+      mgWs.innerHTML = "";
+    }
   }
 
   /* ==========================================================================
@@ -760,6 +763,12 @@
     const workspace = document.getElementById("lesson-workspace");
     const unitData = getUnitCurriculum(activeUnitNo);
     if (!workspace || !unitData) return;
+
+    const mgWs = document.getElementById("minigame-workspace");
+    if (mgWs) {
+      mgWs.classList.add("hidden");
+      mgWs.innerHTML = "";
+    }
 
     const esc = window.AppUtils.escapeHtml;
     const totalSteps = unitData.steps.length;
