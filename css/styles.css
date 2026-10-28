@@ -1206,7 +1206,273 @@ html[data-theme="dark"] .floating-action-btn:hover {
    8. PHASE 2: HOME HERO, CERTIFICATE PREVIEW, PROGRESS 16 UNITS & LEADERBOARD
    ============================================================================ */
 
-/* Home Split Editorial Grid (Course Info Left + Live Certificate Preview Right) */
+/* ============================================================================
+   HERO BALANCED REDESIGN: FULL-WIDTH HEADER CARD + EQUAL-HEIGHT DUO GRID
+   ============================================================================ */
+
+/* 1. Full-Width Course Hero Header Card */
+.home-hero-header-card {
+  position: relative;
+  background-color: var(--bg-surface);
+  border: 2px solid var(--border-ink);
+  border-top: 6px solid var(--accent-signal) !important;
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-card);
+  padding: 28px 32px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+html[data-theme="dark"] .home-hero-header-card {
+  border-top: 6px solid #38BDF8 !important;
+}
+
+.home-hero-header-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.home-hero-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.home-operator-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  background-color: var(--bg-ground);
+  border: 1.5px solid var(--border-ink);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent-signal);
+  box-shadow: 2px 2px 0 var(--border-ink);
+}
+
+.home-hero-header-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.home-hero-title {
+  font-size: 1.85rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.home-hero-lead {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.62;
+  max-width: 1040px;
+  margin: 0;
+}
+
+/* 2. Equal-Height Duo Grid (Data Input Simulator Left + Certificate Showcase Right) */
+.home-hero-duo-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.home-hero-card {
+  min-width: 0;
+  background-color: var(--bg-surface);
+  border: 2px solid var(--border-ink) !important;
+  border-radius: var(--radius-2xl) !important;
+  box-shadow: var(--shadow-card) !important;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.home-hero-scanner-card {
+  border-top: 6px solid #10B981 !important;
+}
+
+.home-hero-cert-card {
+  border-top: 6px solid var(--blue-600) !important;
+  background-image: linear-gradient(180deg, rgba(20, 71, 188, 0.02) 0%, transparent 100%);
+}
+
+.home-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1.5px dashed var(--border-subtle);
+  margin-bottom: 14px;
+}
+
+.home-card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.home-card-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.home-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1 0 auto;
+}
+
+.home-card-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.home-card-footer {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1.5px dashed var(--border-subtle);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* Embedded scanner console adaptations */
+.home-hero-scanner-card .cyber-scanner-console {
+  border: 1.5px solid var(--border-ink) !important;
+  box-shadow: 2px 2px 0 var(--border-ink) !important;
+  margin-top: 0;
+}
+
+/* Right Certificate Preview Canvas Frame */
+.home-hero-cert-card .cert-canvas-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1600 / 1131;
+  max-height: 290px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-ground);
+  border: 2px solid var(--border-ink) !important;
+  border-radius: var(--radius-lg) !important;
+  overflow: hidden;
+  box-shadow: 3px 3px 0 var(--border-ink);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.home-hero-cert-card .cert-canvas-frame:hover {
+  transform: translateY(-2px);
+  box-shadow: 4px 5px 0 var(--border-ink);
+}
+
+.home-hero-cert-card .cert-canvas-frame canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.cert-canvas-badge {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background-color: rgba(15, 23, 42, 0.85);
+  color: #FFFFFF;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  pointer-events: none;
+}
+
+/* Certificate Criteria Box to balance vertical height */
+.home-cert-criteria-box {
+  background-color: var(--bg-ground);
+  border: 1.5px solid var(--border-ink);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 2px 2px 0 var(--border-ink);
+}
+
+.cert-criteria-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent-signal);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.cert-criteria-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cert-criteria-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.cert-criteria-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  line-height: 1.2;
+}
+
+.cert-criteria-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.cert-criteria-text strong {
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.cert-criteria-text span {
+  color: var(--text-secondary);
+  font-size: 0.77rem;
+}
+
+.home-cert-caption {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Legacy Fallbacks */
 .home-hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
@@ -1630,8 +1896,15 @@ html[data-theme="dark"] .step-pill-3 {
 }
 
 @media (max-width: 980px) {
-  .home-hero-grid {
-    grid-template-columns: minmax(0, 1fr);
+  .home-hero-grid,
+  .home-hero-duo-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .home-hero-header-card {
+    padding: 22px 18px !important;
+  }
+  .home-hero-title {
+    font-size: 1.5rem !important;
   }
   .syllabus-modules-grid {
     grid-template-columns: minmax(0, 1fr);

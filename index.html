@@ -14,7 +14,7 @@
   />
 
   <!-- Modern Blue & White Stylesheet -->
-  <link rel="stylesheet" href="css/styles.css?v=2.7" />
+  <link rel="stylesheet" href="css/styles.css?v=2.8" />
 
   <!-- Immediate Theme Initializer (Prevents Flash of Light/Dark Theme on Load) -->
   <script>
@@ -462,71 +462,89 @@
       <section id="view-home" style="display: flex; flex-direction: column; gap: 24px;">
 
         <!-- Split Editorial Hero: Left Course Overview + Right Live Certificate Preview -->
-        <div class="home-hero-grid">
-          <div class="home-hero-main">
-            <!-- Multi-Layer SVG Parallax Blueprint Backdrop -->
-            <div class="parallax-scene parallax-scene--hero" aria-hidden="true">
-              <svg class="parallax-layer parallax-hero-back" data-parallax-depth="0.02" viewBox="0 0 380 280" fill="none">
-                <rect x="210" y="18" width="146" height="146" rx="22" stroke="#DCE8FA" stroke-width="1.5"/>
-                <rect x="238" y="46" width="90" height="90" rx="12" stroke="#E2ECFB" stroke-width="1.5"/>
-                <line x1="176" y1="92" x2="366" y2="92" stroke="#E5EFFC" stroke-dasharray="4 6"/>
-              </svg>
-              <svg class="parallax-layer parallax-hero-mid" data-parallax-depth="0.045" viewBox="0 0 380 280" fill="none">
-                <rect x="286" y="144" width="56" height="56" rx="10" stroke="#C7DCFA" stroke-width="1.8"/>
-                <rect x="302" y="160" width="24" height="24" rx="4" fill="#EEF4FC"/>
-                <g fill="#DCE8FA">
-                  <rect x="212" y="192" width="4" height="24"/><rect x="220" y="192" width="2" height="24"/>
-                  <rect x="226" y="192" width="5" height="24"/><rect x="235" y="192" width="2" height="24"/>
-                  <rect x="241" y="192" width="4" height="24"/><rect x="249" y="192" width="6" height="24"/>
-                </g>
-              </svg>
-              <svg class="parallax-layer parallax-hero-front" data-parallax-depth="0.075" viewBox="0 0 380 280" fill="none">
-                <circle cx="332" cy="48" r="5" fill="#B9D5FA"/>
-                <circle cx="204" cy="148" r="4" fill="#DCE8FA"/>
-                <path d="M342 214h18v18" stroke="#B9D5FA" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </div>
+        <!-- Split Editorial Hero: Full-Width Course Header Card + Equal-Height Duo Grid -->
+        <!-- 1. FULL-WIDTH COURSE HERO BANNER CARD -->
+        <div class="home-hero-header-card">
+          <!-- Multi-Layer SVG Parallax Blueprint Backdrop -->
+          <div class="parallax-scene parallax-scene--hero" aria-hidden="true">
+            <svg class="parallax-layer parallax-hero-back" data-parallax-depth="0.02" viewBox="0 0 380 280" fill="none">
+              <rect x="210" y="18" width="146" height="146" rx="22" stroke="#DCE8FA" stroke-width="1.5"/>
+              <rect x="238" y="46" width="90" height="90" rx="12" stroke="#E2ECFB" stroke-width="1.5"/>
+              <line x1="176" y1="92" x2="366" y2="92" stroke="#E5EFFC" stroke-dasharray="4 6"/>
+            </svg>
+            <svg class="parallax-layer parallax-hero-mid" data-parallax-depth="0.045" viewBox="0 0 380 280" fill="none">
+              <rect x="286" y="144" width="56" height="56" rx="10" stroke="#C7DCFA" stroke-width="1.8"/>
+              <rect x="302" y="160" width="24" height="24" rx="4" fill="#EEF4FC"/>
+              <g fill="#DCE8FA">
+                <rect x="212" y="192" width="4" height="24"/><rect x="220" y="192" width="2" height="24"/>
+                <rect x="226" y="192" width="5" height="24"/><rect x="235" y="192" width="2" height="24"/>
+                <rect x="241" y="192" width="4" height="24"/><rect x="249" y="192" width="6" height="24"/>
+              </g>
+            </svg>
+            <svg class="parallax-layer parallax-hero-front" data-parallax-depth="0.075" viewBox="0 0 380 280" fill="none">
+              <circle cx="332" cy="48" r="5" fill="#B9D5FA"/>
+              <circle cx="204" cy="148" r="4" fill="#DCE8FA"/>
+              <path d="M342 214h18v18" stroke="#B9D5FA" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
 
-            <div class="home-hero-fg">
+          <div class="home-hero-header-content">
+            <div class="home-hero-header-top">
               <div class="home-meta-row">
                 <span class="status-pill is-info font-notch">SYS // 21901-2017</span>
                 <span class="status-pill is-neutral">2 หน่วยกิต (3 ชม./สัปดาห์)</span>
-                <span class="status-pill is-neutral">ปวช.1 เทคโนโลยีสารสนเทศ</span>
+                <span class="status-pill is-neutral">ปวช.1 สาขาวิชาเทคโนโลยีสารสนเทศ</span>
                 <span class="pixel-sticker-badge">👾 8-BIT RETRO LAB</span>
               </div>
+              <div class="home-operator-badge">
+                <span class="pixel-led-dot"></span>
+                <span class="font-notch">OPERATOR ONLINE:</span>
+                <strong id="home-welcome-name">ผู้เรียน</strong>
+              </div>
+            </div>
 
-              <p style="font-size: 0.92rem; font-weight: 500; color: var(--accent-signal); margin-top: 14px;">
-                OPERATOR ONLINE: <span id="home-welcome-name" style="color: var(--text-main); font-weight: 600;">ผู้เรียน</span>
-              </p>
-
-              <h1 style="font-size: 1.75rem; font-weight: 700; margin-top: 4px; line-height: 1.28;">
+            <div class="home-hero-header-main">
+              <h1 class="home-hero-title">
                 เทคโนโลยีการนำเข้าข้อมูลสู่ระบบคอมพิวเตอร์
               </h1>
+              <p class="home-hero-lead">
+                หลักสูตรประกาศนียบัตรวิชาชีพ (ปวช.) สาขาวิชาเทคโนโลยีสารสนเทศ — ปฏิบัติการเรียนรู้วงจร IPO อุปกรณ์นำเข้าข้อมูล สวิตช์กลไก เซนเซอร์ CMOS บาร์โค้ด 1D/2D
+                การเข้ารหัสความปลอดภัย SSL/TLS คลื่นวิทยุ RFID ข้อมูลชีวมิติ การตรวจสอบ Check Digit ระบบจัดการฐานข้อมูล และการบีบอัดข้อมูลระดับฮาร์ดแวร์
+              </p>
+            </div>
 
-              <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 10px; line-height: 1.62;">
-                ปฏิบัติการเรียนรู้วงจร IPO อุปกรณ์นำเข้าข้อมูล สวิตช์กลไก เซนเซอร์ CMOS บาร์โค้ด 1D/2D
-                การเข้ารหัส SSL/TLS คลื่นวิทยุ RFID ชีวมิติ ระบบฐานข้อมูล และการบีบอัดข้อมูลระดับฮาร์ดแวร์
+            <div class="hw-meta-strip">
+              <span><strong>สถานศึกษา:</strong> โรงเรียนจิตรลดาวิชาชีพ สถาบันเทคโนโลยีจิตรลดา</span>
+              <span><strong>ผู้สอน:</strong> นายอนุพงศ์ พลายรักษา</span>
+              <span><strong>ปีการศึกษา:</strong> <span class="font-notch">2569</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. EQUAL-HEIGHT DUO GRID: DATA INPUT SIMULATOR (LEFT) + E-CERTIFICATE SHOWCASE (RIGHT) -->
+        <div class="home-hero-duo-grid">
+          <!-- LEFT CARD: Interactive Data Input Simulator Console -->
+          <div class="home-hero-card home-hero-scanner-card">
+            <div class="home-card-header">
+              <div class="home-card-header-left">
+                <span class="status-pill is-info font-notch">👾 DATA INPUT SIMULATOR</span>
+                <span class="pixel-badge-8bit">8-BIT LAB</span>
+              </div>
+              <div class="home-card-header-right">
+                <span id="scanner-fps-badge" class="cyber-scanner-badge font-notch"><span class="pixel-led-dot"></span> OPTICAL 60FPS</span>
+                <button id="scanner-scan-trigger-btn" type="button" class="btn-pixel-action" title="กดเพื่อจำลองการสแกนทันที">
+                  <span>⚡</span> สแกนทันที
+                </button>
+              </div>
+            </div>
+
+            <div class="home-card-body">
+              <p class="home-card-subtitle">
+                จำลองการสแกนและแปลงคลื่นกายภาพเป็นสัญญาณดิจิทัลส่งเข้าสู่บัสระบบคอมพิวเตอร์
               </p>
 
-              <!-- 8-BIT CYBER INPUT SCANNER & ANIMATED INGESTION CHAMBER -->
-              <div id="hero-input-scanner" class="cyber-scanner-console" data-ui="true">
-                <!-- Header with 8-bit style tags -->
-                <div class="cyber-scanner-header">
-                  <div style="display: flex; align-items: center; gap: 8px;">
-                    <span class="pixel-led-dot"></span>
-                    <span class="cyber-scanner-title font-notch">
-                      DATA INPUT SIMULATOR // จำลองการสแกนและแปลงสัญญาณดิจิทัล
-                    </span>
-                    <span class="pixel-badge-8bit">8-BIT LAB</span>
-                  </div>
-                  <div style="display: flex; align-items: center; gap: 6px;">
-                    <span id="scanner-fps-badge" class="cyber-scanner-badge font-notch">OPTICAL 60FPS</span>
-                    <button id="scanner-scan-trigger-btn" type="button" class="btn-pixel-action" title="กดเพื่อจำลองการสแกนทันที">
-                      <span>⚡</span> สแกนทันที
-                    </button>
-                  </div>
-                </div>
-
+              <!-- The Embedded Cyber Scanner Console -->
+              <div id="hero-input-scanner" class="cyber-scanner-console is-embedded" data-ui="true">
                 <!-- 4 Selectable Scanner Modes -->
                 <div class="cyber-scanner-modes" role="tablist" aria-label="เลือกโหมดจำลองการสแกน">
                   <button type="button" class="cyber-mode-btn is-active" data-scanner-mode="laser">
@@ -671,59 +689,90 @@
               </div>
             </div>
 
-            <div class="home-hero-fg">
-              <div class="hw-meta-strip">
-                <span><strong>สถานศึกษา:</strong> โรงเรียนจิตรลดาวิชาชีพ สถาบันเทคโนโลยีจิตรลดา</span>
-                <span><strong>ผู้สอน:</strong> นายอนุพงศ์ พลายรักษา</span>
-                <span><strong>ปีการศึกษา:</strong> <span class="font-notch">2569</span></span>
-              </div>
-
-              <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px;">
-                <button id="home-cta-continue-btn" type="button" class="btn-primary">
-                  เริ่มเรียนหน่วยที่ 1
-                </button>
-                <button type="button" class="btn-secondary" data-nav-view="progress">
-                  ตรวจสอบความคืบหน้า 16 หน่วย
-                </button>
-              </div>
+            <div class="home-card-footer">
+              <button id="home-cta-continue-btn" type="button" class="btn-primary">
+                เริ่มเรียนหน่วยที่ 1
+              </button>
+              <button type="button" class="btn-secondary" data-nav-view="progress">
+                ตรวจสอบความคืบหน้า 16 หน่วย
+              </button>
             </div>
           </div>
 
-          <!-- Right Certificate Preview Showcase -->
-          <div class="home-cert-showcase">
-            <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
-              <div>
-                <h2 style="font-size: 1rem; font-weight: 600;">ตัวอย่างเกียรติบัตรประจำรายวิชา</h2>
-                <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
-                  แสดงชื่อ-นามสกุลจริงของคุณบนใบเกียรติบัตรอัตโนมัติ
-                </p>
+          <!-- RIGHT CARD: Live E-Certificate Showcase & Official Verification Criteria -->
+          <div class="home-hero-card home-hero-cert-card">
+            <div class="home-card-header">
+              <div class="home-card-header-left">
+                <span class="status-pill is-info font-notch">🏆 E-CERTIFICATE SHOWCASE</span>
+                <span class="pixel-badge-8bit" style="background: #FEF3C7; color: #92400E; border-color: #F59E0B;">CDTI OFFICIAL</span>
               </div>
-              <span id="home-cert-status-pill" class="status-pill is-warn">รอปลดล็อก 100%</span>
+              <div class="home-card-header-right">
+                <span id="home-cert-status-pill" class="status-pill is-warn">รอปลดล็อก 100%</span>
+              </div>
             </div>
 
-            <div
-              id="home-cert-frame-trigger"
-              class="cert-canvas-frame"
-              role="button"
-              tabindex="0"
-              aria-label="คลิกเพื่อขยายดูตัวอย่างเกียรติบัตร"
-              style="cursor: pointer;"
-            >
-              <canvas id="home-cert-preview-canvas" width="1600" height="1131"></canvas>
-            </div>
+            <div class="home-card-body">
+              <p class="home-card-subtitle">
+                เกียรติบัตรรับรองสมรรถนะรายวิชา ออกโดยโรงเรียนจิตรลดาวิชาชีพ สถาบันเทคโนโลยีจิตรลดา
+              </p>
 
-            <div>
-              <p id="home-cert-caption" style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 12px;">
+              <!-- Certificate Preview Canvas Frame -->
+              <div
+                id="home-cert-frame-trigger"
+                class="cert-canvas-frame"
+                role="button"
+                tabindex="0"
+                aria-label="คลิกเพื่อขยายดูตัวอย่างเกียรติบัตร"
+                style="cursor: pointer;"
+              >
+                <canvas id="home-cert-preview-canvas" width="1600" height="1131"></canvas>
+                <div class="cert-canvas-badge font-notch">
+                  <span>🔍 คลิกเพื่อขยายดูเกียรติบัตร</span>
+                </div>
+              </div>
+
+              <!-- Structured Certificate Criteria Checklist to balance vertical height -->
+              <div class="home-cert-criteria-box">
+                <div class="cert-criteria-title font-notch">
+                  <span>เงื่อนไขการสำเร็จการศึกษาและรับเกียรติบัตร:</span>
+                </div>
+                <div class="cert-criteria-list">
+                  <div class="cert-criteria-item">
+                    <span class="cert-criteria-icon">📚</span>
+                    <div class="cert-criteria-text">
+                      <strong>16 หน่วยการเรียนรู้</strong>
+                      <span>ศึกษาเนื้อหาและสอบผ่านเกณฑ์ร้อยละ 80 (8/10 คะแนน) ทุกหน่วย</span>
+                    </div>
+                  </div>
+                  <div class="cert-criteria-item">
+                    <span class="cert-criteria-icon">🎮</span>
+                    <div class="cert-criteria-text">
+                      <strong>4 อารีน่ามินิเกม</strong>
+                      <span>ผ่านภารกิจและทำคะแนนได้ตามเกณฑ์มาตรฐานประจำหมวด</span>
+                    </div>
+                  </div>
+                  <div class="cert-criteria-item">
+                    <span class="cert-criteria-icon">📜</span>
+                    <div class="cert-criteria-text">
+                      <strong>การรับรองมาตรฐาน CDTI</strong>
+                      <span>ระบุชื่อ-นามสกุลจริง พร้อมรหัสยืนยันเกียรติบัตรอิเล็กทรอนิกส์</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <p id="home-cert-caption" class="home-cert-caption">
                 เรียนเนื้อหาและสอบผ่านเกณฑ์ร้อยละ 80 (8/10 คะแนน) ครบทั้ง 16 หน่วย เพื่อปลดล็อกปุ่มดาวน์โหลดเกียรติบัตรความละเอียดสูง
               </p>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <button id="home-open-cert-modal-btn" type="button" class="btn-secondary">
-                  ขยายดูตัวอย่าง
-                </button>
-                <button id="home-cert-primary-btn" type="button" class="btn-primary">
-                  ดูเงื่อนไขการรับ
-                </button>
-              </div>
+            </div>
+
+            <div class="home-card-footer">
+              <button id="home-open-cert-modal-btn" type="button" class="btn-secondary">
+                ขยายดูตัวอย่าง
+              </button>
+              <button id="home-cert-primary-btn" type="button" class="btn-primary">
+                ดูเงื่อนไขการรับ
+              </button>
             </div>
           </div>
         </div>
@@ -1265,17 +1314,17 @@
   <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
 
   <!-- Application Scripts -->
-  <script src="js/config.js?v=2.7"></script>
-  <script src="js/sound.js?v=2.7"></script>
-  <script src="js/api.js?v=2.7"></script>
-  <script src="js/motion.js?v=2.7"></script>
-  <script src="js/auth.js?v=2.7"></script>
-  <script src="js/certificate.js?v=2.7"></script>
-  <script src="js/curriculum-part1.js?v=2.7"></script>
-  <script src="js/curriculum-part2.js?v=2.7"></script>
-  <script src="js/minigames.js?v=2.7"></script>
-  <script src="js/ean13-guide.js?v=2.7"></script>
-  <script src="js/learning.js?v=2.7"></script>
-  <script src="js/app.js?v=2.7"></script>
+  <script src="js/config.js?v=2.8"></script>
+  <script src="js/sound.js?v=2.8"></script>
+  <script src="js/api.js?v=2.8"></script>
+  <script src="js/motion.js?v=2.8"></script>
+  <script src="js/auth.js?v=2.8"></script>
+  <script src="js/certificate.js?v=2.8"></script>
+  <script src="js/curriculum-part1.js?v=2.8"></script>
+  <script src="js/curriculum-part2.js?v=2.8"></script>
+  <script src="js/minigames.js?v=2.8"></script>
+  <script src="js/ean13-guide.js?v=2.8"></script>
+  <script src="js/learning.js?v=2.8"></script>
+  <script src="js/app.js?v=2.8"></script>
 </body>
 </html>
