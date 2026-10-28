@@ -867,54 +867,147 @@ function recalculateUserSummary_(ss, studentId) {
 function handleGetLeaderboard_(payload) {
   const ss = getSpreadsheet_();
   const usersSheet = ss.getSheetByName(CONFIG.SHEETS.USERS);
-  const lastRow = usersSheet.getLastRow();
+  const gamesSheet = ss.getSheetByName(CONFIG.SHEETS.MINIGAME_RECORDS);
   const requesterId = String((payload && payload.student_id) || "").trim().toLowerCase();
+  const requestedGameId = String((payload && payload.game_id) || "G01").trim().toUpperCase();
 
-  if (lastRow < 2) {
-    return { ok: true, top10: [], my_rank: null, total_students: 0 };
+  const userLastRow = usersSheet ? usersSheet.getLastRow() : 0;
+  const userMap = {};
+
+  if (userLastRow >= 2) {
+    const userRows = usersSheet.getRange(2, 1, userLastRow - 1, 16).getValues();
+    userRows.forEach(function (r) {
+      const sId = String(r[0] || "").trim();
+      if (!sId) return;
+      userMap[sId.toLowerCase()] = {
+        student_id: sId,
+        full_name: String(r[3] || ""),
+        avatar_url: String(r[4] || ""),
+        classroom: String(r[5] || "ปวช.2/1")
+      };
+    });
   }
 
-  const rows = usersSheet.getRange(2, 1, lastRow - 1, 16).getValues();
-  const entries = rows
-    .filter(function (r) {
-      return String(r[0] || "").trim() !== "";
-    })
-    .map(function (r) {
-      return mapUserRowToPublicProfile_(r);
+  const GAME_DEFS = [
+    {
+      id: "G01",
+      title: "Input Device Speed Match",
+      thai_title: "เกมจับคู่และวิเคราะห์อุปกรณ์นำเข้าข้อมูล",
+      checkpoint_label: "หมวดที่ 1 (หน่วยที่ 1-4)"
+    },
+    {
+      id: "G02",
+      title: "Barcode & QR Rapid Decoder",
+      thai_title: "เกมถอดรหัสบาร์โค้ดและคิวอาร์โค้ดสปีดรัน",
+      checkpoint_label: "หมวดที่ 2 (หน่วยที่ 5-8)"
+    },
+    {
+      id: "G03",
+      title: "Cyber & Biometric Shield",
+      thai_title: "เกมป้องกันภัยไซเบอร์และตรวจสอบชีวมิติ",
+      checkpoint_label: "หมวดที่ 3 (หน่วยที่ 9-12)"
+    },
+    {
+      id: "G04",
+      title: "Data Encoding & RLE Sprint",
+      thai_title: "เกมคำนวณและเข้ารหัสบิตข้อมูล",
+      checkpoint_label: "หมวดที่ 4 (หน่วยที่ 13-16)"
+    }
+  ];
+
+  // รวบรวมสถิติมินิเกมจากแท็บ MiniGame_Records แยกตาม Game ID
+  const gamesLastRow = gamesSheet ? gamesSheet.getLastRow() : 0;
+  const recordsByGame = { G01: [], G02: [], G03: [], G04: [] };
+
+  if (gamesLastRow >= 2) {
+    const gameRows = gamesSheet.getRange(2, 1, gamesLastRow - 1, 7).getValues();
+    gameRows.forEach(function (r) {
+      const sId = String(r[1] || "").trim();
+      const gId = String(r[2] || "").trim().toUpperCase();
+      const score = Number(r[3] || 0);
+      const timeSec = Number(r[4] || 0);
+      const playCount = Number(r[5] || 0);
+      const updatedAt = String(r[6] || "");
+
+      if (!sId || !recordsByGame[gId]) return;
+      const uInfo = userMap[sId.toLowerCase()] || {
+        student_id: sId,
+        full_name: "ผู้เรียน (" + sId + ")",
+        avatar_url: "",
+        classroom: "-"
+      };
+
+      recordsByGame[gId].push({
+        student_id: uInfo.student_id,
+        full_name: uInfo.full_name,
+        avatar_url: uInfo.avatar_url,
+        classroom: uInfo.classroom,
+        game_id: gId,
+        best_score: score,
+        best_time_sec: timeSec,
+        play_count: playCount,
+        updated_at: updatedAt
+      });
+    });
+  }
+
+  // สร้างตารางจัดอันดับเฉพาะมินิเกมแยกรายหมวดหมู่ (ไม่เปิดเผยคะแนนสอบควิซท้ายหน่วย)
+  const gamesResult = {};
+
+  GAME_DEFS.forEach(function (def) {
+    const list = recordsByGame[def.id] || [];
+
+    // เรียงลำดับ: 1. คะแนนสูงสุด (DESC), 2. เวลาเอาชีวิตรอดนานกว่า (DESC), 3. จำนวนรอบที่เล่น (DESC)
+    list.sort(function (a, b) {
+      if (b.best_score !== a.best_score) {
+        return b.best_score - a.best_score;
+      }
+      if (b.best_time_sec !== a.best_time_sec) {
+        return b.best_time_sec - a.best_time_sec;
+      }
+      return b.play_count - a.play_count;
     });
 
-  entries.sort(function (a, b) {
-    if (b.grand_total_score !== a.grand_total_score) {
-      return b.grand_total_score - a.grand_total_score;
-    }
-    // ถ้าได้คะแนนเท่ากัน (และมีคะแนน > 0) คนที่ใช้เวลาน้อยกว่าจะได้อันดับสูงกว่า
-    const aTime = a.grand_total_score > 0 && a.total_time_sec > 0 ? a.total_time_sec : 9999999;
-    const bTime = b.grand_total_score > 0 && b.total_time_sec > 0 ? b.total_time_sec : 9999999;
-    if (aTime !== bTime) {
-      return aTime - bTime;
-    }
-    return String(a.created_at).localeCompare(String(b.created_at));
-  });
+    const ranked = list.map(function (item, idx) {
+      const score = item.best_score;
+      let rankBadge = "C-RANK";
+      if (score >= 600) rankBadge = "S-RANK";
+      else if (score >= 400) rankBadge = "A-RANK";
+      else if (score >= 200) rankBadge = "B-RANK";
 
-  const ranked = entries.map(function (item, idx) {
-    return Object.assign({ rank: idx + 1 }, item);
-  });
+      return Object.assign({ rank: idx + 1, rank_badge: rankBadge }, item);
+    });
 
-  let myRankObj = null;
-  if (requesterId) {
-    for (let i = 0; i < ranked.length; i++) {
-      if (ranked[i].student_id.toLowerCase() === requesterId) {
-        myRankObj = ranked[i];
-        break;
+    let myRankObj = null;
+    if (requesterId) {
+      for (let i = 0; i < ranked.length; i++) {
+        if (ranked[i].student_id.toLowerCase() === requesterId) {
+          myRankObj = ranked[i];
+          break;
+        }
       }
     }
-  }
+
+    gamesResult[def.id] = {
+      game_id: def.id,
+      title: def.title,
+      thai_title: def.thai_title,
+      checkpoint_label: def.checkpoint_label,
+      top10: ranked.slice(0, 10),
+      my_rank: myRankObj,
+      total_players: ranked.length
+    };
+  });
+
+  const activeGame = gamesResult[requestedGameId] || gamesResult["G01"];
 
   return {
     ok: true,
-    top10: ranked.slice(0, 10),
-    my_rank: myRankObj,
-    total_students: ranked.length,
+    active_game_id: activeGame.game_id,
+    games: gamesResult,
+    top10: activeGame.top10,
+    my_rank: activeGame.my_rank,
+    total_students: activeGame.total_players,
     fetched_at: new Date().toISOString()
   };
 }

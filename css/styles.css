@@ -7712,3 +7712,171 @@ html[data-theme="dark"] .mg-rank-badge.rank-c {
   color: #cbd5e1;
   border-color: #475569;
 }
+
+
+/* ============================================================================
+   ARCADE LEADERBOARD CATEGORY TABS & HIGH-SCORE MATRIX (NEO-BRUTALISM)
+   ============================================================================ */
+
+.mg-leaderboard-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 1024px) {
+  .mg-leaderboard-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .mg-leaderboard-tabs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.mg-leaderboard-tab {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background-color: var(--surface-card, #ffffff);
+  border: 2px solid var(--border-ink, #111827);
+  border-radius: 12px;
+  box-shadow: 3px 3px 0 var(--border-ink, #111827);
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease, background-color 0.15s ease;
+  font-family: inherit;
+  color: var(--text-main, #111827);
+  position: relative;
+  user-select: none;
+}
+
+.mg-leaderboard-tab:hover {
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 var(--border-ink, #111827);
+  background-color: var(--bg-subtle, #f8fafc);
+}
+
+.mg-leaderboard-tab:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--border-ink, #111827);
+}
+
+.mg-leaderboard-tab.is-active {
+  background-color: var(--blue-600, #2563eb);
+  color: #ffffff;
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--border-ink, #111827);
+  border-color: var(--border-ink, #111827);
+}
+
+.mg-leaderboard-tab.is-active .mg-tab-icon-wrap {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.mg-leaderboard-tab.is-active .mg-tab-title {
+  color: #ffffff;
+}
+
+.mg-leaderboard-tab.is-active .mg-tab-subtitle {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.mg-leaderboard-tab.is-active .mg-tab-badge {
+  background-color: #ffffff;
+  color: var(--blue-600, #2563eb);
+  border-color: #ffffff;
+}
+
+.mg-tab-icon-wrap {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background-color: var(--bg-subtle, #f1f5f9);
+  border: 1.5px solid var(--border-ink, #111827);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--blue-600, #2563eb);
+  transition: all 0.15s ease;
+}
+
+.mg-tab-icon-wrap svg {
+  width: 22px;
+  height: 22px;
+}
+
+.mg-tab-text-wrap {
+  min-width: 0;
+  flex: 1;
+}
+
+.mg-tab-title {
+  font-size: 0.90rem;
+  font-weight: 700;
+  color: var(--text-main, #111827);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.01em;
+}
+
+.mg-tab-subtitle {
+  font-size: 0.74rem;
+  color: var(--text-muted, #64748b);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mg-tab-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1.5px solid var(--border-ink, #111827);
+  background-color: #ffffff;
+  color: var(--text-main, #111827);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Dark mode overrides for category tabs */
+html[data-theme="dark"] .mg-leaderboard-tab {
+  background-color: #1e293b;
+  border-color: #334155;
+  box-shadow: 3px 3px 0 #0f172a;
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] .mg-leaderboard-tab.is-active {
+  background-color: #3b82f6;
+  border-color: #1d4ed8;
+}
+
+html[data-theme="dark"] .mg-tab-icon-wrap {
+  background-color: #0f172a;
+  border-color: #334155;
+  color: #60a5fa;
+}
+
+html[data-theme="dark"] .mg-tab-title {
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] .mg-tab-subtitle {
+  color: #94a3b8;
+}
+
+html[data-theme="dark"] .mg-tab-badge {
+  background-color: #0f172a;
+  border-color: #334155;
+  color: #cbd5e1;
+}

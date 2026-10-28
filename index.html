@@ -974,12 +974,12 @@
         <!-- Header & Sorting Rules Card -->
         <div class="surface-card" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
           <div>
-            <span class="status-pill is-info font-notch">LIVE LEADERBOARD  •  TOP 10</span>
-            <h1 style="font-size: 1.45rem; font-weight: 600; margin-top: 8px;">
-              กระดานจัดอันดับผู้เรียนสูงสุด 10 อันดับแรก
+            <span class="status-pill is-info font-notch">ARCADE LEADERBOARD  •  TOP 10 PER CATEGORY</span>
+            <h1 style="font-size: 1.45rem; font-weight: 700; margin-top: 8px;">
+              กระดานจัดอันดับสถิติมินิเกมรายหมวดหมู่ (Mini-Game Arcade Leaderboard)
             </h1>
             <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 4px;">
-              ดึงข้อมูลแบบ Real-time โดยจัดเรียงจาก <strong>1. คะแนนสะสมรวมสูงสุด (Score)</strong> และหากคะแนนเท่ากันจะตัดสินจาก <strong>2. เวลารวมที่ใช้น้อยที่สุด (Time)</strong>
+              สถิติการแข่งขันทดสอบความเร็ว ความแม่นยำ และคอมโบสูงสุดแยกตาม 4 หมวดหมู่อุปกรณ์ (สงวนความเป็นส่วนตัว ไม่เปิดเผยคะแนนสอบควิซท้ายหน่วย)
             </p>
           </div>
 
@@ -988,23 +988,108 @@
               อัปเดตล่าสุด: -
             </span>
             <button id="btn-refresh-leaderboard" type="button" class="btn-secondary">
-              รีเฟรชอันดับล่าสุด
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px; margin-right: 6px;">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <polyline points="1 20 1 14 7 14"></polyline>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+              </svg>
+              <span>รีเฟรชสถิติล่าสุด</span>
             </button>
           </div>
         </div>
 
-        <!-- Logged-in Student Personal Rank Banner -->
+        <!-- 4-Category Mini-Game Navigation Tabs -->
+        <div class="mg-leaderboard-tabs" role="tablist" aria-label="เลือกหมวดหมู่อุปกรณ์มินิเกม">
+          <button type="button" class="mg-leaderboard-tab is-active" data-leaderboard-game="G01" role="tab" aria-selected="true">
+            <div class="mg-tab-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                <line x1="6" y1="8" x2="6.01" y2="8"></line>
+                <line x1="10" y1="8" x2="10.01" y2="8"></line>
+                <line x1="14" y1="8" x2="14.01" y2="8"></line>
+                <line x1="18" y1="8" x2="18.01" y2="8"></line>
+                <line x1="6" y1="12" x2="6.01" y2="12"></line>
+                <line x1="18" y1="12" x2="18.01" y2="12"></line>
+                <line x1="9" y1="16" x2="15" y2="16"></line>
+              </svg>
+            </div>
+            <div class="mg-tab-text-wrap">
+              <div class="mg-tab-title font-notch">G01: Input Speed Match</div>
+              <div class="mg-tab-subtitle">เกมจับคู่อุปกรณ์นำเข้าข้อมูล</div>
+            </div>
+            <span class="mg-tab-badge">หน่วย 1-4</span>
+          </button>
+
+          <button type="button" class="mg-leaderboard-tab" data-leaderboard-game="G02" role="tab" aria-selected="false">
+            <div class="mg-tab-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 5v14"></path>
+                <path d="M8 5v14"></path>
+                <path d="M12 5v14"></path>
+                <path d="M17 5v14"></path>
+                <path d="M21 5v14"></path>
+              </svg>
+            </div>
+            <div class="mg-tab-text-wrap">
+              <div class="mg-tab-title font-notch">G02: Rapid Decoder</div>
+              <div class="mg-tab-subtitle">เกมถอดรหัสบาร์โค้ด & QR Code</div>
+            </div>
+            <span class="mg-tab-badge">หน่วย 5-8</span>
+          </button>
+
+          <button type="button" class="mg-leaderboard-tab" data-leaderboard-game="G03" role="tab" aria-selected="false">
+            <div class="mg-tab-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                <path d="M12 8v4"></path>
+                <path d="M12 16h.01"></path>
+              </svg>
+            </div>
+            <div class="mg-tab-text-wrap">
+              <div class="mg-tab-title font-notch">G03: Biometric Shield</div>
+              <div class="mg-tab-subtitle">เกมความปลอดภัย & ชีวมิติ</div>
+            </div>
+            <span class="mg-tab-badge">หน่วย 9-12</span>
+          </button>
+
+          <button type="button" class="mg-leaderboard-tab" data-leaderboard-game="G04" role="tab" aria-selected="false">
+            <div class="mg-tab-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                <rect x="9" y="9" width="6" height="6"></rect>
+                <line x1="9" y1="1" x2="9" y2="4"></line>
+                <line x1="15" y1="1" x2="15" y2="4"></line>
+                <line x1="9" y1="20" x2="9" y2="23"></line>
+                <line x1="15" y1="20" x2="15" y2="23"></line>
+                <line x1="20" y1="9" x2="23" y2="9"></line>
+                <line x1="20" y1="14" x2="23" y2="14"></line>
+                <line x1="1" y1="9" x2="4" y2="9"></line>
+                <line x1="1" y1="14" x2="4" y2="14"></line>
+              </svg>
+            </div>
+            <div class="mg-tab-text-wrap">
+              <div class="mg-tab-title font-notch">G04: Data & RLE Sprint</div>
+              <div class="mg-tab-subtitle">เกมคำนวณ & เข้ารหัสข้อมูล</div>
+            </div>
+            <span class="mg-tab-badge">หน่วย 13-16</span>
+          </button>
+        </div>
+
+        <!-- Logged-in Student Personal Rank Banner in Active Category -->
         <div id="leaderboard-my-rank-banner" class="my-rank-banner"></div>
 
         <!-- Top 3 Podium Strip -->
         <div id="leaderboard-podium" class="podium-strip"></div>
 
-        <!-- Top 10 Clean Table -->
+        <!-- Top 10 Clean Table (Zero Quiz Columns) -->
         <div class="surface-card surface-card--flush">
           <div style="padding: 18px 24px; border-bottom: 1px solid var(--border-subtle); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;">
-            <h2 style="font-size: 1.08rem; font-weight: 600;">ตารางอันดับ Top 10 ผู้เรียนคะแนนสูงสุด</h2>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span id="leaderboard-table-tag" class="status-pill is-info font-notch">G01</span>
+              <h2 id="leaderboard-table-title" style="font-size: 1.08rem; font-weight: 700;">ตารางอันดับ Top 10 ผู้เล่นคะแนนสูงสุด</h2>
+            </div>
             <span id="leaderboard-total-students" style="font-size: 0.82rem; color: var(--text-muted);">
-              ผู้เรียนในระบบทั้งหมด 0 คน
+              ผู้เล่นในหมวดนี้ทั้งหมด 0 คน
             </span>
           </div>
 
@@ -1012,13 +1097,13 @@
             <table class="clean-table">
               <thead>
                 <tr>
-                  <th style="width: 84px;">อันดับ</th>
+                  <th style="width: 80px;">อันดับ</th>
                   <th>ผู้เรียน</th>
-                  <th style="width: 150px;">ความคืบหน้า</th>
-                  <th class="num" style="width: 120px;">คะแนนควิซ</th>
-                  <th class="num" style="width: 120px;">คะแนนมินิเกม</th>
-                  <th class="num" style="width: 135px;">คะแนนรวมสุทธิ</th>
-                  <th class="num" style="width: 125px;">เวลารวมที่ใช้</th>
+                  <th class="num" style="width: 140px;">คะแนนสูงสุด</th>
+                  <th style="width: 120px; text-align: center;">ระดับทักษะ</th>
+                  <th class="num" style="width: 140px;">เวลาเอาชีวิตรอด</th>
+                  <th class="num" style="width: 110px;">จำนวนรอบ</th>
+                  <th style="width: 140px; text-align: right;">อัปเดตล่าสุด</th>
                 </tr>
               </thead>
               <tbody id="leaderboard-tbody"></tbody>
@@ -1244,17 +1329,17 @@
   <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
 
   <!-- Application Scripts -->
-  <script src="js/config.js?v=3.3"></script>
-  <script src="js/sound.js?v=3.3"></script>
-  <script src="js/api.js?v=3.3"></script>
-  <script src="js/motion.js?v=3.3"></script>
-  <script src="js/auth.js?v=3.3"></script>
-  <script src="js/certificate.js?v=3.3"></script>
-  <script src="js/curriculum-part1.js?v=3.3"></script>
-  <script src="js/curriculum-part2.js?v=3.3"></script>
-  <script src="js/minigames.js?v=3.3"></script>
-  <script src="js/ean13-guide.js?v=3.3"></script>
-  <script src="js/learning.js?v=3.3"></script>
-  <script src="js/app.js?v=3.3"></script>
+  <script src="js/config.js?v=3.4"></script>
+  <script src="js/sound.js?v=3.4"></script>
+  <script src="js/api.js?v=3.4"></script>
+  <script src="js/motion.js?v=3.4"></script>
+  <script src="js/auth.js?v=3.4"></script>
+  <script src="js/certificate.js?v=3.4"></script>
+  <script src="js/curriculum-part1.js?v=3.4"></script>
+  <script src="js/curriculum-part2.js?v=3.4"></script>
+  <script src="js/minigames.js?v=3.4"></script>
+  <script src="js/ean13-guide.js?v=3.4"></script>
+  <script src="js/learning.js?v=3.4"></script>
+  <script src="js/app.js?v=3.4"></script>
 </body>
 </html>

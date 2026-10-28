@@ -79,19 +79,60 @@
     return (h >>> 0).toString(16).padStart(8, "0");
   }
 
+  function buildDefaultMiniGames(now) {
+    return {
+      "6720101001": {
+        "G01": { game_id: "G01", best_score: 880, best_time_sec: 58, play_count: 6, updated_at: now },
+        "G02": { game_id: "G02", best_score: 790, best_time_sec: 52, play_count: 5, updated_at: now },
+        "G03": { game_id: "G03", best_score: 710, best_time_sec: 48, play_count: 4, updated_at: now },
+        "G04": { game_id: "G04", best_score: 650, best_time_sec: 45, play_count: 3, updated_at: now }
+      },
+      "6720101002": {
+        "G01": { game_id: "G01", best_score: 940, best_time_sec: 64, play_count: 8, updated_at: now },
+        "G02": { game_id: "G02", best_score: 860, best_time_sec: 59, play_count: 7, updated_at: now },
+        "G03": { game_id: "G03", best_score: 810, best_time_sec: 54, play_count: 5, updated_at: now },
+        "G04": { game_id: "G04", best_score: 740, best_time_sec: 50, play_count: 4, updated_at: now }
+      },
+      "6720101003": {
+        "G01": { game_id: "G01", best_score: 680, best_time_sec: 49, play_count: 4, updated_at: now },
+        "G02": { game_id: "G02", best_score: 610, best_time_sec: 44, play_count: 3, updated_at: now },
+        "G03": { game_id: "G03", best_score: 540, best_time_sec: 41, play_count: 3, updated_at: now },
+        "G04": { game_id: "G04", best_score: 480, best_time_sec: 38, play_count: 2, updated_at: now }
+      },
+      "6720101004": {
+        "G01": { game_id: "G01", best_score: 560, best_time_sec: 42, play_count: 3, updated_at: now },
+        "G02": { game_id: "G02", best_score: 520, best_time_sec: 40, play_count: 3, updated_at: now },
+        "G03": { game_id: "G03", best_score: 460, best_time_sec: 37, play_count: 2, updated_at: now },
+        "G04": { game_id: "G04", best_score: 420, best_time_sec: 35, play_count: 2, updated_at: now }
+      },
+      "6720101005": {
+        "G01": { game_id: "G01", best_score: 440, best_time_sec: 36, play_count: 2, updated_at: now },
+        "G02": { game_id: "G02", best_score: 390, best_time_sec: 33, play_count: 2, updated_at: now },
+        "G03": { game_id: "G03", best_score: 330, best_time_sec: 30, play_count: 1, updated_at: now },
+        "G04": { game_id: "G04", best_score: 290, best_time_sec: 28, play_count: 1, updated_at: now }
+      }
+    };
+  }
+
   function loadLocalDb() {
+    const now = new Date().toISOString();
     try {
       const raw = localStorage.getItem(CFG.STORAGE_KEYS.LOCAL_DB_MIRROR);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (parsed && Array.isArray(parsed.users)) return parsed;
+        if (parsed && Array.isArray(parsed.users)) {
+          if (!parsed.minigame_records || Object.keys(parsed.minigame_records).length === 0) {
+            parsed.minigame_records = buildDefaultMiniGames(now);
+            saveLocalDb(parsed);
+          }
+          return parsed;
+        }
       }
     } catch (e) {
       // ignore corrupted storage
     }
 
     // สร้างฐานข้อมูลเริ่มต้นพร้อมข้อมูลตัวอย่างเพื่อนร่วมชั้นเพื่อทดสอบ Leaderboard
-    const now = new Date().toISOString();
     const seeded = {
       users: [
         {
@@ -181,7 +222,38 @@
         }
       ],
       unit_progress: {},
-      minigame_records: {},
+      minigame_records: {
+        "6720101001": {
+          "G01": { game_id: "G01", best_score: 880, best_time_sec: 58, play_count: 6, updated_at: now },
+          "G02": { game_id: "G02", best_score: 790, best_time_sec: 52, play_count: 5, updated_at: now },
+          "G03": { game_id: "G03", best_score: 710, best_time_sec: 48, play_count: 4, updated_at: now },
+          "G04": { game_id: "G04", best_score: 650, best_time_sec: 45, play_count: 3, updated_at: now }
+        },
+        "6720101002": {
+          "G01": { game_id: "G01", best_score: 940, best_time_sec: 64, play_count: 8, updated_at: now },
+          "G02": { game_id: "G02", best_score: 860, best_time_sec: 59, play_count: 7, updated_at: now },
+          "G03": { game_id: "G03", best_score: 810, best_time_sec: 54, play_count: 5, updated_at: now },
+          "G04": { game_id: "G04", best_score: 740, best_time_sec: 50, play_count: 4, updated_at: now }
+        },
+        "6720101003": {
+          "G01": { game_id: "G01", best_score: 680, best_time_sec: 49, play_count: 4, updated_at: now },
+          "G02": { game_id: "G02", best_score: 610, best_time_sec: 44, play_count: 3, updated_at: now },
+          "G03": { game_id: "G03", best_score: 540, best_time_sec: 41, play_count: 3, updated_at: now },
+          "G04": { game_id: "G04", best_score: 480, best_time_sec: 38, play_count: 2, updated_at: now }
+        },
+        "6720101004": {
+          "G01": { game_id: "G01", best_score: 560, best_time_sec: 42, play_count: 3, updated_at: now },
+          "G02": { game_id: "G02", best_score: 520, best_time_sec: 40, play_count: 3, updated_at: now },
+          "G03": { game_id: "G03", best_score: 460, best_time_sec: 37, play_count: 2, updated_at: now },
+          "G04": { game_id: "G04", best_score: 420, best_time_sec: 35, play_count: 2, updated_at: now }
+        },
+        "6720101005": {
+          "G01": { game_id: "G01", best_score: 440, best_time_sec: 36, play_count: 2, updated_at: now },
+          "G02": { game_id: "G02", best_score: 390, best_time_sec: 33, play_count: 2, updated_at: now },
+          "G03": { game_id: "G03", best_score: 330, best_time_sec: 30, play_count: 1, updated_at: now },
+          "G04": { game_id: "G04", best_score: 290, best_time_sec: 28, play_count: 1, updated_at: now }
+        }
+      },
       activity_logs: []
     };
     saveLocalDb(seeded);
@@ -539,29 +611,116 @@
 
     if (action === "get_leaderboard") {
       const reqId = String(payload.student_id || "").trim().toLowerCase();
-      const sorted = db.users
-        .map((u) => sanitizeUser(u))
-        .sort((a, b) => {
-          if (b.grand_total_score !== a.grand_total_score) {
-            return b.grand_total_score - a.grand_total_score;
-          }
-          const aTime =
-            a.grand_total_score > 0 && a.total_time_sec > 0 ? a.total_time_sec : 9999999;
-          const bTime =
-            b.grand_total_score > 0 && b.total_time_sec > 0 ? b.total_time_sec : 9999999;
-          return aTime - bTime;
-        })
-        .map((item, idx) => Object.assign({ rank: idx + 1 }, item));
+      const requestedGameId = String(payload.game_id || "G01").trim().toUpperCase();
 
-      const myRank = reqId
-        ? sorted.find((x) => x.student_id.toLowerCase() === reqId) || null
-        : null;
+      const GAME_DEFS = [
+        {
+          id: "G01",
+          title: "Input Device Speed Match",
+          thai_title: "เกมจับคู่และวิเคราะห์อุปกรณ์นำเข้าข้อมูล",
+          checkpoint_label: "หมวดที่ 1 (หน่วยที่ 1-4)"
+        },
+        {
+          id: "G02",
+          title: "Barcode & QR Rapid Decoder",
+          thai_title: "เกมถอดรหัสบาร์โค้ดและคิวอาร์โค้ดสปีดรัน",
+          checkpoint_label: "หมวดที่ 2 (หน่วยที่ 5-8)"
+        },
+        {
+          id: "G03",
+          title: "Cyber & Biometric Shield",
+          thai_title: "เกมป้องกันภัยไซเบอร์และตรวจสอบชีวมิติ",
+          checkpoint_label: "หมวดที่ 3 (หน่วยที่ 9-12)"
+        },
+        {
+          id: "G04",
+          title: "Data Encoding & RLE Sprint",
+          thai_title: "เกมคำนวณและเข้ารหัสบิตข้อมูล",
+          checkpoint_label: "หมวดที่ 4 (หน่วยที่ 13-16)"
+        }
+      ];
+
+      const userMap = {};
+      db.users.forEach((u) => {
+        userMap[u.student_id.toLowerCase()] = {
+          student_id: u.student_id,
+          full_name: u.full_name,
+          avatar_url: u.avatar_url,
+          classroom: u.classroom || "ปวช.2/1"
+        };
+      });
+
+      const gamesResult = {};
+
+      GAME_DEFS.forEach((def) => {
+        const gameId = def.id;
+        const entries = [];
+
+        Object.keys(db.minigame_records || {}).forEach((sIdKey) => {
+          const rec = db.minigame_records[sIdKey]?.[gameId];
+          if (rec && rec.best_score > 0) {
+            const u = userMap[sIdKey.toLowerCase()] || {
+              student_id: sIdKey,
+              full_name: `ผู้เรียน (${sIdKey})`,
+              avatar_url: "",
+              classroom: "-"
+            };
+            entries.push({
+              student_id: u.student_id,
+              full_name: u.full_name,
+              avatar_url: u.avatar_url,
+              classroom: u.classroom,
+              game_id: gameId,
+              best_score: Number(rec.best_score || 0),
+              best_time_sec: Number(rec.best_time_sec || 0),
+              play_count: Number(rec.play_count || 1),
+              updated_at: rec.updated_at || now
+            });
+          }
+        });
+
+        // เรียงลำดับ: 1. คะแนนสูงสุด (DESC), 2. เวลาเอาชีวิตรอดนานกว่า (DESC), 3. จำนวนรอบที่เล่น (DESC)
+        entries.sort((a, b) => {
+          if (b.best_score !== a.best_score) return b.best_score - a.best_score;
+          if (b.best_time_sec !== a.best_time_sec) return b.best_time_sec - a.best_time_sec;
+          return b.play_count - a.play_count;
+        });
+
+        const ranked = entries.map((item, idx) => {
+          const score = item.best_score;
+          let rankBadge = "C-RANK";
+          if (score >= 600) rankBadge = "S-RANK";
+          else if (score >= 400) rankBadge = "A-RANK";
+          else if (score >= 200) rankBadge = "B-RANK";
+
+          return Object.assign({ rank: idx + 1, rank_badge: rankBadge }, item);
+        });
+
+        let myRankObj = null;
+        if (reqId) {
+          myRankObj = ranked.find((x) => x.student_id.toLowerCase() === reqId) || null;
+        }
+
+        gamesResult[gameId] = {
+          game_id: gameId,
+          title: def.title,
+          thai_title: def.thai_title,
+          checkpoint_label: def.checkpoint_label,
+          top10: ranked.slice(0, 10),
+          my_rank: myRankObj,
+          total_players: ranked.length
+        };
+      });
+
+      const activeGame = gamesResult[requestedGameId] || gamesResult["G01"];
 
       return {
         ok: true,
-        top10: sorted.slice(0, 10),
-        my_rank: myRank,
-        total_students: sorted.length,
+        active_game_id: activeGame.game_id,
+        games: gamesResult,
+        top10: activeGame.top10,
+        my_rank: activeGame.my_rank,
+        total_students: activeGame.total_players,
         fetched_at: now
       };
     }
@@ -580,18 +739,28 @@
       return executeLocalRequest(payload);
     }
 
-    const response = await fetch(CFG.GAS_WEB_APP_URL.trim(), {
-      method: "POST",
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8"
-      },
-      body: JSON.stringify(payload)
-    });
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 4500);
 
-    if (!response.ok) {
-      throw new Error(`เชื่อมต่อเซิร์ฟเวอร์ไม่สำเร็จ (HTTP ${response.status})`);
+      const response = await fetch(CFG.GAS_WEB_APP_URL.trim(), {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify(payload),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeoutId);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      return await response.json();
+    } catch (err) {
+      console.warn(`[Cloud API] ${action} fallback to local DB: ${err.message}`);
+      return executeLocalRequest(payload);
     }
-    return response.json();
   }
 
   window.BackendAPI = {
@@ -606,6 +775,7 @@
     submitUnitQuiz: (data) => postAction("submit_unit_quiz", data),
     submitMiniGame: (data) => postAction("submit_minigame", data),
     claimCertificate: (studentId) => postAction("claim_certificate", { student_id: studentId }),
-    getLeaderboard: (studentId) => postAction("get_leaderboard", { student_id: studentId })
+    getLeaderboard: (studentId, gameId = "G01") =>
+      postAction("get_leaderboard", { student_id: studentId, game_id: gameId })
   };
 })();

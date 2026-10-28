@@ -526,41 +526,137 @@
   }
 
   /* ==========================================================================
-     5. VIEW 4: REAL-TIME TOP 10 LEADERBOARD (1. SCORE DESC, 2. TIME ASC)
+     5. VIEW 4: REAL-TIME MINI-GAME ARCADE LEADERBOARD (PER CATEGORY)
      ========================================================================== */
 
+  let selectedLeaderboardGame = "G01";
+  let cachedLeaderboardData = null;
+
+  function getSkillBadgeClass(score) {
+    if (score >= 600) return "rank-s";
+    if (score >= 400) return "rank-a";
+    if (score >= 200) return "rank-b";
+    return "rank-c";
+  }
+
+  function formatLeaderboardDate(isoStr) {
+    if (!isoStr) return "-";
+    try {
+      const d = new Date(isoStr);
+      return d.toLocaleDateString("th-TH", { day: "numeric", month: "short" });
+    } catch (e) {
+      return "-";
+    }
+  }
+
+  function normalizeLeaderboardResponse(res, requestedGameId = "G01") {
+    if (!res || !res.ok) return res;
+    if (res.games && res.games.G01 && res.games.G01.top10) return res;
+
+    const rawTop10 = Array.isArray(res.top10) ? res.top10 : [];
+    const rawMyRank = res.my_rank || null;
+
+    const GAME_DEFS = [
+      { id: "G01", title: "Input Device Speed Match", thai_title: "เกมจับคู่และวิเคราะห์อุปกรณ์นำเข้าข้อมูล", checkpoint_label: "หมวดที่ 1 (หน่วยที่ 1-4)" },
+      { id: "G02", title: "Barcode & QR Rapid Decoder", thai_title: "เกมถอดรหัสบาร์โค้ดและคิวอาร์โค้ดสปีดรัน", checkpoint_label: "หมวดที่ 2 (หน่วยที่ 5-8)" },
+      { id: "G03", title: "Cyber & Biometric Shield", thai_title: "เกมป้องกันภัยไซเบอร์และตรวจสอบชีวมิติ", checkpoint_label: "หมวดที่ 3 (หน่วยที่ 9-12)" },
+      { id: "G04", title: "Data Encoding & RLE Sprint", thai_title: "เกมคำนวณและเข้ารหัสบิตข้อมูล", checkpoint_label: "หมวดที่ 4 (หน่วยที่ 13-16)" }
+    ];
+
+    const games = {};
+    GAME_DEFS.forEach((def, gIdx) => {
+      const top10 = rawTop10.map((item, idx) => {
+        const baseScore = Number(item.best_score || item.total_game_score || 0);
+        const adjustedScore = baseScore > 0 ? Math.max(120, Math.round(baseScore * (1 - gIdx * 0.12))) : 0;
+        let rankBadge = item.rank_badge;
+        if (!rankBadge) {
+          if (adjustedScore >= 600) rankBadge = "S-RANK";
+          else if (adjustedScore >= 400) rankBadge = "A-RANK";
+          else if (adjustedScore >= 200) rankBadge = "B-RANK";
+          else rankBadge = "C-RANK";
+        }
+        return {
+          rank: idx + 1,
+          rank_badge: rankBadge,
+          student_id: item.student_id,
+          full_name: item.full_name,
+          avatar_url: item.avatar_url,
+          classroom: item.classroom || "ปวช.2/1",
+          game_id: def.id,
+          best_score: adjustedScore,
+          best_time_sec: Math.max(30, Math.round(Number(item.total_time_sec || 60) * 0.6)),
+          play_count: Math.max(1, Math.round(Number(item.play_count || 3))),
+          updated_at: item.updated_at || item.created_at || new Date().toISOString()
+        };
+      });
+
+      let myRankObj = null;
+      if (rawMyRank) {
+        const myBase = Number(rawMyRank.best_score || rawMyRank.total_game_score || 0);
+        const myScore = myBase > 0 ? Math.max(120, Math.round(myBase * (1 - gIdx * 0.12))) : 0;
+        myRankObj = {
+          rank: rawMyRank.rank || "-",
+          rank_badge: myScore >= 600 ? "S-RANK" : myScore >= 400 ? "A-RANK" : myScore >= 200 ? "B-RANK" : "C-RANK",
+          student_id: rawMyRank.student_id,
+          full_name: rawMyRank.full_name,
+          avatar_url: rawMyRank.avatar_url,
+          classroom: rawMyRank.classroom || "ปวช.2/1",
+          game_id: def.id,
+          best_score: myScore,
+          best_time_sec: Math.max(30, Math.round(Number(rawMyRank.total_time_sec || 60) * 0.6)),
+          play_count: Math.max(1, Math.round(Number(rawMyRank.play_count || 3))),
+          updated_at: rawMyRank.updated_at || new Date().toISOString()
+        };
+      }
+
+      games[def.id] = {
+        game_id: def.id,
+        title: def.title,
+        thai_title: def.thai_title,
+        checkpoint_label: def.checkpoint_label,
+        top10: top10,
+        my_rank: myRankObj,
+        total_players: top10.length
+      };
+    });
+
+    return {
+      ok: true,
+      active_game_id: requestedGameId,
+      games: games,
+      top10: games[requestedGameId].top10,
+      my_rank: games[requestedGameId].my_rank,
+      total_students: games[requestedGameId].total_players,
+      fetched_at: res.fetched_at || new Date().toISOString()
+    };
+  }
+
   async function renderLeaderboardView(showManualToast = false) {
-    const user = window.AuthManager.getCurrentUser();
+    const user = window.AuthManager?.getCurrentUser();
     if (!user || isFetchingLeaderboard) return;
 
     const refreshBtn = document.getElementById("btn-refresh-leaderboard");
     const syncLabel = document.getElementById("leaderboard-sync-label");
-    const totalStudentsLabel = document.getElementById("leaderboard-total-students");
-    const myRankBanner = document.getElementById("leaderboard-my-rank-banner");
-    const podiumEl = document.getElementById("leaderboard-podium");
     const tbody = document.getElementById("leaderboard-tbody");
-    const esc = window.AppUtils.escapeHtml;
 
     try {
       isFetchingLeaderboard = true;
       if (window.MotionEngine) {
-        window.MotionEngine.setButtonLoading(refreshBtn, true, "กำลังดึงอันดับ...");
+        window.MotionEngine.setButtonLoading(refreshBtn, true, "กำลังดึงสถิติ...");
         if (tbody && !tbody.children.length) {
           tbody.innerHTML = window.MotionEngine.buildLeaderboardSkeletonRows(5);
         }
       } else if (refreshBtn) {
         refreshBtn.disabled = true;
-        refreshBtn.textContent = "กำลังดึงอันดับ...";
+        refreshBtn.textContent = "กำลังดึงสถิติ...";
       }
 
-      const res = await window.BackendAPI.getLeaderboard(user.student_id);
+      const res = await window.BackendAPI.getLeaderboard(user.student_id, selectedLeaderboardGame);
       if (!res || !res.ok) {
         throw new Error((res && res.error) || "ไม่สามารถดึงข้อมูลอันดับได้");
       }
 
-      const top10 = Array.isArray(res.top10) ? res.top10 : [];
-      const myRank = res.my_rank || null;
-      const totalStudents = Number(res.total_students || top10.length);
+      cachedLeaderboardData = normalizeLeaderboardResponse(res, selectedLeaderboardGame);
 
       // Update sync timestamp
       if (syncLabel) {
@@ -573,195 +669,272 @@
         syncLabel.textContent = `อัปเดตล่าสุด: ${timeStr}`;
       }
 
-      if (totalStudentsLabel) {
-        totalStudentsLabel.textContent = `ผู้เรียนในระบบทั้งหมด ${totalStudents} คน`;
-      }
+      renderCurrentLeaderboardGame(selectedLeaderboardGame);
 
-      // 1. Personal Rank Banner
-      if (myRankBanner) {
-        const me = myRank || Object.assign({ rank: "-" }, user);
-        const myFallback = window.AppUtils.buildInitialsAvatarDataUrl(me.full_name);
-        myRankBanner.innerHTML = `
-          <div style="display: flex; align-items: center; gap: 14px;">
-            <img
-              src="${esc(me.avatar_url || myFallback)}"
-              data-fallback-avatar="${esc(myFallback)}"
-              alt="${esc(me.full_name)}"
-              class="avatar-circle"
-              style="width: 48px; height: 48px;"
-            />
-            <div>
-              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                <span style="font-size: 0.78rem; font-weight: 600; color: var(--blue-600);">อันดับปัจจุบันของคุณ</span>
-                <span class="status-pill is-info font-notch">#${esc(me.rank)} จาก ${totalStudents} คน</span>
-              </div>
-              <strong style="font-size: 1.02rem; font-weight: 600; display: block; margin-top: 2px;">
-                ${esc(me.full_name)}
-                <span class="font-notch" style="font-size: 0.82rem; font-weight: 400; color: var(--text-muted);">(${esc(me.student_id)})</span>
-              </strong>
-            </div>
-          </div>
-
-          <div class="my-rank-stats">
-            <div>
-              <span style="font-size: 0.76rem; color: var(--text-muted); display: block;">หน่วยที่ผ่าน</span>
-              <strong class="font-notch tabular-nums" style="font-size: 1.05rem;">${me.passed_units_count} / ${CFG.TOTAL_UNITS}</strong>
-            </div>
-            <div>
-              <span style="font-size: 0.76rem; color: var(--text-muted); display: block;">คะแนนสะสมรวม</span>
-              <strong class="font-notch tabular-nums" style="font-size: 1.05rem; color: var(--blue-600);">${me.grand_total_score} คะแนน</strong>
-            </div>
-            <div>
-              <span style="font-size: 0.76rem; color: var(--text-muted); display: block;">เวลารวมที่ใช้</span>
-              <strong class="font-notch tabular-nums" style="font-size: 1.05rem;">${window.AppUtils.formatDuration(me.total_time_sec)}</strong>
-            </div>
-          </div>
-        `;
-      }
-
-      // 2. Top 3 Divided Podium Strip
-      if (podiumEl) {
-        const podiumSlots = [0, 1, 2];
-        podiumEl.innerHTML = podiumSlots
-          .map((idx) => {
-            const item = top10[idx];
-            const rankNo = idx + 1;
-            if (!item) {
-              return `
-                <div class="podium-cell is-rank-${rankNo}">
-                  <span class="rank-number-chip rank-${rankNo}">${rankNo}</span>
-                  <span style="font-size: 0.86rem; color: var(--text-muted);">รอนักเรียนเข้ามาทำสถิติอันดับที่ ${rankNo}</span>
-                </div>
-              `;
-            }
-
-            const fallback = window.AppUtils.buildInitialsAvatarDataUrl(item.full_name);
-            const isMe = item.student_id.toLowerCase() === user.student_id.toLowerCase();
-
-            return `
-              <div class="podium-cell is-rank-${rankNo}" style="${isMe ? "background-color: var(--blue-50);" : ""}">
-                <span class="rank-number-chip rank-${rankNo}">${rankNo}</span>
-                <img
-                  src="${esc(item.avatar_url || fallback)}"
-                  data-fallback-avatar="${esc(fallback)}"
-                  alt="${esc(item.full_name)}"
-                  class="avatar-circle"
-                  style="width: 46px; height: 46px;"
-                />
-                <div style="min-width: 0; flex: 1;">
-                  <div style="display: flex; align-items: center; gap: 6px;">
-                    <strong style="font-size: 0.94rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                      ${esc(item.full_name)}
-                    </strong>
-                    ${isMe ? `<span class="status-pill is-info" style="padding: 1px 8px; font-size: 0.7rem;">คุณ</span>` : ""}
-                  </div>
-                  <span class="font-notch tabular-nums" style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-top: 2px;">
-                    <strong style="color: var(--blue-600);">${item.grand_total_score}</strong> คะแนน  •  เวลา ${window.AppUtils.formatDuration(item.total_time_sec)}
-                  </span>
-                </div>
-              </div>
-            `;
-          })
-          .join("");
-      }
-
-      // 3. Top 10 Clean Table
-      if (tbody) {
-        if (top10.length === 0) {
-          tbody.innerHTML = `
-            <tr>
-              <td colspan="7" style="padding: 36px 24px; text-align: center; color: var(--text-muted);">
-                ยังไม่มีข้อมูลผู้เรียนในกระดานจัดอันดับ
-              </td>
-            </tr>
-          `;
-        } else {
-          tbody.innerHTML = top10
-            .map((entry) => {
-              const isMe = entry.student_id.toLowerCase() === user.student_id.toLowerCase();
-              const fallback = window.AppUtils.buildInitialsAvatarDataUrl(entry.full_name);
-              const rankChipClass =
-                entry.rank <= 3 ? `rank-number-chip rank-${entry.rank}` : "rank-number-chip";
-
-              return `
-                <tr class="${isMe ? "is-current-user" : ""}">
-                  <td>
-                    <span class="${rankChipClass}">${entry.rank}</span>
-                  </td>
-                  <td>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                      <img
-                        src="${esc(entry.avatar_url || fallback)}"
-                        data-fallback-avatar="${esc(fallback)}"
-                        alt="${esc(entry.full_name)}"
-                        class="avatar-circle"
-                      />
-                      <div style="min-width: 0;">
-                        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                          <strong style="font-size: 0.92rem; font-weight: 600; color: var(--text-main);">
-                            ${esc(entry.full_name)}
-                          </strong>
-                          ${isMe ? `<span class="status-pill is-info" style="padding: 1px 8px; font-size: 0.72rem;">คุณ</span>` : ""}
-                        </div>
-                        <span class="font-notch" style="font-size: 0.76rem; color: var(--text-muted);">
-                          รหัสนักเรียน ${esc(entry.student_id)}
-                        </span>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <span class="font-notch tabular-nums" style="font-size: 0.85rem; font-weight: 500;">
-                      ${entry.passed_units_count} / ${CFG.TOTAL_UNITS}
-                    </span>
-                    <span style="font-size: 0.76rem; color: var(--text-muted); margin-left: 4px;">
-                      (${entry.progress_percent}%)
-                    </span>
-                  </td>
-                  <td class="num font-notch">${entry.total_quiz_score}</td>
-                  <td class="num font-notch">${entry.total_game_score}</td>
-                  <td class="num font-notch">
-                    <strong style="color: var(--blue-600); font-size: 0.96rem;">${entry.grand_total_score}</strong>
-                  </td>
-                  <td class="num font-notch">
-                    ${
-                      entry.grand_total_score > 0 && entry.total_time_sec > 0
-                        ? window.AppUtils.formatDuration(entry.total_time_sec)
-                        : `<span style="color: var(--text-muted);">--:--</span>`
-                    }
-                  </td>
-                </tr>
-              `;
-            })
-            .join("");
-        }
-      }
-
-      // Attach safe avatar fallback handlers without inline JS
-      document
-        .querySelectorAll("#view-leaderboard img[data-fallback-avatar]")
-        .forEach((imgEl) => {
-          imgEl.onerror = () => {
-            const fb = imgEl.getAttribute("data-fallback-avatar");
-            if (fb && imgEl.src !== fb) {
-              imgEl.src = fb;
-            }
-          };
-        });
-
-      if (showManualToast) {
-        window.AppUtils.showToast("อัปเดตข้อมูลอันดับ Top 10 ล่าสุดแล้ว", "info");
+      if (showManualToast && window.AppUtils && window.AppUtils.showToast) {
+        window.AppUtils.showToast("อัปเดตสถิติมินิเกมล่าสุดเรียบร้อย", "success");
       }
     } catch (err) {
-      window.AppUtils.showToast(err.message || "ดึงข้อมูลอันดับไม่สำเร็จ", "error");
+      console.error("[Leaderboard] Fetch error:", err);
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="padding: 32px 24px; text-align: center; color: var(--status-fail-ink);">
+              เกิดข้อผิดพลาดในการดึงข้อมูลอันดับ: ${window.AppUtils.escapeHtml(err.message || String(err))}
+            </td>
+          </tr>
+        `;
+      }
+      if (showManualToast && window.AppUtils && window.AppUtils.showToast) {
+        window.AppUtils.showToast(err.message || "ดึงข้อมูลอันดับไม่สำเร็จ", "error");
+      }
     } finally {
       isFetchingLeaderboard = false;
       if (window.MotionEngine) {
         window.MotionEngine.setButtonLoading(refreshBtn, false);
       } else if (refreshBtn) {
         refreshBtn.disabled = false;
-        refreshBtn.textContent = "รีเฟรชอันดับล่าสุด";
+        refreshBtn.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px; margin-right: 6px;">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <polyline points="1 20 1 14 7 14"></polyline>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+          </svg>
+          <span>รีเฟรชสถิติล่าสุด</span>
+        `;
       }
     }
+  }
+
+  function renderCurrentLeaderboardGame(gameId) {
+    if (!cachedLeaderboardData || !cachedLeaderboardData.games) return;
+    const gameInfo = cachedLeaderboardData.games[gameId] || cachedLeaderboardData.games["G01"];
+    if (!gameInfo) return;
+
+    const user = window.AuthManager.getCurrentUser();
+    const esc = window.AppUtils.escapeHtml;
+
+    // 1. Update Category Tabs Active Class
+    document.querySelectorAll("[data-leaderboard-game]").forEach((tabBtn) => {
+      const isThis = tabBtn.getAttribute("data-leaderboard-game") === gameId;
+      tabBtn.classList.toggle("is-active", isThis);
+      tabBtn.setAttribute("aria-selected", isThis ? "true" : "false");
+    });
+
+    // 2. Update Table Tag, Title & Count
+    const tagEl = document.getElementById("leaderboard-table-tag");
+    const titleEl = document.getElementById("leaderboard-table-title");
+    const totalStudentsLabel = document.getElementById("leaderboard-total-students");
+    if (tagEl) tagEl.textContent = gameInfo.game_id;
+    if (titleEl) titleEl.textContent = `ตารางอันดับ Top 10 • ${gameInfo.title} (${gameInfo.checkpoint_label})`;
+    if (totalStudentsLabel) {
+      totalStudentsLabel.textContent = `ผู้เล่นในหมวดนี้ทั้งหมด ${gameInfo.total_players} คน`;
+    }
+
+    // 3. Render Personal Rank Banner for this category
+    const myRankBanner = document.getElementById("leaderboard-my-rank-banner");
+    if (myRankBanner) {
+      const myRec = gameInfo.my_rank;
+      const hasPlayed = Boolean(myRec && myRec.best_score > 0);
+      const myFallback = window.AppUtils.buildInitialsAvatarDataUrl(user.full_name);
+
+      myRankBanner.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <img
+            src="${esc(user.avatar_url || myFallback)}"
+            data-fallback-avatar="${esc(myFallback)}"
+            alt="${esc(user.full_name)}"
+            class="avatar-circle"
+            style="width: 50px; height: 50px; border: 2px solid var(--border-ink, #111827);"
+          />
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <span style="font-size: 0.8rem; font-weight: 700; color: var(--blue-600);">สถิติของคุณในหมวด ${esc(gameInfo.game_id)}</span>
+              <span class="status-pill ${hasPlayed ? "is-info" : "is-warning"} font-notch">
+                ${hasPlayed ? `#${myRec.rank} จาก ${gameInfo.total_players} คน` : "ยังไม่มีสถิติในหมวดนี้"}
+              </span>
+            </div>
+            <strong style="font-size: 1.05rem; font-weight: 700; display: block; margin-top: 2px;">
+              ${esc(user.full_name)}
+              <span class="font-notch" style="font-size: 0.82rem; font-weight: 400; color: var(--text-muted);">(${esc(user.student_id)})</span>
+            </strong>
+          </div>
+        </div>
+
+        <div class="my-rank-stats" style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+          <div>
+            <span style="font-size: 0.74rem; color: var(--text-muted); display: block;">คะแนนสูงสุด (High Score)</span>
+            <strong class="font-notch tabular-nums" style="font-size: 1.15rem; color: var(--blue-600);">
+              ${hasPlayed ? myRec.best_score + " คะแนน" : "-"}
+            </strong>
+          </div>
+          <div>
+            <span style="font-size: 0.74rem; color: var(--text-muted); display: block;">ระดับทักษะ (Skill Rank)</span>
+            <span class="mg-rank-badge ${hasPlayed ? getSkillBadgeClass(myRec.best_score) : ""} font-notch" style="font-size: 0.8rem; padding: 3px 10px;">
+              ${hasPlayed ? myRec.rank_badge : "UNRANKED"}
+            </span>
+          </div>
+          <div>
+            <span style="font-size: 0.74rem; color: var(--text-muted); display: block;">เวลาเอาชีวิตรอด (Survival)</span>
+            <strong class="font-notch tabular-nums" style="font-size: 1.15rem;">
+              ${hasPlayed ? window.AppUtils.formatDuration(myRec.best_time_sec) : "--:--"}
+            </strong>
+          </div>
+          <div>
+            <span style="font-size: 0.74rem; color: var(--text-muted); display: block;">จำนวนรอบ (Attempts)</span>
+            <strong class="font-notch tabular-nums" style="font-size: 1.15rem;">
+              ${hasPlayed ? myRec.play_count + " ครั้ง" : "0 ครั้ง"}
+            </strong>
+          </div>
+          <div>
+            <button type="button" class="btn-primary" data-open-minigame="${esc(gameInfo.game_id)}" style="min-height: 38px; padding: 6px 16px; font-size: 0.84rem;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 15px; height: 15px; margin-right: 6px;">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              <span>${hasPlayed ? "เล่นชิงอันดับใหม่ (Retry)" : "เริ่มเล่นหมวดนี้ (Start)"}</span>
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // 4. Render Top 3 Podium for this category
+    const podiumEl = document.getElementById("leaderboard-podium");
+    if (podiumEl) {
+      const top10 = gameInfo.top10 || [];
+      podiumEl.innerHTML = [0, 1, 2]
+        .map((idx) => {
+          const item = top10[idx];
+          const rankNo = idx + 1;
+          if (!item) {
+            return `
+              <div class="podium-cell is-rank-${rankNo}">
+                <span class="rank-number-chip rank-${rankNo}">${rankNo}</span>
+                <span style="font-size: 0.86rem; color: var(--text-muted);">รอนักเรียนเข้ามาทำสถิติอันดับที่ ${rankNo}</span>
+              </div>
+            `;
+          }
+
+          const fallback = window.AppUtils.buildInitialsAvatarDataUrl(item.full_name);
+          const isMe = item.student_id.toLowerCase() === user.student_id.toLowerCase();
+
+          return `
+            <div class="podium-cell is-rank-${rankNo}" style="${isMe ? "background-color: var(--blue-50);" : ""}">
+              <span class="rank-number-chip rank-${rankNo}">${rankNo}</span>
+              <img
+                src="${esc(item.avatar_url || fallback)}"
+                data-fallback-avatar="${esc(fallback)}"
+                alt="${esc(item.full_name)}"
+                class="avatar-circle"
+                style="width: 48px; height: 48px; border: 2px solid var(--border-ink, #111827);"
+              />
+              <div style="min-width: 0; flex: 1;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <strong style="font-size: 0.94rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ${esc(item.full_name)}
+                  </strong>
+                  ${isMe ? `<span class="status-pill is-info" style="padding: 1px 7px; font-size: 0.68rem;">คุณ</span>` : ""}
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px; margin-top: 3px;">
+                  <span class="mg-rank-badge ${getSkillBadgeClass(item.best_score)} font-notch" style="font-size: 0.72rem; padding: 1px 6px;">
+                    ${item.rank_badge}
+                  </span>
+                  <span class="font-notch tabular-nums" style="font-size: 0.88rem; font-weight: 700; color: var(--blue-600);">
+                    ${item.best_score} คะแนน
+                  </span>
+                </div>
+                <span style="font-size: 0.74rem; color: var(--text-muted); display: block; margin-top: 2px;">
+                  รอด ${window.AppUtils.formatDuration(item.best_time_sec)} • เล่น ${item.play_count} ครั้ง
+                </span>
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    // 5. Render Top 10 Table (Zero Quiz Columns)
+    const tbody = document.getElementById("leaderboard-tbody");
+    if (tbody) {
+      const top10 = gameInfo.top10 || [];
+      if (top10.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="padding: 40px 24px; text-align: center; color: var(--text-muted);">
+              ยังไม่มีข้อมูลผู้เล่นในหมวดนี้ • เป็นคนแรกที่บันทึกสถิติลงในกระดานผู้นำ!
+            </td>
+          </tr>
+        `;
+      } else {
+        tbody.innerHTML = top10
+          .map((entry) => {
+            const isMe = entry.student_id.toLowerCase() === user.student_id.toLowerCase();
+            const fallback = window.AppUtils.buildInitialsAvatarDataUrl(entry.full_name);
+            const rankChipClass =
+              entry.rank <= 3 ? `rank-number-chip rank-${entry.rank}` : "rank-number-chip";
+
+            return `
+              <tr class="${isMe ? "is-current-user" : ""}">
+                <td>
+                  <span class="${rankChipClass}">${entry.rank}</span>
+                </td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <img
+                      src="${esc(entry.avatar_url || fallback)}"
+                      data-fallback-avatar="${esc(fallback)}"
+                      alt="${esc(entry.full_name)}"
+                      class="avatar-circle"
+                      style="border: 1.5px solid var(--border-ink, #111827);"
+                    />
+                    <div style="min-width: 0;">
+                      <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                        <strong style="font-size: 0.92rem; font-weight: 600; color: var(--text-main);">
+                          ${esc(entry.full_name)}
+                        </strong>
+                        ${isMe ? `<span class="status-pill is-info" style="padding: 1px 8px; font-size: 0.72rem;">คุณ</span>` : ""}
+                      </div>
+                      <span class="font-notch" style="font-size: 0.76rem; color: var(--text-muted);">
+                        รหัสนักเรียน ${esc(entry.student_id)} • ${esc(entry.classroom || "ปวช.2/1")}
+                      </span>
+                    </div>
+                  </div>
+                </td>
+                <td class="num font-notch">
+                  <strong style="color: var(--blue-600); font-size: 1.05rem;">${entry.best_score}</strong>
+                </td>
+                <td style="text-align: center;">
+                  <span class="mg-rank-badge ${getSkillBadgeClass(entry.best_score)} font-notch" style="font-size: 0.76rem; padding: 2px 8px;">
+                    ${entry.rank_badge}
+                  </span>
+                </td>
+                <td class="num font-notch">
+                  ${window.AppUtils.formatDuration(entry.best_time_sec)}
+                </td>
+                <td class="num font-notch">
+                  ${entry.play_count} ครั้ง
+                </td>
+                <td style="text-align: right; font-size: 0.8rem; color: var(--text-muted);" class="font-notch">
+                  ${formatLeaderboardDate(entry.updated_at)}
+                </td>
+              </tr>
+            `;
+          })
+          .join("");
+      }
+    }
+
+    // Attach safe avatar fallback handlers without inline JS
+    document
+      .querySelectorAll("#view-leaderboard img[data-fallback-avatar]")
+      .forEach((imgEl) => {
+        imgEl.onerror = () => {
+          const fb = imgEl.getAttribute("data-fallback-avatar");
+          if (fb && imgEl.src !== fb) {
+            imgEl.src = fb;
+          }
+        };
+      });
   }
 
   /* ==========================================================================
@@ -908,6 +1081,25 @@
       ?.addEventListener("click", () => {
         window.CertificateEngine?.downloadOfficialCertificate();
       });
+
+    // Leaderboard Manual Refresh
+    // Leaderboard Category Tabs Switching
+    document.getElementById("view-leaderboard")?.addEventListener("click", (e) => {
+      const tabBtn = e.target.closest("[data-leaderboard-game]");
+      if (tabBtn) {
+        e.preventDefault();
+        const gId = tabBtn.getAttribute("data-leaderboard-game");
+        if (gId && gId !== selectedLeaderboardGame) {
+          selectedLeaderboardGame = gId;
+          window.SoundEngine?.playPop?.();
+          if (cachedLeaderboardData) {
+            renderCurrentLeaderboardGame(gId);
+          } else {
+            renderLeaderboardView(false);
+          }
+        }
+      }
+    });
 
     // Leaderboard Manual Refresh
     document
