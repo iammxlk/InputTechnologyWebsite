@@ -1247,18 +1247,26 @@ html[data-theme="dark"] .floating-action-btn:hover {
 
 .cert-canvas-frame {
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: var(--bg-ground);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-xl);
-  padding: 10px;
+  padding: 8px;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .cert-canvas-frame canvas {
   display: block;
+  max-width: 100%;
   width: 100%;
   height: auto;
+  aspect-ratio: 1600 / 1131;
+  object-fit: contain;
   border-radius: var(--radius-md);
+  margin: 0 auto;
 }
 
 /* 4-Module Syllabus Grid on Home */

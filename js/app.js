@@ -781,6 +781,12 @@
     const isUnlocked = Number(user.passed_units_count || 0) >= CFG.TOTAL_UNITS;
     const remaining = Math.max(0, CFG.TOTAL_UNITS - Number(user.passed_units_count || 0));
 
+    if (window.MotionEngine) {
+      window.MotionEngine.animateModalOpen(modal);
+    } else {
+      modal.classList.remove("hidden");
+    }
+
     if (canvas && window.CertificateEngine) {
       window.CertificateEngine.renderCertificateCanvas(canvas, user, true);
     }
@@ -793,12 +799,6 @@
       lockNote.textContent = isUnlocked
         ? "ปลดล็อกครบ 100% แล้ว กดปุ่มดาวน์โหลดเพื่อบันทึกไฟล์ภาพเกียรติบัตร (.PNG)"
         : `ตัวอย่างเกียรติบัตรของคุณ (ต้องสอบผ่านอีก ${remaining} หน่วยจึงจะสามารถดาวน์โหลดได้)`;
-    }
-
-    if (window.MotionEngine) {
-      window.MotionEngine.animateModalOpen(modal);
-    } else {
-      modal.classList.remove("hidden");
     }
   }
 

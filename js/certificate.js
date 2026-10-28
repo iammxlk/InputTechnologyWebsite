@@ -38,13 +38,50 @@
   }
 
   /**
+   * Helper function to draw text perfectly centered horizontally across ALL engines
+   * (Fixes WebKit/Safari iOS complex script Thai textAlign="center" anchor miscalculation)
+   */
+  function drawCenteredText(ctx, text, x, y, maxWidth) {
+    if (!text) return;
+    ctx.textAlign = "left";
+    const metrics = ctx.measureText(text);
+    const textWidth = metrics.width;
+    if (maxWidth && textWidth > maxWidth) {
+      const startX = x - maxWidth / 2;
+      ctx.fillText(text, startX, y, maxWidth);
+    } else {
+      const startX = x - textWidth / 2;
+      ctx.fillText(text, startX, y);
+    }
+  }
+
+  /**
+   * Helper function to draw text aligned left with optional maxWidth constraint
+   */
+  function drawLeftText(ctx, text, x, y, maxWidth) {
+    if (!text) return;
+    ctx.textAlign = "left";
+    if (maxWidth) {
+      ctx.fillText(text, x, y, maxWidth);
+    } else {
+      ctx.fillText(text, x, y);
+    }
+  }
+
+  /**
    * วาดใบเกียรติบัตรลงบน <canvas> ความละเอียดสูง (1600 x 1131 px อัตราส่วน A4 แนวนอน)
    */
   async function renderCertificateCanvas(canvas, user, isPreview = false) {
     if (!canvas) return;
-    if (document.fonts && document.fonts.ready) {
+
+    if (document.fonts) {
       try {
-        await document.fonts.ready;
+        await Promise.all([
+          document.fonts.load("400 26px 'Mitr'"),
+          document.fonts.load("600 50px 'Mitr'"),
+          document.fonts.load("600 32px 'Mitr'"),
+          document.fonts.ready
+        ]);
       } catch (e) {
         // ignore font wait error
       }
@@ -114,19 +151,18 @@
     }
 
     // 4. Institute Header
-    ctx.textAlign = "center";
     ctx.fillStyle = "#15499F";
     ctx.font = "600 32px 'Mitr', sans-serif";
-    ctx.fillText(CFG.SCHOOL_NAME_TH, centerX, 282);
+    drawCenteredText(ctx, CFG.SCHOOL_NAME_TH, centerX, 282, W - 240);
 
     ctx.fillStyle = "#64748B";
     ctx.font = "600 19px 'Stack Sans Notch', sans-serif";
-    ctx.fillText("CERTIFICATE OF COURSE COMPLETION  •  COURSE 21901-2017", centerX, 318);
+    drawCenteredText(ctx, "CERTIFICATE OF COURSE COMPLETION  •  COURSE 21901-2017", centerX, 318, W - 240);
 
     // 5. Presentation Line
     ctx.fillStyle = "#334155";
     ctx.font = "400 26px 'Mitr', sans-serif";
-    ctx.fillText("เกียรติบัตรฉบับนี้ให้ไว้เพื่อแสดงว่า", centerX, 388);
+    drawCenteredText(ctx, "เกียรติบัตรฉบับนี้ให้ไว้เพื่อแสดงว่า", centerX, 388, W - 240);
 
     // 6. Student Full Name Highlight Box
     const studentName = (user && user.full_name) || "ชื่อ-นามสกุลผู้เรียน";
@@ -141,27 +177,31 @@
 
     ctx.fillStyle = "#0F172A";
     ctx.font = "600 50px 'Mitr', sans-serif";
-    ctx.fillText(studentName, centerX, 488);
+    drawCenteredText(ctx, studentName, centerX, 488, 840);
 
     ctx.fillStyle = "#475569";
     ctx.font = "500 22px 'Mitr', 'Stack Sans Notch', sans-serif";
-    ctx.fillText(`รหัสนักเรียน ${studentId}  •  ${CFG.LEVEL_PROGRAM_TH}`, centerX, 568);
+    drawCenteredText(ctx, `รหัสนักเรียน ${studentId}  •  ${CFG.LEVEL_PROGRAM_TH}`, centerX, 568, 860);
 
     // 7. Course Achievement Statement
     ctx.fillStyle = "#334155";
     ctx.font = "400 26px 'Mitr', sans-serif";
-    ctx.fillText(
+    drawCenteredText(
+      ctx,
       "ได้ผ่านการเรียนรู้เนื้อหาและแบบทดสอบครบทั้ง 16 หน่วยการเรียนรู้ (เกณฑ์ผ่านร้อยละ 80)",
       centerX,
-      632
+      632,
+      W - 200
     );
 
     ctx.fillStyle = "#15499F";
     ctx.font = "600 32px 'Mitr', 'Stack Sans Notch', sans-serif";
-    ctx.fillText(
+    drawCenteredText(
+      ctx,
       `รายวิชา ${CFG.COURSE_NAME_TH} (${CFG.COURSE_CODE})`,
       centerX,
-      684
+      684,
+      W - 200
     );
 
     // 8. Achievement Summary Strip
@@ -207,11 +247,11 @@
       const cx = stripX + (stripW / 3) * idx + stripW / 6;
       ctx.fillStyle = "#64748B";
       ctx.font = "400 18px 'Mitr', sans-serif";
-      ctx.fillText(c.label, cx, stripY + 36);
+      drawCenteredText(ctx, c.label, cx, stripY + 36, stripW / 3 - 20);
 
       ctx.fillStyle = "#0F172A";
       ctx.font = "600 23px 'Stack Sans Notch', 'Mitr', sans-serif";
-      ctx.fillText(c.val, cx, stripY + 68);
+      drawCenteredText(ctx, c.val, cx, stripY + 68, stripW / 3 - 20);
     });
 
     // 9. Footer Signatures & Issue Date
@@ -220,15 +260,14 @@
     );
 
     // Left: Issue Date & Verification Code
-    ctx.textAlign = "left";
     ctx.fillStyle = "#475569";
     ctx.font = "400 20px 'Mitr', sans-serif";
-    ctx.fillText(`ให้ไว้ ณ วันที่ ${issueDateText}`, 140, 935);
+    drawLeftText(ctx, `ให้ไว้ ณ วันที่ ${issueDateText}`, 140, 935, 450);
 
     ctx.fillStyle = "#64748B";
     ctx.font = "500 17px 'Stack Sans Notch', sans-serif";
     const verifyCode = `VERIFY: CDTI-21901-${studentId}`;
-    ctx.fillText(verifyCode, 140, 968);
+    drawLeftText(ctx, verifyCode, 140, 968, 450);
 
     // Right: Instructor Signature Line
     const sigCenterX = W - 320;
@@ -239,14 +278,13 @@
     ctx.lineTo(sigCenterX + 150, 912);
     ctx.stroke();
 
-    ctx.textAlign = "center";
     ctx.fillStyle = "#0F172A";
     ctx.font = "500 21px 'Mitr', sans-serif";
-    ctx.fillText(`(${CFG.INSTRUCTOR_NAME_TH})`, sigCenterX, 946);
+    drawCenteredText(ctx, `(${CFG.INSTRUCTOR_NAME_TH})`, sigCenterX, 946, 300);
 
     ctx.fillStyle = "#64748B";
     ctx.font = "400 18px 'Mitr', sans-serif";
-    ctx.fillText("ผู้สอนประจำรายวิชา 21901-2017", sigCenterX, 976);
+    drawCenteredText(ctx, "ผู้สอนประจำรายวิชา 21901-2017", sigCenterX, 976, 300);
 
     // 10. Clean Preview Badge (Below Achievement Strip so Student Name stays 100% crisp)
     const isUnlocked = Boolean(user && user.passed_units_count >= CFG.TOTAL_UNITS);
@@ -267,8 +305,7 @@
 
       ctx.fillStyle = "#9A5B08";
       ctx.font = "500 18px 'Mitr', 'Stack Sans Notch', sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText("ตัวอย่างเกียรติบัตร (PREVIEW)  •  ปลดล็อกไฟล์จริงเมื่อสอบผ่านครบ 16 หน่วย (100%)", centerX, badgeY + 28);
+      drawCenteredText(ctx, "ตัวอย่างเกียรติบัตร (PREVIEW)  •  ปลดล็อกไฟล์จริงเมื่อสอบผ่านครบ 16 หน่วย (100%)", centerX, badgeY + 28, badgeW - 20);
       ctx.restore();
     }
   }
