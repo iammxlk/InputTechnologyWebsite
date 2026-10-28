@@ -168,6 +168,23 @@
       playChirp(360, 140, 0.055, "sine", 0.032);
     },
 
+    /**
+     * 8-bit Retro Laser Scanner sound effect
+     */
+    playLaserScan() {
+      if (isMutedState) return;
+      playChirp(1400, 320, 0.09, "sawtooth", 0.05);
+      playTone(880, 0.04, "square", 0.035, 0.06);
+    },
+
+    /**
+     * 8-bit Retro arcade blip
+     */
+    play8BitBeep(freq = 660) {
+      if (isMutedState) return;
+      playTone(freq, 0.035, "square", 0.04);
+    },
+
     isMuted() {
       return isMutedState;
     },

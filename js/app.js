@@ -846,10 +846,18 @@
         return;
       }
 
-      const hwTriggerBtn = e.target.closest("[data-hw-mode]");
-      if (hwTriggerBtn) {
+      const scannerModeBtn = e.target.closest("[data-scanner-mode]");
+      if (scannerModeBtn) {
         e.preventDefault();
-        triggerHardwareSignalBus(hwTriggerBtn.getAttribute("data-hw-mode") || "key");
+        setScannerMode(scannerModeBtn.getAttribute("data-scanner-mode") || "laser", true);
+        return;
+      }
+
+      const scanTriggerBtn = e.target.closest("#scanner-scan-trigger-btn");
+      if (scanTriggerBtn) {
+        e.preventDefault();
+        setScannerMode(activeScannerMode, true);
+        return;
       }
     });
 
@@ -933,91 +941,121 @@
     });
   }
 
-  const HW_SIGNAL_SAMPLES = {
-    key: [
-      {
-        badge: "USB-HID / 1000Hz",
-        raw: "KEY_PRESS [A] -> MATRIX(ROW_2, COL_1) @ 4.2ms DEBOUNCE",
-        bin: "SCAN_CODE: 0x1E  |  ASCII: 0x41 ('A')  |  BIN: 01000001",
-        out: "แปลงแรงกดสวิตช์กลไกเป็นรหัสไบนารีส่งเข้าหน่วยประมวลผลสำเร็จ (Verified)"
-      },
-      {
-        badge: "NKRO MATRIX / 1ms",
-        raw: "KEY_PRESS [ENTER] -> MATRIX(ROW_3, COL_13) @ 3.8ms DEBOUNCE",
-        bin: "SCAN_CODE: 0x1C  |  ASCII: 0x0D (CR)   |  BIN: 00001101",
-        out: "ขจัดสัญญาณกระดอน (Debounce) และส่งคำสั่งยืนยันเข้าสู่บัสระบบทันที"
-      }
-    ],
-    laser: [
-      {
-        badge: "650nm LASER / EAN-13",
-        raw: "PHOTODIODE_REFLECT: [101 0001101 0100111 ... 101] @ 100 scans/s",
-        bin: "COUNTRY: 885 (TH)  |  ITEM: 099921901  |  CHECK_DIGIT: 7 (MOD10 OK)",
-        out: "ยิงลำแสงเลเซอร์อ่านรหัสแท่ง 1 มิติและตรวจสอบเลข Check Digit ถูกต้อง"
-      },
-      {
-        badge: "2D CMOS IMAGER / QR",
-        raw: "FINDER_LOCK(3/3) -> REED_SOLOMON_ECC(LEVEL_H 30% RECOVERY)",
-        bin: "PAYLOAD: EMVCo_PROMPTPAY_TAG54(150.00_THB)  |  CRC16: 0xA4F2",
-        out: "กู้คืนพิกัดจากมุม Finder ทั้ง 3 จุดและถอดรหัสธุรกรรม Dynamic QR สำเร็จ"
-      }
-    ],
-    rfid: [
-      {
-        badge: "UHF 922.5MHz / EPC Gen2",
-        raw: "BACKSCATTER_MODULATION -> ANTI_COLLISION(Q_SLOT: 16) @ -42 dBm",
-        bin: "EPC_96BIT: E280-1160-6000-0219-0120-17AF  |  TID:Verified",
-        out: "เหนี่ยวนำคลื่นแม่เหล็กไฟฟ้าอ่านป้ายแท็กไร้สายระยะไกลโดยไม่ต้องมองเห็นพิกัด"
-      },
-      {
-        badge: "HF NFC 13.56MHz / ISO14443",
-        raw: "INDUCTIVE_COUPLING -> CRYPTO_CHALLENGE_RESPONSE @ 106 kbps",
-        bin: "UID: 04:A2:9C:81:F0:22:80  |  CIPHER: AES-128-GCM AUTH_OK",
-        out: "แตะบัตรสมาร์ตการ์ดระยะใกล้และตรวจสอบลายมือชื่อดิจิทัลผ่านเกณฑ์"
-      }
-    ],
-    hash: [
-      {
-        badge: "SHA-256 / FIPS 180-4",
-        raw: "INPUT_STREAM: \"CDTI-21901-2017:PASS_SCORE=80%\" (256-bit Merkle)",
-        bin: "DIGEST: 8f434346648f6b96df89dda901c5176b10a6d83961dd3c1ac88b59b2dc327aa4",
-        out: "ตรวจสอบความครบถ้วนของข้อมูล (Data Integrity) ไม่พบการแก้ไขระหว่างทาง"
-      },
-      {
-        badge: "TLS 1.3 / HSM FIPS 140-2",
-        raw: "ECDHE_RSA_WITH_AES_256_GCM_SHA384 -> ZERO_TRUST_TUNNEL",
-        bin: "SESSION_KEY: EPHEMERAL_256  |  LATENCY: 0.4ms  |  TAMPER: NONE",
-        out: "เข้ารหัสข้อมูลขาเข้าผ่านโมดูลความปลอดภัยฮาร์ดแวร์ (HSM) สมบูรณ์ 100%"
-      }
-    ]
+  /* ==========================================================================
+     8. 8-BIT CYBER DATA INPUT SIMULATOR & OPTICAL SCANNER CONTROLLER
+     ========================================================================== */
+
+  const SCANNER_PRESETS = {
+    laser: {
+      id: "laser",
+      badge: "650nm RED LASER",
+      fpsBadge: "OPTICAL 60FPS",
+      sensorTitle: "650nm Laser Photodiode",
+      adcTitle: "Light/Dark Pulse to Binary",
+      busTitle: "USB-HID Barcode Stream",
+      latency: "1.2ms",
+      raw: "REFLECTANCE_PULSE: [1,0,1,1,0,0,1,0] @ 650nm RED BEAM",
+      bin: "UPC-A: 885012345678  |  MOD10 CHECK_DIGIT: 8 [VALID]",
+      out: "ยิงสแกนแถบรหัสแท่ง 1 มิติสำเร็จ: แปลงแถบสว่าง-มืดเป็นชุดรหัสตัวเลขส่งเข้าบัสระบบทันที",
+      beamColor: "#EF4444"
+    },
+    qr: {
+      id: "qr",
+      badge: "2D CMOS IMAGER",
+      fpsBadge: "MATRIX 30FPS",
+      sensorTitle: "CMOS Matrix Sensor (2D)",
+      adcTitle: "Finder Reticle & RS-ECC",
+      busTitle: "Payload Byte Matrix Buffer",
+      latency: "2.8ms",
+      raw: "FINDER_DETECT(3/3) -> TIMING_ALIGN(OK) -> MASK_PATTERN(010)",
+      bin: "PAYLOAD: https://cdti.ac.th/course/21901-2017  |  ECC: Level-H (30%)",
+      out: "จับภาพรหัสสองมิติ 33x33 โมดูลและกู้คืนความผิดพลาดด้วย Reed-Solomon สำเร็จ 100%",
+      beamColor: "#06B6D4"
+    },
+    rfid: {
+      id: "rfid",
+      badge: "13.56MHz INDUCTION",
+      fpsBadge: "WIRELESS FIELD",
+      sensorTitle: "Copper Coil Antenna",
+      adcTitle: "Backscatter Demodulation",
+      busTitle: "Wiegand / SPI Buffer",
+      latency: "0.8ms",
+      raw: "EM_INDUCTION_13.56MHz -> LOAD_MODULATION -> ANTI_COLLISION(OK)",
+      bin: "EPC_UID: 04:A2:9C:81:F0:22:80  |  AUTH_TOKEN: SHA256_PASS",
+      out: "เหนี่ยวนำสนามแม่เหล็กไฟฟ้าไร้สาย สแกนสมาร์ตการ์ดผ่านอากาศโดยไม่ต้องสัมผัสพื้นผิว",
+      beamColor: "#3B82F6"
+    },
+    bio: {
+      id: "bio",
+      badge: "CAPACITIVE MESH",
+      fpsBadge: "508 DPI HIGH-RES",
+      sensorTitle: "Capacitive Ridge Array",
+      adcTitle: "Minutiae Vector Coordinates",
+      busTitle: "Secure Enclave Template",
+      latency: "4.1ms",
+      raw: "RIDGE_COUNT: 48  |  BIFURCATIONS: 14  |  ENDINGS: 22",
+      bin: "MINUTIAE_HASH: 7a8f9c1b3e4d5678  |  MATCH_SCORE: 99.6%",
+      out: "ประมวลผลจุดแยกและจุดสิ้นสุดของลายนิ้วมือ แปลงเป็นเวกเตอร์ไบโอเมตริกยืนยันตัวตนสำเร็จ",
+      beamColor: "#A855F7"
+    }
   };
 
-  let hwSampleCounter = 0;
+  let activeScannerMode = "laser";
 
-  function triggerHardwareSignalBus(mode) {
-    const list = HW_SIGNAL_SAMPLES[mode] || HW_SIGNAL_SAMPLES.key;
-    hwSampleCounter = (hwSampleCounter + 1) % list.length;
-    const sample = list[hwSampleCounter];
+  function setScannerMode(mode, triggerBeep = true) {
+    activeScannerMode = mode;
+    const preset = SCANNER_PRESETS[mode] || SCANNER_PRESETS.laser;
 
-    document.querySelectorAll("#hero-hardware-bus [data-hw-mode]").forEach((btn) => {
-      btn.classList.toggle("is-active", btn.getAttribute("data-hw-mode") === mode);
+    // Update active tab buttons
+    document.querySelectorAll("[data-scanner-mode]").forEach((btn) => {
+      btn.classList.toggle("is-active", btn.getAttribute("data-scanner-mode") === mode);
     });
 
-    const badgeEl = document.getElementById("hw-bus-protocol-badge");
-    const rawEl = document.getElementById("hw-bus-raw");
-    const binEl = document.getElementById("hw-bus-binary");
-    const outEl = document.getElementById("hw-bus-output");
-    const screenEl = document.querySelector("#hero-hardware-bus .hw-bus-screen");
+    // Update target view
+    document.querySelectorAll(".cyber-target-item").forEach((item) => {
+      item.classList.remove("is-active");
+    });
+    const targetItem = document.getElementById(`target-view-${mode}`);
+    if (targetItem) targetItem.classList.add("is-active");
 
-    if (badgeEl) badgeEl.textContent = sample.badge;
-    if (rawEl) rawEl.textContent = sample.raw;
-    if (binEl) binEl.textContent = sample.bin;
-    if (outEl) outEl.textContent = sample.out;
+    // Update laser beam color/glow
+    const beam = document.getElementById("cyber-laser-beam");
+    if (beam) {
+      beam.style.setProperty("--beam-glow", preset.beamColor);
+      beam.classList.remove("is-beaming");
+      void beam.offsetWidth;
+      beam.classList.add("is-beaming");
+    }
 
-    if (screenEl) {
-      screenEl.classList.remove("is-pulsing");
-      void screenEl.offsetWidth;
-      screenEl.classList.add("is-pulsing");
+    // Update Telemetry & Pipeline nodes
+    const fpsBadge = document.getElementById("scanner-fps-badge");
+    const latBadge = document.getElementById("scanner-latency-badge");
+    const sensorNode = document.getElementById("p-sensor-type");
+    const adcNode = document.getElementById("p-adc-type");
+    const busNode = document.getElementById("p-bus-type");
+    const rawEl = document.getElementById("scanner-stream-raw");
+    const binEl = document.getElementById("scanner-stream-binary");
+    const outEl = document.getElementById("scanner-stream-output");
+
+    if (fpsBadge) fpsBadge.textContent = preset.fpsBadge;
+    if (latBadge) latBadge.textContent = `LATENCY: ${preset.latency}`;
+    if (sensorNode) sensorNode.textContent = preset.sensorTitle;
+    if (adcNode) adcNode.textContent = preset.adcTitle;
+    if (busNode) busNode.textContent = preset.busTitle;
+    if (rawEl) rawEl.textContent = preset.raw;
+    if (binEl) binEl.textContent = preset.bin;
+    if (outEl) outEl.textContent = preset.out;
+
+    if (triggerBeep && window.SoundEngine) {
+      window.SoundEngine.playLaserScan?.();
+    }
+
+    // Flash chamber frame
+    const frame = document.getElementById("scanner-target-frame");
+    if (frame) {
+      frame.classList.remove("is-scanning-pulse");
+      void frame.offsetWidth;
+      frame.classList.add("is-scanning-pulse");
     }
   }
 
@@ -1027,6 +1065,8 @@
     if (loggedIn) {
       switchView("home", { scrollTop: false });
     }
+    // Initialize default scanner state
+    setScannerMode("laser", false);
   }
 
   window.AppController = {

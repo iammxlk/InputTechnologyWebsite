@@ -14,7 +14,7 @@
   />
 
   <!-- Modern Blue & White Stylesheet -->
-  <link rel="stylesheet" href="css/styles.css?v=2.3" />
+  <link rel="stylesheet" href="css/styles.css?v=2.4" />
 
   <!-- Immediate Theme Initializer (Prevents Flash of Light/Dark Theme on Load) -->
   <script>
@@ -492,6 +492,7 @@
                 <span class="status-pill is-info font-notch">SYS // 21901-2017</span>
                 <span class="status-pill is-neutral">2 หน่วยกิต (3 ชม./สัปดาห์)</span>
                 <span class="status-pill is-neutral">ปวช.1 เทคโนโลยีสารสนเทศ</span>
+                <span class="pixel-sticker-badge">👾 8-BIT RETRO LAB</span>
               </div>
 
               <p style="font-size: 0.92rem; font-weight: 500; color: var(--accent-signal); margin-top: 14px;">
@@ -507,47 +508,164 @@
                 การเข้ารหัส SSL/TLS คลื่นวิทยุ RFID ชีวมิติ ระบบฐานข้อมูล และการบีบอัดข้อมูลระดับฮาร์ดแวร์
               </p>
 
-              <!-- LIVE INTERACTIVE HARDWARE SIGNAL BUS ("One Live Thing" on First Screen) -->
-              <div id="hero-hardware-bus" class="hw-bus-console" data-ui="true">
-                <div class="hw-bus-header">
-                  <span class="hw-bus-title font-notch">
-                    <span class="hw-led-dot is-online"></span>
-                    LIVE SIGNAL ANALYZER // กดปุ่มจำลองสัญญาณนำเข้าข้อมูลจริง
-                  </span>
-                  <span id="hw-bus-protocol-badge" class="hw-bus-badge font-notch">USB-HID / 1000Hz</span>
+              <!-- 8-BIT CYBER INPUT SCANNER & ANIMATED INGESTION CHAMBER -->
+              <div id="hero-input-scanner" class="cyber-scanner-console" data-ui="true">
+                <!-- Header with 8-bit style tags -->
+                <div class="cyber-scanner-header">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="pixel-led-dot"></span>
+                    <span class="cyber-scanner-title font-notch">
+                      DATA INPUT SIMULATOR // จำลองการสแกนและแปลงสัญญาณดิจิทัล
+                    </span>
+                    <span class="pixel-badge-8bit">8-BIT LAB</span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span id="scanner-fps-badge" class="cyber-scanner-badge font-notch">OPTICAL 60FPS</span>
+                    <button id="scanner-scan-trigger-btn" type="button" class="btn-pixel-action" title="กดเพื่อจำลองการสแกนทันที">
+                      <span>⚡</span> สแกนทันที
+                    </button>
+                  </div>
                 </div>
 
-                <div class="hw-bus-triggers" role="group" aria-label="ทดลองกดส่งสัญญาณอุปกรณ์นำเข้าข้อมูล">
-                  <button type="button" class="hw-trigger-key is-active" data-hw-mode="key">
-                    <span class="hw-key-code font-notch">[01] KEY MATRIX</span>
-                    <span class="hw-key-name">แป้นพิมพ์กลไก</span>
+                <!-- 4 Selectable Scanner Modes -->
+                <div class="cyber-scanner-modes" role="tablist" aria-label="เลือกโหมดจำลองการสแกน">
+                  <button type="button" class="cyber-mode-btn is-active" data-scanner-mode="laser">
+                    <span class="cyber-mode-icon">🔴</span>
+                    <span class="cyber-mode-text">
+                      <strong class="font-notch">[01] 1D LASER</strong>
+                      <span>สแกนบาร์โค้ด</span>
+                    </span>
                   </button>
-                  <button type="button" class="hw-trigger-key" data-hw-mode="laser">
-                    <span class="hw-key-code font-notch">[02] 650nm LASER</span>
-                    <span class="hw-key-name">ยิงบาร์โค้ด 1D</span>
+                  <button type="button" class="cyber-mode-btn" data-scanner-mode="qr">
+                    <span class="cyber-mode-icon">🟢</span>
+                    <span class="cyber-mode-text">
+                      <strong class="font-notch">[02] 2D QR CODE</strong>
+                      <span>แมทริกซ์ 2 มิติ</span>
+                    </span>
                   </button>
-                  <button type="button" class="hw-trigger-key" data-hw-mode="rfid">
-                    <span class="hw-key-code font-notch">[03] UHF 920MHz</span>
-                    <span class="hw-key-name">คลื่นวิทยุ RFID</span>
+                  <button type="button" class="cyber-mode-btn" data-scanner-mode="rfid">
+                    <span class="cyber-mode-icon">🔵</span>
+                    <span class="cyber-mode-text">
+                      <strong class="font-notch">[03] RFID WAVE</strong>
+                      <span>คลื่นวิทยุ 13.56M</span>
+                    </span>
                   </button>
-                  <button type="button" class="hw-trigger-key" data-hw-mode="hash">
-                    <span class="hw-key-code font-notch">[04] SHA-256</span>
-                    <span class="hw-key-name">ตรวจสอบค่าแฮช</span>
+                  <button type="button" class="cyber-mode-btn" data-scanner-mode="bio">
+                    <span class="cyber-mode-icon">🟣</span>
+                    <span class="cyber-mode-text">
+                      <strong class="font-notch">[04] BIOMETRIC</strong>
+                      <span>สแกนลายนิ้วมือ</span>
+                    </span>
                   </button>
                 </div>
 
-                <div class="hw-bus-screen">
-                  <div class="hw-bus-screen-row">
-                    <span class="hw-screen-label font-notch">RAW INPUT:</span>
-                    <code id="hw-bus-raw" class="hw-screen-val font-notch">KEY_PRESS [A] -> MATRIX(ROW_2, COL_1) @ 4.2ms DEBOUNCE</code>
+                <!-- Visual Interactive Chamber -->
+                <div class="cyber-chamber-stage">
+                  <!-- Left: Target Visual with Real Scanning Beam Animation -->
+                  <div class="cyber-target-frame" id="scanner-target-frame">
+                    <!-- Dynamic Scanning Laser Beam -->
+                    <div id="cyber-laser-beam" class="cyber-laser-beam"></div>
+
+                    <!-- Target 1: 1D Barcode (Active by default) -->
+                    <div class="cyber-target-item is-active" id="target-view-laser">
+                      <div class="pixel-barcode-visual">
+                        <div class="barcode-bars">
+                          <span class="b-bar w1"></span><span class="b-bar w3"></span><span class="b-bar w2"></span>
+                          <span class="b-bar w1"></span><span class="b-bar w4"></span><span class="b-bar w2"></span>
+                          <span class="b-bar w1"></span><span class="b-bar w3"></span><span class="b-bar w1"></span>
+                          <span class="b-bar w2"></span><span class="b-bar w4"></span><span class="b-bar w1"></span>
+                          <span class="b-bar w3"></span><span class="b-bar w2"></span><span class="b-bar w1"></span>
+                          <span class="b-bar w4"></span><span class="b-bar w2"></span><span class="b-bar w3"></span>
+                          <span class="b-bar w1"></span><span class="b-bar w2"></span><span class="b-bar w4"></span>
+                        </div>
+                        <span class="barcode-num font-notch">8 850123 456789</span>
+                      </div>
+                    </div>
+
+                    <!-- Target 2: 2D QR Code -->
+                    <div class="cyber-target-item" id="target-view-qr">
+                      <div class="pixel-qr-visual">
+                        <div class="qr-matrix-grid">
+                          <div class="qr-finder-box f-tl"></div>
+                          <div class="qr-finder-box f-tr"></div>
+                          <div class="qr-finder-box f-bl"></div>
+                        </div>
+                        <span class="qr-caption font-notch">DENSO-WAVE 2D (33x33)</span>
+                      </div>
+                    </div>
+
+                    <!-- Target 3: RFID Wave -->
+                    <div class="cyber-target-item" id="target-view-rfid">
+                      <div class="pixel-rfid-visual">
+                        <div class="rfid-card-icon">
+                          <span class="rfid-chip"></span>
+                          <span class="rfid-label font-notch">EPC 96-BIT</span>
+                        </div>
+                        <div class="rfid-radar-rings">
+                          <span class="rfid-wave-ring r1"></span>
+                          <span class="rfid-wave-ring r2"></span>
+                          <span class="rfid-wave-ring r3"></span>
+                        </div>
+                        <span class="rfid-freq font-notch">13.56 MHz // ISO 14443A</span>
+                      </div>
+                    </div>
+
+                    <!-- Target 4: Biometric Fingerprint -->
+                    <div class="cyber-target-item" id="target-view-bio">
+                      <div class="pixel-bio-visual">
+                        <div class="bio-fingerprint-core">
+                          <span class="bio-ridge r-1"></span>
+                          <span class="bio-ridge r-2"></span>
+                          <span class="bio-ridge r-3"></span>
+                          <span class="bio-minutiae p1"></span>
+                          <span class="bio-minutiae p2"></span>
+                          <span class="bio-minutiae p3"></span>
+                        </div>
+                        <span class="bio-status font-notch">MINUTIAE MATCH: 99.6%</span>
+                      </div>
+                    </div>
                   </div>
-                  <div class="hw-bus-screen-row">
-                    <span class="hw-screen-label font-notch">ENCODED STREAM:</span>
-                    <code id="hw-bus-binary" class="hw-screen-val is-accent font-notch">SCAN_CODE: 0x1E  |  ASCII: 0x41  |  BIN: 01000001</code>
-                  </div>
-                  <div class="hw-bus-screen-row">
-                    <span class="hw-screen-label font-notch">IPO OUTPUT:</span>
-                    <span id="hw-bus-output" class="hw-screen-output">แปลงแรงกดสวิตช์กลไกเป็นรหัสไบนารีส่งเข้าหน่วยประมวลผลสำเร็จ (Verified)</span>
+
+                  <!-- Right: Real-time Data Ingestion & Binary Stream Pipeline -->
+                  <div class="cyber-pipeline-flow">
+                    <div class="pipeline-header">
+                      <span class="font-notch pipeline-label">DATA PIPELINE FLOW (IPO)</span>
+                      <span id="scanner-latency-badge" class="font-notch latency-badge">LATENCY: 1.2ms</span>
+                    </div>
+
+                    <!-- Visual Step Nodes: SENSOR -> ADC -> CPU BUFFER -->
+                    <div class="pipeline-step-nodes">
+                      <div class="p-node is-active" id="p-node-sensor">
+                        <span class="p-node-tag font-notch">STEP 1: SENSOR</span>
+                        <strong id="p-sensor-type" class="p-node-title">650nm Laser Photodiode</strong>
+                      </div>
+                      <div class="p-node-arrow">➔</div>
+                      <div class="p-node is-active" id="p-node-adc">
+                        <span class="p-node-tag font-notch">STEP 2: ADC / DECODE</span>
+                        <strong id="p-adc-type" class="p-node-title">Light/Dark Pulse to Binary</strong>
+                      </div>
+                      <div class="p-node-arrow">➔</div>
+                      <div class="p-node is-active" id="p-node-cpu">
+                        <span class="p-node-tag font-notch">STEP 3: SYSTEM BUS</span>
+                        <strong id="p-bus-type" class="p-node-title">USB-HID Barcode Stream</strong>
+                      </div>
+                    </div>
+
+                    <!-- Live Binary Stream Ticker -->
+                    <div class="pipeline-stream-box">
+                      <div class="stream-line">
+                        <span class="stream-label font-notch">RAW TELEMETRY:</span>
+                        <code id="scanner-stream-raw" class="stream-code font-notch">REFLECTANCE_PULSE: [1,0,1,1,0,0,1,0] @ 650nm RED BEAM</code>
+                      </div>
+                      <div class="stream-line">
+                        <span class="stream-label font-notch">BINARY CODED:</span>
+                        <code id="scanner-stream-binary" class="stream-code is-accent font-notch">UPC-A: 885012345678  |  MOD10 CHECK_DIGIT: 8 [VALID]</code>
+                      </div>
+                      <div class="stream-line">
+                        <span class="stream-label font-notch">PAYLOAD OUTPUT:</span>
+                        <span id="scanner-stream-output" class="stream-output">ยิงสแกนแถบรหัสแท่ง 1 มิติสำเร็จ: แปลงแถบสว่าง-มืดเป็นชุดรหัสตัวเลขส่งเข้าบัสระบบทันที</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -720,12 +838,12 @@
               </p>
             </div>
 
-            <div id="lessons-module-filters" class="filter-pills-row" role="tablist" aria-label="กรองตามหมวดหมู่" style="justify-content: center; margin: 0 auto;">
-              <button type="button" class="filter-pill-btn is-active" data-module-filter="all">ทั้งหมด 16 หน่วย</button>
-              <button type="button" class="filter-pill-btn" data-module-filter="1">หมวดที่ 1</button>
-              <button type="button" class="filter-pill-btn" data-module-filter="2">หมวดที่ 2</button>
-              <button type="button" class="filter-pill-btn" data-module-filter="3">หมวดที่ 3</button>
-              <button type="button" class="filter-pill-btn" data-module-filter="4">หมวดที่ 4</button>
+            <div id="lessons-module-filters" class="filter-pills-row" role="tablist" aria-label="กรองตามหมวดหมู่" style="justify-content: center; margin: 0 auto; flex-wrap: wrap;">
+              <button type="button" class="filter-pill-btn is-active" data-module-filter="all">ทั้งหมด</button>
+              <button type="button" class="filter-pill-btn" data-module-filter="1">หมวด 1: ข้อมูลดิบ & อุปกรณ์</button>
+              <button type="button" class="filter-pill-btn" data-module-filter="2">หมวด 2: บาร์โค้ด & QR Code</button>
+              <button type="button" class="filter-pill-btn" data-module-filter="3">หมวด 3: ความปลอดภัย & ชีวมิติ</button>
+              <button type="button" class="filter-pill-btn" data-module-filter="4">หมวด 4: ฐานข้อมูล & แปลงรหัส</button>
             </div>
           </div>
 
@@ -1147,16 +1265,16 @@
   <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
 
   <!-- Application Scripts -->
-  <script src="js/config.js?v=2.3"></script>
-  <script src="js/sound.js?v=2.3"></script>
-  <script src="js/api.js?v=2.3"></script>
-  <script src="js/motion.js?v=2.3"></script>
-  <script src="js/auth.js?v=2.3"></script>
-  <script src="js/certificate.js?v=2.3"></script>
-  <script src="js/curriculum-part1.js?v=2.3"></script>
-  <script src="js/curriculum-part2.js?v=2.3"></script>
-  <script src="js/minigames.js?v=2.3"></script>
-  <script src="js/learning.js?v=2.3"></script>
-  <script src="js/app.js?v=2.3"></script>
+  <script src="js/config.js?v=2.4"></script>
+  <script src="js/sound.js?v=2.4"></script>
+  <script src="js/api.js?v=2.4"></script>
+  <script src="js/motion.js?v=2.4"></script>
+  <script src="js/auth.js?v=2.4"></script>
+  <script src="js/certificate.js?v=2.4"></script>
+  <script src="js/curriculum-part1.js?v=2.4"></script>
+  <script src="js/curriculum-part2.js?v=2.4"></script>
+  <script src="js/minigames.js?v=2.4"></script>
+  <script src="js/learning.js?v=2.4"></script>
+  <script src="js/app.js?v=2.4"></script>
 </body>
 </html>
