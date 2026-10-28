@@ -1169,28 +1169,28 @@
       const nextBtnText = isLastQ ? "ตรวจผลสอบและบันทึกคะแนน" : `ข้อถัดไป (${qIdx + 2}/${totalQ})`;
       feedbackHtml = `
         <div class="quiz-feedback-box ${answerRecord.isCorrect ? "is-correct" : "is-wrong"}" id="quiz-feedback-banner">
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
             <div style="min-width: 0;">
-              <strong style="font-size: 0.98rem; font-weight: 700; display: block;">
+              <strong style="font-size: 1.25rem; font-weight: 800; display: block;">
                 ${
                   answerRecord.isCorrect
                     ? "คำตอบถูกต้อง (+1 คะแนน)"
                     : `ยังไม่ถูกต้อง • คำตอบที่ถูกคือข้อ ${correctLetter}`
                 }
               </strong>
-              <span style="font-size: 0.76rem; opacity: 0.85;">
+              <span style="font-size: 0.92rem; opacity: 0.90; font-weight: 600; display: block; margin-top: 2px;">
                 หยุดเวลาชั่วคราวขณะอ่านคำอธิบาย
               </span>
             </div>
 
-            <button type="button" class="btn-primary quiz-advance-btn" id="btn-quiz-advance-inline" style="min-height: 40px; padding: 7px 16px; font-size: 0.88rem; box-shadow: 2px 2px 0px var(--shadow-ink); margin-left: auto;">
+            <button type="button" class="btn-primary quiz-advance-btn" id="btn-quiz-advance-inline" style="min-height: 48px; padding: 10px 22px; font-size: 1.08rem; font-weight: 800; border: 2px solid var(--border-ink); box-shadow: 2.5px 2.5px 0px var(--shadow-ink); margin-left: auto;">
               <span>${nextBtnText}</span>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6">
                 <polyline points="9 18 15 12 9 6"></polyline>
               </svg>
             </button>
           </div>
-          <p style="font-size: 0.88rem; margin-top: 8px; line-height: 1.55;">
+          <p style="font-size: 1.12rem; margin-top: 10px; line-height: 1.6; font-weight: 500;">
             ${esc(qObj.explanation)}
           </p>
         </div>
@@ -1205,7 +1205,7 @@
           <div class="quiz-cockpit-hud-top">
             <div class="quiz-cockpit-hud-left">
               <button type="button" class="btn-secondary quiz-back-btn" id="btn-abort-quiz" title="ออกจากการทำข้อสอบ">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
                   <polyline points="15 18 9 12 15 6"></polyline>
                 </svg>
                 <span>ออก</span>
@@ -1216,7 +1216,7 @@
 
             <div class="quiz-cockpit-hud-center">
               <div class="quiz-hud-timer-badge font-notch tabular-nums">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                   <circle cx="12" cy="13" r="8"></circle>
                   <path d="M12 9v4l2.5 2.5"></path>
                   <path d="M9 2h6"></path>
@@ -1243,14 +1243,14 @@
           <div class="quiz-cockpit-q-header">
             <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
               <span class="font-notch quiz-q-chip">QUESTION ${qIdx + 1} OF ${totalQ} • เกณฑ์ผ่าน 8/10</span>
-              <span class="status-pill is-info font-notch" style="font-size: 0.7rem; padding: 2px 8px;">ตรวจคำตอบทันที</span>
+              <span class="status-pill is-info font-notch" style="font-size: 0.90rem; font-weight: 700; padding: 4px 12px; border: 2px solid var(--border-ink);">ตรวจคำตอบทันที</span>
             </div>
             <h2 class="quiz-cockpit-question-title">
               ข้อที่ ${qIdx + 1}. ${esc(qObj.q)}
             </h2>
           </div>
 
-          <!-- 2x2 Options on Desktop/Tablet, 4 Compact Rows on Mobile -->
+          <!-- 2x2 Options on Desktop/Tablet, 4 Rows on Mobile -->
           <div class="quiz-cockpit-options-grid">
             ${choicesHtml}
           </div>
@@ -1261,21 +1261,21 @@
             <span class="quiz-hint-text">
               ${
                 hasAnswered
-                  ? "ตรวจคำอธิบายแล้ว กดปุ่มเพื่อไปข้อถัดไป"
-                  : "คลิกตัวเลือกที่ถูกต้องที่สุดเพียงข้อเดียว (เกณฑ์ผ่าน 8/10 คะแนน)"
+                  ? "ตรวจคำอธิบายแล้ว กดปุ่มเพื่อไปข้อถัดไป (หรือกดปุ่ม Space / Enter บนแป้นพิมพ์)"
+                  : "คลิกตัวเลือกที่ถูกต้องที่สุดเพียงข้อเดียว หรือกดแป้นพิมพ์ 1–4 (เกณฑ์ผ่าน 8/10 คะแนน)"
               }
             </span>
 
             ${
               hasAnswered
                 ? `
-                  <button type="button" class="btn-primary" id="btn-quiz-next-question">
+                  <button type="button" class="btn-primary" id="btn-quiz-next-question" style="min-height: 52px; padding: 12px 28px; font-size: 1.15rem; font-weight: 800; border: 2.5px solid var(--border-ink); box-shadow: 3.5px 3.5px 0 var(--border-ink);">
                     <span>${
                       qIdx < totalQ - 1
                         ? `ข้อถัดไป (${qIdx + 2}/${totalQ})`
                         : "ตรวจผลสอบและบันทึกคะแนน"
                     }</span>
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6">
                       <polyline points="9 18 15 12 9 6"></polyline>
                     </svg>
                   </button>
@@ -1820,6 +1820,40 @@
     lessonsSection.addEventListener("input", (e) => {
       if (e.target && e.target.id === "ean13-live-input") {
         window.Ean13GuideEngine?.onCustomInputChange(e.target.value);
+      }
+    });
+
+    // Keyboard navigation for Quiz Cockpit (1-4 for fast-tap answers, Space/Enter to advance)
+    window.addEventListener("keydown", (e) => {
+      if (currentMode !== "quiz" || !quizState) return;
+
+      const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : "";
+      if (activeTag === "input" || activeTag === "textarea") return;
+
+      if (e.repeat || e.ctrlKey || e.altKey || e.metaKey) return;
+
+      const qIdx = quizState.currentIdx;
+      const hasAnswered = quizState.answers && quizState.answers[qIdx] !== null;
+
+      if (!hasAnswered) {
+        if (e.key === "1" || e.key.toLowerCase() === "a") {
+          e.preventDefault();
+          handleSelectQuizChoice(0);
+        } else if (e.key === "2" || e.key.toLowerCase() === "b") {
+          e.preventDefault();
+          handleSelectQuizChoice(1);
+        } else if (e.key === "3" || e.key.toLowerCase() === "c") {
+          e.preventDefault();
+          handleSelectQuizChoice(2);
+        } else if (e.key === "4" || e.key.toLowerCase() === "d") {
+          e.preventDefault();
+          handleSelectQuizChoice(3);
+        }
+      } else {
+        if (e.key === "Enter" || e.key === " " || e.key === "ArrowRight") {
+          e.preventDefault();
+          advanceQuizOrSubmit();
+        }
       }
     });
   }
