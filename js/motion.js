@@ -469,6 +469,15 @@
     modalEl.classList.add("is-modal-entering");
   }
 
+  function animateModalClose(modalEl, onClosed) {
+    if (!modalEl) return;
+    modalEl.classList.remove("is-modal-entering");
+    modalEl.classList.add("hidden");
+    if (typeof onClosed === "function") {
+      onClosed();
+    }
+  }
+
   /* ==========================================================================
      7. NUMBER TICKER & GEOMETRIC CANVAS CELEBRATION (ZERO EMOJIS)
      ========================================================================== */
@@ -628,6 +637,7 @@
     animateViewEnter,
     animateStepSlide,
     animateModalOpen,
+    animateModalClose,
     animateNumber,
     burstCelebration
   };

@@ -7527,3 +7527,188 @@ html[data-theme="dark"] .live-barcode-input {
 
 
 
+
+
+/* ==========================================================================
+   MINI-GAME ENDLESS TIME-ATTACK ARCADE COCKPIT (G01 - G04)
+   ========================================================================== */
+
+/* HUD Grid Layout */
+.mg-hud-endless-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 20px;
+  background: var(--surface-card, #ffffff);
+  border: 2px solid var(--border-ink, #111827);
+  box-shadow: 3px 3px 0 var(--border-ink, #111827);
+  border-radius: 10px;
+}
+
+@media (max-width: 640px) {
+  .mg-hud-endless-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    text-align: center;
+  }
+}
+
+/* Combo Badge Indicator */
+.mg-combo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 2px solid var(--border-ink, #111827);
+  background: #f1f5f9;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #334155;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mg-combo-badge.is-combo-active {
+  background: var(--accent-cyan, #00e5ff);
+  color: #111827;
+  border-color: #111827;
+  box-shadow: 2px 2px 0 var(--border-ink, #111827);
+  transform: scale(1.05);
+}
+
+.mg-combo-badge.is-fever-mode {
+  background: var(--accent-yellow, #ffe600);
+  color: #111827;
+  border-color: #111827;
+  box-shadow: 3px 3px 0 var(--border-ink, #111827);
+  animation: mgFeverPulse 0.8s ease-in-out infinite;
+}
+
+@keyframes mgFeverPulse {
+  0%, 100% { transform: scale(1.06); box-shadow: 0 0 12px rgba(255, 230, 0, 0.7); }
+  50% { transform: scale(1.12); box-shadow: 0 0 20px rgba(255, 230, 0, 0.9); }
+}
+
+/* Floating Feedback Pill (+3s bonus / -3s penalty) */
+.mg-floating-feedback {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 18px;
+  border-radius: 999px;
+  font-family: 'Stack Sans Notch', monospace;
+  font-size: 1rem;
+  font-weight: 800;
+  z-index: 25;
+  pointer-events: none;
+  animation: mgFeedbackPop 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.mg-floating-feedback.is-bonus {
+  background: #dcfce7;
+  color: #15803d;
+  border: 2px solid #15803d;
+  box-shadow: 2px 2px 0 #15803d;
+}
+
+.mg-floating-feedback.is-penalty {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 2px solid #dc2626;
+  box-shadow: 2px 2px 0 #dc2626;
+}
+
+@keyframes mgFeedbackPop {
+  0% { opacity: 0; transform: translate(-50%, 8px) scale(0.65); }
+  35% { opacity: 1; transform: translate(-50%, -6px) scale(1.14); }
+  100% { opacity: 0; transform: translate(-50%, -24px) scale(0.95); }
+}
+
+/* Shake Animation on Wrong Answer */
+.mg-arena-shake {
+  animation: mgShakeArena 0.45s ease-in-out both;
+}
+
+@keyframes mgShakeArena {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+/* Illustration Box inside Question Stage */
+.mg-illustration-stage {
+  width: 100%;
+  max-height: 250px;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 2px solid var(--border-ink, #111827);
+  background: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  box-shadow: 2.5px 2.5px 0 var(--border-ink, #111827);
+}
+
+.mg-illustration-img {
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Results Rank Badge */
+.mg-rank-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  padding: 6px 18px;
+  border-radius: 8px;
+  border: 2px solid var(--border-ink, #111827);
+  box-shadow: 3px 3px 0 var(--border-ink, #111827);
+}
+
+.mg-rank-badge.rank-s {
+  background: var(--accent-yellow, #ffe600);
+  color: #111827;
+}
+
+.mg-rank-badge.rank-a {
+  background: #dcfce7;
+  color: #15803d;
+  border-color: #15803d;
+}
+
+.mg-rank-badge.rank-b {
+  background: #e0f2fe;
+  color: #0369a1;
+  border-color: #0284c7;
+}
+
+.mg-rank-badge.rank-c {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+/* Dark Theme Adjustments for Endless Arcade */
+html[data-theme="dark"] .mg-hud-endless-grid {
+  background: #1e293b;
+  border-color: #334155;
+  box-shadow: 3px 3px 0 #0f172a;
+}
+
+html[data-theme="dark"] .mg-combo-badge:not(.is-combo-active):not(.is-fever-mode) {
+  background: #334155;
+  color: #cbd5e1;
+  border-color: #475569;
+}
+
+html[data-theme="dark"] .mg-rank-badge.rank-c {
+  background: #334155;
+  color: #cbd5e1;
+  border-color: #475569;
+}

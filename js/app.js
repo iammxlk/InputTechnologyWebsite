@@ -224,8 +224,8 @@
 
         const gameStatusText =
           gameRecord && gameRecord.play_count > 0
-            ? `สูงสุด ${gameRecord.best_score}/20 (${window.AppUtils.formatDuration(gameRecord.best_time_sec)})`
-            : "60 วินาที • เต็ม 20 คะแนน";
+            ? `สถิติสูงสุด ${gameRecord.best_score.toLocaleString()} คะแนน (${window.AppUtils.formatDuration(gameRecord.best_time_sec)})`
+            : "โหมด Endless • แข่งกับเวลา";
 
         return `
           <article class="module-overview-card module-theme-${mod.id}">
@@ -504,8 +504,8 @@
               <span class="metric-sub font-notch tabular-nums" style="margin-top: 6px; display: block;">
                 ${
                   played
-                    ? `สูงสุด ${gRec.best_score}/20 คะแนน  •  เวลา ${window.AppUtils.formatDuration(gRec.best_time_sec)}`
-                    : "ยังไม่เคยเล่น  •  เต็ม 20 คะแนน (60s)"
+                    ? `สถิติสูงสุด ${gRec.best_score.toLocaleString()} คะแนน  •  เวลา ${window.AppUtils.formatDuration(gRec.best_time_sec)}`
+                    : "โหมด Endless  •  แข่งกับเวลาสะสมคะแนน"
                 }
               </span>
             </div>
