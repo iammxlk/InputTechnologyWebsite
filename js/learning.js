@@ -105,19 +105,13 @@
   }
 
   function toggleLessonsContainers(isDirectory) {
-    window.MiniGameEngine?.stopActiveGame();
     if (isDirectory) {
       setQuizFocusMode(false);
     }
     const dirShell = document.getElementById("lessons-directory-shell");
     const workspace = document.getElementById("lesson-workspace");
-    const mgWs = document.getElementById("minigame-workspace");
     if (dirShell) dirShell.classList.toggle("hidden", !isDirectory);
     if (workspace) workspace.classList.toggle("hidden", isDirectory);
-    if (mgWs) {
-      mgWs.classList.add("hidden");
-      mgWs.innerHTML = "";
-    }
   }
 
   /* ==========================================================================
@@ -300,10 +294,9 @@
       `;
     }
 
-    // 2. All Units Grid + Interspersed Time-Attack Mini-game Checkpoints
+    // 2. All Units Grid (16 Units)
     const gridEl = document.getElementById("lessons-units-grid");
     if (gridEl) {
-      const gameMap = window.AuthManager?.getMiniGameRecordsMap() || {};
       const filteredUnits =
         moduleFilter === "all"
           ? CFG.UNITS_METADATA
@@ -419,46 +412,7 @@
             </article>
           `;
 
-          // Intersperse Time-Attack Mini-game Checkpoint Card right after Units 4, 8, 12, 16
-          const milestoneGame = window.MiniGameEngine?.getGameForMilestoneUnit(u.no);
-          if (!milestoneGame) return unitCardHtml;
-
-          const gRec = gameMap[milestoneGame.id];
-          const played = Boolean(gRec && gRec.play_count > 0);
-          const checkpointHtml = `
-            <div class="minigame-checkpoint-card">
-              <div class="minigame-checkpoint-meta">
-                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
-                  <span class="status-pill is-info font-notch">TIME-ATTACK CHECKPOINT  •  ${esc(milestoneGame.id)}</span>
-                  <span class="status-pill ${played ? "is-pass" : "is-neutral"} font-notch tabular-nums">
-                    ${
-                      played
-                        ? `สถิติสูงสุด ${gRec.best_score}/20 คะแนน (${window.AppUtils.formatDuration(gRec.best_time_sec)})`
-                        : "60 วินาที • เต็ม 20 คะแนน"
-                    }
-                  </span>
-                </div>
-                <h3 style="font-size: 1.05rem; font-weight: 600; color: var(--text-main); margin-top: 8px;">
-                  มินิเกมคั่นหมวดที่ ${milestoneGame.moduleId}: ${esc(milestoneGame.title)}
-                </h3>
-                <p style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 2px;">
-                  ${esc(milestoneGame.thaiTitle)} • สะสมคะแนนเสริมและทำเวลาให้ไวเพื่อชิงอันดับ Top 10 Leaderboard
-                </p>
-              </div>
-
-              <div class="minigame-checkpoint-actions">
-                <button
-                  type="button"
-                  class="btn-primary"
-                  data-open-minigame="${esc(milestoneGame.id)}"
-                >
-                  ${played ? `เล่นซ้ำทำเวลา (${esc(milestoneGame.id)})` : `เล่นมินิเกมจับเวลา (${esc(milestoneGame.id)})`}
-                </button>
-              </div>
-            </div>
-          `;
-
-          return unitCardHtml + checkpointHtml;
+          return unitCardHtml;
         })
         .join("");
     }
@@ -764,12 +718,6 @@
     const unitData = getUnitCurriculum(activeUnitNo);
     if (!workspace || !unitData) return;
 
-    const mgWs = document.getElementById("minigame-workspace");
-    if (mgWs) {
-      mgWs.classList.add("hidden");
-      mgWs.innerHTML = "";
-    }
-
     const esc = window.AppUtils.escapeHtml;
     const totalSteps = unitData.steps.length;
     const stepObj = unitData.steps[currentStepIdx] || unitData.steps[0];
@@ -1015,7 +963,7 @@
         <div class="quiz-countdown-badge-row">
           <span class="status-pill is-info font-notch">SPEEDRUN CHALLENGE • 10 QUESTIONS</span>
           <span class="status-pill is-pass font-notch">เกณฑ์ผ่าน 8 / 10 (80%)</span>
-          <span class="status-pill is-neutral font-notch">จับเวลาความเร็วชิงอันดับ LEADERBOARD</span>
+          <span class="status-pill is-neutral font-notch">จับเวลาความเร็วและบันทึกสถิติ</span>
         </div>
 
         <div class="quiz-countdown-meta">
@@ -1472,7 +1420,7 @@
               }
             </h2>
             <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 4px;">
-              ระบบเก็บคะแนนสูงสุดและเวลาที่เร็วที่สุดของคุณเพื่อนำไปคำนวณความคืบหน้าและจัดอันดับ Leaderboard
+              ระบบเก็บคะแนนสูงสุดและเวลาที่เร็วที่สุดของคุณเพื่อนำไปคำนวณความคืบหน้าและปลดล็อกเกียรติบัตร
             </p>
           </div>
         </div>
@@ -1513,29 +1461,6 @@
             ${reviewRowsHtml}
           </div>
         </div>
-
-        ${(() => {
-          const mg = window.MiniGameEngine?.getGameForMilestoneUnit(quizState.unitNo);
-          if (!mg) return "";
-          return `
-            <div class="minigame-checkpoint-card" style="margin-top: 18px;">
-              <div class="minigame-checkpoint-meta">
-                <span class="status-pill is-info font-notch">TIME-ATTACK CHECKPOINT  •  ${esc(mg.id)}</span>
-                <h3 style="font-size: 1.02rem; font-weight: 600; margin-top: 8px;">
-                  ท้าทายมินิเกมคั่นหมวดที่ ${mg.moduleId}: ${esc(mg.title)}
-                </h3>
-                <p style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 2px;">
-                  ตอบให้ไวที่สุดใน 60 วินาที (เต็ม 20 คะแนน) บันทึกคะแนนและเวลาขึ้นกระดานจัดอันดับทันที
-                </p>
-              </div>
-              <div class="minigame-checkpoint-actions">
-                <button type="button" class="btn-primary" data-open-minigame="${esc(mg.id)}">
-                  เล่นมินิเกม ${esc(mg.id)}
-                </button>
-              </div>
-            </div>
-          `;
-        })()}
 
         <!-- Action Buttons -->
         <div class="lesson-step-footer" style="margin-top: 22px;">

@@ -41,36 +41,28 @@ window.APP_CONFIG = {
       title: "หมวดที่ 1: พื้นฐานข้อมูลดิบ สารสนเทศ และอุปกรณ์นำเข้าข้อมูล",
       unitRange: "หน่วยที่ 1 – 4",
       description:
-        "ความแตกต่างระหว่างข้อมูลดิบกับสารสนเทศ วงจร IPO การนำเข้าข้อมูลแบบ Manual กับ Automatic และการทำงานของแป้นพิมพ์ เมาส์ สแกนเนอร์ กล้องดิจิทัล และไมโครโฟน",
-      miniGameId: "G01",
-      miniGameTitle: "Input Device Speed Match"
+        "ความแตกต่างระหว่างข้อมูลดิบกับสารสนเทศ วงจร IPO การนำเข้าข้อมูลแบบ Manual กับ Automatic และการทำงานของแป้นพิมพ์ เมาส์ สแกนเนอร์ กล้องดิจิทัล และไมโครโฟน"
     },
     {
       id: 2,
       title: "หมวดที่ 2: เทคโนโลยีบาร์โค้ด 1 มิติ และรหัสภาพ 2 มิติ (QR Code)",
       unitRange: "หน่วยที่ 5 – 8",
       description:
-        "หัวอ่านบาร์โค้ด CCD และ Image-based เครื่องอ่านไร้สายและฝังตัว โครงสร้าง QR Code การกู้คืนข้อมูล ตระกูล QR ของ Denso Wave และการใช้งาน Static / Dynamic QR",
-      miniGameId: "G02",
-      miniGameTitle: "Barcode & QR Rapid Decoder"
+        "หัวอ่านบาร์โค้ด CCD และ Image-based เครื่องอ่านไร้สายและฝังตัว โครงสร้าง QR Code การกู้คืนข้อมูล ตระกูล QR ของ Denso Wave และการใช้งาน Static / Dynamic QR"
     },
     {
       id: 3,
       title: "หมวดที่ 3: ความปลอดภัย การเข้ารหัสข้อมูล RFID และชีวมิติ",
       unitRange: "หน่วยที่ 9 – 12",
       description:
-        "ความเสี่ยงในการนำเข้าข้อมูล Data Validation และ Check Digit การเข้ารหัส SSL/TLS และ SHA-256 Hashing ระบบคลื่นความถี่วิทยุ RFID และระบบชีวมิติ Biometric Input",
-      miniGameId: "G03",
-      miniGameTitle: "Cyber & Biometric Shield"
+        "ความเสี่ยงในการนำเข้าข้อมูล Data Validation และ Check Digit การเข้ารหัส SSL/TLS และ SHA-256 Hashing ระบบคลื่นความถี่วิทยุ RFID และระบบชีวมิติ Biometric Input"
     },
     {
       id: 4,
       title: "หมวดที่ 4: ซอฟต์แวร์ฐานข้อมูล การแปลงรหัส การบีบอัด และการประยุกต์ใช้งาน",
       unitRange: "หน่วยที่ 13 – 16",
       description:
-        "การจัดการฐานข้อมูล DBMS การทำความสะอาดข้อมูลด้วย Power Query มาตรฐานรหัสอักขระ UTF-8 / TIS-620 / Base64 การบีบอัดข้อมูล RLE / Lossless / Lossy และการประยุกต์ใช้งานจริง",
-      miniGameId: "G04",
-      miniGameTitle: "Data Encoding & RLE Sprint"
+        "การจัดการฐานข้อมูล DBMS การทำความสะอาดข้อมูลด้วย Power Query มาตรฐานรหัสอักขระ UTF-8 / TIS-620 / Base64 การบีบอัดข้อมูล RLE / Lossless / Lossy และการประยุกต์ใช้งานจริง"
     }
   ],
 
