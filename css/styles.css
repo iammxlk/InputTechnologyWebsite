@@ -8032,3 +8032,97 @@ html[data-theme="dark"] .mg-tab-badge {
   border-color: #334155;
   color: #cbd5e1;
 }
+
+
+/* ==========================================================================
+   INTERACTIVE DATA INPUT BACKGROUND CANVAS (Neo-Brutalist Hardware Telemetry FX)
+   ========================================================================== */
+.bg-interactive-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  display: block;
+}
+
+.auth-wrapper,
+.sticky-navbar,
+main.app-container,
+.site-footer,
+.modal-overlay,
+.global-toast-container,
+.nav-backdrop {
+  position: relative;
+  z-index: 1;
+}
+
+/* Background Effect Capsule Toggle */
+.bg-fx-capsule-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+  border: 1.5px solid var(--border-ink);
+  box-shadow: 2px 2px 0 var(--border-ink);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.bg-fx-capsule-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 2px 3px 0 var(--border-ink);
+}
+
+.bg-fx-capsule-btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 0 0 0 var(--border-ink);
+}
+
+.bg-fx-capsule-btn.is-disabled {
+  opacity: 0.6;
+  border-style: dashed;
+}
+
+.bg-fx-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--accent-signal, #FF4814);
+  box-shadow: 0 0 6px var(--accent-signal, #FF4814);
+  flex-shrink: 0;
+}
+
+html[data-theme="dark"] .bg-fx-dot {
+  background-color: #38BDF8;
+  box-shadow: 0 0 6px #38BDF8;
+}
+
+.bg-fx-capsule-btn.is-disabled .bg-fx-dot {
+  background-color: var(--text-muted);
+  box-shadow: none;
+}
+
+.telemetry-fx-link {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.telemetry-fx-link:hover {
+  color: var(--accent-signal);
+}

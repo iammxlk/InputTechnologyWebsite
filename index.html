@@ -57,6 +57,11 @@
         </svg>
       </button>
 
+            <button type="button" class="floating-action-btn bg-fx-capsule-btn" data-bg-effect-toggle aria-label="ลูกเล่นพื้นหลัง" title="ลูกเล่นพื้นหลัง: คลิกเพื่อเปลี่ยนโหมด (เรดาร์ / เบา / ปิด)">
+        <span class="bg-fx-dot" aria-hidden="true"></span>
+        <span class="bg-fx-label font-notch">FX: เรดาร์สัญญาณ</span>
+      </button>
+
       <button id="auth-theme-toggle-btn" type="button" class="floating-action-btn" aria-label="สลับโหมดสี (Dark / Light Mode)" title="สลับโหมดสี (Dark / Light Mode)">
         <svg class="theme-icon-sun hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="5"></circle>
@@ -330,6 +335,11 @@
           <span class="hw-telemetry-item font-notch">
             BUS: <strong style="color: var(--accent-signal);">READY</strong> • KEYBIND: [1–4]
           </span>
+          <span class="hw-telemetry-item font-notch" style="margin-left: auto;">
+            <button type="button" class="telemetry-fx-link font-notch" data-bg-effect-toggle title="สลับลูกเล่นพื้นหลัง">
+              SIGNAL MATRIX: <span class="bg-fx-label" style="color: var(--accent-signal);">ACTIVE</span>
+            </button>
+          </span>
         </div>
       </div>
 
@@ -376,6 +386,11 @@
               <line x1="23" y1="9" x2="17" y2="15"></line>
               <line x1="17" y1="9" x2="23" y2="15"></line>
             </svg>
+          </button>
+
+          <button type="button" class="bg-fx-capsule-btn font-notch" data-bg-effect-toggle aria-label="ลูกเล่นพื้นหลัง" title="ลูกเล่นพื้นหลัง: คลิกเพื่อเปลี่ยนโหมด (เรดาร์ / เบา / ปิด)">
+            <span class="bg-fx-dot" aria-hidden="true"></span>
+            <span class="bg-fx-label">FX: เรดาร์สัญญาณ</span>
           </button>
 
           <button id="theme-toggle-btn" type="button" class="nav-icon-btn" aria-label="สลับโหมดสี (Dark / Light Mode)" title="สลับโหมดสี (Dark / Light Mode)">
@@ -1080,7 +1095,8 @@
   <script src="js/config.js?v=3.4"></script>
   <script src="js/sound.js?v=3.4"></script>
   <script src="js/api.js?v=3.4"></script>
-  <script src="js/motion.js?v=3.4"></script>
+  <script src="js/motion.js?v=3.5"></script>
+  <script src="js/bg-matrix.js?v=3.5"></script>
   <script src="js/auth.js?v=3.4"></script>
   <script src="js/certificate.js?v=3.4"></script>
   <script src="js/curriculum-part1.js?v=3.4"></script>
