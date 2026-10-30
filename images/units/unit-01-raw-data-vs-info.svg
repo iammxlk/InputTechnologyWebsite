@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <linearGradient id="blueBox" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1E3A8A"/>
+      <stop offset="100%" stop-color="#0F2B5C"/>
+    </linearGradient>
+    <linearGradient id="cyanBox" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0284C7"/>
+      <stop offset="100%" stop-color="#0369A1"/>
+    </linearGradient>
+    <linearGradient id="greenBox" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#047857"/>
+      <stop offset="100%" stop-color="#064E3B"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Technical Blueprint Background -->
+  <rect width="1280" height="720" fill="url(#bgGrad)"/>
+  <g stroke="#334155" stroke-width="1" stroke-dasharray="4 8" opacity="0.35">
+    <line x1="0" y1="120" x2="1280" y2="120"/>
+    <line x1="0" y1="620" x2="1280" y2="620"/>
+    <line x1="430" y1="0" x2="430" y2="720"/>
+    <line x1="850" y1="0" x2="850" y2="720"/>
+  </g>
+
+  <!-- Header Banner -->
+  <rect x="50" y="24" width="1180" height="74" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
+  <text x="80" y="52" font-family="'Stack Sans Notch', sans-serif" font-size="17" font-weight="700" fill="#38BDF8">
+    DATA-TO-INFORMATION PROCESSING PIPELINE
+  </text>
+  <text x="80" y="78" font-family="'Mitr', sans-serif" font-size="13" font-weight="400" fill="#94A3B8">
+    กระบวนการเปลี่ยนข้อมูลดิบให้เป็นสารสนเทศสำหรับการตัดสินใจ
+  </text>
+
+  <!-- STEP 1: RAW DATA (INPUT) -->
+  <g transform="translate(60, 140)" filter="url(#cardShadow)">
+    <rect width="360" height="460" rx="16" fill="#131E36" stroke="#2563EB" stroke-width="2"/>
+    <rect x="0" y="0" width="360" height="54" rx="16" fill="url(#blueBox)"/>
+    <!-- Step Badge -->
+    <rect x="18" y="12" width="82" height="30" rx="8" fill="#2563EB"/>
+    <text x="59" y="33" font-family="'Stack Sans Notch', sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 01</text>
+    <text x="114" y="33" font-family="'Mitr', sans-serif" font-size="17" font-weight="600" fill="#FFFFFF">ข้อมูลดิบ (Raw Data)</text>
+
+    <!-- Diagram / Graphic in Step 1 -->
+    <g transform="translate(24, 76)">
+      <rect width="312" height="170" rx="10" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Raw Items (Scattered Points) -->
+      <text x="156" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="12" font-weight="600" fill="#64748B" text-anchor="middle">UNORGANIZED DISCRETE FACTS</text>
+      <g transform="translate(24, 46)">
+        <rect x="0" y="0" width="120" height="34" rx="6" fill="#1E293B" stroke="#38BDF8" stroke-width="1"/>
+        <text x="60" y="22" font-family="'Mitr', sans-serif" font-size="12" fill="#E2E8F0" text-anchor="middle">คะแนน: 7</text>
+
+        <rect x="144" y="0" width="120" height="34" rx="6" fill="#1E293B" stroke="#38BDF8" stroke-width="1"/>
+        <text x="204" y="22" font-family="'Mitr', sans-serif" font-size="12" fill="#E2E8F0" text-anchor="middle">คะแนน: 9</text>
+
+        <rect x="0" y="48" width="120" height="34" rx="6" fill="#1E293B" stroke="#38BDF8" stroke-width="1"/>
+        <text x="60" y="70" font-family="'Mitr', sans-serif" font-size="12" fill="#E2E8F0" text-anchor="middle">คะแนน: 5</text>
+
+        <rect x="144" y="48" width="120" height="34" rx="6" fill="#1E293B" stroke="#38BDF8" stroke-width="1"/>
+        <text x="204" y="70" font-family="'Mitr', sans-serif" font-size="12" fill="#E2E8F0" text-anchor="middle">คะแนน: 8</text>
+      </g>
+    </g>
+
+    <!-- Step Description -->
+    <g transform="translate(24, 268)">
+      <text x="0" y="20" font-family="'Mitr', sans-serif" font-size="15" font-weight="600" fill="#38BDF8">ลักษณะทางเทคนิค:</text>
+      <text x="0" y="46" font-family="'Mitr', sans-serif" font-size="13.5" fill="#CBD5E1">ข้อเท็จจริงหรือตัวเลขที่เก็บรวบรวม</text>
+      <text x="0" y="70" font-family="'Mitr', sans-serif" font-size="13.5" fill="#CBD5E1">จากเหตุการณ์จริง ยังไม่จัดหมวดหมู่</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="13.5" fill="#CBD5E1">ไม่สามารถนำไปใช้ตัดสินใจได้ทันที</text>
+      <rect x="0" y="120" width="312" height="40" rx="8" fill="#1E293B"/>
+      <text x="156" y="145" font-family="'Mitr', sans-serif" font-size="13" font-weight="500" fill="#93C5FD" text-anchor="middle">สถานะ: ต้นทางของวงจร IPO</text>
+    </g>
+  </g>
+
+  <!-- CONNECTOR ARROW 1 -> 2 -->
+  <g transform="translate(426, 360)">
+    <circle cx="20" cy="0" r="20" fill="#1E293B" stroke="#38BDF8" stroke-width="2"/>
+    <path d="M 14 -8 L 26 0 L 14 8" fill="none" stroke="#38BDF8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- STEP 2: PROCESSING (PROCESS) -->
+  <g transform="translate(460, 140)" filter="url(#cardShadow)">
+    <rect width="360" height="460" rx="16" fill="#131E36" stroke="#0284C7" stroke-width="2"/>
+    <rect x="0" y="0" width="360" height="54" rx="16" fill="url(#cyanBox)"/>
+    <rect x="18" y="12" width="82" height="30" rx="8" fill="#0284C7"/>
+    <text x="59" y="33" font-family="'Stack Sans Notch', sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 02</text>
+    <text x="114" y="33" font-family="'Mitr', sans-serif" font-size="17" font-weight="600" fill="#FFFFFF">การประมวลผล (Processing)</text>
+
+    <!-- Diagram / Graphic in Step 2 -->
+    <g transform="translate(24, 76)">
+      <rect width="312" height="170" rx="10" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Processing Engine Circuit Icon -->
+      <g transform="translate(156, 85)">
+        <circle cx="0" cy="0" r="46" fill="#1E293B" stroke="#00E5FF" stroke-width="2" stroke-dasharray="6 4"/>
+        <rect x="-24" y="-24" width="48" height="48" rx="6" fill="#0284C7"/>
+        <text x="0" y="5" font-family="'Stack Sans Notch', sans-serif" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">CPU</text>
+        <!-- Data Inputs converging -->
+        <path d="M -80 -40 L -46 -15 M -80 40 L -46 15" stroke="#38BDF8" stroke-width="2"/>
+        <path d="M 46 0 L 80 0" stroke="#00E5FF" stroke-width="2"/>
+      </g>
+      <text x="156" y="152" font-family="'Mitr', sans-serif" font-size="12" fill="#7DD3FC" text-anchor="middle">สูตร: (7 + 9 + 5 + 8) ÷ 4</text>
+    </g>
+
+    <!-- Step Description -->
+    <g transform="translate(24, 268)">
+      <text x="0" y="20" font-family="'Mitr', sans-serif" font-size="15" font-weight="600" fill="#38BDF8">กระบวนการวิศวกรรม:</text>
+      <text x="0" y="46" font-family="'Mitr', sans-serif" font-size="13.5" fill="#CBD5E1">คำนวณทางคณิตศาสตร์ จัดกลุ่ม</text>
+      <text x="0" y="70" font-family="'Mitr', sans-serif" font-size="13.5" fill="#CBD5E1">ตรวจสอบข้อผิดพลาด (Validation)</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="13.5" fill="#CBD5E1">และสรุปผลเชิงสถิติอย่างเป็นระบบ</text>
+      <rect x="0" y="120" width="312" height="40" rx="8" fill="#1E293B"/>
+      <text x="156" y="145" font-family="'Mitr', sans-serif" font-size="13" font-weight="500" fill="#BAE6FD" text-anchor="middle">สถานะ: แปลงค่าให้เกิดความหมาย</text>
+    </g>
+  </g>
+
+  <!-- CONNECTOR ARROW 2 -> 3 -->
+  <g transform="translate(826, 360)">
+    <circle cx="20" cy="0" r="20" fill="#1E293B" stroke="#10B981" stroke-width="2"/>
+    <path d="M 14 -8 L 26 0 L 14 8" fill="none" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- STEP 3: INFORMATION (OUTPUT) -->
+  <g transform="translate(860, 140)" filter="url(#cardShadow)">
+    <rect width="360" height="460" rx="16" fill="#131E36" stroke="#059669" stroke-width="2"/>
+    <rect x="0" y="0" width="360" height="54" rx="16" fill="url(#greenBox)"/>
+    <rect x="18" y="12" width="82" height="30" rx="8" fill="#059669"/>
+    <text x="59" y="33" font-family="'Stack Sans Notch', sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 03</text>
+    <text x="114" y="33" font-family="'Mitr', sans-serif" font-size="17" font-weight="600" fill="#FFFFFF">สารสนเทศ (Information)</text>
+
+    <!-- Diagram / Graphic in Step 3 -->
+    <g transform="translate(24, 76)">
+      <rect width="312" height="170" rx="10" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Report Dashboard Graphic -->
+      <rect x="20" y="20" width="272" height="130" rx="8" fill="#1E293B" stroke="#059669"/>
+      <rect x="36" y="34" width="90" height="44" rx="6" fill="#064E3B"/>
+      <text x="81" y="54" font-family="'Stack Sans Notch', sans-serif" font-size="18" font-weight="700" fill="#6EE7B7" text-anchor="middle">7.25</text>
+      <text x="81" y="70" font-family="'Mitr', sans-serif" font-size="11" fill="#A7F3D0" text-anchor="middle">คะแนนเฉลี่ย</text>
+
+      <rect x="136" y="34" width="140" height="44" rx="6" fill="#0F172A"/>
+      <text x="146" y="52" font-family="'Mitr', sans-serif" font-size="12" fill="#E2E8F0">สถานะ: ผ่านเกณฑ์</text>
+      <text x="146" y="68" font-family="'Mitr', sans-serif" font-size="11" fill="#34D399">ผ่าน 100% ครบทุกคน</text>
+
+      <!-- Mini Bar Chart -->
+      <g transform="translate(36, 92)">
+        <rect x="0" y="18" width="40" height="18" rx="2" fill="#3B82F6"/>
+        <rect x="50" y="6" width="40" height="30" rx="2" fill="#10B981"/>
+        <rect x="100" y="24" width="40" height="12" rx="2" fill="#F59E0B"/>
+        <rect x="150" y="10" width="40" height="26" rx="2" fill="#6366F1"/>
+        <line x1="0" y1="38" x2="240" y2="38" stroke="#475569" stroke-width="1"/>
+      </g>
+    </g>
+
+    <!-- Step Description -->
+    <g transform="translate(24, 268)">
+      <text x="0" y="20" font-family="'Mitr', sans-serif" font-size="15" font-weight="600" fill="#34D399">ผลลัพธ์พร้อมใช้งาน:</text>
+      <text x="0" y="46" font-family="'Mitr', sans-serif" font-size="13.5" fill="#CBD5E1">ข้อมูลที่จัดระเบียบและแปลผลแล้ว</text>
+      <text x="0" y="70" font-family="'Mitr', sans-serif" font-size="13.5" fill="#CBD5E1">มีบริบทความหมายครบถ้วน ชัดเจน</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="13.5" fill="#CBD5E1">นำไปวางแผนและตัดสินใจได้ทันที</text>
+      <rect x="0" y="120" width="312" height="40" rx="8" fill="#1E293B"/>
+      <text x="156" y="145" font-family="'Mitr', sans-serif" font-size="13" font-weight="500" fill="#A7F3D0" text-anchor="middle">สถานะ: ปลายทางพร้อมใช้งานจริง</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Technical Grid Background -->
+  <rect width="1280" height="720" fill="url(#bgGrad)"/>
+  <g stroke="#334155" stroke-width="1" stroke-dasharray="4 8" opacity="0.3">
+    <line x1="0" y1="120" x2="1280" y2="120"/>
+    <line x1="0" y1="640" x2="1280" y2="640"/>
+    <line x1="330" y1="0" x2="330" y2="720"/>
+    <line x1="640" y1="0" x2="640" y2="720"/>
+    <line x1="950" y1="0" x2="950" y2="720"/>
+  </g>
+
+
+  <rect x="50" y="24" width="1180" height="74" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
+  <text x="80" y="52" font-family="'Stack Sans Notch', sans-serif" font-size="17" font-weight="700" fill="#38BDF8">
+    STATIC VS DYNAMIC QR CODE ARCHITECTURE &amp; LIFECYCLE
+  </text>
+  <text x="80" y="78" font-family="'Mitr', sans-serif" font-size="13" font-weight="400" fill="#94A3B8">
+    สถาปัตยกรรมระบบคิวอาร์โค้ดแบบคงที่และการทำงานผ่านพร็อกซีรีไดเรกต์แบบไดนามิก
+  </text>
+
+  <!-- COLUMN 1: Static QR Code -->
+  <g transform="translate(60, 115)" filter="url(#cardShadow)">
+    <rect width="560" height="565" rx="14" fill="#131E36" stroke="#64748B" stroke-width="2"/>
+    <rect width="560" height="52" rx="14" fill="#1E293B"/>
+    <rect x="18" y="11" width="130" height="30" rx="6" fill="#475569"/>
+    <text x="83" y="31" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STATIC QR CODE</text>
+    <text x="165" y="32" font-family="'Mitr', sans-serif" font-size="15.5" font-weight="600" fill="#FFFFFF">คิวอาร์โค้ดแบบคงที่ (Direct Payload)</text>
+
+    <!-- Architecture Diagram -->
+    <g transform="translate(20, 68)">
+      <rect width="520" height="175" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Scanner -> Direct URL -->
+      <g transform="translate(30, 40)">
+        <rect width="130" height="50" rx="6" fill="#1E293B" stroke="#94A3B8"/>
+        <text x="65" y="30" font-family="'Stack Sans Notch', sans-serif" font-size="12" fill="#E2E8F0" text-anchor="middle">USER SCANNER</text>
+      </g>
+      <!-- Arrow Direct -->
+      <g transform="translate(170, 65)">
+        <line x1="0" y1="0" x2="150" y2="0" stroke="#94A3B8" stroke-width="2"/>
+        <polygon points="150,0 140,-5 140,5" fill="#94A3B8"/>
+        <text x="75" y="-10" font-family="'Stack Sans Notch', sans-serif" font-size="10.5" fill="#CBD5E1" text-anchor="middle">DIRECT PAYLOAD</text>
+      </g>
+      <!-- Destination Box -->
+      <g transform="translate(330, 40)">
+        <rect width="160" height="50" rx="6" fill="#1E293B" stroke="#EF4444"/>
+        <text x="80" y="24" font-family="'Stack Sans Notch', sans-serif" font-size="11" font-weight="700" fill="#F87171" text-anchor="middle">FIXED DESTINATION</text>
+        <text x="80" y="40" font-family="'Stack Sans Notch', sans-serif" font-size="9.5" fill="#94A3B8" text-anchor="middle">https://cdti.ac.th/final</text>
+      </g>
+      <text x="260" y="145" font-family="'Mitr', sans-serif" font-size="12" fill="#EF4444" text-anchor="middle">ข้อจำกัดสำคัญ: หากปลายทาง URL เปลี่ยน QR Code จะใช้งานไม่ได้ทันที</text>
+    </g>
+
+    <!-- Specs -->
+    <g transform="translate(25, 265)">
+      <text x="0" y="20" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#94A3B8">ลักษณะเฉพาะทางเทคนิค:</text>
+      <text x="0" y="50" font-family="'Mitr', sans-serif" font-size="13" fill="#CBD5E1">• ฝัง URL หรือข้อความจริงลงในจุดโมดูลโดยตรง</text>
+      <text x="0" y="76" font-family="'Mitr', sans-serif" font-size="13" fill="#CBD5E1">• ข้อมูลยิ่งยาว ขนาดตารางยิ่งหนาแน่น สแกนยากขึ้น</text>
+      <text x="0" y="102" font-family="'Mitr', sans-serif" font-size="13" fill="#CBD5E1">• ไม่สามารถแก้ไข URL ปลายทางได้เมื่อพิมพ์ออกไปแล้ว</text>
+      <text x="0" y="128" font-family="'Mitr', sans-serif" font-size="13" fill="#CBD5E1">• ไม่สามารถเก็บสถิติจำนวนคนสแกนหรืออุปกรณ์ได้</text>
+      <text x="0" y="154" font-family="'Mitr', sans-serif" font-size="13" fill="#CBD5E1">• เหมาะกับ Wi-Fi Password หรือข้อมูลที่ไม่เปลี่ยนแปลง</text>
+      <rect x="0" y="195" width="510" height="44" rx="8" fill="#1E293B" stroke="#334155"/>
+      <text x="255" y="223" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="500" fill="#CBD5E1" text-anchor="middle">ความยืดหยุ่น: 0% (พิมพ์แล้วแก้ไม่ได้ตลอดกาล)</text>
+    </g>
+  </g>
+
+  <!-- COLUMN 2: Dynamic QR Code -->
+  <g transform="translate(660, 115)" filter="url(#cardShadow)">
+    <rect width="560" height="565" rx="14" fill="#131E36" stroke="#38BDF8" stroke-width="2"/>
+    <rect width="560" height="52" rx="14" fill="#1E293B"/>
+    <rect x="18" y="11" width="145" height="30" rx="6" fill="#0284C7"/>
+    <text x="90" y="31" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">DYNAMIC QR CODE</text>
+    <text x="180" y="32" font-family="'Mitr', sans-serif" font-size="15.5" font-weight="600" fill="#FFFFFF">คิวอาร์โค้ดแบบไดนามิก (Cloud Engine)</text>
+
+    <!-- Architecture Diagram -->
+    <g transform="translate(20, 68)">
+      <rect width="520" height="175" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Scanner -> Cloud Proxy -> Final Destination -->
+      <g transform="translate(20, 40)">
+        <rect width="110" height="50" rx="6" fill="#1E293B" stroke="#38BDF8"/>
+        <text x="55" y="30" font-family="'Stack Sans Notch', sans-serif" font-size="11" fill="#E2E8F0" text-anchor="middle">USER SCAN</text>
+      </g>
+      <!-- Arrow 1 -->
+      <line x1="130" y1="65" x2="190" y2="65" stroke="#38BDF8" stroke-width="2"/>
+      <polygon points="190,65 180,60 180,70" fill="#38BDF8"/>
+      <!-- Middle Proxy Server -->
+      <g transform="translate(195, 28)">
+        <rect width="130" height="74" rx="6" fill="#0F2B5C" stroke="#38BDF8" stroke-width="1.5"/>
+        <text x="65" y="24" font-family="'Stack Sans Notch', sans-serif" font-size="11.5" font-weight="700" fill="#38BDF8" text-anchor="middle">REDIRECT ENGINE</text>
+        <text x="65" y="42" font-family="'Stack Sans Notch', sans-serif" font-size="10" fill="#A7F3D0" text-anchor="middle">+ ANALYTICS LOG</text>
+        <text x="65" y="60" font-family="'Stack Sans Notch', sans-serif" font-size="9.5" fill="#CBD5E1" text-anchor="middle">HTTP 302 FOUND</text>
+      </g>
+      <!-- Arrow 2 -->
+      <line x1="325" y1="65" x2="385" y2="65" stroke="#38BDF8" stroke-width="2"/>
+      <polygon points="385,65 375,60 375,70" fill="#38BDF8"/>
+      <!-- Target Server -->
+      <g transform="translate(390, 40)">
+        <rect width="110" height="50" rx="6" fill="#1E293B" stroke="#10B981"/>
+        <text x="55" y="24" font-family="'Stack Sans Notch', sans-serif" font-size="11" font-weight="700" fill="#34D399" text-anchor="middle">REAL DEST</text>
+        <text x="55" y="40" font-family="'Stack Sans Notch', sans-serif" font-size="9.5" fill="#94A3B8" text-anchor="middle">Editable Target</text>
+      </g>
+      <text x="260" y="145" font-family="'Mitr', sans-serif" font-size="12" fill="#38BDF8" text-anchor="middle">จุดเด่น: เปลี่ยนปลายทางได้ตลอดเวลาโดยไม่ต้องพิมพ์ป้ายใหม่ พร้อมเก็บสถิติ</text>
+    </g>
+
+    <!-- Specs -->
+    <g transform="translate(25, 265)">
+      <text x="0" y="20" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#38BDF8">ลักษณะเฉพาะทางเทคนิค:</text>
+      <text x="0" y="50" font-family="'Mitr', sans-serif" font-size="13" fill="#CBD5E1">• ฝัง Short URL สั้นคงที่ เช่น qr.link/a1 ตารางจึงโปร่ง สแกนไว</text>
+      <text x="0" y="76" font-family="'Mitr', sans-serif" font-size="13" fill="#CBD5E1">• เมื่อสแกนจะวิ่งเข้า Redirection Engine เพื่อส่ง HTTP 301/302 ต่อ</text>
+      <text x="0" y="102" font-family="'Mitr', sans-serif" font-size="13" fill="#CBD5E1">• แก้ไข URL ปลายทางบนแดชบอร์ดได้ทุกเมื่อ แม้ป้ายติดไปแล้ว</text>
+      <text x="0" y="128" font-family="'Mitr', sans-serif" font-size="13" fill="#CBD5E1">• บันทึกสถิติผู้สแกน: วันเวลา, พิกัด GPS, ชนิดอุปกรณ์ OS</text>
+      <text x="0" y="154" font-family="'Mitr', sans-serif" font-size="13" fill="#CBD5E1">• มาตรฐานระดับองค์กรสำหรับแคมเปญการตลาดและป้ายถาวร</text>
+      <rect x="0" y="195" width="510" height="44" rx="8" fill="#1E293B" stroke="#334155"/>
+      <text x="255" y="223" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="500" fill="#38BDF8" text-anchor="middle">ความยืดหยุ่น: 100% พร้อมระบบ Analytics แบบเรียลไทม์</text>
+    </g>
+  </g>
+
+</svg>

@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Technical Grid Background -->
+  <rect width="1280" height="720" fill="url(#bgGrad)"/>
+  <g stroke="#334155" stroke-width="1" stroke-dasharray="4 8" opacity="0.3">
+    <line x1="0" y1="120" x2="1280" y2="120"/>
+    <line x1="0" y1="640" x2="1280" y2="640"/>
+    <line x1="330" y1="0" x2="330" y2="720"/>
+    <line x1="640" y1="0" x2="640" y2="720"/>
+    <line x1="950" y1="0" x2="950" y2="720"/>
+  </g>
+
+
+  <rect x="50" y="24" width="1180" height="74" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
+  <text x="80" y="52" font-family="'Stack Sans Notch', sans-serif" font-size="17" font-weight="700" fill="#38BDF8">
+    1D LINEAR BARCODE OPTICAL SCANNING &amp; DECODING
+  </text>
+  <text x="80" y="78" font-family="'Mitr', sans-serif" font-size="13" font-weight="400" fill="#94A3B8">
+    กระบวนการยิงแสงเลเซอร์ แปลงรูปคลื่นสะท้อน และถอดรหัสบาร์โค้ดแท่ง
+  </text>
+
+  <!-- STEP 1: Laser Light Reflection -->
+  <g transform="translate(50, 115)" filter="url(#cardShadow)">
+    <rect width="270" height="565" rx="12" fill="#131E36" stroke="#2563EB" stroke-width="1.8"/>
+    <rect width="270" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#2563EB"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 01</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Laser Reflection</text>
+    <g transform="translate(14, 58)">
+      <rect width="242" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Realistic 1D Barcode Pattern -->
+      <g transform="translate(30, 20)">
+        <rect x="0" y="0" width="180" height="85" fill="#FFFFFF" rx="4"/>
+        <g fill="#000000">
+          <rect x="15" y="10" width="4" height="65"/>
+          <rect x="23" y="10" width="2" height="65"/>
+          <rect x="30" y="10" width="6" height="65"/>
+          <rect x="42" y="10" width="2" height="65"/>
+          <rect x="48" y="10" width="5" height="65"/>
+          <rect x="58" y="10" width="3" height="65"/>
+          <rect x="68" y="10" width="6" height="65"/>
+          <rect x="80" y="10" width="2" height="65"/>
+          <rect x="86" y="10" width="4" height="65"/>
+          <rect x="96" y="10" width="5" height="65"/>
+          <rect x="106" y="10" width="2" height="65"/>
+          <rect x="114" y="10" width="6" height="65"/>
+          <rect x="126" y="10" width="3" height="65"/>
+          <rect x="136" y="10" width="4" height="65"/>
+          <rect x="146" y="10" width="2" height="65"/>
+          <rect x="154" y="10" width="5" height="65"/>
+        </g>
+        <!-- Red Laser Beam traversing horizontally -->
+        <line x1="-10" y1="42" x2="190" y2="42" stroke="#EF4444" stroke-width="3"/>
+      </g>
+      <text x="121" y="132" font-family="'Stack Sans Notch', sans-serif" font-size="11" font-weight="700" fill="#EF4444" text-anchor="middle">LASER DIODE SWEEP (650nm)</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#38BDF8">การฉายแสงเลเซอร์สะท้อน:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ลำแสงสีแดงกวาดข้ามแท่งบาร์โค้ด</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• แถบสีดำดูดซับแสง ไม่สะท้อนกลับ</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ช่องว่างสีขาวสะท้อนแสงกลับเข้าหัวอ่าน</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• เซนเซอร์รับความเข้มแสงสะท้อน</text>
+      <rect x="0" y="270" width="238" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="119" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#93C5FD" text-anchor="middle">หลักการ: แสงดูดกลืน vs แสงสะท้อน</text>
+    </g>
+  </g>
+
+  <!-- Arrow 1->2 -->
+  <g transform="translate(328, 380)"><circle cx="10" cy="0" r="13" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/><path d="M 6 -5 L 14 0 L 6 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/></g>
+
+  <!-- STEP 2: Photodiode Analog Pulse -->
+  <g transform="translate(350, 115)" filter="url(#cardShadow)">
+    <rect width="270" height="565" rx="12" fill="#131E36" stroke="#0284C7" stroke-width="1.8"/>
+    <rect width="270" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#0284C7"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 02</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Voltage Waveform</text>
+    <g transform="translate(14, 58)">
+      <rect width="242" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Analog square wave pulse -->
+      <path d="M 20 80 L 40 80 L 40 35 L 70 35 L 70 80 L 95 80 L 95 35 L 140 35 L 140 80 L 175 80 L 175 35 L 220 35" fill="none" stroke="#38BDF8" stroke-width="2.5"/>
+      <line x1="15" y1="58" x2="225" y2="58" stroke="#EF4444" stroke-dasharray="3 3"/>
+      <text x="121" y="115" font-family="'Stack Sans Notch', sans-serif" font-size="11" font-weight="700" fill="#38BDF8" text-anchor="middle">THRESHOLD COMPARATOR</text>
+      <text x="121" y="132" font-family="'Mitr', sans-serif" font-size="10.5" fill="#94A3B8" text-anchor="middle">แปลงระดับแสงเป็นคลื่นแรงดันไฟ</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#38BDF8">การกำเนิดรูปคลื่นไฟฟ้า:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• Photodetector รับแสงแปรเป็น Volt</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• แถบขาว = แรงดันสูง (High Volt)</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• แถบดำ = แรงดันต่ำ (Low Volt)</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• วงจร Threshold ตัดขอบคลื่นให้คม</text>
+      <rect x="0" y="270" width="238" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="119" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#38BDF8" text-anchor="middle">ได้คลื่น Square Pulse ดิจิทัล</text>
+    </g>
+  </g>
+
+  <!-- Arrow 2->3 -->
+  <g transform="translate(628, 380)"><circle cx="10" cy="0" r="13" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/><path d="M 6 -5 L 14 0 L 6 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/></g>
+
+  <!-- STEP 3: Pulse Width Measurement -->
+  <g transform="translate(650, 115)" filter="url(#cardShadow)">
+    <rect width="270" height="565" rx="12" fill="#131E36" stroke="#10B981" stroke-width="1.8"/>
+    <rect width="270" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#10B981"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 03</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Width Decoding</text>
+    <g transform="translate(14, 58)">
+      <rect width="242" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Width bits -->
+      <g transform="translate(20, 30)">
+        <rect x="0" y="0" width="200" height="40" rx="4" fill="#1E293B" stroke="#10B981"/>
+        <text x="100" y="25" font-family="'Stack Sans Notch', sans-serif" font-size="12" font-weight="700" fill="#34D399" text-anchor="middle">1 0 1 1 0 0 1 0 1 0 1</text>
+      </g>
+      <text x="121" y="105" font-family="'Stack Sans Notch', sans-serif" font-size="11" font-weight="700" fill="#E2E8F0" text-anchor="middle">WIDE / NARROW RATIO: 3:1</text>
+      <text x="121" y="125" font-family="'Mitr', sans-serif" font-size="10.5" fill="#94A3B8" text-anchor="middle">วัดความกว้างแท่งเพื่อแปลงบิต</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#34D399">การวัดความกว้างแท่ง:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• จับเวลาช่วง High และ Low</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• เปรียบเทียบอัตราส่วนแถบแคบ/กว้าง</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ตรวจสอบ Start Guard Bar (101)</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• แปลงลำดับบิตเป็นตัวเลข 0-9</text>
+      <rect x="0" y="270" width="238" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="119" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#A7F3D0" text-anchor="middle">มาตรฐาน EAN-13 / Code 128</text>
+    </g>
+  </g>
+
+  <!-- Arrow 3->4 -->
+  <g transform="translate(928, 380)"><circle cx="10" cy="0" r="13" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/><path d="M 6 -5 L 14 0 L 6 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/></g>
+
+  <!-- STEP 4: Modulo-10 Check Digit Verification -->
+  <g transform="translate(950, 115)" filter="url(#cardShadow)">
+    <rect width="280" height="565" rx="12" fill="#131E36" stroke="#F59E0B" stroke-width="1.8"/>
+    <rect width="280" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#F59E0B"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 04</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Check Digit</text>
+    <g transform="translate(14, 58)">
+      <rect width="252" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Calculation Box -->
+      <rect x="25" y="25" width="202" height="50" rx="4" fill="#1E293B" stroke="#F59E0B" stroke-width="1.5"/>
+      <text x="126" y="46" font-family="'Stack Sans Notch', sans-serif" font-size="12.5" font-weight="700" fill="#FBBF24" text-anchor="middle">8 8 5 0 1 2 3 4 5 6 7 8 [9]</text>
+      <text x="126" y="64" font-family="'Stack Sans Notch', sans-serif" font-size="10.5" fill="#34D399" text-anchor="middle">MODULO-10 CHECKSUM PASS</text>
+      <text x="126" y="115" font-family="'Mitr', sans-serif" font-size="11" fill="#E2E8F0" text-anchor="middle">บี๊บ! ข้อมูลส่งเข้าเครื่องคิดเงิน POS</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#FBBF24">การคำนวณตรวจสอบความถูกต้อง:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• คำนวณ Modulo-10 ตามน้ำหนัก 1 และ 3</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• เปรียบเทียบกับหลักสุดท้าย (Check Digit)</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• หากถูกต้อง: ส่งสัญญาณ Beep ยืนยัน</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ส่งตัวเลข 13 หลักเข้าสู่ระบบสินค้า</text>
+      <rect x="0" y="270" width="248" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="124" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#FDE68A" text-anchor="middle">ความแม่นยำสูง ปราศจากพิมพ์ผิด</text>
+    </g>
+  </g>
+
+</svg>

@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Technical Grid Background -->
+  <rect width="1280" height="720" fill="url(#bgGrad)"/>
+  <g stroke="#334155" stroke-width="1" stroke-dasharray="4 8" opacity="0.3">
+    <line x1="0" y1="120" x2="1280" y2="120"/>
+    <line x1="0" y1="640" x2="1280" y2="640"/>
+    <line x1="330" y1="0" x2="330" y2="720"/>
+    <line x1="640" y1="0" x2="640" y2="720"/>
+    <line x1="950" y1="0" x2="950" y2="720"/>
+  </g>
+
+
+  <rect x="50" y="24" width="1180" height="74" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
+  <text x="80" y="52" font-family="'Stack Sans Notch', sans-serif" font-size="17" font-weight="700" fill="#38BDF8">
+    END-TO-END TLS 1.3 HANDSHAKE &amp; AES-256 ENCRYPTION
+  </text>
+  <text x="80" y="78" font-family="'Mitr', sans-serif" font-size="13" font-weight="400" fill="#94A3B8">
+    กระบวนการจับมือเข้ารหัสความปลอดภัยและส่งผ่านข้อมูลทางอินเทอร์เน็ต
+  </text>
+
+  <!-- STEP 1: Client/Server Hello -->
+  <g transform="translate(50, 115)" filter="url(#cardShadow)">
+    <rect width="270" height="565" rx="12" fill="#131E36" stroke="#2563EB" stroke-width="1.8"/>
+    <rect width="270" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#2563EB"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 01</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">TLS Hello</text>
+    <g transform="translate(14, 58)">
+      <rect width="242" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <g transform="translate(20, 25)">
+        <rect width="202" height="40" rx="4" fill="#1E293B" stroke="#38BDF8"/>
+        <text x="101" y="24" font-family="'Stack Sans Notch', sans-serif" font-size="11.5" font-weight="700" fill="#38BDF8" text-anchor="middle">CLIENT HELLO + ECDHE KEY</text>
+        <rect y="55" width="202" height="40" rx="4" fill="#1E293B" stroke="#60A5FA"/>
+        <text x="101" y="79" font-family="'Stack Sans Notch', sans-serif" font-size="11.5" font-weight="700" fill="#60A5FA" text-anchor="middle">SERVER HELLO + CIPHER SUITE</text>
+      </g>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#38BDF8">การทักทายและตกลงพารามิเตอร์:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• เว็บบราวเซอร์ส่ง Client Hello</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• แลกเปลี่ยนกุญแจ Diffie-Hellman</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• เซิร์ฟเวอร์ตอบรับ Cipher Suite</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ตกลงใช้อัลกอริทึม AES-GCM-256</text>
+      <rect x="0" y="270" width="238" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="119" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#93C5FD" text-anchor="middle">สถานะ: ตกลงชุดเข้ารหัสเสร็จสิ้น</text>
+    </g>
+  </g>
+
+  <!-- Arrow 1->2 -->
+  <g transform="translate(328, 380)"><circle cx="10" cy="0" r="13" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/><path d="M 6 -5 L 14 0 L 6 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/></g>
+
+  <!-- STEP 2: Certificate &amp; Identity -->
+  <g transform="translate(350, 115)" filter="url(#cardShadow)">
+    <rect width="270" height="565" rx="12" fill="#131E36" stroke="#0284C7" stroke-width="1.8"/>
+    <rect width="270" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#0284C7"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 02</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">X.509 Certificate</text>
+    <g transform="translate(14, 58)">
+      <rect width="242" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Certificate lock -->
+      <rect x="25" y="20" width="192" height="60" rx="4" fill="#1E293B" stroke="#0284C7"/>
+      <text x="121" y="42" font-family="'Stack Sans Notch', sans-serif" font-size="12" font-weight="700" fill="#38BDF8" text-anchor="middle">X.509 SSL CERTIFICATE</text>
+      <text x="121" y="60" font-family="'Stack Sans Notch', sans-serif" font-size="10.5" fill="#A7F3D0" text-anchor="middle">ISSUED BY: ROOT CA</text>
+      <text x="121" y="115" font-family="'Stack Sans Notch', sans-serif" font-size="11" font-weight="700" fill="#34D399" text-anchor="middle">DIGITAL SIGNATURE VALID</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#38BDF8">การยืนยันตัวตนเซิร์ฟเวอร์:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ตรวจสอบใบรับรอง X.509</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ตรวจลายเซ็นดิจิทัลจากหน่วยงาน CA</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ป้องกันการดักจับ Man-in-the-Middle</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ยืนยันว่าเป็นเซิร์ฟเวอร์จิตรลดาจริง</text>
+      <rect x="0" y="270" width="238" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="119" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#38BDF8" text-anchor="middle">สถานะ: ตัวตนปลอดภัย มีกุญแจเขียว</text>
+    </g>
+  </g>
+
+  <!-- Arrow 2->3 -->
+  <g transform="translate(628, 380)"><circle cx="10" cy="0" r="13" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/><path d="M 6 -5 L 14 0 L 6 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/></g>
+
+  <!-- STEP 3: Symmetric Key Generation -->
+  <g transform="translate(650, 115)" filter="url(#cardShadow)">
+    <rect width="270" height="565" rx="12" fill="#131E36" stroke="#10B981" stroke-width="1.8"/>
+    <rect width="270" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#10B981"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 03</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Session Key</text>
+    <g transform="translate(14, 58)">
+      <rect width="242" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Key generation -->
+      <rect x="25" y="25" width="192" height="50" rx="4" fill="#1E293B" stroke="#10B981"/>
+      <text x="121" y="47" font-family="'Stack Sans Notch', sans-serif" font-size="12" font-weight="700" fill="#34D399" text-anchor="middle">AES-256 SESSION KEY</text>
+      <text x="121" y="63" font-family="'Stack Sans Notch', sans-serif" font-size="10" fill="#94A3B8" text-anchor="middle">Symmetric Encryption Key</text>
+      <text x="121" y="115" font-family="'Stack Sans Notch', sans-serif" font-size="11" fill="#E2E8F0" text-anchor="middle">DERIVED VIA HKDF-EXTRACT</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#34D399">การสร้างกุญแจสมมาตร:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• คำนวณ Session Key อิสระ 2 ฝั่ง</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ไม่มีส่งกุญแจลับผ่านสายเน็ต</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• กุญแจสมมาตรมีความเร็วสูงมาก</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• รองรับ Perfect Forward Secrecy</text>
+      <rect x="0" y="270" width="238" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="119" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#A7F3D0" text-anchor="middle">กุญแจลับสร้างเสร็จตรงกันทันที</text>
+    </g>
+  </g>
+
+  <!-- Arrow 3->4 -->
+  <g transform="translate(928, 380)"><circle cx="10" cy="0" r="13" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/><path d="M 6 -5 L 14 0 L 6 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/></g>
+
+  <!-- STEP 4: Encrypted Tunnel -->
+  <g transform="translate(950, 115)" filter="url(#cardShadow)">
+    <rect width="280" height="565" rx="12" fill="#131E36" stroke="#F59E0B" stroke-width="1.8"/>
+    <rect width="280" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#F59E0B"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 04</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Secure Tunnel</text>
+    <g transform="translate(14, 58)">
+      <rect width="252" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Encrypted Ciphertext -->
+      <rect x="25" y="25" width="202" height="45" rx="4" fill="#1E293B" stroke="#F59E0B" stroke-width="1.5"/>
+      <text x="126" y="47" font-family="'Stack Sans Notch', sans-serif" font-size="12" font-weight="700" fill="#FBBF24" text-anchor="middle">ENCRYPTED CIPHERTEXT</text>
+      <text x="126" y="62" font-family="'Stack Sans Notch', sans-serif" font-size="9.5" fill="#94A3B8" text-anchor="middle">7f9a12c4b8e05d31...</text>
+      <text x="126" y="115" font-family="'Mitr', sans-serif" font-size="11" fill="#34D399" text-anchor="middle">ส่งผ่าน HTTPS ปลอดภัย 100%</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#FBBF24">การส่งข้อมูลผ่านอุโมงค์ลับ:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• แปลง Plaintext เป็น Ciphertext</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ผู้ดักฟังจะเห็นเฉพาะตัวอักษรขยะ</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ตรวจสอบความถูกต้องด้วย GCM Tag</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ส่งรหัสผ่านและคะแนนอย่างปลอดภัย</text>
+      <rect x="0" y="270" width="248" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="124" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#FDE68A" text-anchor="middle">มาตรฐานความปลอดภัยสากล</text>
+    </g>
+  </g>
+
+</svg>

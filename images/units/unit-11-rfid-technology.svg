@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Technical Grid Background -->
+  <rect width="1280" height="720" fill="url(#bgGrad)"/>
+  <g stroke="#334155" stroke-width="1" stroke-dasharray="4 8" opacity="0.3">
+    <line x1="0" y1="120" x2="1280" y2="120"/>
+    <line x1="0" y1="640" x2="1280" y2="640"/>
+    <line x1="330" y1="0" x2="330" y2="720"/>
+    <line x1="640" y1="0" x2="640" y2="720"/>
+    <line x1="950" y1="0" x2="950" y2="720"/>
+  </g>
+
+
+  <rect x="50" y="24" width="1180" height="74" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
+  <text x="80" y="52" font-family="'Stack Sans Notch', sans-serif" font-size="17" font-weight="700" fill="#38BDF8">
+    RFID ELECTROMAGNETIC COUPLING &amp; BACKSCATTER
+  </text>
+  <text x="80" y="78" font-family="'Mitr', sans-serif" font-size="13" font-weight="400" fill="#94A3B8">
+    หลักการทำงานของคลื่นวิทยุระบุตัวตนและระบบส่งสัญญาณสะท้อนกลับ
+  </text>
+
+  <!-- STEP 1: RF Field Emission -->
+  <g transform="translate(50, 115)" filter="url(#cardShadow)">
+    <rect width="270" height="565" rx="12" fill="#131E36" stroke="#2563EB" stroke-width="1.8"/>
+    <rect width="270" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#2563EB"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 01</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">RF Emission</text>
+    <g transform="translate(14, 58)">
+      <rect width="242" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Reader antenna waves -->
+      <g transform="translate(30, 40)">
+        <rect width="60" height="70" rx="4" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/>
+        <text x="30" y="38" font-family="'Stack Sans Notch', sans-serif" font-size="10.5" font-weight="700" fill="#38BDF8" text-anchor="middle">READER</text>
+      </g>
+      <path d="M 110 50 A 30 30 0 0 1 110 100" fill="none" stroke="#60A5FA" stroke-width="2"/>
+      <path d="M 125 40 A 45 45 0 0 1 125 110" fill="none" stroke="#60A5FA" stroke-width="2"/>
+      <path d="M 140 30 A 60 60 0 0 1 140 120" fill="none" stroke="#60A5FA" stroke-width="2"/>
+      <text x="175" y="135" font-family="'Stack Sans Notch', sans-serif" font-size="11" fill="#93C5FD">13.56 MHz</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#38BDF8">การแพร่กระจายคลื่นพาหะ:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• เสาอากาศ Reader ปล่อยคลื่นวิทยุ</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ย่านความถี่ HF (13.56 MHz) หรือ UHF</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• สร้างสนามแม่เหล็กเหนี่ยวนำรอบตัว</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• กระจายพลังงานสู่สิ่งแวดล้อมใกล้เคียง</text>
+      <rect x="0" y="270" width="238" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="119" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#93C5FD" text-anchor="middle">คลื่นวิทยุต่อเนื่อง RF Carrier</text>
+    </g>
+  </g>
+
+  <!-- Arrow 1->2 -->
+  <g transform="translate(328, 380)"><circle cx="10" cy="0" r="13" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/><path d="M 6 -5 L 14 0 L 6 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/></g>
+
+  <!-- STEP 2: Inductive Power Harvesting -->
+  <g transform="translate(350, 115)" filter="url(#cardShadow)">
+    <rect width="270" height="565" rx="12" fill="#131E36" stroke="#0284C7" stroke-width="1.8"/>
+    <rect width="270" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#0284C7"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 02</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Energy Harvest</text>
+    <g transform="translate(14, 58)">
+      <rect width="242" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Coil induction -->
+      <ellipse cx="121" cy="70" rx="60" ry="35" fill="none" stroke="#0284C7" stroke-width="2"/>
+      <ellipse cx="121" cy="70" rx="45" ry="25" fill="none" stroke="#38BDF8" stroke-width="2"/>
+      <rect x="105" y="60" width="32" height="20" rx="3" fill="#1E293B" stroke="#10B981"/>
+      <text x="121" y="74" font-family="'Stack Sans Notch', sans-serif" font-size="9" fill="#A7F3D0" text-anchor="middle">IC</text>
+      <text x="121" y="130" font-family="'Mitr', sans-serif" font-size="11" fill="#38BDF8" text-anchor="middle">เหนี่ยวนำกำเนิดกระแสไฟเลี้ยงชิป</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#38BDF8">การเหนี่ยวนำพลังงานในแท็ก:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ขดลวดใน Passive Tag รับสนามแม่เหล็ก</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• เกิดแรงเคลื่อนไฟฟ้าเหนี่ยวนำ (Faraday)</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ไม่จำเป็นต้องใช้แบตเตอรี่ในแท็ก</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ปลุกไมโครชิปให้เริ่มทำงานทันที</text>
+      <rect x="0" y="270" width="238" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="119" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#38BDF8" text-anchor="middle">ไมโครชิปตื่นพร้อมส่งข้อมูล</text>
+    </g>
+  </g>
+
+  <!-- Arrow 2->3 -->
+  <g transform="translate(628, 380)"><circle cx="10" cy="0" r="13" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/><path d="M 6 -5 L 14 0 L 6 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/></g>
+
+  <!-- STEP 3: Modulated Backscatter -->
+  <g transform="translate(650, 115)" filter="url(#cardShadow)">
+    <rect width="270" height="565" rx="12" fill="#131E36" stroke="#10B981" stroke-width="1.8"/>
+    <rect width="270" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#10B981"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 03</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Backscatter</text>
+    <g transform="translate(14, 58)">
+      <rect width="242" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Modulated return wave -->
+      <g transform="translate(25, 30)">
+        <rect width="192" height="45" rx="4" fill="#1E293B" stroke="#10B981"/>
+        <text x="96" y="26" font-family="'Stack Sans Notch', sans-serif" font-size="11.5" font-weight="700" fill="#34D399" text-anchor="middle">TAG UID: E280 1160 2000</text>
+        <text x="96" y="40" font-family="'Stack Sans Notch', sans-serif" font-size="10" fill="#94A3B8" text-anchor="middle">EPC 96-BIT IDENTIFIER</text>
+      </g>
+      <text x="121" y="115" font-family="'Stack Sans Notch', sans-serif" font-size="11" fill="#A7F3D0" text-anchor="middle">LOAD IMPEDANCE MODULATION</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#34D399">การสะท้อนคลื่นพาหะกลับ:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ชิปสลับค่าอิมพีแดนซ์ (Impedance)</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• สะท้อนคลื่นกลับในจังหวะ 0 และ 1</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• เรียกว่ากลไก Backscatter Coupling</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ส่งรหัสประจำแท็ก UID ไม่ซ้ำกัน</text>
+      <rect x="0" y="270" width="238" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="119" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#A7F3D0" text-anchor="middle">ส่งข้อมูลกลับแบบไร้สายทันที</text>
+    </g>
+  </g>
+
+  <!-- Arrow 3->4 -->
+  <g transform="translate(928, 380)"><circle cx="10" cy="0" r="13" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/><path d="M 6 -5 L 14 0 L 6 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/></g>
+
+  <!-- STEP 4: Reader Demodulation &amp; DB -->
+  <g transform="translate(950, 115)" filter="url(#cardShadow)">
+    <rect width="280" height="565" rx="12" fill="#131E36" stroke="#F59E0B" stroke-width="1.8"/>
+    <rect width="280" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#F59E0B"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 04</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Demodulation</text>
+    <g transform="translate(14, 58)">
+      <rect width="252" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Database update -->
+      <rect x="25" y="25" width="202" height="50" rx="4" fill="#1E293B" stroke="#F59E0B" stroke-width="1.5"/>
+      <text x="126" y="47" font-family="'Stack Sans Notch', sans-serif" font-size="12" font-weight="700" fill="#FBBF24" text-anchor="middle">ERP / INVENTORY LOG</text>
+      <text x="126" y="63" font-family="'Stack Sans Notch', sans-serif" font-size="10.5" fill="#34D399" text-anchor="middle">STUDENT CHECK-IN: PASS</text>
+      <text x="126" y="115" font-family="'Mitr', sans-serif" font-size="11" fill="#E2E8F0" text-anchor="middle">บันทึกเวลาสแกนบัตรนักเรียน</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#FBBF24">การถอดรหัสและบันทึกผล:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• หัวอ่านกรองสัญญาณคลื่นพาหะออก</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ถอดรหัสบิตข้อมูล UID ออกมา</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ส่งรหัสผ่านพอร์ต Wiegand / USB</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ระบบตัดยอดสต๊อกหรือบันทึกเวลาเข้าแถว</text>
+      <rect x="0" y="270" width="248" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="124" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#FDE68A" text-anchor="middle">สแกนรวดเร็วโดยไม่ต้องสัมผัส</text>
+    </g>
+  </g>
+
+</svg>

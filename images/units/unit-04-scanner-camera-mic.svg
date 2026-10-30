@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Technical Grid Background -->
+  <rect width="1280" height="720" fill="url(#bgGrad)"/>
+  <g stroke="#334155" stroke-width="1" stroke-dasharray="4 8" opacity="0.3">
+    <line x1="0" y1="120" x2="1280" y2="120"/>
+    <line x1="0" y1="640" x2="1280" y2="640"/>
+    <line x1="330" y1="0" x2="330" y2="720"/>
+    <line x1="640" y1="0" x2="640" y2="720"/>
+    <line x1="950" y1="0" x2="950" y2="720"/>
+  </g>
+
+
+  <rect x="50" y="24" width="1180" height="74" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
+  <text x="80" y="52" font-family="'Stack Sans Notch', sans-serif" font-size="17" font-weight="700" fill="#38BDF8">
+    OPTICAL &amp; ACOUSTIC ANALOG-TO-DIGITAL CONVERSION
+  </text>
+  <text x="80" y="78" font-family="'Mitr', sans-serif" font-size="13" font-weight="400" fill="#94A3B8">
+    ขั้นตอนการเปลี่ยนคลื่นแสงและคลื่นเสียงเป็นข้อมูลดิจิทัลความละเอียดสูง
+  </text>
+
+  <!-- STEP 1: Physical Wave Sensing -->
+  <g transform="translate(50, 115)" filter="url(#cardShadow)">
+    <rect width="270" height="565" rx="12" fill="#131E36" stroke="#2563EB" stroke-width="1.8"/>
+    <rect width="270" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#2563EB"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 01</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Wave Sensing</text>
+    <g transform="translate(14, 58)">
+      <rect width="242" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Analog wave line -->
+      <path d="M 20 75 Q 50 30 80 75 T 140 75 T 200 75" fill="none" stroke="#38BDF8" stroke-width="3"/>
+      <text x="121" y="115" font-family="'Stack Sans Notch', sans-serif" font-size="11" font-weight="700" fill="#60A5FA" text-anchor="middle">CONTINUOUS ANALOG WAVE</text>
+      <text x="121" y="132" font-family="'Mitr', sans-serif" font-size="10.5" fill="#94A3B8" text-anchor="middle">คลื่นเสียง / โฟตอนแสงสะท้อน</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#38BDF8">การรับสัญญาณคลื่นแอนะล็อก:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ไดอะแฟรมไมค์สั่นตามแรงดันเสียง</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• อาร์เรย์ CCD รับโฟตอนแสงจากเอกสาร</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ฟิลเตอร์สี Bayer แยกคลื่น RGB</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• สัญญาณมีความต่อเนื่องตามเวลา</text>
+      <rect x="0" y="270" width="238" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="119" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#93C5FD" text-anchor="middle">สภาพ: สัญญาณแอนะล็อกดิบ</text>
+    </g>
+  </g>
+
+  <!-- Arrow 1->2 -->
+  <g transform="translate(328, 380)"><circle cx="10" cy="0" r="13" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/><path d="M 6 -5 L 14 0 L 6 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/></g>
+
+  <!-- STEP 2: Pre-amp &amp; Anti-aliasing -->
+  <g transform="translate(350, 115)" filter="url(#cardShadow)">
+    <rect width="270" height="565" rx="12" fill="#131E36" stroke="#0284C7" stroke-width="1.8"/>
+    <rect width="270" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#0284C7"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 02</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Signal Filter</text>
+    <g transform="translate(14, 58)">
+      <rect width="242" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Low pass filter schematic -->
+      <rect x="30" y="30" width="182" height="50" rx="4" fill="#1E293B" stroke="#0284C7" stroke-width="1.5"/>
+      <text x="121" y="52" font-family="'Stack Sans Notch', sans-serif" font-size="11.5" font-weight="700" fill="#38BDF8" text-anchor="middle">LOW-PASS NYQUIST FILTER</text>
+      <text x="121" y="68" font-family="'Stack Sans Notch', sans-serif" font-size="10.5" fill="#94A3B8" text-anchor="middle">CUT-OFF: Fs / 2</text>
+      <text x="121" y="115" font-family="'Mitr', sans-serif" font-size="11" fill="#E2E8F0" text-anchor="middle">ขยายสัญญาณ &amp; ตัดสัญญาณรบกวน</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#38BDF8">การปรับสภาพสัญญาณ:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• Pre-amplifier ขยายแรงดันไฟ</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• Anti-Aliasing Filter ตัดคลื่นเกิน</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ป้องกันการบิดเบือนตาม Nyquist</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• รักษาระดับแรงดันให้อยู่ในสเกล</text>
+      <rect x="0" y="270" width="238" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="119" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#38BDF8" text-anchor="middle">SNR สะอาด ปราศจาก Noise</text>
+    </g>
+  </g>
+
+  <!-- Arrow 2->3 -->
+  <g transform="translate(628, 380)"><circle cx="10" cy="0" r="13" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/><path d="M 6 -5 L 14 0 L 6 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/></g>
+
+  <!-- STEP 3: Sampling &amp; Quantization (ADC) -->
+  <g transform="translate(650, 115)" filter="url(#cardShadow)">
+    <rect width="270" height="565" rx="12" fill="#131E36" stroke="#10B981" stroke-width="1.8"/>
+    <rect width="270" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#10B981"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 03</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">ADC Sampling</text>
+    <g transform="translate(14, 58)">
+      <rect width="242" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Sample bars -->
+      <rect x="35" y="60" width="10" height="60" fill="#10B981"/>
+      <rect x="55" y="40" width="10" height="80" fill="#10B981"/>
+      <rect x="75" y="30" width="10" height="90" fill="#10B981"/>
+      <rect x="95" y="45" width="10" height="75" fill="#10B981"/>
+      <rect x="115" y="70" width="10" height="50" fill="#10B981"/>
+      <rect x="135" y="90" width="10" height="30" fill="#10B981"/>
+      <rect x="155" y="80" width="10" height="40" fill="#10B981"/>
+      <rect x="175" y="50" width="10" height="70" fill="#10B981"/>
+      <text x="121" y="138" font-family="'Stack Sans Notch', sans-serif" font-size="11" font-weight="700" fill="#34D399" text-anchor="middle">44.1 kHz / 16-BIT AUDIO</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#34D399">การสุ่มตัวอย่างและวัดระดับ:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• Sampling: สุ่มตัวอย่างตามความถี่</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• 44.1 kHz สำหรับเสียง Audio CD</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• 1200 DPI สำหรับความละเอียดสแกน</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• Quantization: กำหนดค่า 16/24-bit</text>
+      <rect x="0" y="270" width="238" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="119" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#A7F3D0" text-anchor="middle">65,536 ระดับขั้นข้อมูล (16-bit)</text>
+    </g>
+  </g>
+
+  <!-- Arrow 3->4 -->
+  <g transform="translate(928, 380)"><circle cx="10" cy="0" r="13" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/><path d="M 6 -5 L 14 0 L 6 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/></g>
+
+  <!-- STEP 4: Digital Bitstream Output -->
+  <g transform="translate(950, 115)" filter="url(#cardShadow)">
+    <rect width="280" height="565" rx="12" fill="#131E36" stroke="#F59E0B" stroke-width="1.8"/>
+    <rect width="280" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#F59E0B"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 04</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Digital Stream</text>
+    <g transform="translate(14, 58)">
+      <rect width="252" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Stream packets -->
+      <rect x="30" y="30" width="192" height="36" rx="4" fill="#1E293B" stroke="#F59E0B" stroke-width="1.5"/>
+      <text x="126" y="53" font-family="'Stack Sans Notch', sans-serif" font-size="11.5" font-weight="700" fill="#FBBF24" text-anchor="middle">PCM AUDIO BITSTREAM</text>
+      <rect x="30" y="78" width="192" height="36" rx="4" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/>
+      <text x="126" y="101" font-family="'Stack Sans Notch', sans-serif" font-size="11.5" font-weight="700" fill="#38BDF8" text-anchor="middle">RGB 24-BIT BITMAP RASTER</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#FBBF24">ไฟล์ดิจิทัลพร้อมบันทึก:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ข้อมูลถูกจัดเรียงเป็นบิตสตรีม</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• เสียงบันทึกเป็น WAV / MP3 / FLAC</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ภาพสแกนบันทึกเป็น TIFF / PNG</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• นำเข้าหน่วยความจำเพื่อประมวลผล</text>
+      <rect x="0" y="270" width="248" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="124" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#FDE68A" text-anchor="middle">พร้อมใช้ในระบบซอฟต์แวร์</text>
+    </g>
+  </g>
+
+</svg>

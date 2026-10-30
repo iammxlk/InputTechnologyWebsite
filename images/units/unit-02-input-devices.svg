@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Technical Grid Background -->
+  <rect width="1280" height="720" fill="url(#bgGrad)"/>
+  <g stroke="#334155" stroke-width="1" stroke-dasharray="4 8" opacity="0.3">
+    <line x1="0" y1="120" x2="1280" y2="120"/>
+    <line x1="0" y1="640" x2="1280" y2="640"/>
+    <line x1="330" y1="0" x2="330" y2="720"/>
+    <line x1="640" y1="0" x2="640" y2="720"/>
+    <line x1="950" y1="0" x2="950" y2="720"/>
+  </g>
+
+
+  <!-- Header Banner -->
+  <rect x="50" y="24" width="1180" height="74" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
+  <text x="80" y="52" font-family="'Stack Sans Notch', sans-serif" font-size="17" font-weight="700" fill="#38BDF8">
+    COMPUTER IPO ARCHITECTURE &amp; INPUT DATA PIPELINE
+  </text>
+  <text x="80" y="78" font-family="'Mitr', sans-serif" font-size="13" font-weight="400" fill="#94A3B8">
+    สถาปัตยกรรมวงจรการทำงานฮาร์ดแวร์นำเข้าข้อมูลสู่หน่วยประมวลผลกลาง
+  </text>
+
+  <!-- STEP 1 -->
+  <g transform="translate(50, 115)" filter="url(#cardShadow)">
+    <rect width="270" height="565" rx="12" fill="#131E36" stroke="#2563EB" stroke-width="1.8"/>
+    <rect width="270" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#2563EB"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 01</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Physical Input</text>
+    <g transform="translate(14, 58)"><rect width="242" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+  <g transform="translate(18, 20)">
+    <rect x="0" y="0" width="200" height="32" rx="4" fill="#1E293B" stroke="#38BDF8" stroke-width="1"/>
+    <text x="100" y="21" font-family="'Stack Sans Notch', sans-serif" font-size="12" fill="#E2E8F0" text-anchor="middle">KEYBOARD MATRIX (USB HID)</text>
+    <rect x="0" y="40" width="200" height="32" rx="4" fill="#1E293B" stroke="#38BDF8" stroke-width="1"/>
+    <text x="100" y="61" font-family="'Stack Sans Notch', sans-serif" font-size="12" fill="#E2E8F0" text-anchor="middle">OPTICAL CMOS SENSOR</text>
+    <rect x="0" y="80" width="200" height="32" rx="4" fill="#1E293B" stroke="#38BDF8" stroke-width="1"/>
+    <text x="100" y="101" font-family="'Stack Sans Notch', sans-serif" font-size="12" fill="#E2E8F0" text-anchor="middle">CCD DOCUMENT SCANNER</text>
+  </g></g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#38BDF8">อุปกรณ์ฮาร์ดแวร์ต้นทาง:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• แป้นพิมพ์รับการกดของมนุษย์</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• เมาส์ออปติคอลตรวจจับการขยับ</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• สแกนเนอร์รับคลื่นแสงสะท้อน</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ไมโครโฟนรับแรงดันคลื่นเสียง</text>
+      <rect x="0" y="270" width="238" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="119" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#93C5FD" text-anchor="middle">สถานะ: แรงดันทางกายภาพ</text>
+    </g>
+  </g>
+
+  <!-- Arrow 1->2 -->
+  <g transform="translate(328, 380)"><circle cx="10" cy="0" r="13" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/><path d="M 6 -5 L 14 0 L 6 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/></g>
+
+  <!-- STEP 2 -->
+  <g transform="translate(350, 115)" filter="url(#cardShadow)">
+    <rect width="270" height="565" rx="12" fill="#131E36" stroke="#0284C7" stroke-width="1.8"/>
+    <rect width="270" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#0284C7"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 02</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">ADC &amp; Conversion</text>
+    <g transform="translate(14, 58)"><rect width="242" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+  <g transform="translate(18, 25)">
+    <rect x="20" y="10" width="160" height="70" rx="8" fill="#1E293B" stroke="#0284C7" stroke-width="1.5"/>
+    <text x="100" y="38" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#38BDF8" text-anchor="middle">ADC &amp; CONTROLLER</text>
+    <text x="100" y="58" font-family="'Mitr', sans-serif" font-size="11" fill="#94A3B8" text-anchor="middle">Analog-to-Digital Converter</text>
+    <path d="M 0 45 L 20 45" stroke="#38BDF8" stroke-width="2"/>
+    <path d="M 180 45 L 200 45" stroke="#38BDF8" stroke-width="2"/>
+    <text x="100" y="105" font-family="'Stack Sans Notch', sans-serif" font-size="11" fill="#CBD5E1" text-anchor="middle">USB HID PACKET 8-BYTE</text>
+  </g></g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#38BDF8">การแปลงสัญญาณ:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• แปลง Analog เป็น Digital (ADC)</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• วงจร Debounce กรองการสะท้อน</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• เข้ารหัส USB HID Report 8-byte</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ส่งผ่าน USB Host Controller</text>
+      <rect x="0" y="270" width="238" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="119" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#38BDF8" text-anchor="middle">สถานะ: ไบนารีบิตสตรีม 0/1</text>
+    </g>
+  </g>
+
+  <!-- Arrow 2->3 -->
+  <g transform="translate(628, 380)"><circle cx="10" cy="0" r="13" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/><path d="M 6 -5 L 14 0 L 6 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/></g>
+
+  <!-- STEP 3 -->
+  <g transform="translate(650, 115)" filter="url(#cardShadow)">
+    <rect width="270" height="565" rx="12" fill="#131E36" stroke="#10B981" stroke-width="1.8"/>
+    <rect width="270" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#10B981"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 03</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">CPU &amp; Memory</text>
+    <g transform="translate(14, 58)"><rect width="242" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+  <g transform="translate(18, 20)">
+    <rect x="30" y="10" width="140" height="60" rx="6" fill="#1E293B" stroke="#10B981" stroke-width="1.5"/>
+    <text x="100" y="36" font-family="'Stack Sans Notch', sans-serif" font-size="14" font-weight="700" fill="#34D399" text-anchor="middle">CPU &amp; CACHE</text>
+    <text x="100" y="54" font-family="'Stack Sans Notch', sans-serif" font-size="11" fill="#94A3B8" text-anchor="middle">ALU &amp; CONTROL UNIT</text>
+    <rect x="20" y="85" width="160" height="30" rx="4" fill="#064E3B" stroke="#10B981" stroke-width="1"/>
+    <text x="100" y="105" font-family="'Stack Sans Notch', sans-serif" font-size="11.5" fill="#A7F3D0" text-anchor="middle">DDR5 RAM / BUFFER</text>
+  </g></g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#34D399">การประมวลผลหลัก:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• Interrupt Request (IRQ) แจ้งเตือน</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• โหลดบิตเข้า Ring Buffer ใน RAM</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ALU ทำการคำนวณเปรียบเทียบ</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• OS แปลงสแกนโค้ดเป็นอักขระ</text>
+      <rect x="0" y="270" width="238" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="119" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#A7F3D0" text-anchor="middle">สถานะ: สารสนเทศในหน่วยความจำ</text>
+    </g>
+  </g>
+
+  <!-- Arrow 3->4 -->
+  <g transform="translate(928, 380)"><circle cx="10" cy="0" r="13" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/><path d="M 6 -5 L 14 0 L 6 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/></g>
+
+  <!-- STEP 4 -->
+  <g transform="translate(950, 115)" filter="url(#cardShadow)">
+    <rect width="280" height="565" rx="12" fill="#131E36" stroke="#F59E0B" stroke-width="1.8"/>
+    <rect width="280" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#F59E0B"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 04</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Output &amp; Storage</text>
+    <g transform="translate(14, 58)"><rect width="252" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+  <g transform="translate(18, 25)">
+    <rect x="25" y="10" width="150" height="45" rx="6" fill="#1E293B" stroke="#F59E0B" stroke-width="1.5"/>
+    <text x="100" y="38" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FBBF24" text-anchor="middle">NVMe PCIe SSD</text>
+    <rect x="25" y="65" width="150" height="45" rx="6" fill="#1E293B" stroke="#6366F1" stroke-width="1.5"/>
+    <text x="100" y="93" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#818CF8" text-anchor="middle">DISPLAY MONITOR</text>
+  </g></g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#FBBF24">ปลายทางของข้อมูล:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• GPU เรนเดอร์ตัวอักษรลงจอภาพ</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• บันทึกไฟล์ลง NVMe SSD</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ส่งผ่านเครือข่ายสู่คลาวด์</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ปิดวงจร IPO อย่างสมบูรณ์</text>
+      <rect x="0" y="270" width="248" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="124" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#FDE68A" text-anchor="middle">สถานะ: ผลลัพธ์สุดท้ายพร้อมใช้</text>
+    </g>
+  </g>
+
+</svg>

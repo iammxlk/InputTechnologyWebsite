@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Technical Grid Background -->
+  <rect width="1280" height="720" fill="url(#bgGrad)"/>
+  <g stroke="#334155" stroke-width="1" stroke-dasharray="4 8" opacity="0.3">
+    <line x1="0" y1="120" x2="1280" y2="120"/>
+    <line x1="0" y1="640" x2="1280" y2="640"/>
+    <line x1="330" y1="0" x2="330" y2="720"/>
+    <line x1="640" y1="0" x2="640" y2="720"/>
+    <line x1="950" y1="0" x2="950" y2="720"/>
+  </g>
+
+
+  <rect x="50" y="24" width="1180" height="74" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
+  <text x="80" y="52" font-family="'Stack Sans Notch', sans-serif" font-size="17" font-weight="700" fill="#38BDF8">
+    MULTI-GATE DATA VALIDATION &amp; INTEGRITY PIPELINE
+  </text>
+  <text x="80" y="78" font-family="'Mitr', sans-serif" font-size="13" font-weight="400" fill="#94A3B8">
+    ระบบคัดกรองและตรวจสอบความถูกต้องของข้อมูล 4 ประตูก่อนบันทึกลงระบบ
+  </text>
+
+  <!-- GATE 1: Presence Check -->
+  <g transform="translate(50, 115)" filter="url(#cardShadow)">
+    <rect width="270" height="565" rx="12" fill="#131E36" stroke="#2563EB" stroke-width="1.8"/>
+    <rect width="270" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#2563EB"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">GATE 01</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Presence Check</text>
+    <g transform="translate(14, 58)">
+      <rect width="242" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Form Input Check -->
+      <rect x="25" y="25" width="192" height="40" rx="4" fill="#1E293B" stroke="#38BDF8"/>
+      <text x="35" y="49" font-family="'Stack Sans Notch', sans-serif" font-size="12" fill="#E2E8F0">student_id: 6720101001</text>
+      <circle cx="200" cy="45" r="7" fill="#10B981"/>
+      <rect x="25" y="75" width="192" height="40" rx="4" fill="#1E293B" stroke="#EF4444"/>
+      <text x="35" y="99" font-family="'Stack Sans Notch', sans-serif" font-size="12" fill="#EF4444">password: [NULL/EMPTY]</text>
+      <circle cx="200" cy="95" r="7" fill="#EF4444"/>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#38BDF8">การตรวจค่าว่าง (Null Check):</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ตรวจสอบช่องบังคับกรอก (Required)</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• กรองช่องว่างและสเปซบาร์เปล่า</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ตัดอักขระ Null Byte ที่แฝงมา</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ไม่อนุญาตให้ส่งฟอร์มหากว่างเปล่า</text>
+      <rect x="0" y="270" width="238" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="119" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#93C5FD" text-anchor="middle">สถานะ: ครบทุกฟิลด์สำคัญ</text>
+    </g>
+  </g>
+
+  <!-- Arrow 1->2 -->
+  <g transform="translate(328, 380)"><circle cx="10" cy="0" r="13" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/><path d="M 6 -5 L 14 0 L 6 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/></g>
+
+  <!-- GATE 2: Type &amp; Format Check -->
+  <g transform="translate(350, 115)" filter="url(#cardShadow)">
+    <rect width="270" height="565" rx="12" fill="#131E36" stroke="#0284C7" stroke-width="1.8"/>
+    <rect width="270" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#0284C7"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">GATE 02</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Type &amp; Format</text>
+    <g transform="translate(14, 58)">
+      <rect width="242" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Regex verification -->
+      <rect x="20" y="25" width="202" height="45" rx="4" fill="#1E293B" stroke="#0284C7"/>
+      <text x="121" y="46" font-family="'Stack Sans Notch', sans-serif" font-size="11" font-weight="700" fill="#38BDF8" text-anchor="middle">REGEX: ^[0-9]{10}$</text>
+      <text x="121" y="62" font-family="'Stack Sans Notch', sans-serif" font-size="10.5" fill="#34D399" text-anchor="middle">FORMAT MATCHED (10 DIGITS)</text>
+      <rect x="20" y="80" width="202" height="45" rx="4" fill="#1E293B" stroke="#334155"/>
+      <text x="121" y="100" font-family="'Stack Sans Notch', sans-serif" font-size="11" fill="#CBD5E1" text-anchor="middle">TYPE: UNSIGNED INTEGER</text>
+      <text x="121" y="116" font-family="'Stack Sans Notch', sans-serif" font-size="10" fill="#94A3B8" text-anchor="middle">ห้ามมีตัวอักษรหรืออักขระพิเศษ</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#38BDF8">การตรวจชนิดและรูปแบบ:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ตรวจสอบชนิดข้อมูล (Data Type)</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ตรวจ Regular Expression (Regex)</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• รหัสนักเรียนต้องเป็นตัวเลข 10 หลัก</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• อีเมลต้องมี @ และโดเมนถูกต้อง</text>
+      <rect x="0" y="270" width="238" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="119" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#38BDF8" text-anchor="middle">สถานะ: โครงสร้างข้อมูลถูกต้อง</text>
+    </g>
+  </g>
+
+  <!-- Arrow 2->3 -->
+  <g transform="translate(628, 380)"><circle cx="10" cy="0" r="13" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/><path d="M 6 -5 L 14 0 L 6 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/></g>
+
+  <!-- GATE 3: Range &amp; Length Check -->
+  <g transform="translate(650, 115)" filter="url(#cardShadow)">
+    <rect width="270" height="565" rx="12" fill="#131E36" stroke="#10B981" stroke-width="1.8"/>
+    <rect width="270" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#10B981"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">GATE 03</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Range &amp; Limit</text>
+    <g transform="translate(14, 58)">
+      <rect width="242" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Range bar -->
+      <g transform="translate(20, 35)">
+        <rect x="0" y="20" width="202" height="16" rx="8" fill="#1E293B"/>
+        <rect x="0" y="20" width="160" height="16" rx="8" fill="#10B981"/>
+        <circle cx="160" cy="28" r="10" fill="#FFFFFF" stroke="#10B981" stroke-width="3"/>
+        <text x="0" y="10" font-family="'Stack Sans Notch', sans-serif" font-size="11" fill="#94A3B8">0</text>
+        <text x="160" y="52" font-family="'Stack Sans Notch', sans-serif" font-size="12" font-weight="700" fill="#34D399" text-anchor="middle">SCORE: 80</text>
+        <text x="202" y="10" font-family="'Stack Sans Notch', sans-serif" font-size="11" fill="#94A3B8" text-anchor="end">100</text>
+      </g>
+      <text x="121" y="125" font-family="'Stack Sans Notch', sans-serif" font-size="11" fill="#CBD5E1" text-anchor="middle">0 &lt;= SCORE &lt;= 100 VALID</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#34D399">การตรวจช่วงค่าและขอบเขต:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ตรวจสอบความสมเหตุสมผลของตัวเลข</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• คะแนนสอบต้องอยู่ในช่วง 0 ถึง 100</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ตรวจสอบความยาวรหัสผ่าน (4+ ตัว)</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ป้องกันค่าลบและตัวเลขผิดปกติ</text>
+      <rect x="0" y="270" width="238" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="119" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#A7F3D0" text-anchor="middle">สถานะ: อยู่ในขอบเขตที่กำหนด</text>
+    </g>
+  </g>
+
+  <!-- Arrow 3->4 -->
+  <g transform="translate(928, 380)"><circle cx="10" cy="0" r="13" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/><path d="M 6 -5 L 14 0 L 6 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/></g>
+
+  <!-- GATE 4: Checksum &amp; Consistency -->
+  <g transform="translate(950, 115)" filter="url(#cardShadow)">
+    <rect width="280" height="565" rx="12" fill="#131E36" stroke="#F59E0B" stroke-width="1.8"/>
+    <rect width="280" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#F59E0B"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">GATE 04</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Checksum &amp; DB</text>
+    <g transform="translate(14, 58)">
+      <rect width="252" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Algorithm icon -->
+      <rect x="25" y="25" width="202" height="45" rx="4" fill="#1E293B" stroke="#F59E0B" stroke-width="1.5"/>
+      <text x="126" y="47" font-family="'Stack Sans Notch', sans-serif" font-size="12" font-weight="700" fill="#FBBF24" text-anchor="middle">MODULO-11 ALGORITHM</text>
+      <text x="126" y="62" font-family="'Stack Sans Notch', sans-serif" font-size="10.5" fill="#34D399" text-anchor="middle">LUHN CHECKSUM PASS</text>
+      <rect x="25" y="80" width="202" height="35" rx="4" fill="#064E3B" stroke="#10B981"/>
+      <text x="126" y="103" font-family="'Stack Sans Notch', sans-serif" font-size="11" font-weight="600" fill="#A7F3D0" text-anchor="middle">SQL INSERT COMMIT SUCCESS</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#FBBF24">การคำนวณและบันทึกฐานข้อมูล:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ตรวจเลขบัตรประชาชนด้วย Modulo-11</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ตรวจสอบความสอดคล้องข้ามตาราง</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• เช็ก Foreign Key ในระบบฐานข้อมูล</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• บันทึกข้อมูลลงฐานข้อมูลโดยไม่มี Error</text>
+      <rect x="0" y="270" width="248" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="124" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#FDE68A" text-anchor="middle">ข้อมูลสะอาด 100% พร้อมใช้งาน</text>
+    </g>
+  </g>
+
+</svg>

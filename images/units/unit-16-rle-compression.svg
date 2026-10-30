@@ -1,156 +1,152 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="100%" height="100%">
   <defs>
-    <linearGradient id="bgGrad16" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0B132B"/>
-      <stop offset="50%" stop-color="#0F172A"/>
-      <stop offset="100%" stop-color="#080E1E"/>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
     </linearGradient>
-    <linearGradient id="headerGrad16" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#0284C7"/>
-      <stop offset="100%" stop-color="#10B981"/>
-    </linearGradient>
-    <filter id="shadow16" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.55"/>
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.4"/>
     </filter>
   </defs>
 
-  <style>
-    .mono { font-family: 'Stack Sans Notch', 'Segoe UI Mono', monospace; font-variant-numeric: tabular-nums; }
-    .thai { font-family: 'Mitr', 'Segoe UI', system-ui, sans-serif; }
-  </style>
-
-  <!-- Background -->
-  <rect width="1280" height="720" fill="url(#bgGrad16)"/>
-
-  <!-- Top Title Badge -->
-  <g transform="translate(64, 40)">
-    <rect width="470" height="34" rx="6" fill="#1E293B" stroke="#334155"/>
-    <circle cx="18" cy="17" r="5" fill="#38BDF8"/>
-    <text x="32" y="22" fill="#38BDF8" font-size="13" font-weight="700" class="mono">LOSSLESS RUN-LENGTH ENCODING (RLE) PIPELINE</text>
-    <text x="0" y="66" fill="#F8FAFC" font-size="22" font-weight="600" class="thai">หลักการบีบอัดข้อมูลแบบไม่สูญเสียรายละเอียด (Run-Length Encoding &amp; Compression)</text>
+  <!-- Technical Grid Background -->
+  <rect width="1280" height="720" fill="url(#bgGrad)"/>
+  <g stroke="#334155" stroke-width="1" stroke-dasharray="4 8" opacity="0.3">
+    <line x1="0" y1="120" x2="1280" y2="120"/>
+    <line x1="0" y1="640" x2="1280" y2="640"/>
+    <line x1="330" y1="0" x2="330" y2="720"/>
+    <line x1="640" y1="0" x2="640" y2="720"/>
+    <line x1="950" y1="0" x2="950" y2="720"/>
   </g>
 
-  <!-- ==================== STAGE 1: RAW UNCOMPRESSED DATA STREAM ==================== -->
-  <g transform="translate(64, 140)" filter="url(#shadow16)">
-    <rect width="1152" height="150" rx="12" fill="#141C2E" stroke="#334155" stroke-width="1.5"/>
-    <path d="M 0 12 Q 0 0 12 0 L 1140 0 Q 1152 0 1152 12 L 1152 42 L 0 42 Z" fill="#1E293B"/>
-    <text x="20" y="26" fill="#94A3B8" font-size="14" font-weight="700" class="mono">1. ORIGINAL UNCOMPRESSED STREAM: 24 BYTES (RAW BITMAP / MONOCHROME SCAN)</text>
-    <rect x="990" y="10" width="144" height="22" rx="4" fill="#334155"/>
-    <text x="1004" y="25" fill="#CBD5E1" font-size="11" font-weight="700" class="mono">FILE SIZE: 24 BYTES</text>
 
-    <!-- 24 Sequential Data Blocks (Repetitive Runs) -->
-    <g transform="translate(20, 58)" class="mono" font-size="13" font-weight="800">
-      <!-- Run 1: 8 White Blocks -->
-      <g transform="translate(0, 0)">
-        <rect x="0" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="20" y="26" fill="#0F172A" text-anchor="middle">W</text>
-        <rect x="44" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="64" y="26" fill="#0F172A" text-anchor="middle">W</text>
-        <rect x="88" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="108" y="26" fill="#0F172A" text-anchor="middle">W</text>
-        <rect x="132" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="152" y="26" fill="#0F172A" text-anchor="middle">W</text>
-        <rect x="176" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="196" y="26" fill="#0F172A" text-anchor="middle">W</text>
-        <rect x="220" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="240" y="26" fill="#0F172A" text-anchor="middle">W</text>
-        <rect x="264" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="284" y="26" fill="#0F172A" text-anchor="middle">W</text>
-        <rect x="308" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="328" y="26" fill="#0F172A" text-anchor="middle">W</text>
-        <!-- Bracket -->
-        <path d="M 0 50 L 174 60 L 348 50" stroke="#38BDF8" stroke-width="1.8" fill="none"/>
-        <text x="174" y="76" fill="#38BDF8" font-size="11" text-anchor="middle">8 Consecutive 'W' (White)</text>
-      </g>
+  <rect x="50" y="24" width="1180" height="74" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
+  <text x="80" y="52" font-family="'Stack Sans Notch', sans-serif" font-size="17" font-weight="700" fill="#38BDF8">
+    RUN-LENGTH ENCODING (RLE) LOSSLESS COMPRESSION
+  </text>
+  <text x="80" y="78" font-family="'Mitr', sans-serif" font-size="13" font-weight="400" fill="#94A3B8">
+    ขั้นตอนการบีบอัดข้อมูลแบบไม่สูญเสียรายละเอียดด้วยการนับจำนวนอักขระซ้ำ
+  </text>
 
-      <!-- Run 2: 12 Black Blocks -->
-      <g transform="translate(366, 0)">
-        <rect x="0" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="20" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
-        <rect x="44" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="64" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
-        <rect x="88" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="108" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
-        <rect x="132" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="152" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
-        <rect x="176" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="196" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
-        <rect x="220" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="240" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
-        <rect x="264" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="284" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
-        <rect x="308" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="328" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
-        <rect x="352" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="372" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
-        <rect x="396" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="416" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
-        <rect x="440" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="460" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
-        <rect x="484" y="0" width="40" height="42" rx="4" fill="#0284C7" stroke="#38BDF8"/><text x="504" y="26" fill="#FFFFFF" text-anchor="middle">B</text>
-        <path d="M 0 50 L 262 60 L 524 50" stroke="#0284C7" stroke-width="1.8" fill="none"/>
-        <text x="262" y="76" fill="#38BDF8" font-size="11" text-anchor="middle">12 Consecutive 'B' (Black)</text>
+  <!-- STEP 1: Raw Uncompressed Stream -->
+  <g transform="translate(50, 115)" filter="url(#cardShadow)">
+    <rect width="270" height="565" rx="12" fill="#131E36" stroke="#2563EB" stroke-width="1.8"/>
+    <rect width="270" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#2563EB"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 01</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Raw Stream</text>
+    <g transform="translate(14, 58)">
+      <rect width="242" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Raw sequence -->
+      <g transform="translate(15, 30)">
+        <rect width="212" height="50" rx="4" fill="#1E293B" stroke="#38BDF8"/>
+        <text x="106" y="32" font-family="'Stack Sans Notch', sans-serif" font-size="11.5" font-weight="700" fill="#38BDF8" text-anchor="middle">W W W W W B B B B B B B B</text>
       </g>
-
-      <!-- Run 3: 4 White Blocks -->
-      <g transform="translate(908, 0)">
-        <rect x="0" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="20" y="26" fill="#0F172A" text-anchor="middle">W</text>
-        <rect x="44" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="64" y="26" fill="#0F172A" text-anchor="middle">W</text>
-        <rect x="88" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="108" y="26" fill="#0F172A" text-anchor="middle">W</text>
-        <rect x="132" y="0" width="40" height="42" rx="4" fill="#F8FAFC" stroke="#CBD5E1"/><text x="152" y="26" fill="#0F172A" text-anchor="middle">W</text>
-        <path d="M 0 50 L 86 60 L 172 50" stroke="#38BDF8" stroke-width="1.8" fill="none"/>
-        <text x="86" y="76" fill="#38BDF8" font-size="11" text-anchor="middle">4 'W' (White)</text>
-      </g>
+      <text x="121" y="115" font-family="'Stack Sans Notch', sans-serif" font-size="11" fill="#E2E8F0" text-anchor="middle">TOTAL LENGTH = 13 BYTES</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#38BDF8">ข้อมูลดิบที่ยังไม่บีบอัด:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• สตรีมพิกเซลภาพขาวดำต่อเนื่อง</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• มีอักขระ W ซ้ำกัน 5 ตัว</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• มีอักขระ B ซ้ำกัน 8 ตัว</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• เปลืองแบนด์วิดท์ส่งข้อมูล 13 ไบต์</text>
+      <rect x="0" y="270" width="238" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="119" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#93C5FD" text-anchor="middle">ขนาดข้อมูลเต็ม: 13 ไบต์</text>
     </g>
   </g>
 
-  <!-- Central Compression Arrow -->
-  <g transform="translate(640, 316)">
-    <circle cx="0" cy="0" r="18" fill="#1E293B" stroke="#10B981" stroke-width="2"/>
-    <path d="M -6 -8 L 0 0 L -6 8 M 2 -8 L 8 0 L 2 8" stroke="#10B981" stroke-width="2.2" fill="none" transform="rotate(90)"/>
-  </g>
+  <!-- Arrow 1->2 -->
+  <g transform="translate(328, 380)"><circle cx="10" cy="0" r="13" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/><path d="M 6 -5 L 14 0 L 6 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/></g>
 
-  <!-- ==================== STAGE 2: RLE COMPRESSED BITSTREAM ==================== -->
-  <g transform="translate(64, 350)" filter="url(#shadow16)">
-    <rect width="1152" height="170" rx="12" fill="#141C2E" stroke="#10B981" stroke-width="1.5"/>
-    <path d="M 0 12 Q 0 0 12 0 L 1140 0 Q 1152 0 1152 12 L 1152 42 L 0 42 Z" fill="url(#headerGrad16)"/>
-    <text x="20" y="26" fill="#FFFFFF" font-size="14" font-weight="700" class="mono">2. RLE COMPRESSED STREAM: 6 BYTES (RUN-LENGTH PAIRS: [COUNT, SYMBOL])</text>
-    <rect x="990" y="10" width="144" height="22" rx="4" fill="#065F46"/>
-    <text x="1006" y="25" fill="#A7F3D0" font-size="11" font-weight="800" class="mono">FILE SIZE: 6 BYTES</text>
-
-    <!-- 3 Encoded Pairs -->
-    <g transform="translate(20, 60)" class="mono" font-size="14">
-      <!-- Pair 1 -->
-      <g transform="translate(0, 0)">
-        <rect width="320" height="84" rx="8" fill="#0B1329" stroke="#38BDF8" stroke-width="1.5"/>
-        <text x="18" y="30" fill="#94A3B8" font-size="11">PAIR 1: (COUNT: 8, CHAR: 'W')</text>
-        <rect x="18" y="40" width="50" height="32" rx="4" fill="#0284C7"/><text x="43" y="62" fill="#FFFFFF" font-weight="800" text-anchor="middle">8</text>
-        <rect x="74" y="40" width="50" height="32" rx="4" fill="#F8FAFC"/><text x="99" y="62" fill="#0F172A" font-weight="800" text-anchor="middle">W</text>
-        <text x="140" y="61" fill="#38BDF8" font-size="16" font-weight="700">➔ "8W" (2 Bytes)</text>
+  <!-- STEP 2: Consecutive Run Detector -->
+  <g transform="translate(350, 115)" filter="url(#cardShadow)">
+    <rect width="270" height="565" rx="12" fill="#131E36" stroke="#0284C7" stroke-width="1.8"/>
+    <rect width="270" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#0284C7"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 02</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Run Detector</text>
+    <g transform="translate(14, 58)">
+      <rect width="242" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Run counters -->
+      <g transform="translate(20, 20)">
+        <rect width="95" height="50" rx="4" fill="#1E293B" stroke="#0284C7"/>
+        <text x="47" y="24" font-family="'Stack Sans Notch', sans-serif" font-size="10" fill="#94A3B8" text-anchor="middle">RUN 1: 'W'</text>
+        <text x="47" y="42" font-family="'Stack Sans Notch', sans-serif" font-size="14" font-weight="700" fill="#38BDF8" text-anchor="middle">COUNT: 5</text>
+        <rect x="105" y="0" width="95" height="50" rx="4" fill="#1E293B" stroke="#0284C7"/>
+        <text x="152" y="24" font-family="'Stack Sans Notch', sans-serif" font-size="10" fill="#94A3B8" text-anchor="middle">RUN 2: 'B'</text>
+        <text x="152" y="42" font-family="'Stack Sans Notch', sans-serif" font-size="14" font-weight="700" fill="#38BDF8" text-anchor="middle">COUNT: 8</text>
       </g>
-
-      <!-- Pair 2 -->
-      <g transform="translate(366, 0)">
-        <rect width="320" height="84" rx="8" fill="#0B1329" stroke="#0284C7" stroke-width="1.5"/>
-        <text x="18" y="30" fill="#94A3B8" font-size="11">PAIR 2: (COUNT: 12, CHAR: 'B')</text>
-        <rect x="18" y="40" width="50" height="32" rx="4" fill="#0284C7"/><text x="43" y="62" fill="#FFFFFF" font-weight="800" text-anchor="middle">12</text>
-        <rect x="74" y="40" width="50" height="32" rx="4" fill="#1E293B" stroke="#38BDF8"/><text x="99" y="62" fill="#FFFFFF" font-weight="800" text-anchor="middle">B</text>
-        <text x="140" y="61" fill="#38BDF8" font-size="16" font-weight="700">➔ "12B" (2 Bytes)</text>
-      </g>
-
-      <!-- Pair 3 -->
-      <g transform="translate(732, 0)">
-        <rect width="320" height="84" rx="8" fill="#0B1329" stroke="#38BDF8" stroke-width="1.5"/>
-        <text x="18" y="30" fill="#94A3B8" font-size="11">PAIR 3: (COUNT: 4, CHAR: 'W')</text>
-        <rect x="18" y="40" width="50" height="32" rx="4" fill="#0284C7"/><text x="43" y="62" fill="#FFFFFF" font-weight="800" text-anchor="middle">4</text>
-        <rect x="74" y="40" width="50" height="32" rx="4" fill="#F8FAFC"/><text x="99" y="62" fill="#0F172A" font-weight="800" text-anchor="middle">W</text>
-        <text x="140" y="61" fill="#38BDF8" font-size="16" font-weight="700">➔ "4W" (2 Bytes)</text>
-      </g>
+      <text x="121" y="115" font-family="'Mitr', sans-serif" font-size="11" fill="#E2E8F0" text-anchor="middle">ตัวนับตรวจจับอักขระเรียงติดกัน</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#38BDF8">การสแกนนับจำนวนซ้ำ:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• อัลกอริทึมอ่านอักขระทีละตัว</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• เมื่อพบตัวเดิมซ้ำ จะเพิ่มค่าตัวนับ</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• เมื่อพบตัวใหม่ จะปิดชุดตัวนับเดิม</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ทำงานในความเร็ว O(N) เที่ยวเดียว</text>
+      <rect x="0" y="270" width="238" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="119" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#38BDF8" text-anchor="middle">ตรวจจับช่วงต่อเนื่องสมบูรณ์</text>
     </g>
   </g>
 
-  <!-- ==================== STAGE 3: EFFICIENCY &amp; LOSSLESS PROOF PANEL ==================== -->
-  <g transform="translate(64, 540)" filter="url(#shadow16)">
-    <rect width="1152" height="140" rx="12" fill="#0A0F1D" stroke="#334155" stroke-width="1.5"/>
+  <!-- Arrow 2->3 -->
+  <g transform="translate(628, 380)"><circle cx="10" cy="0" r="13" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/><path d="M 6 -5 L 14 0 L 6 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/></g>
 
-    <g transform="translate(30, 24)">
-      <!-- Efficiency Ratio -->
-      <g transform="translate(0, 0)">
-        <text x="0" y="24" fill="#94A3B8" font-size="12" class="mono">COMPRESSION RATIO (พื้นที่ประหยัดได้):</text>
-        <text x="0" y="66" fill="#10B981" font-size="38" font-weight="800" class="mono">75.0% SAVINGS</text>
-        <text x="0" y="88" fill="#E2E8F0" class="thai" font-size="12">ลดขนาดจาก 24 ไบต์ เหลือเพียง 6 ไบต์ ประหยัดแบนด์วิธในการส่งข้อมูล 4 เท่า</text>
+  <!-- STEP 3: Compressed Tuple Generation -->
+  <g transform="translate(650, 115)" filter="url(#cardShadow)">
+    <rect width="270" height="565" rx="12" fill="#131E36" stroke="#10B981" stroke-width="1.8"/>
+    <rect width="270" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#10B981"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 03</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Tuple Encode</text>
+    <g transform="translate(14, 58)">
+      <rect width="242" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Encoded tuples -->
+      <g transform="translate(20, 25)">
+        <rect width="202" height="45" rx="4" fill="#1E293B" stroke="#10B981"/>
+        <text x="101" y="47" font-family="'Stack Sans Notch', sans-serif" font-size="14" font-weight="700" fill="#34D399" text-anchor="middle">"5W8B"</text>
+        <text x="101" y="62" font-family="'Stack Sans Notch', sans-serif" font-size="10.5" fill="#94A3B8" text-anchor="middle">(Count, Character) Pairs</text>
       </g>
-
-      <!-- Lossless Proof -->
-      <g transform="translate(560, 0)">
-        <rect width="520" height="92" rx="8" fill="#042F2E" stroke="#10B981" stroke-width="1.2"/>
-        <circle cx="28" cy="46" r="14" fill="#10B981"/>
-        <path d="M 22 46 L 26 50 L 34 42" stroke="#FFFFFF" stroke-width="2.5" fill="none"/>
-        <text x="54" y="34" fill="#34D399" font-size="13" font-weight="700" class="mono">100% BIT-EXACT LOSSLESS RECONSTRUCTION</text>
-        <text x="54" y="56" fill="#E2E8F0" class="thai" font-size="12">เมื่อ Decompress คลายข้อมูลกลับ จะได้ 24 ไบต์เดิมตรงกันทุกบิต 100%</text>
-        <text x="54" y="74" fill="#94A3B8" class="thai" font-size="11">เหมาะสำหรับเอกสารข้อความ ภาพบาร์โค้ด และรหัสโปรแกรมที่ห้ามสูญเสียข้อมูล</text>
-      </g>
+      <text x="121" y="115" font-family="'Stack Sans Notch', sans-serif" font-size="11" fill="#A7F3D0" text-anchor="middle">ENCODED SIZE = 4 BYTES</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#34D399">การแพ็กเกจเป็นคู่ (จำนวน, อักษร):</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• แทนที่ WWWWW ด้วย 5W (2 ไบต์)</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• แทนที่ BBBBBBBB ด้วย 8B (2 ไบต์)</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ได้ผลลัพธ์เป็น "5W8B" รวม 4 ไบต์</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ไม่สูญเสียข้อมูลแม้แต่บิตเดียว</text>
+      <rect x="0" y="270" width="238" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="119" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#A7F3D0" text-anchor="middle">Lossless คืนรูปเดิมได้ 100%</text>
     </g>
   </g>
+
+  <!-- Arrow 3->4 -->
+  <g transform="translate(928, 380)"><circle cx="10" cy="0" r="13" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/><path d="M 6 -5 L 14 0 L 6 5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/></g>
+
+  <!-- STEP 4: Compression Ratio &amp; Storage Optimization -->
+  <g transform="translate(950, 115)" filter="url(#cardShadow)">
+    <rect width="280" height="565" rx="12" fill="#131E36" stroke="#F59E0B" stroke-width="1.8"/>
+    <rect width="280" height="46" rx="12" fill="#1E293B"/>
+    <rect x="14" y="9" width="76" height="28" rx="6" fill="#F59E0B"/>
+    <text x="52" y="28" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">STEP 04</text>
+    <text x="100" y="29" font-family="'Mitr', sans-serif" font-size="14.5" font-weight="600" fill="#FFFFFF">Ratio &amp; Storage</text>
+    <g transform="translate(14, 58)">
+      <rect width="252" height="150" rx="8" fill="#0B1324" stroke="#1E293B"/>
+      <!-- Metrics -->
+      <rect x="25" y="25" width="202" height="45" rx="4" fill="#1E293B" stroke="#F59E0B" stroke-width="1.5"/>
+      <text x="126" y="47" font-family="'Stack Sans Notch', sans-serif" font-size="13" font-weight="700" fill="#FBBF24" text-anchor="middle">SAVED: 69.2% SPACE</text>
+      <text x="126" y="63" font-family="'Stack Sans Notch', sans-serif" font-size="10.5" fill="#34D399" text-anchor="middle">13 BYTES -> 4 BYTES</text>
+      <text x="126" y="115" font-family="'Mitr', sans-serif" font-size="11" fill="#E2E8F0" text-anchor="middle">ส่งข้อมูลแฟกซ์และภาพ TIFF รวดเร็ว</text>
+    </g>
+    <g transform="translate(16, 230)">
+      <text x="0" y="16" font-family="'Mitr', sans-serif" font-size="13.5" font-weight="600" fill="#FBBF24">การประหยัดพื้นที่จัดเก็บ:</text>
+      <text x="0" y="42" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ลดการใช้เนื้อที่ฮาร์ดดิสก์ 69.2%</text>
+      <text x="0" y="68" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ดาวน์โหลดไว ประหยัดแบนด์วิดท์</text>
+      <text x="0" y="94" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• ใช้อย่างกว้างขวางในเครื่องส่งแฟกซ์</text>
+      <text x="0" y="120" font-family="'Mitr', sans-serif" font-size="12.5" fill="#CBD5E1">• มาตรฐานพื้นฐานของไฟล์ BMP และ TIFF</text>
+      <rect x="0" y="270" width="248" height="36" rx="6" fill="#1E293B" stroke="#334155"/>
+      <text x="124" y="293" font-family="'Mitr', sans-serif" font-size="12.5" fill="#FDE68A" text-anchor="middle">ประหยัดพื้นที่ คืนรูป 100%</text>
+    </g>
+  </g>
+
 </svg>
