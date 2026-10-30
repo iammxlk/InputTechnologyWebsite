@@ -137,7 +137,7 @@
       users: [
         {
           student_id: "6720101001",
-          password_hash: "",
+          password_hash: "addf43303d1baaebaa4c046b078561ba8e687a5f4a8db3ea81093b6071fe632a",
           salt: "seed1",
           full_name: "นางสาวพิมพ์ชนก วัฒนากูล",
           avatar_url: window.AppUtils.buildInitialsAvatarDataUrl("พิมพ์ชนก วัฒนากูล"),
@@ -154,7 +154,7 @@
         },
         {
           student_id: "6720101002",
-          password_hash: "",
+          password_hash: "6cb1215605eba93b9e528e09219f2098480e68d2d78a45136a942c3fd9af9c42",
           salt: "seed2",
           full_name: "นายธนภัทร ศรีสุวรรณ",
           avatar_url: window.AppUtils.buildInitialsAvatarDataUrl("ธนภัทร ศรีสุวรรณ"),
@@ -171,7 +171,7 @@
         },
         {
           student_id: "6720101003",
-          password_hash: "",
+          password_hash: "c68cd4383638886f66044327b367f8734356b0c7c14a0659a3a180d5e028a132",
           salt: "seed3",
           full_name: "นายกิตติพงศ์ อินทร์จันทร์",
           avatar_url: window.AppUtils.buildInitialsAvatarDataUrl("กิตติพงศ์ อินทร์จันทร์"),
@@ -188,7 +188,7 @@
         },
         {
           student_id: "6720101004",
-          password_hash: "",
+          password_hash: "1a1b5e650cfe0c74f6188834820cbfe63ca16f748582b03292e298d4a95cee18",
           salt: "seed4",
           full_name: "นางสาวณัฐณิชา โพธิ์ทอง",
           avatar_url: window.AppUtils.buildInitialsAvatarDataUrl("ณัฐณิชา โพธิ์ทอง"),
@@ -205,7 +205,7 @@
         },
         {
           student_id: "6720101005",
-          password_hash: "",
+          password_hash: "1e8669c7cd73d3a533faf55abe2c2856a09a84cbce9b66dc9642168f48ad9343",
           salt: "seed5",
           full_name: "นายภูวดล วงศ์สวัสดิ์",
           avatar_url: window.AppUtils.buildInitialsAvatarDataUrl("ภูวดล วงศ์สวัสดิ์"),
@@ -221,7 +221,20 @@
           updated_at: now
         }
       ],
-      unit_progress: {},
+      unit_progress: {
+        "6720101001": {
+          1: { unit_no: 1, steps_completed: 6, is_content_read: true, best_quiz_score: 10, best_quiz_time_sec: 42, is_passed: true, attempts_count: 1, updated_at: now },
+          2: { unit_no: 2, steps_completed: 6, is_content_read: true, best_quiz_score: 9, best_quiz_time_sec: 45, is_passed: true, attempts_count: 1, updated_at: now },
+          3: { unit_no: 3, steps_completed: 6, is_content_read: true, best_quiz_score: 10, best_quiz_time_sec: 48, is_passed: true, attempts_count: 1, updated_at: now },
+          4: { unit_no: 4, steps_completed: 6, is_content_read: true, best_quiz_score: 9, best_quiz_time_sec: 50, is_passed: true, attempts_count: 1, updated_at: now },
+          5: { unit_no: 5, steps_completed: 6, is_content_read: true, best_quiz_score: 10, best_quiz_time_sec: 44, is_passed: true, attempts_count: 1, updated_at: now },
+          6: { unit_no: 6, steps_completed: 6, is_content_read: true, best_quiz_score: 9, best_quiz_time_sec: 46, is_passed: true, attempts_count: 1, updated_at: now },
+          7: { unit_no: 7, steps_completed: 6, is_content_read: true, best_quiz_score: 9, best_quiz_time_sec: 52, is_passed: true, attempts_count: 1, updated_at: now },
+          8: { unit_no: 8, steps_completed: 6, is_content_read: true, best_quiz_score: 10, best_quiz_time_sec: 49, is_passed: true, attempts_count: 1, updated_at: now },
+          9: { unit_no: 9, steps_completed: 6, is_content_read: true, best_quiz_score: 8, best_quiz_time_sec: 54, is_passed: true, attempts_count: 1, updated_at: now },
+          10: { unit_no: 10, steps_completed: 6, is_content_read: true, best_quiz_score: 8, best_quiz_time_sec: 55, is_passed: true, attempts_count: 1, updated_at: now }
+        }
+      },
       minigame_records: {
         "6720101001": {
           "G01": { game_id: "G01", best_score: 880, best_time_sec: 58, play_count: 6, updated_at: now },
@@ -399,34 +412,43 @@
       const dup = db.users.find(
         (u) => u.student_id.toLowerCase() === studentId.toLowerCase()
       );
-      if (dup) {
+      if (dup && dup.password_hash) {
         return { ok: false, error: `รหัสนักเรียน ${studentId} มีในระบบแล้ว กรุณาเข้าสู่ระบบ` };
       }
 
-      const salt = Math.random().toString(36).slice(2, 12);
+      const salt = (dup && dup.salt) || Math.random().toString(36).slice(2, 12);
       const passwordHash = await sha256HexBrowser(`${password}::${salt}`);
 
-      const newUser = {
-        student_id: studentId,
-        password_hash: passwordHash,
-        salt: salt,
-        full_name: fullName,
-        avatar_url: avatarBase64,
-        passed_units_count: 0,
-        progress_percent: 0,
-        total_quiz_score: 0,
-        total_game_score: 0,
-        grand_total_score: 0,
-        total_time_sec: 0,
-        cert_unlocked: false,
-        cert_issued_at: "",
-        created_at: now,
-        updated_at: now
-      };
+      let targetUser = dup;
+      if (targetUser) {
+        targetUser.password_hash = passwordHash;
+        targetUser.salt = salt;
+        targetUser.full_name = fullName;
+        targetUser.avatar_url = avatarBase64;
+        targetUser.updated_at = now;
+      } else {
+        targetUser = {
+          student_id: studentId,
+          password_hash: passwordHash,
+          salt: salt,
+          full_name: fullName,
+          avatar_url: avatarBase64,
+          passed_units_count: 0,
+          progress_percent: 0,
+          total_quiz_score: 0,
+          total_game_score: 0,
+          grand_total_score: 0,
+          total_time_sec: 0,
+          cert_unlocked: false,
+          cert_issued_at: "",
+          created_at: now,
+          updated_at: now
+        };
+        db.users.push(targetUser);
+        if (!db.unit_progress[studentId]) db.unit_progress[studentId] = {};
+        if (!db.minigame_records[studentId]) db.minigame_records[studentId] = {};
+      }
 
-      db.users.push(newUser);
-      db.unit_progress[studentId] = {};
-      db.minigame_records[studentId] = {};
       db.activity_logs.push({
         timestamp: now,
         student_id: studentId,
@@ -440,9 +462,9 @@
 
       return {
         ok: true,
-        user: sanitizeUser(newUser),
-        unit_progress: {},
-        minigame_records: {}
+        user: sanitizeUser(targetUser),
+        unit_progress: db.unit_progress[studentId] || {},
+        minigame_records: db.minigame_records[studentId] || {}
       };
     }
 
@@ -453,18 +475,33 @@
         (u) => u.student_id.toLowerCase() === studentId.toLowerCase()
       );
 
-      if (!found || !found.password_hash) {
+      if (!found) {
         return { ok: false, error: "ไม่พบรหัสนักเรียนนี้ในระบบ กรุณาสมัครสมาชิกก่อน" };
       }
 
-      const checkHash = await sha256HexBrowser(`${password}::${found.salt}`);
-      if (checkHash !== found.password_hash) {
-        return { ok: false, error: "รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง" };
+      if (!found.password_hash) {
+        if (password === "1234" || password === studentId) {
+          const newSalt = found.salt || Math.random().toString(36).slice(2, 12);
+          found.salt = newSalt;
+          found.password_hash = await sha256HexBrowser(`${password}::${newSalt}`);
+          found.updated_at = now;
+          saveLocalDb(db);
+        } else {
+          return { ok: false, error: "รหัสผ่านไม่ถูกต้อง (บัญชีจำลองเริ่มต้นใช้รหัสผ่าน 1234)" };
+        }
+      } else {
+        const checkHash = await sha256HexBrowser(`${password}::${found.salt}`);
+        if (checkHash !== found.password_hash) {
+          return { ok: false, error: "รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง" };
+        }
       }
+
+      const updated = recalculateLocalUser(db, found.student_id);
+      saveLocalDb(db);
 
       return {
         ok: true,
-        user: sanitizeUser(found),
+        user: sanitizeUser(updated || found),
         unit_progress: db.unit_progress[found.student_id] || {},
         minigame_records: db.minigame_records[found.student_id] || {}
       };
@@ -784,9 +821,18 @@
 
   async function postAction(action, data = {}) {
     const payload = Object.assign({ action: action }, data);
+    const sid = String(data.student_id || payload.student_id || "").trim().toLowerCase();
+    const isDemoAccount = /^672010100[1-5]$/.test(sid);
 
-    if (!isCloudConfigured()) {
-      return executeLocalRequest(payload);
+    // If cloud is not configured OR student is one of the 5 built-in demo showcase accounts:
+    if (!isCloudConfigured() || (isDemoAccount && (action === "login" || action === "get_session"))) {
+      const localDb = loadLocalDb();
+      const foundLocal = localDb.users.find(
+        (u) => u && u.student_id && u.student_id.toLowerCase() === sid
+      );
+      if (foundLocal) {
+        return executeLocalRequest(payload);
+      }
     }
 
     try {
@@ -807,6 +853,18 @@
         throw new Error(`HTTP ${response.status}`);
       }
       const data = await response.json();
+
+      // If cloud does not have this student account, fall back to check local demo DB
+      if (!data.ok && (action === "login" || action === "get_session")) {
+        const localDb = loadLocalDb();
+        const sid = String(payload.student_id || "").toLowerCase();
+        const foundLocal = localDb.users.find(
+          (u) => u && u.student_id && u.student_id.toLowerCase() === sid
+        );
+        if (foundLocal) {
+          return executeLocalRequest(payload);
+        }
+      }
 
       // Keep local DB mirror seamlessly synced with cloud state
       if (data && data.ok && data.user) {

@@ -244,7 +244,7 @@ window.AppUtils = {
     const item = document.createElement("div");
     item.className = "toast-item";
     const dotClass =
-      type === "success" ? "is-success" : type === "error" ? "is-error" : "is-info";
+      type === "success" ? "is-success" : (type === "error" || type === "danger") ? "is-error" : (type === "warn" || type === "warning") ? "is-warn" : "is-info";
 
     item.innerHTML = `
       <span class="toast-dot ${dotClass}"></span>

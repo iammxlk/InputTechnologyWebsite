@@ -518,6 +518,9 @@
       if (unitMap) unitProgressMap = unitMap;
       if (gameMap) miniGameRecordsMap = gameMap;
       renderNavbarProfile();
+      if (window.AppController && typeof window.AppController.refreshActiveView === "function") {
+        window.AppController.refreshActiveView();
+      }
     },
     enforceRouteGuard,
     openProfileModal

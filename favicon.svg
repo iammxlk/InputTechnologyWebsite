@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="14" fill="#0A0F1D"/>
+  <rect x="2" y="2" width="60" height="60" rx="12" fill="none" stroke="#2563EB" stroke-width="2" stroke-opacity="0.4"/>
+  <!-- Barcode Vertical Elements -->
+  <rect x="14" y="16" width="3" height="32" rx="1.5" fill="#3B82F6"/>
+  <rect x="20" y="16" width="5" height="32" rx="1.5" fill="#60A5FA"/>
+  <rect x="28" y="16" width="2" height="32" rx="1" fill="#93C5FD"/>
+  <rect x="33" y="16" width="6" height="32" rx="1.5" fill="#3B82F6"/>
+  <rect x="42" y="16" width="3" height="32" rx="1.5" fill="#60A5FA"/>
+  <rect x="47" y="16" width="4" height="32" rx="1.5" fill="#93C5FD"/>
+  <!-- Optical Laser Beam -->
+  <line x1="10" y1="32" x2="54" y2="32" stroke="#EF4444" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="32" cy="32" r="3" fill="#FFFFFF"/>
+</svg>
