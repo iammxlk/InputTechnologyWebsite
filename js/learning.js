@@ -516,12 +516,35 @@
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  function formatLessonText(text) {
+    if (!text) return "";
+    const esc = window.AppUtils.escapeHtml;
+    let safe = esc(text);
+
+    // 1. Transform subheadings (หัวข้อย่อย) prominently:
+    safe = safe.replace(
+      /(^|\n)((?:\*\*)?(?:ตัวอย่างที่\s*\d+|ตัวอย่าง|กรณีศึกษา|ข้อสังเกตสำคัญ|ข้อควรระวัง|สาเหตุที่พบบ่อย|แนวทางการแก้ไข|วิธีตรวจสอบ[^\n:]*|ขั้นตอนการปฏิบัติ[^\n:]*):[^\n*]+(?:\*\*)?)/g,
+      (m, p1, p2) => {
+        const clean = p2.replace(/\*\*/g, '');
+        return `${p1}<strong class="lesson-subheading font-notch">${clean}</strong>`;
+      }
+    );
+
+    // 2. Transform markdown bold **word** -> <strong class="lesson-term-emphasis">word</strong>
+    safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong class="lesson-term-emphasis">$1</strong>');
+
+    // 3. Transform newlines into <br />
+    safe = safe.replace(/\n/g, '<br />');
+
+    return safe;
+  }
+
   function renderStepBlockHtml(block) {
     const esc = window.AppUtils.escapeHtml;
     if (!block || !block.type) return "";
 
     if (block.type === "paragraph") {
-      return `<p class="lesson-paragraph">${esc(block.text)}</p>`;
+      return `<p class="lesson-paragraph">${formatLessonText(block.text)}</p>`;
     }
 
     if (block.type === "table") {
@@ -566,7 +589,7 @@
               <span class="lesson-flow-num font-notch tabular-nums">${idx + 1}</span>
               <div style="min-width: 0; flex: 1;">
                 <strong class="lesson-flow-title">${esc(st.stepTitle)}</strong>
-                <p class="lesson-flow-desc">${esc(st.stepDesc)}</p>
+                <p class="lesson-flow-desc">${formatLessonText(st.stepDesc)}</p>
               </div>
             </div>
           `
@@ -580,8 +603,8 @@
         .map(
           (item) => `
             <div class="lesson-info-card">
-              <strong class="lesson-info-card-title">${esc(item.label)}</strong>
-              <p class="lesson-info-card-desc">${esc(item.detail)}</p>
+              <strong class="lesson-info-card-title">${formatLessonText(item.label)}</strong>
+              <p class="lesson-info-card-desc">${formatLessonText(item.detail)}</p>
             </div>
           `
         )
@@ -593,7 +616,7 @@
       return `
         <div class="lesson-callout-box">
           <strong class="lesson-callout-title">${esc(block.title)}</strong>
-          <p class="lesson-callout-text">${esc(block.text)}</p>
+          <p class="lesson-callout-text">${formatLessonText(block.text)}</p>
         </div>
       `;
     }
