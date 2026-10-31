@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad13" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#090D16"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="cardGrad13" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1E293B"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <filter id="shadowBox13" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="720" fill="url(#bgGrad13)"/>
+  <g stroke="#1E293B" stroke-width="1" stroke-dasharray="6 6" opacity="0.4">
+    <line x1="0" y1="140" x2="1280" y2="140"/>
+    <line x1="0" y1="580" x2="1280" y2="580"/>
+    <line x1="330" y1="0" x2="330" y2="720"/>
+    <line x1="640" y1="0" x2="640" y2="720"/>
+    <line x1="950" y1="0" x2="950" y2="720"/>
+  </g>
+
+  <!-- Header Banner -->
+  <rect x="50" y="30" width="1180" height="70" rx="12" fill="#1E293B" stroke="#334155" stroke-width="2" filter="url(#shadowBox13)"/>
+  <rect x="65" y="45" width="8" height="40" rx="4" fill="#3B82F6"/>
+  <text x="85" y="65" fill="#60A5FA" font-family="'Stack Sans Notch', sans-serif" font-weight="900" font-size="14" letter-spacing="3">UNIT 13 • RELATIONAL DATABASE ARCHITECTURE SIMULATION</text>
+  <text x="85" y="87" fill="#F8FAFC" font-family="'Mitr', sans-serif" font-weight="700" font-size="20">โครงสร้างข้อมูลเชิงสัมพันธ์ 4 ระดับ: คอลัมน์ แถว ตาราง และคีย์หลัก</text>
+
+  <!-- Connectors -->
+  <g stroke="#3B82F6" stroke-width="3" fill="none" opacity="0.8">
+    <path d="M 320 370 L 370 370" stroke-dasharray="8 4"/>
+    <path d="M 630 370 L 680 370" stroke-dasharray="8 4"/>
+    <path d="M 940 370 L 990 370" stroke-dasharray="8 4"/>
+  </g>
+
+  <!-- TIER 1: Field / Column -->
+  <g transform="translate(60, 140)" filter="url(#shadowBox13)">
+    <rect width="260" height="460" rx="16" fill="url(#cardGrad13)" stroke="#3B82F6" stroke-width="2"/>
+    <circle cx="45" cy="45" r="22" fill="#1D4ED8"/>
+    <text x="45" y="52" fill="#FFFFFF" font-family="'Stack Sans Notch', sans-serif" font-weight="900" font-size="18" text-anchor="middle">1</text>
+    <text x="80" y="50" fill="#FFFFFF" font-family="'Mitr', sans-serif" font-weight="700" font-size="16">เขตข้อมูล (คอลัมน์)</text>
+    <text x="80" y="68" fill="#94A3B8" font-family="'Stack Sans Notch', sans-serif" font-size="12">Field / Column</text>
+
+    <!-- Visual Table Column Highlight -->
+    <rect x="30" y="100" width="200" height="200" rx="12" fill="#090D16" stroke="#1D4ED8" stroke-width="1.5"/>
+    <rect x="50" y="120" width="40" height="160" rx="4" fill="#1E293B" stroke="#334155"/>
+    <rect x="95" y="120" width="70" height="160" rx="4" fill="#1E3A8A" stroke="#3B82F6" stroke-width="2"/>
+    <rect x="170" y="120" width="40" height="160" rx="4" fill="#1E293B" stroke="#334155"/>
+    <text x="130" y="145" fill="#93C5FD" font-family="'Stack Sans Notch', sans-serif" font-size="12" font-weight="700" text-anchor="middle">Full_Name</text>
+    <text x="130" y="180" fill="#E2E8F0" font-family="'Mitr', sans-serif" font-size="11" text-anchor="middle">สมชาย</text>
+    <text x="130" y="210" fill="#E2E8F0" font-family="'Mitr', sans-serif" font-size="11" text-anchor="middle">วิภาดา</text>
+    <text x="130" y="240" fill="#E2E8F0" font-family="'Mitr', sans-serif" font-size="11" text-anchor="middle">ธีรภัทร</text>
+
+    <rect x="25" y="320" width="210" height="115" rx="8" fill="#1E293B" stroke="#334155"/>
+    <text x="35" y="345" fill="#E2E8F0" font-family="'Mitr', sans-serif" font-size="13" font-weight="600">• คุณลักษณะเฉพาะของข้อมูล</text>
+    <text x="35" y="372" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="12">• กำหนดชนิดข้อมูล (Data Type)</text>
+    <text x="35" y="399" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="12">• แนวตั้งในโครงสร้างตาราง</text>
+    <text x="35" y="423" fill="#60A5FA" font-family="'Mitr', sans-serif" font-size="11" font-weight="600">[Single Attribute Domain]</text>
+  </g>
+
+  <!-- TIER 2: Record / Row -->
+  <g transform="translate(370, 140)" filter="url(#shadowBox13)">
+    <rect width="260" height="460" rx="16" fill="url(#cardGrad13)" stroke="#06B6D4" stroke-width="2"/>
+    <circle cx="45" cy="45" r="22" fill="#0891B2"/>
+    <text x="45" y="52" fill="#FFFFFF" font-family="'Stack Sans Notch', sans-serif" font-weight="900" font-size="18" text-anchor="middle">2</text>
+    <text x="80" y="50" fill="#FFFFFF" font-family="'Mitr', sans-serif" font-weight="700" font-size="16">ระเบียน (แถวข้อมูล)</text>
+    <text x="80" y="68" fill="#94A3B8" font-family="'Stack Sans Notch', sans-serif" font-size="12">Record / Row / Tuple</text>
+
+    <!-- Visual Table Row Highlight -->
+    <rect x="30" y="100" width="200" height="200" rx="12" fill="#090D16" stroke="#0891B2" stroke-width="1.5"/>
+    <rect x="40" y="120" width="180" height="30" rx="4" fill="#1E293B"/>
+    <rect x="40" y="155" width="180" height="40" rx="4" fill="#164E63" stroke="#06B6D4" stroke-width="2"/>
+    <rect x="40" y="200" width="180" height="30" rx="4" fill="#1E293B"/>
+    <rect x="40" y="235" width="180" height="30" rx="4" fill="#1E293B"/>
+    <text x="50" y="180" fill="#A5F3FC" font-family="'Stack Sans Notch', monospace" font-size="11">6701 | สมชาย | 85 | IT</text>
+
+    <rect x="25" y="320" width="210" height="115" rx="8" fill="#1E293B" stroke="#334155"/>
+    <text x="35" y="345" fill="#E2E8F0" font-family="'Mitr', sans-serif" font-size="13" font-weight="600">• รวมข้อมูลครบของ 1 รายการ</text>
+    <text x="35" y="372" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="12">• ผสมผสานหลายคอลัมน์เข้าด้วยกัน</text>
+    <text x="35" y="399" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="12">• แนวนอนในโครงสร้างตาราง</text>
+    <text x="35" y="423" fill="#06B6D4" font-family="'Mitr', sans-serif" font-size="11" font-weight="600">[Complete Entity Instance]</text>
+  </g>
+
+  <!-- TIER 3: Relational Table -->
+  <g transform="translate(680, 140)" filter="url(#shadowBox13)">
+    <rect width="260" height="460" rx="16" fill="url(#cardGrad13)" stroke="#8B5CF6" stroke-width="2"/>
+    <circle cx="45" cy="45" r="22" fill="#7C3AED"/>
+    <text x="45" y="52" fill="#FFFFFF" font-family="'Stack Sans Notch', sans-serif" font-weight="900" font-size="18" text-anchor="middle">3</text>
+    <text x="80" y="50" fill="#FFFFFF" font-family="'Mitr', sans-serif" font-weight="700" font-size="16">ตารางข้อมูลสัมพันธ์</text>
+    <text x="80" y="68" fill="#94A3B8" font-family="'Stack Sans Notch', sans-serif" font-size="12">Relational Table</text>
+
+    <!-- Visual 2D Structured Grid Matrix -->
+    <rect x="30" y="100" width="200" height="200" rx="12" fill="#090D16" stroke="#7C3AED" stroke-width="1.5"/>
+    <rect x="40" y="120" width="180" height="150" rx="6" fill="#1E1B4B" stroke="#8B5CF6"/>
+    <line x1="40" y1="150" x2="220" y2="150" stroke="#8B5CF6" stroke-width="2"/>
+    <line x1="40" y1="185" x2="220" y2="185" stroke="#4C1D95"/>
+    <line x1="40" y1="220" x2="220" y2="220" stroke="#4C1D95"/>
+    <line x1="90" y1="120" x2="90" y2="270" stroke="#4C1D95"/>
+    <line x1="160" y1="120" x2="160" y2="270" stroke="#4C1D95"/>
+    <text x="130" y="140" fill="#DDD6FE" font-family="'Stack Sans Notch', sans-serif" font-weight="700" font-size="12" text-anchor="middle">STUDENTS_TABLE</text>
+
+    <rect x="25" y="320" width="210" height="115" rx="8" fill="#1E293B" stroke="#334155"/>
+    <text x="35" y="345" fill="#E2E8F0" font-family="'Mitr', sans-serif" font-size="13" font-weight="600">• รวมกลุ่มข้อมูลของเรื่องเดียวกัน</text>
+    <text x="35" y="372" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="12">• มีโครงสร้าง 2 มิติ (แถว x คอลัมน์)</text>
+    <text x="35" y="399" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="12">• สอดคล้องกับมาตรฐาน SQL</text>
+    <text x="35" y="423" fill="#A78BFA" font-family="'Mitr', sans-serif" font-size="11" font-weight="600">[2D Structured Relation]</text>
+  </g>
+
+  <!-- TIER 4: Primary Key &amp; Relations -->
+  <g transform="translate(990, 140)" filter="url(#shadowBox13)">
+    <rect width="240" height="460" rx="16" fill="url(#cardGrad13)" stroke="#F59E0B" stroke-width="2"/>
+    <circle cx="45" cy="45" r="22" fill="#D97706"/>
+    <text x="45" y="52" fill="#FFFFFF" font-family="'Stack Sans Notch', sans-serif" font-weight="900" font-size="18" text-anchor="middle">4</text>
+    <text x="80" y="50" fill="#FFFFFF" font-family="'Mitr', sans-serif" font-weight="700" font-size="16">คีย์หลัก (Primary Key)</text>
+    <text x="80" y="68" fill="#94A3B8" font-family="'Stack Sans Notch', sans-serif" font-size="12">Unique Primary Key</text>
+
+    <!-- Visual Golden Key and Unique Link -->
+    <rect x="20" y="100" width="200" height="200" rx="12" fill="#090D16" stroke="#D97706" stroke-width="1.5"/>
+    <!-- Golden Key -->
+    <circle cx="95" cy="170" r="25" fill="none" stroke="#FBBF24" stroke-width="6"/>
+    <line x1="120" y1="170" x2="175" y2="170" stroke="#FBBF24" stroke-width="8" stroke-linecap="round"/>
+    <line x1="155" y1="170" x2="155" y2="190" stroke="#FBBF24" stroke-width="6" stroke-linecap="round"/>
+    <line x1="170" y1="170" x2="170" y2="185" stroke="#FBBF24" stroke-width="6" stroke-linecap="round"/>
+    <text x="120" y="240" fill="#FCD34D" font-family="'Stack Sans Notch', monospace" font-size="13" font-weight="700" text-anchor="middle">PRIMARY KEY (PK)</text>
+    <text x="120" y="260" fill="#94A3B8" font-family="'Stack Sans Notch', sans-serif" font-size="11" text-anchor="middle">Unique &amp; Non-Null Index</text>
+
+    <rect x="15" y="320" width="210" height="115" rx="8" fill="#1E293B" stroke="#334155"/>
+    <text x="25" y="345" fill="#E2E8F0" font-family="'Mitr', sans-serif" font-size="13" font-weight="600">• ห้ามซ้ำ และห้ามเป็นค่าว่าง</text>
+    <text x="25" y="372" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="12">• ชี้เป้าระเบียนได้อย่างแม่นยำ</text>
+    <text x="25" y="399" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="12">• ผูกสัมพันธ์กับ Foreign Key</text>
+    <text x="25" y="423" fill="#FBBF24" font-family="'Mitr', sans-serif" font-size="11" font-weight="600">[Relational Integrity Key]</text>
+  </g>
+
+  <!-- Caption Footer -->
+  <rect x="50" y="620" width="1180" height="60" rx="8" fill="#0F172A" stroke="#1E293B"/>
+  <text x="70" y="655" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="14">
+    <tspan fill="#60A5FA" font-weight="700">คำอธิบายโครงสร้าง:</tspan> ฐานข้อมูลประกอบด้วยคอลัมน์ (Field) กำหนดประเภทข้อมูล รวมกันเป็นแถว (Record) กลายเป็นตาราง (Table) และมีคีย์หลัก (Primary Key) ป้องกันข้อมูลซ้ำซ้อน
+  </text>
+</svg>

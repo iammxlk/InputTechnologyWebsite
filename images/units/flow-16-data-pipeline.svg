@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad16" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#090D16"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="cardGrad16" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1E293B"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <filter id="shadowBox16" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="720" fill="url(#bgGrad16)"/>
+  <g stroke="#1E293B" stroke-width="1" stroke-dasharray="6 6" opacity="0.4">
+    <line x1="0" y1="140" x2="1280" y2="140"/>
+    <line x1="0" y1="580" x2="1280" y2="580"/>
+  </g>
+
+  <!-- Header Banner -->
+  <rect x="50" y="30" width="1180" height="70" rx="12" fill="#1E293B" stroke="#334155" stroke-width="2" filter="url(#shadowBox16)"/>
+  <rect x="65" y="45" width="8" height="40" rx="4" fill="#06B6D4"/>
+  <text x="85" y="65" fill="#38BDF8" font-family="'Stack Sans Notch', sans-serif" font-weight="900" font-size="14" letter-spacing="3">UNIT 16 • END-TO-END 5-STAGE ENTERPRISE DATA PIPELINE</text>
+  <text x="85" y="87" fill="#F8FAFC" font-family="'Mitr', sans-serif" font-weight="700" font-size="20">การออกแบบเส้นทางข้อมูลครบวงจร 5 ด่าน ตั้งแต่จุดกำเนิดจนถึงฐานข้อมูลและการสำรอง</text>
+
+  <!-- Connective Arrows -->
+  <g stroke="#06B6D4" stroke-width="2.5" fill="none" opacity="0.8">
+    <path d="M 270 370 L 300 370" stroke-dasharray="6 3"/>
+    <path d="M 515 370 L 545 370" stroke-dasharray="6 3"/>
+    <path d="M 760 370 L 790 370" stroke-dasharray="6 3"/>
+    <path d="M 1005 370 L 1035 370" stroke-dasharray="6 3"/>
+  </g>
+
+  <!-- D1: Physical Source -->
+  <g transform="translate(50, 140)" filter="url(#shadowBox16)">
+    <rect width="215" height="460" rx="14" fill="url(#cardGrad16)" stroke="#38BDF8" stroke-width="2"/>
+    <circle cx="35" cy="40" r="18" fill="#0284C7"/>
+    <text x="35" y="46" fill="#FFFFFF" font-family="'Stack Sans Notch', sans-serif" font-weight="900" font-size="16" text-anchor="middle">1</text>
+    <text x="65" y="45" fill="#FFFFFF" font-family="'Mitr', sans-serif" font-weight="700" font-size="15">แหล่งกำเนิดข้อมูล</text>
+    
+    <rect x="20" y="85" width="175" height="190" rx="10" fill="#090D16" stroke="#0284C7"/>
+    <!-- Icon: Product box / Smartcard -->
+    <rect x="50" y="115" width="115" height="85" rx="6" fill="#1E293B" stroke="#38BDF8"/>
+    <line x1="65" y1="140" x2="150" y2="140" stroke="#94A3B8" stroke-width="3"/>
+    <line x1="65" y1="160" x2="120" y2="160" stroke="#94A3B8" stroke-width="3"/>
+    <text x="107" y="240" fill="#7DD3FC" font-family="'Mitr', sans-serif" font-size="12" text-anchor="middle">สินค้า / บัตรนักเรียน</text>
+
+    <rect x="15" y="295" width="185" height="145" rx="6" fill="#1E293B" stroke="#334155"/>
+    <text x="25" y="320" fill="#E2E8F0" font-family="'Mitr', sans-serif" font-size="12" font-weight="600">• ป้ายบาร์โค้ด EAN-13</text>
+    <text x="25" y="345" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="11">• คิวอาร์โค้ด PromptPay</text>
+    <text x="25" y="370" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="11">• คลื่นบัตร RFID 13.56MHz</text>
+    <text x="25" y="395" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="11">• ลายนิ้วมือผู้ใช้งาน</text>
+    <text x="25" y="423" fill="#38BDF8" font-family="'Mitr', sans-serif" font-size="11" font-weight="600">[Physical Origin]</text>
+  </g>
+
+  <!-- D2: Input Hardware Sensor -->
+  <g transform="translate(295, 140)" filter="url(#shadowBox16)">
+    <rect width="215" height="460" rx="14" fill="url(#cardGrad16)" stroke="#06B6D4" stroke-width="2"/>
+    <circle cx="35" cy="40" r="18" fill="#0891B2"/>
+    <text x="35" y="46" fill="#FFFFFF" font-family="'Stack Sans Notch', sans-serif" font-weight="900" font-size="16" text-anchor="middle">2</text>
+    <text x="65" y="45" fill="#FFFFFF" font-family="'Mitr', sans-serif" font-weight="700" font-size="15">อุปกรณ์ตรวจจับ</text>
+    
+    <rect x="20" y="85" width="175" height="190" rx="10" fill="#090D16" stroke="#0891B2"/>
+    <!-- Scanner beam -->
+    <line x1="40" y1="150" x2="175" y2="150" stroke="#EF4444" stroke-width="3"/>
+    <rect x="70" y="120" width="75" height="70" rx="6" fill="#164E63" stroke="#06B6D4"/>
+    <text x="107" y="240" fill="#67E8F9" font-family="'Mitr', sans-serif" font-size="12" text-anchor="middle">แปลงสู่สัญญาณดิจิทัล</text>
+
+    <rect x="15" y="295" width="185" height="145" rx="6" fill="#1E293B" stroke="#334155"/>
+    <text x="25" y="320" fill="#E2E8F0" font-family="'Mitr', sans-serif" font-size="12" font-weight="600">• เครื่องอ่าน Laser/2D</text>
+    <text x="25" y="345" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="11">• เสาอากาศรับสัญญาณ RFID</text>
+    <text x="25" y="370" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="11">• วงจร ADC แปลงสัญญาณ</text>
+    <text x="25" y="395" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="11">• ถอดรหัสเป็นสตริงข้อความ</text>
+    <text x="25" y="423" fill="#06B6D4" font-family="'Mitr', sans-serif" font-size="11" font-weight="600">[Sensor Transduction]</text>
+  </g>
+
+  <!-- D3: Data Validation -->
+  <g transform="translate(540, 140)" filter="url(#shadowBox16)">
+    <rect width="215" height="460" rx="14" fill="url(#cardGrad16)" stroke="#10B981" stroke-width="2"/>
+    <circle cx="35" cy="40" r="18" fill="#059669"/>
+    <text x="35" y="46" fill="#FFFFFF" font-family="'Stack Sans Notch', sans-serif" font-weight="900" font-size="16" text-anchor="middle">3</text>
+    <text x="65" y="45" fill="#FFFFFF" font-family="'Mitr', sans-serif" font-weight="700" font-size="15">ด่านคัดกรองข้อมูล</text>
+    
+    <rect x="20" y="85" width="175" height="190" rx="10" fill="#090D16" stroke="#059669"/>
+    <!-- Shield &amp; Checkmark -->
+    <path d="M 107 115 L 145 130 L 145 175 Q 107 205 107 205 Q 69 175 69 175 L 69 130 Z" fill="#065F46" stroke="#10B981" stroke-width="2"/>
+    <path d="M 95 155 L 105 165 L 125 140" stroke="#FFFFFF" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <text x="107" y="240" fill="#6EE7B7" font-family="'Mitr', sans-serif" font-size="12" text-anchor="middle">ป้องกัน GIGO สมบูรณ์</text>
+
+    <rect x="15" y="295" width="185" height="145" rx="6" fill="#1E293B" stroke="#334155"/>
+    <text x="25" y="320" fill="#E2E8F0" font-family="'Mitr', sans-serif" font-size="12" font-weight="600">• Presence Check (ไม่ว่าง)</text>
+    <text x="25" y="345" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="11">• Type Check (ตัวเลข/วัน)</text>
+    <text x="25" y="370" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="11">• Range Check (ช่วงคะแนน)</text>
+    <text x="25" y="395" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="11">• Check Digit (คำนวณซ้ำ)</text>
+    <text x="25" y="423" fill="#10B981" font-family="'Mitr', sans-serif" font-size="11" font-weight="600">[Data Validation Gate]</text>
+  </g>
+
+  <!-- D4: Encrypted Network -->
+  <g transform="translate(785, 140)" filter="url(#shadowBox16)">
+    <rect width="215" height="460" rx="14" fill="url(#cardGrad16)" stroke="#8B5CF6" stroke-width="2"/>
+    <circle cx="35" cy="40" r="18" fill="#7C3AED"/>
+    <text x="35" y="46" fill="#FFFFFF" font-family="'Stack Sans Notch', sans-serif" font-weight="900" font-size="16" text-anchor="middle">4</text>
+    <text x="65" y="45" fill="#FFFFFF" font-family="'Mitr', sans-serif" font-weight="700" font-size="15">ส่งผ่านเน็ตเข้ารหัส</text>
+    
+    <rect x="20" y="85" width="175" height="190" rx="10" fill="#090D16" stroke="#7C3AED"/>
+    <!-- Padlock &amp; Network Tunnel -->
+    <rect x="80" y="140" width="55" height="45" rx="5" fill="#5B21B6" stroke="#A78BFA" stroke-width="2"/>
+    <path d="M 92 140 L 92 125 A 15 15 0 0 1 122 125 L 122 140" stroke="#A78BFA" stroke-width="3" fill="none"/>
+    <text x="107" y="240" fill="#C4B5FD" font-family="'Stack Sans Notch', sans-serif" font-size="12" font-weight="700" text-anchor="middle">HTTPS / TLS 1.3</text>
+
+    <rect x="15" y="295" width="185" height="145" rx="6" fill="#1E293B" stroke="#334155"/>
+    <text x="25" y="320" fill="#E2E8F0" font-family="'Mitr', sans-serif" font-size="12" font-weight="600">• อุโมงค์เข้ารหัส SSL/TLS</text>
+    <text x="25" y="345" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="11">• ป้องกันดักฟัง (Eavesdrop)</text>
+    <text x="25" y="370" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="11">• แปลง Base64 ป้องกันเพี้ยน</text>
+    <text x="25" y="395" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="11">• ป้องกันการดัดแปลง (MitM)</text>
+    <text x="25" y="423" fill="#8B5CF6" font-family="'Mitr', sans-serif" font-size="11" font-weight="600">[Encrypted Transport]</text>
+  </g>
+
+  <!-- D5: Central Database &amp; 3-2-1 Backup -->
+  <g transform="translate(1030, 140)" filter="url(#shadowBox16)">
+    <rect width="200" height="460" rx="14" fill="url(#cardGrad16)" stroke="#F59E0B" stroke-width="2"/>
+    <circle cx="35" cy="40" r="18" fill="#D97706"/>
+    <text x="35" y="46" fill="#FFFFFF" font-family="'Stack Sans Notch', sans-serif" font-weight="900" font-size="16" text-anchor="middle">5</text>
+    <text x="65" y="45" fill="#FFFFFF" font-family="'Mitr', sans-serif" font-weight="700" font-size="15">ฐานข้อมูล &amp; สำรอง</text>
+    
+    <rect x="15" y="85" width="170" height="190" rx="10" fill="#090D16" stroke="#D97706"/>
+    <!-- DB Cylinder -->
+    <ellipse cx="100" cy="130" rx="45" ry="14" fill="#78350F" stroke="#F59E0B" stroke-width="2"/>
+    <rect x="55" y="130" width="90" height="50" fill="#78350F"/>
+    <line x1="55" y1="130" x2="55" y2="180" stroke="#F59E0B" stroke-width="2"/>
+    <line x1="145" y1="130" x2="145" y2="180" stroke="#F59E0B" stroke-width="2"/>
+    <ellipse cx="100" cy="180" rx="45" ry="14" fill="#78350F" stroke="#F59E0B" stroke-width="2"/>
+    <text x="100" y="240" fill="#FCD34D" font-family="'Stack Sans Notch', sans-serif" font-size="12" font-weight="700" text-anchor="middle">SQL + 3-2-1 BACKUP</text>
+
+    <rect x="12" y="295" width="175" height="145" rx="6" fill="#1E293B" stroke="#334155"/>
+    <text x="20" y="320" fill="#E2E8F0" font-family="'Mitr', sans-serif" font-size="12" font-weight="600">• บันทึกตารางสัมพันธ์ DBMS</text>
+    <text x="20" y="345" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="11">• ตรวจสอบความถูกต้องซ้ำ</text>
+    <text x="20" y="370" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="11">• สำรองข้อมูลกฎ 3-2-1</text>
+    <text x="20" y="395" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="11">• รองรับกู้คืนข้อมูล (DRP)</text>
+    <text x="20" y="423" fill="#F59E0B" font-family="'Mitr', sans-serif" font-size="11" font-weight="600">[Persistent Store &amp; DR]</text>
+  </g>
+
+  <!-- Caption Footer -->
+  <rect x="50" y="620" width="1180" height="60" rx="8" fill="#0F172A" stroke="#1E293B"/>
+  <text x="70" y="655" fill="#94A3B8" font-family="'Mitr', sans-serif" font-size="14">
+    <tspan fill="#38BDF8" font-weight="700">คำอธิบายภาพรวม:</tspan> การออกแบบเส้นทางข้อมูลที่ดีต้องเชื่อมโยงทั้ง 5 ด่าน: แปลงสัญญาณกายภาพ -&gt; ตรวจจับ -&gt; กรองข้อมูลขยะ -&gt; ส่งผ่านเน็ตเข้ารหัส -&gt; บันทึกและสำรองข้อมูลตามมาตรฐาน 3-2-1
+  </text>
+</svg>
