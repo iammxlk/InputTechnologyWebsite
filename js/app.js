@@ -206,9 +206,9 @@
 
             return `
               <button type="button" class="module-unit-link" data-open-unit="${u.no}">
-                <span style="display: inline-flex; align-items: center; gap: 8px; min-width: 0;">
-                  <span class="font-notch" style="font-size: 0.76rem; font-weight: 600; color: var(--mod${mod.id}-accent); flex-shrink: 0;">${esc(u.code)}</span>
-                  <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${esc(u.title)}</span>
+                <span class="module-unit-link-title-group">
+                  <span class="font-notch module-unit-code" style="color: var(--mod${mod.id}-accent); flex-shrink: 0;">${esc(u.code)}</span>
+                  <span class="module-unit-title-text">${window.AppUtils.formatUnitTitleHtml(u.title)}</span>
                 </span>
                 <span class="status-pill ${pillClass}" style="flex-shrink: 0;">${esc(pillText)}</span>
               </button>
@@ -423,10 +423,10 @@
                   <span class="unit-number-badge ${isPassed ? "is-done" : ""}">${esc(u.code)}</span>
                 </td>
                 <td>
-                  <strong style="font-size: 0.92rem; font-weight: 600; color: var(--text-main); display: block;">
-                    ${esc(u.title)}
+                  <strong class="progress-unit-title">
+                    ${window.AppUtils.formatUnitTitleHtml(u.title)}
                   </strong>
-                  <span style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-top: 2px;">
+                  <span class="progress-unit-subtitle">
                     ${esc(u.subtitle)}
                   </span>
                 </td>

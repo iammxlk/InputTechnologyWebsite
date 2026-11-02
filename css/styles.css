@@ -2236,7 +2236,7 @@ html[data-theme="dark"] .module-overview-card.module-theme-4.is-selected-unit {
 .lesson-info-card-desc strong,
 .lesson-flow-desc strong,
 .lesson-callout-text strong,
-.clean-table td strong,
+.lesson-step-body .clean-table td strong,
 .lesson-term-emphasis {
   font-weight: 700;
   color: var(--text-main);
@@ -2251,7 +2251,7 @@ html[data-theme="dark"] .module-overview-card.module-theme-4.is-selected-unit {
 [data-theme="light"] .lesson-info-card-desc strong,
 [data-theme="light"] .lesson-flow-desc strong,
 [data-theme="light"] .lesson-callout-text strong,
-[data-theme="light"] .clean-table td strong,
+[data-theme="light"] .lesson-step-body .clean-table td strong,
 [data-theme="light"] .lesson-term-emphasis {
   color: #0f172a;
   background: rgba(14, 165, 233, 0.12);
@@ -8250,4 +8250,83 @@ html[data-theme="dark"] .bg-fx-dot {
 
 .telemetry-fx-link:hover {
   color: var(--accent-signal);
+}
+
+
+/* ============================================================================
+   PROGRESS & SYLLABUS UNIT TITLES & SMART WRAPPING
+   ============================================================================ */
+.progress-unit-title,
+#progress-units-tbody td strong,
+.clean-table td strong.progress-unit-title {
+  background: transparent !important;
+  border-bottom: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  font-size: 0.92rem !important;
+  font-weight: 600 !important;
+  color: var(--text-main) !important;
+  display: block !important;
+  line-height: 1.48 !important;
+  text-wrap: pretty;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+.progress-unit-subtitle {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: block;
+  margin-top: 3px;
+  line-height: 1.5;
+  text-wrap: pretty;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+/* Smart Balanced Unit Titles with Parenthetical Clamping */
+.unit-title-main {
+  display: inline;
+}
+
+.unit-title-paren {
+  display: inline-block;
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+/* Home Syllabus Module Unit Links */
+.module-unit-link {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  padding: 8px 10px !important;
+  width: 100% !important;
+  text-align: left !important;
+}
+
+.module-unit-link-title-group {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+}
+
+.module-unit-code {
+  font-size: 0.76rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.module-unit-title-text {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-main);
+  line-height: 1.42;
+  text-wrap: pretty;
+  word-break: normal;
+  overflow-wrap: break-word;
 }

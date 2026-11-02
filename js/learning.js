@@ -253,7 +253,7 @@
             </div>
 
             <h2 style="font-size: 1.28rem; font-weight: 600; margin-top: 12px; line-height: 1.38;">
-              หน่วยที่ ${currentUnit.no}: ${esc(currentUnit.title)}
+              หน่วยที่ ${currentUnit.no}: ${window.AppUtils.formatUnitTitleHtml(currentUnit.title)}
             </h2>
             <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 6px; line-height: 1.6;">
               ${esc(currentUnit.subtitle)}
@@ -345,7 +345,7 @@
                 </div>
 
                 <h3 style="font-size: 1.03rem; font-weight: 600; margin-top: 12px; line-height: 1.4;">
-                  หน่วยที่ ${u.no}: ${esc(u.title)}
+                  หน่วยที่ ${u.no}: ${window.AppUtils.formatUnitTitleHtml(u.title)}
                 </h3>
                 <p style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 6px; line-height: 1.56;">
                   ${esc(u.subtitle)}
@@ -728,7 +728,7 @@
               ${esc(mod ? mod.title : "")}
             </span>
             <h1 style="font-size: 1.32rem; font-weight: 600; margin-top: 2px; line-height: 1.35;">
-              หน่วยที่ ${meta.no}: ${esc(meta.title)}
+              หน่วยที่ ${meta.no}: ${window.AppUtils.formatUnitTitleHtml(meta.title)}
             </h1>
           </div>
         </div>
@@ -992,7 +992,7 @@
         <div class="quiz-countdown-meta">
           <span class="unit-number-badge font-notch">${esc(meta.code)}</span>
           <h2 class="quiz-countdown-title">เตรียมพร้อมทำแบบทดสอบ: หน่วยที่ ${meta.no}</h2>
-          <p class="quiz-countdown-subtitle">${esc(meta.title)} — ${esc(meta.subtitle)}</p>
+          <p class="quiz-countdown-subtitle">${window.AppUtils.formatUnitTitleHtml(meta.title)} — ${esc(meta.subtitle)}</p>
         </div>
 
         <div class="quiz-countdown-display-wrap">

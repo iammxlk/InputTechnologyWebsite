@@ -237,6 +237,22 @@ window.AppUtils = {
       .replace(/'/g, "&#39;");
   },
 
+  /**
+   * จัดรูปแบบชื่อหน่วยการเรียนรู้ให้ตัดคำและขึ้นบรรทัดใหม่อย่างสวยงาม
+   * แยกส่วนหัวข้อหลักและข้อความในวงเล็บ (เช่น QR Code / ภาษาอังกฤษ) 
+   * เพื่อไม่ให้คำในวงเล็บขาดตอนกลางคำเมื่อความกว้างหน้าจอไม่พอ
+   */
+  formatUnitTitleHtml(title) {
+    if (!title) return "";
+    const clean = String(title).trim();
+    const esc = this.escapeHtml ? this.escapeHtml.bind(this) : ((s) => s);
+    const m = clean.match(/^(.*?)\s*(\([^)]*\))$/);
+    if (m) {
+      return `<span class="unit-title-main">${esc(m[1])}</span> <span class="unit-title-paren">${esc(m[2])}</span>`;
+    }
+    return `<span class="unit-title-main">${esc(clean)}</span>`;
+  },
+
   showToast(message, type = "info") {
     const stack = document.getElementById("toast-stack");
     if (!stack) return;
