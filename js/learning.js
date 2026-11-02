@@ -277,7 +277,7 @@
                     window.MiniGameEngine && window.MiniGameEngine.getGameForMilestoneUnit(currentUnit.no)
                       ? `
                         <button type="button" class="btn-secondary" data-open-minigame="${currentUnit.no}" style="min-height: 44px; padding: 10px 18px; font-weight: 700; border: 2px solid var(--border-ink);">
-                          มินิเกมประลองความไว (Endless)
+                          มินิเกมฝึกทักษะประจำหมวด (Endless)
                         </button>
                       `
                       : ""
