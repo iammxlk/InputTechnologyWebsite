@@ -487,6 +487,7 @@
       window.MotionEngine.animateModalOpen(modal);
     } else {
       modal.classList.remove("hidden");
+      document.body.classList.add("is-modal-open");
     }
 
     if (canvas && window.CertificateEngine) {
@@ -511,7 +512,10 @@
         window.MotionEngine.animateModalClose(modal);
       } else {
         modal.classList.add("hidden");
-        document.body.classList.remove("is-modal-open");
+        const anyModalOpen = Boolean(document.querySelector(".modal-overlay:not(.hidden)"));
+        if (!anyModalOpen) {
+          document.body.classList.remove("is-modal-open");
+        }
       }
     }
   }

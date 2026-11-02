@@ -1118,7 +1118,9 @@ html[data-theme="dark"] .floating-action-btn:hover {
 /* ============================================================================
    7. MODALS (PROFILE / CHANGE PASSWORD / MINIGAME RULES) & TOASTS
    ============================================================================ */
-.modal-overlay {
+.modal-overlay,
+#cert-preview-modal,
+#profile-modal {
   position: fixed !important;
   inset: 0 !important;
   top: 0 !important;
@@ -1128,10 +1130,10 @@ html[data-theme="dark"] .floating-action-btn:hover {
   width: 100vw !important;
   height: 100vh !important;
   height: 100dvh !important;
-  z-index: 1000 !important;
-  background-color: rgba(15, 23, 42, 0.65) !important;
-  backdrop-filter: blur(4px) !important;
-  -webkit-backdrop-filter: blur(4px) !important;
+  z-index: 9999 !important;
+  background-color: rgba(15, 23, 42, 0.72) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -1155,7 +1157,65 @@ body.is-modal-open {
 }
 
 .modal-dialog.is-wide {
-  max-width: 840px;
+  max-width: 880px;
+}
+
+#cert-preview-modal .modal-dialog.is-wide {
+  max-width: 900px;
+  width: 100%;
+  max-height: 94dvh;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 26px;
+  box-sizing: border-box;
+}
+
+#cert-preview-modal .modal-header {
+  padding-bottom: 12px;
+  flex-shrink: 0;
+}
+
+#cert-preview-modal .cert-preview-body {
+  padding: 12px 0;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#cert-preview-modal .cert-canvas-frame {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0F172A;
+  border-radius: var(--radius-xl);
+  padding: 10px;
+  border: 2px solid var(--border-ink);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.45);
+}
+
+#cert-preview-modal #modal-cert-preview-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: min(520px, calc(86dvh - 180px));
+  width: auto;
+  height: auto;
+  aspect-ratio: 1600 / 1131;
+  border-radius: 6px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+}
+
+#cert-preview-modal .modal-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+  flex-shrink: 0;
 }
 
 .modal-header {
@@ -6024,7 +6084,9 @@ body.is-minigame-active main.app-container {
   }
 
   /* Modals */
-  .modal-overlay {
+  .modal-overlay,
+  #cert-preview-modal,
+  #profile-modal {
     padding: 10px;
   }
 
@@ -6033,6 +6095,14 @@ body.is-minigame-active main.app-container {
     max-height: calc(100dvh - 20px) !important;
     padding: 18px 14px !important;
     border-radius: var(--radius-xl) !important;
+  }
+
+  #cert-preview-modal .modal-dialog.is-wide {
+    padding: 16px 14px !important;
+  }
+
+  #cert-preview-modal #modal-cert-preview-canvas {
+    max-height: calc(75dvh - 140px) !important;
   }
 }
 
