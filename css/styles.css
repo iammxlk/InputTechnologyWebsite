@@ -4526,6 +4526,10 @@ html[data-theme="dark"] .home-hero-main {
   padding: 10px 12px;
 }
 
+.auth-spec-box--full {
+  grid-column: 1 / -1;
+}
+
 /* 13.4 Tactile Mechanical Buttons (Real Keycap Travel) */
 .btn-primary {
   background-color: #C22F00 !important;
