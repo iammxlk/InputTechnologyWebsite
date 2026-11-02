@@ -17,6 +17,13 @@
   --bg-subtle: #F7EFE0;
   --bg-hover: #EFE4CE;
   --bg-input-focus: #FFFBEB;
+  --surface-card: var(--bg-surface);
+  --surface-secondary: var(--bg-subtle);
+  --bg-card: var(--bg-surface);
+  --text-primary: var(--text-main);
+  --color-ink-subtle: var(--text-muted);
+  --pop-violet: #7B4DFF;
+  --brand-accent: #0099B8;
 
   /* Core Creative Studio Pop CMY & Studio Accents */
   --pop-magenta: #FF3D9A;
@@ -115,6 +122,13 @@ html[data-theme="dark"],
   --bg-subtle: #2A2059;
   --bg-hover: #35296E;
   --bg-input-focus: #271E54;
+  --surface-card: var(--bg-surface);
+  --surface-secondary: var(--bg-subtle);
+  --bg-card: var(--bg-surface);
+  --text-primary: var(--text-main);
+  --color-ink-subtle: var(--text-secondary);
+  --pop-violet: #9B75FF;
+  --brand-accent: #00C6E0;
 
   --border-ink: #6453AD;
   --shadow-ink: #070414;
@@ -2876,8 +2890,6 @@ html[data-theme="dark"] .module-overview-card.module-theme-4.is-selected-unit {
   padding: 20px 24px;
   border: 2px solid var(--border-ink);
   box-shadow: 3px 3px 0 var(--border-ink);
-}
-  border: 1px solid var(--border-subtle);
 }
 
 .quiz-feedback-box.is-correct {
@@ -9139,4 +9151,844 @@ html[data-motion="reduced"] .reveal-ready {
     width: 100% !important;
     margin: 0 !important;
   }
+}
+
+/* ==========================================================================
+   16. CHIBI VOCATIONAL IT MASCOT STICKERS & FLOATING COMPANION
+   ========================================================================== */
+
+@keyframes mascotFloatGentle {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(-1.5deg);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0) rotate(1.5deg);
+  }
+}
+
+@keyframes mascotFloatReverse {
+  0%, 100% {
+    transform: translate3d(0, -6px, 0) rotate(2deg);
+  }
+  50% {
+    transform: translate3d(0, 4px, 0) rotate(-2deg);
+  }
+}
+
+@keyframes mascotPopSpring {
+  0% {
+    transform: scale(0.75) translate3d(0, 8px, 0);
+  }
+  55% {
+    transform: scale(1.08, 0.94) translate3d(0, -6px, 0);
+  }
+  80% {
+    transform: scale(0.97, 1.03) translate3d(0, 0, 0);
+  }
+  100% {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+}
+
+.mascot-sticker {
+  display: block;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: drop-shadow(3px 4px 0px rgba(27, 19, 64, 0.88));
+  will-change: transform;
+  flex-shrink: 0;
+}
+
+html[data-theme="dark"] .mascot-sticker {
+  filter: drop-shadow(3px 4px 0px rgba(6, 4, 18, 0.95));
+}
+
+/* 16.1 Ambient Wide-Viewport Margin Floating Stickers */
+.studio-ambient-mascots {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+  display: none;
+}
+
+@media (min-width: 1440px) {
+  .studio-ambient-mascots {
+    display: block;
+  }
+}
+
+.ambient-mascot {
+  position: absolute;
+  width: 96px;
+  height: auto;
+  opacity: 0.92;
+  filter: drop-shadow(3px 4px 0px rgba(27, 19, 64, 0.65));
+}
+
+.ambient-mascot--left-top {
+  left: max(14px, calc((100vw - 1220px) / 2 - 110px));
+  top: 23%;
+  animation: mascotFloatGentle 5.4s ease-in-out infinite;
+}
+
+.ambient-mascot--right-mid {
+  right: max(14px, calc((100vw - 1220px) / 2 - 112px));
+  top: 34%;
+  width: 102px;
+  animation: mascotFloatReverse 6.1s ease-in-out infinite;
+}
+
+.ambient-mascot--right-low {
+  right: max(18px, calc((100vw - 1220px) / 2 - 104px));
+  bottom: 13%;
+  width: 90px;
+  animation: mascotFloatGentle 4.9s ease-in-out infinite;
+}
+
+/* 16.2 Auth Showcase Mascot Stage */
+.auth-showcase-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.auth-showcase-badges {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.auth-mascot-stage {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mascot-sticker--auth {
+  width: 126px;
+  height: auto;
+  animation: mascotFloatGentle 4.6s ease-in-out infinite;
+}
+
+/* 16.3 Home Hero Header Mascot */
+.home-hero-with-mascot {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 24px !important;
+}
+
+.home-hero-copy {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.home-hero-mascot-box {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mascot-sticker--hero {
+  width: 148px;
+  height: auto;
+  animation: mascotFloatGentle 4.8s ease-in-out infinite;
+}
+
+/* 16.4 Section Headings & Lessons Directory Mascots */
+.section-heading-with-mascot {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.mascot-sticker--inline {
+  width: 64px;
+  height: 64px;
+  animation: mascotFloatGentle 5s ease-in-out infinite;
+}
+
+.lessons-hero-mascot-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.mascot-sticker--directory {
+  width: 94px;
+  height: auto;
+}
+
+.mascot-sticker--directory.is-left {
+  animation: mascotFloatGentle 4.7s ease-in-out infinite;
+}
+
+.mascot-sticker--directory.is-right {
+  animation: mascotFloatReverse 5.2s ease-in-out infinite;
+}
+
+/* 16.5 Selected Unit Banner, Quiz Feedback, Quiz Result & Progress Gate */
+.selected-unit-mascot-lead {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.mascot-sticker--unit-banner {
+  width: 86px;
+  height: 86px;
+  animation: mascotFloatGentle 4.8s ease-in-out infinite;
+}
+
+.quiz-feedback-mascot-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.mascot-sticker--quiz-feedback {
+  width: 66px;
+  height: 66px;
+  animation: mascotPopSpring 0.48s var(--ease-spring) both;
+}
+
+.quiz-result-mascot-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.mascot-sticker--quiz-result {
+  width: 112px;
+  height: 112px;
+  animation: mascotFloatGentle 4.4s ease-in-out infinite;
+}
+
+.cert-gate-mascot-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.mascot-sticker--cert-gate {
+  width: 88px;
+  height: 88px;
+  animation: mascotFloatGentle 4.9s ease-in-out infinite;
+}
+
+/* 16.6 Bottom-Left Interactive Floating Mascot Companion */
+.studio-mascot-companion {
+  position: fixed;
+  left: 18px;
+  bottom: 18px;
+  z-index: 45;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.studio-mascot-companion.is-minigame-hidden {
+  display: none !important;
+}
+
+.mascot-companion-btn {
+  pointer-events: auto;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.18s var(--ease-spring);
+}
+
+.mascot-companion-btn:hover {
+  transform: scale(1.07) translateY(-3px);
+}
+
+.mascot-companion-btn:active {
+  transform: scale(0.94, 0.9) translateY(2px);
+}
+
+.mascot-companion-avatar {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  filter: drop-shadow(3px 4px 0px #1B1340);
+  animation: mascotFloatGentle 4.2s ease-in-out infinite;
+}
+
+.mascot-companion-avatar.is-bouncing {
+  animation: mascotPopSpring 0.46s var(--ease-spring) both;
+}
+
+.mascot-companion-bubble {
+  pointer-events: auto;
+  position: relative;
+  max-width: 258px;
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+  border: 2.5px solid var(--border-ink);
+  border-radius: 16px 16px 16px 4px;
+  box-shadow: 4px 4px 0px var(--shadow-ink);
+  padding: 10px 28px 10px 13px;
+  margin-bottom: 10px;
+  transition: opacity 0.2s ease, transform 0.22s var(--ease-spring);
+}
+
+.mascot-companion-bubble.is-collapsed {
+  opacity: 0;
+  transform: translate3d(-10px, 6px, 0) scale(0.92);
+  pointer-events: none;
+  position: absolute;
+  visibility: hidden;
+}
+
+.mascot-companion-text {
+  font-family: var(--font-body);
+  font-size: 0.83rem;
+  font-weight: 600;
+  line-height: 1.48;
+  margin: 0;
+  color: var(--text-main);
+}
+
+.mascot-companion-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1.5px solid var(--border-control);
+  background: var(--bg-subtle);
+  color: var(--text-main);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.mascot-companion-close:hover {
+  background-color: var(--pop-yellow);
+  color: #1B1340;
+}
+
+/* 16.7 Responsive Mascot Scaling for Tablet & Mobile */
+@media (max-width: 860px) {
+  .mascot-sticker--directory.is-right {
+    display: none;
+  }
+
+  .lessons-hero-mascot-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mascot-sticker--directory.is-left {
+    width: 78px;
+  }
+}
+
+@media (max-width: 768px) {
+  .mascot-sticker--auth {
+    width: 86px;
+  }
+
+  .home-hero-with-mascot {
+    flex-direction: column-reverse !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  .mascot-sticker--hero {
+    width: 104px;
+  }
+
+  .mascot-sticker--inline {
+    width: 50px;
+    height: 50px;
+  }
+
+  .selected-unit-mascot-lead {
+    align-items: flex-start;
+  }
+
+  .mascot-sticker--unit-banner {
+    width: 64px;
+    height: 64px;
+  }
+
+  .mascot-sticker--cert-gate {
+    width: 68px;
+    height: 68px;
+  }
+
+  .studio-mascot-companion {
+    display: none !important;
+  }
+
+  .mascot-companion-avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .mascot-companion-bubble {
+    display: none;
+  }
+}
+
+/* 16.8 Reduced Motion Overrides for Mascots */
+@media (prefers-reduced-motion: reduce) {
+  .mascot-sticker,
+  .ambient-mascot,
+  .mascot-companion-avatar {
+    animation: none !important;
+  }
+}
+
+html[data-motion="reduced"] .mascot-sticker,
+html[data-motion="reduced"] .ambient-mascot,
+html[data-motion="reduced"] .mascot-companion-avatar {
+  animation: none !important;
+}
+
+
+/* ==========================================================================
+   17. MIDNIGHT STUDIO POP — DARK MODE CONTRAST & WHITE-BOX FIXES
+   ========================================================================== */
+
+/* 17.1 Progress Certificate Unlock Gate Box (Light & Dark Modes) */
+.progress-cert-gate-box {
+  margin-top: 20px;
+  padding: 18px 20px;
+  border-radius: var(--radius-xl);
+  background-color: var(--bg-subtle);
+  border: 2px solid var(--border-subtle);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.progress-cert-gate-box.is-unlocked {
+  background-color: #E6FCF3;
+  border: 2.5px solid #059669;
+  box-shadow: 4px 4px 0px #065F46;
+}
+
+.progress-cert-gate-box.is-unlocked #progress-cert-gate-title {
+  color: #064E3B;
+}
+
+.progress-cert-gate-box.is-unlocked #progress-cert-gate-desc {
+  color: #065F46 !important;
+}
+
+html[data-theme="dark"] .progress-cert-gate-box {
+  background-color: #161036;
+  border-color: var(--border-subtle);
+}
+
+html[data-theme="dark"] .progress-cert-gate-box.is-unlocked {
+  background-color: #0E2F34;
+  border: 2.5px solid #2EE59D;
+  box-shadow: 4px 4px 0px #070414;
+}
+
+html[data-theme="dark"] .progress-cert-gate-box.is-unlocked #progress-cert-gate-title {
+  color: #ECFEF7 !important;
+}
+
+html[data-theme="dark"] .progress-cert-gate-box.is-unlocked #progress-cert-gate-desc {
+  color: #BDEEE0 !important;
+}
+
+/* 17.2 Auth Showcase Chips, Form Inputs & Primary CTA in Dark Mode */
+html[data-theme="dark"] .auth-logo-chip {
+  background-color: #241B4F !important;
+  color: #FFFBF2 !important;
+  border-color: #6453AD !important;
+  box-shadow: 3px 3px 0px #070414 !important;
+}
+
+html[data-theme="dark"] .auth-logo-chip img {
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  padding: 2px;
+}
+
+html[data-theme="dark"] .studio-cmy-swatch-pill {
+  background-color: #241B4F !important;
+  color: #FFFBF2 !important;
+  border-color: #6453AD !important;
+  box-shadow: 3px 3px 0px #070414 !important;
+}
+
+html[data-theme="dark"] .input-control {
+  background-color: #140E30 !important;
+  color: #FFFBF2 !important;
+  border-color: var(--border-control) !important;
+  box-shadow: 2px 2px 0px #070414 !important;
+}
+
+html[data-theme="dark"] .input-control:focus {
+  background-color: #22194D !important;
+  color: #FFFBF2 !important;
+  border-color: var(--pop-cyan) !important;
+  box-shadow: 4px 4px 0px var(--pop-yellow) !important;
+}
+
+html[data-theme="dark"] .input-control:-webkit-autofill,
+html[data-theme="dark"] .input-control:-webkit-autofill:hover,
+html[data-theme="dark"] .input-control:-webkit-autofill:focus {
+  -webkit-text-fill-color: #FFFBF2 !important;
+  -webkit-box-shadow: 0 0 0px 1000px #140E30 inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+html[data-theme="dark"] .avatar-upload-box {
+  background-color: #140E30 !important;
+  border-color: var(--border-control) !important;
+}
+
+html[data-theme="dark"] .btn-primary {
+  background-color: #E11D7E !important;
+  color: #FFFFFF !important;
+  border-color: #FFFBF2 !important;
+}
+
+html[data-theme="dark"] .segmented-tabs,
+html[data-theme="dark"] .filter-pills-row {
+  background-color: #140E30 !important;
+  border-color: var(--border-ink) !important;
+}
+
+html[data-theme="dark"] .segmented-tab-btn:not(.is-active),
+html[data-theme="dark"] .filter-pill-btn:not(.is-active) {
+  color: #DFD8F7 !important;
+}
+
+/* 17.3 Quiz & Minigame Cockpit HUD, Timer Badges, Options & Feedback Boxes */
+html[data-theme="dark"] .quiz-hud-timer-badge,
+html[data-theme="dark"] .mg-countdown-clock-badge {
+  background-color: #161036 !important;
+  color: #FFFBF2 !important;
+  border-color: var(--border-ink) !important;
+  box-shadow: 2.5px 2.5px 0px var(--shadow-ink) !important;
+}
+
+html[data-theme="dark"] .mg-countdown-clock-badge.is-warn {
+  color: #FFD23F !important;
+  border-color: #FFD23F !important;
+}
+
+html[data-theme="dark"] .mg-countdown-clock-badge.is-danger {
+  color: #FF7A45 !important;
+  border-color: #FF7A45 !important;
+}
+
+html[data-theme="dark"] .quiz-cockpit-hud .unit-number-badge {
+  background-color: rgba(0, 198, 224, 0.18) !important;
+  color: #7CE8F7 !important;
+  border-color: #00C6E0 !important;
+  box-shadow: 2px 2px 0px var(--shadow-ink) !important;
+}
+
+html[data-theme="dark"] .quiz-hud-score-badge strong,
+html[data-theme="dark"] .mg-hud-score-badge strong {
+  color: #FFD23F !important;
+}
+
+html[data-theme="dark"] .quiz-cockpit-dots .quiz-progress-dot:not(.is-current):not(.is-correct):not(.is-wrong),
+html[data-theme="dark"] .mg-cockpit-dots .quiz-progress-dot:not(.is-current):not(.is-correct):not(.is-wrong) {
+  background-color: #161036 !important;
+  color: #DFD8F7 !important;
+  border-color: var(--border-subtle) !important;
+  box-shadow: 2px 2px 0px var(--shadow-ink) !important;
+}
+
+html[data-theme="dark"] .quiz-option-btn {
+  background-color: #161036 !important;
+  color: #FFFBF2 !important;
+}
+
+html[data-theme="dark"] .quiz-option-btn.is-correct {
+  background-color: #0E342D !important;
+  border-color: #2EE59D !important;
+  color: #ECFEF7 !important;
+  box-shadow: 4px 4px 0px #070414 !important;
+}
+
+html[data-theme="dark"] .quiz-option-btn.is-correct .quiz-option-text {
+  color: #ECFEF7 !important;
+}
+
+html[data-theme="dark"] .quiz-option-btn.is-wrong {
+  background-color: #3B1722 !important;
+  border-color: #FF7A45 !important;
+  color: #FFF1EC !important;
+  box-shadow: 4px 4px 0px #070414 !important;
+}
+
+html[data-theme="dark"] .quiz-option-btn.is-wrong .quiz-option-text {
+  color: #FFF1EC !important;
+}
+
+html[data-theme="dark"] .quiz-choice-verdict.is-correct {
+  background-color: rgba(46, 229, 157, 0.22) !important;
+  color: #6EE7B7 !important;
+  border-color: #2EE59D !important;
+}
+
+html[data-theme="dark"] .quiz-choice-verdict.is-wrong {
+  background-color: rgba(255, 122, 69, 0.24) !important;
+  color: #FFB494 !important;
+  border-color: #FF7A45 !important;
+}
+
+html[data-theme="dark"] .quiz-feedback-box.is-correct {
+  background-color: #0E342D !important;
+  border-color: #2EE59D !important;
+  color: #ECFEF7 !important;
+}
+
+html[data-theme="dark"] .quiz-feedback-box.is-wrong {
+  background-color: #3B1722 !important;
+  border-color: #FF7A45 !important;
+  color: #FFF1EC !important;
+}
+
+/* 17.4 Lesson Step Reader, Callout Boxes & Tables in Dark Mode */
+html[data-theme="dark"] .step-rail-btn {
+  background-color: #161036 !important;
+  color: #DFD8F7 !important;
+  border-color: var(--border-subtle) !important;
+}
+
+html[data-theme="dark"] .step-rail-btn.is-visited {
+  background-color: rgba(0, 198, 224, 0.16) !important;
+  border-color: #00C6E0 !important;
+  color: #7CE8F7 !important;
+}
+
+html[data-theme="dark"] .step-rail-btn.is-current,
+html[data-theme="dark"] .step-rail-btn.is-active {
+  background-color: var(--pop-yellow) !important;
+  color: #1B1340 !important;
+  border-color: #1B1340 !important;
+  box-shadow: 3px 3px 0px #070414 !important;
+  font-weight: 700 !important;
+}
+
+html[data-theme="dark"] .lesson-callout-box {
+  background-color: #12283D !important;
+  border-color: #1E4E6E !important;
+  border-left: 4px solid #00C6E0 !important;
+}
+
+html[data-theme="dark"] .lesson-callout-title {
+  color: #7CE8F7 !important;
+}
+
+html[data-theme="dark"] .lesson-callout-text {
+  color: #E2F8FC !important;
+}
+
+html[data-theme="dark"] .lesson-flow-item,
+html[data-theme="dark"] .lesson-info-card,
+html[data-theme="dark"] .lesson-takeaway-box {
+  background-color: #161036 !important;
+  border-color: var(--border-subtle) !important;
+}
+
+html[data-theme="dark"] .clean-table th,
+html[data-theme="dark"] .lesson-data-table th {
+  background-color: #140E30 !important;
+  color: #DFD8F7 !important;
+  border-bottom-color: var(--border-subtle) !important;
+}
+
+html[data-theme="dark"] .clean-table tr:hover td {
+  background-color: #271E54 !important;
+}
+
+/* 17.5 EAN-13 Interactive Lab & Minigame Cards in Dark Mode */
+html[data-theme="dark"] .ean13-lab-card,
+html[data-theme="dark"] .ean13-step-board,
+html[data-theme="dark"] .live-input-card,
+html[data-theme="dark"] .live-summary-box:not(.is-primary) {
+  background-color: #1E1642 !important;
+  border-color: var(--border-ink) !important;
+  box-shadow: 3px 3px 0px var(--shadow-ink) !important;
+}
+
+html[data-theme="dark"] .ean13-formula-card,
+html[data-theme="dark"] .ean13-callout-box,
+html[data-theme="dark"] .weights-rule-box,
+html[data-theme="dark"] .prod-item,
+html[data-theme="dark"] .math-split-box,
+html[data-theme="dark"] .div-cell,
+html[data-theme="dark"] .split-target-box,
+html[data-theme="dark"] .verdict-comp-box {
+  background-color: #161036 !important;
+  border-color: var(--border-subtle) !important;
+  color: #FFFBF2 !important;
+}
+
+html[data-theme="dark"] .ean13-formula-card.is-highlight,
+html[data-theme="dark"] .ean13-callout-box.is-calc,
+html[data-theme="dark"] .ean13-callout-box.is-sum,
+html[data-theme="dark"] .shortcut-tip-box,
+html[data-theme="dark"] .live-verdict-banner.is-info {
+  background-color: #12283D !important;
+  border-color: #00C6E0 !important;
+  color: #E2F8FC !important;
+}
+
+html[data-theme="dark"] .ean13-formula-card.is-zero-card,
+html[data-theme="dark"] .ean13-callout-box.is-warn,
+html[data-theme="dark"] .zero-case-banner {
+  background-color: #332510 !important;
+  border-color: #F59E0B !important;
+  color: #FEF3C7 !important;
+}
+
+html[data-theme="dark"] .zero-alert-title {
+  color: #FDE68A !important;
+}
+
+html[data-theme="dark"] .zero-alert-text {
+  color: #FEF3C7 !important;
+}
+
+html[data-theme="dark"] .ean13-formula-card.is-danger,
+html[data-theme="dark"] .ean13-callout-box.is-danger,
+html[data-theme="dark"] .div-cell.is-remainder,
+html[data-theme="dark"] .verdict-banner-invalid,
+html[data-theme="dark"] .live-verdict-banner.is-invalid,
+html[data-theme="dark"] .preset-pill-btn.is-wrong {
+  background-color: #3B1722 !important;
+  border-color: #FF7A45 !important;
+  color: #FFF1EC !important;
+}
+
+html[data-theme="dark"] .v-title,
+html[data-theme="dark"] .is-invalid .lv-title {
+  color: #FFB494 !important;
+}
+
+html[data-theme="dark"] .v-desc {
+  color: #FFE4DC !important;
+}
+
+html[data-theme="dark"] .ean13-formula-card.is-success,
+html[data-theme="dark"] .ean13-callout-box.is-final,
+html[data-theme="dark"] .live-verdict-banner.is-valid {
+  background-color: #0E342D !important;
+  border-color: #2EE59D !important;
+  color: #ECFEF7 !important;
+}
+
+html[data-theme="dark"] .is-valid .lv-title {
+  color: #6EE7B7 !important;
+}
+
+html[data-theme="dark"] .is-info .lv-title {
+  color: #7CE8F7 !important;
+}
+
+html[data-theme="dark"] .live-verdict-banner.is-pending {
+  background-color: #161036 !important;
+  border-color: var(--border-subtle) !important;
+  color: #DFD8F7 !important;
+}
+
+html[data-theme="dark"] .is-pending .lv-title {
+  color: #FFFBF2 !important;
+}
+
+html[data-theme="dark"] .rule-math,
+html[data-theme="dark"] .div-val:not(.is-neon),
+html[data-theme="dark"] .st-code:not(.is-given),
+html[data-theme="dark"] .live-summary-box:not(.is-primary) .ls-val:not(.is-mod) {
+  color: #FFFBF2 !important;
+}
+
+html[data-theme="dark"] .rule-desc,
+html[data-theme="dark"] .div-label,
+html[data-theme="dark"] .st-label,
+html[data-theme="dark"] .comp-label,
+html[data-theme="dark"] .complete-label,
+html[data-theme="dark"] .live-summary-box:not(.is-primary) .ls-label,
+html[data-theme="dark"] .live-summary-box:not(.is-primary) .ls-sub {
+  color: #ABA0CF !important;
+}
+
+html[data-theme="dark"] .prod-pos,
+html[data-theme="dark"] .split-pill {
+  background-color: #241B4F !important;
+  color: #DFD8F7 !important;
+}
+
+html[data-theme="dark"] .prod-math strong,
+html[data-theme="dark"] .split-pill strong,
+html[data-theme="dark"] .math-res.is-accent,
+html[data-theme="dark"] .comp-num:not(.is-err) {
+  color: #5CE1F5 !important;
+}
+
+html[data-theme="dark"] .ean13-cell.is-col-checkdigit .cell-weight,
+html[data-theme="dark"] .ean13-matrix-col.is-col-checkdigit .cell-weight {
+  background-color: #241B4F !important;
+  color: #ABA0CF !important;
+  border-color: var(--border-subtle) !important;
+}
+
+/* Keep physical barcode label card crisp white for optical bar contrast, with dark readable meta tags */
+html[data-theme="dark"] .ean13-barcode-card .ean13-meta-tag {
+  color: #1B1340;
+}
+
+html[data-theme="dark"] .mg-leaderboard-tab {
+  background-color: #1E1642 !important;
+  border-color: var(--border-ink) !important;
+  box-shadow: 3px 3px 0px var(--shadow-ink) !important;
+}
+
+html[data-theme="dark"] .mg-leaderboard-tab.is-active {
+  background-color: #5B2EFF !important;
+  border-color: #FFFBF2 !important;
+}
+
+
+/* 17.6 Scroll Safety & Button Contrast Polish */
+body.is-quiz-active,
+body.is-minigame-active {
+  overflow-y: auto !important;
+}
+
+.btn-pixel-action {
+  background-color: #DC2626 !important;
+  color: #FFFFFF !important;
 }

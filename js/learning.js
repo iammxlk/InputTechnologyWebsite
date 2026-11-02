@@ -223,7 +223,14 @@
     if (bannerEl) {
       bannerEl.innerHTML = `
         <div class="selected-unit-banner-inner">
-          <div style="min-width: 0; max-width: 720px;">
+          <div class="selected-unit-mascot-lead">
+            <img
+              src="${window.MascotCompanion ? window.MascotCompanion.getPoseForModule(currentUnit.moduleId) : 'images/mascot/mascot-study.png'}"
+              alt=""
+              class="mascot-sticker mascot-sticker--unit-banner"
+              aria-hidden="true"
+            />
+            <div style="min-width: 0; max-width: 680px;">
             <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
               <span class="unit-number-badge ${isPassed ? "is-done" : ""}">${esc(currentUnit.code)}</span>
               <span class="status-pill is-neutral">${esc(currentMod ? currentMod.title : "")}</span>
@@ -258,6 +265,7 @@
             <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 6px; line-height: 1.6;">
               ${esc(currentUnit.subtitle)}
             </p>
+            </div>
           </div>
 
           <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
@@ -1066,10 +1074,14 @@
     if (isCorrect) {
       window.SoundEngine?.playSuccess();
       window.MotionEngine?.burstQuizConfetti?.();
+      window.MascotCompanion?.setState?.("quiz_correct");
     } else {
       window.SoundEngine?.playError();
-      const qCard = document.querySelector("#lesson-workspace .quiz-question-card");
+      const qCard =
+        document.querySelector("#lesson-workspace .quiz-cockpit-card") ||
+        document.querySelector("#lesson-workspace .quiz-question-card");
       window.MotionEngine?.shakeElement(qCard);
+      window.MascotCompanion?.setState?.("quiz_wrong");
     }
 
     setTimeout(() => {
@@ -1160,7 +1172,14 @@
       feedbackHtml = `
         <div class="quiz-feedback-box ${answerRecord.isCorrect ? "is-correct" : "is-wrong"}" id="quiz-feedback-banner">
           <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
-            <div style="min-width: 0;">
+            <div class="quiz-feedback-mascot-head">
+              <img
+                src="images/mascot/${answerRecord.isCorrect ? "mascot-cheer.png" : "mascot-study.png"}"
+                alt=""
+                class="mascot-sticker mascot-sticker--quiz-feedback"
+                aria-hidden="true"
+              />
+              <div style="min-width: 0;">
               <strong style="font-size: 1.25rem; font-weight: 800; display: inline-flex; align-items: center; gap: 8px;">
                 ${
                   answerRecord.isCorrect
@@ -1171,6 +1190,7 @@
               <span style="font-size: 0.92rem; opacity: 0.90; font-weight: 600; display: block; margin-top: 2px;">
                 หยุดเวลาชั่วคราวขณะอ่านคำอธิบาย
               </span>
+              </div>
             </div>
 
             <button type="button" class="btn-primary quiz-advance-btn" id="btn-quiz-advance-inline" style="min-height: 48px; padding: 10px 22px; font-size: 1.08rem; font-weight: 800; border: 2px solid var(--border-ink); box-shadow: 2.5px 2.5px 0px var(--shadow-ink); margin-left: auto;">

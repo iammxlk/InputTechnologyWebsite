@@ -18,7 +18,7 @@
   <link rel="alternate icon" type="image/x-icon" href="favicon.ico" />
 
   <!-- Creative Studio Pop Stylesheet -->
-  <link rel="stylesheet" href="css/styles.css?v=4.0" />
+  <link rel="stylesheet" href="css/styles.css?v=4.2" />
 
   <!-- Immediate Theme & Motion Initializer (Prevents Flash on Load) -->
   <script>
@@ -50,6 +50,13 @@
     <span class="studio-pop-blob studio-pop-blob--magenta"></span>
     <span class="studio-pop-blob studio-pop-blob--cyan"></span>
     <span class="studio-pop-blob studio-pop-blob--yellow"></span>
+  </div>
+
+  <!-- Ambient Floating Chibi Mascot Stickers (Wide Desktop Studio Margins) -->
+  <div class="studio-ambient-mascots" aria-hidden="true">
+    <img src="images/mascot/mascot-study.png" alt="" class="ambient-mascot ambient-mascot--left-top" loading="lazy" />
+    <img src="images/mascot/mascot-scanner.png" alt="" class="ambient-mascot ambient-mascot--right-mid" loading="lazy" />
+    <img src="images/mascot/mascot-cheer.png" alt="" class="ambient-mascot ambient-mascot--right-low" loading="lazy" />
   </div>
 
   <!-- Top Network & Route Loading Progress Bar -->
@@ -127,20 +134,28 @@
         </div>
 
         <div class="auth-showcase-fg">
-          <div class="auth-logo-chip">
-            <img src="cdti-logo.png" alt="โลโก้สถาบันเทคโนโลยีจิตรลดา" />
-            <div>
-              <span class="font-notch" style="font-size: 0.72rem; font-weight: 700; color: var(--accent-signal); display: block;">SYS // 21901-2017</span>
-              <span style="font-size: 0.82rem; font-weight: 600;">สถาบันเทคโนโลยีจิตรลดา (CDTI)</span>
-            </div>
-          </div>
+          <div class="auth-showcase-top-row">
+            <div class="auth-showcase-badges">
+              <div class="auth-logo-chip">
+                <img src="cdti-logo.png" alt="โลโก้สถาบันเทคโนโลยีจิตรลดา" />
+                <div>
+                  <span class="font-notch" style="font-size: 0.72rem; font-weight: 700; color: var(--accent-signal); display: block;">SYS // 21901-2017</span>
+                  <span style="font-size: 0.82rem; font-weight: 600;">สถาบันเทคโนโลยีจิตรลดา (CDTI)</span>
+                </div>
+              </div>
 
-          <div class="studio-cmy-swatch-pill" aria-hidden="true">
-            <span class="swatch-dot is-magenta"></span>
-            <span class="swatch-dot is-cyan"></span>
-            <span class="swatch-dot is-yellow"></span>
-            <span class="swatch-dot is-mint"></span>
-            <span class="font-notch swatch-label">CAI STUDIO • 21901-2017</span>
+              <div class="studio-cmy-swatch-pill" aria-hidden="true">
+                <span class="swatch-dot is-magenta"></span>
+                <span class="swatch-dot is-cyan"></span>
+                <span class="swatch-dot is-yellow"></span>
+                <span class="swatch-dot is-mint"></span>
+                <span class="font-notch swatch-label">CAI STUDIO • 21901-2017</span>
+              </div>
+            </div>
+
+            <div class="auth-mascot-stage" aria-hidden="true">
+              <img src="images/mascot/mascot-keyboard.png" alt="" class="mascot-sticker mascot-sticker--auth" />
+            </div>
           </div>
 
           <h1 class="misreg-heading" data-text="เทคโนโลยีการนำเข้าข้อมูลสู่ระบบคอมพิวเตอร์">เทคโนโลยีการนำเข้าข้อมูลสู่ระบบคอมพิวเตอร์</h1>
@@ -521,14 +536,19 @@
               </div>
             </div>
 
-            <div class="home-hero-header-main">
-              <h1 class="home-hero-title misreg-heading">
-                เทคโนโลยีการนำเข้าข้อมูลสู่ระบบคอมพิวเตอร์
-              </h1>
-              <p class="home-hero-lead">
-                หลักสูตรประกาศนียบัตรวิชาชีพ (ปวช.) สาขาวิชาเทคโนโลยีสารสนเทศ — ปฏิบัติการเรียนรู้วงจร IPO อุปกรณ์นำเข้าข้อมูล สวิตช์กลไก เซนเซอร์ CMOS บาร์โค้ด 1D/2D
-                การเข้ารหัสความปลอดภัย SSL/TLS คลื่นวิทยุ RFID ข้อมูลชีวมิติ การตรวจสอบ Check Digit ระบบจัดการฐานข้อมูล และการบีบอัดข้อมูลระดับฮาร์ดแวร์
-              </p>
+            <div class="home-hero-header-main home-hero-with-mascot">
+              <div class="home-hero-copy">
+                <h1 class="home-hero-title misreg-heading">
+                  เทคโนโลยีการนำเข้าข้อมูลสู่ระบบคอมพิวเตอร์
+                </h1>
+                <p class="home-hero-lead">
+                  หลักสูตรประกาศนียบัตรวิชาชีพ (ปวช.) สาขาวิชาเทคโนโลยีสารสนเทศ — ปฏิบัติการเรียนรู้วงจร IPO อุปกรณ์นำเข้าข้อมูล สวิตช์กลไก เซนเซอร์ CMOS บาร์โค้ด 1D/2D
+                  การเข้ารหัสความปลอดภัย SSL/TLS คลื่นวิทยุ RFID ข้อมูลชีวมิติ การตรวจสอบ Check Digit ระบบจัดการฐานข้อมูล และการบีบอัดข้อมูลระดับฮาร์ดแวร์
+                </p>
+              </div>
+              <div class="home-hero-mascot-box" aria-hidden="true">
+                <img src="images/mascot/mascot-scanner.png" alt="" class="mascot-sticker mascot-sticker--hero" />
+              </div>
             </div>
 
             <div class="hw-meta-strip">
@@ -765,11 +785,14 @@
         <!-- Learning Format & Scoring Criteria Overview -->
         <div class="surface-card">
           <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 10px; padding-bottom: 16px; border-bottom: 1px solid var(--border-subtle);">
-            <div>
-              <h2 style="font-size: 1.15rem; font-weight: 600;">รูปแบบการเรียนรู้และเกณฑ์การวัดผล</h2>
-              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">
-                ออกแบบเส้นทางการเรียนเป็นลำดับขั้น เข้าใจง่าย และบันทึกสถิติลงฐานข้อมูลทันที
-              </p>
+            <div class="section-heading-with-mascot">
+              <img src="images/mascot/mascot-study.png" alt="" class="mascot-sticker mascot-sticker--inline" aria-hidden="true" loading="lazy" />
+              <div>
+                <h2 style="font-size: 1.15rem; font-weight: 600;">รูปแบบการเรียนรู้และเกณฑ์การวัดผล</h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">
+                  ออกแบบเส้นทางการเรียนเป็นลำดับขั้น เข้าใจง่าย และบันทึกสถิติลงฐานข้อมูลทันที
+                </p>
+              </div>
             </div>
             <button type="button" class="btn-secondary" data-nav-view="progress">
               ดูความคืบหน้าการเรียน
@@ -804,11 +827,14 @@
         <!-- Course Syllabus: 4 Modules & 16 Official Units -->
         <div style="display: flex; flex-direction: column; gap: 14px;">
           <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px;">
-            <div>
-              <h2 style="font-size: 1.22rem; font-weight: 600;">โครงสร้างเนื้อหารายวิชา (Course Syllabus 16 หน่วย)</h2>
-              <p style="font-size: 0.86rem; color: var(--text-muted); margin-top: 2px;">
-                อ้างอิงตามแผนการจัดการเรียนรู้รายวิชา 21901-2017 แบ่งออกเป็น 4 หมวดหลัก คลิกที่ชื่อหน่วยเพื่อเข้าสู่หน้าบทเรียน
-              </p>
+            <div class="section-heading-with-mascot">
+              <img src="images/mascot/mascot-keyboard.png" alt="" class="mascot-sticker mascot-sticker--inline" aria-hidden="true" loading="lazy" />
+              <div>
+                <h2 style="font-size: 1.22rem; font-weight: 600;">โครงสร้างเนื้อหารายวิชา (Course Syllabus 16 หน่วย)</h2>
+                <p style="font-size: 0.86rem; color: var(--text-muted); margin-top: 2px;">
+                  อ้างอิงตามแผนการจัดการเรียนรู้รายวิชา 21901-2017 แบ่งออกเป็น 4 หมวดหลัก คลิกที่ชื่อหน่วยเพื่อเข้าสู่หน้าบทเรียน
+                </p>
+              </div>
             </div>
             <button type="button" class="btn-secondary" data-nav-view="lessons">
               ดูหน้ารวมบทเรียนทั้งหมด
@@ -826,14 +852,18 @@
         <!-- Lessons Directory Shell (All 16 Units + Module Filters) -->
         <div id="lessons-directory-shell" style="display: flex; flex-direction: column; gap: 20px;">
           <div class="surface-card" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px;">
-            <div style="max-width: 720px; margin: 0 auto;">
-              <span class="status-pill is-info font-notch">LEARNING PATH  •  16 UNITS</span>
-              <h1 style="font-size: 1.42rem; font-weight: 600; margin-top: 8px;">
-                บทเรียนออนไลน์ทั้ง 16 หน่วยการเรียนรู้
-              </h1>
-              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 4px;">
-                เลือกหน่วยการเรียนรู้เพื่อศึกษาเนื้อหาแบบ Bite-sized Steps และทำแบบทดสอบท้ายหน่วย 10 ข้อ (เกณฑ์ผ่าน 80%)
-              </p>
+            <div class="lessons-hero-mascot-row">
+              <img src="images/mascot/mascot-study.png" alt="" class="mascot-sticker mascot-sticker--directory is-left" aria-hidden="true" loading="lazy" />
+              <div style="max-width: 640px; margin: 0 auto;">
+                <span class="status-pill is-info font-notch">LEARNING PATH  •  16 UNITS</span>
+                <h1 style="font-size: 1.42rem; font-weight: 600; margin-top: 8px;">
+                  บทเรียนออนไลน์ทั้ง 16 หน่วยการเรียนรู้
+                </h1>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 4px;">
+                  เลือกหน่วยการเรียนรู้เพื่อศึกษาเนื้อหาแบบ Bite-sized Steps และทำแบบทดสอบท้ายหน่วย 10 ข้อ (เกณฑ์ผ่าน 80%)
+                </p>
+              </div>
+              <img src="images/mascot/mascot-cheer.png" alt="" class="mascot-sticker mascot-sticker--directory is-right" aria-hidden="true" loading="lazy" />
             </div>
 
             <div id="lessons-module-filters" class="filter-pills-row" role="tablist" aria-label="กรองตามหมวดหมู่" style="justify-content: center; margin: 0 auto; flex-wrap: wrap;">
@@ -909,18 +939,21 @@
           <!-- Certificate Gate Notice & Action Buttons -->
           <div
             id="progress-cert-gate-box"
-            style="margin-top: 20px; padding: 18px 20px; border-radius: var(--radius-xl); background-color: var(--bg-ground); border: 1px solid var(--border-subtle); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;"
+            class="progress-cert-gate-box"
           >
-            <div style="max-width: 640px;">
-              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                <strong id="progress-cert-gate-title" style="font-size: 0.96rem; font-weight: 600;">
-                  สถานะเกียรติบัตร: ยังไม่ปลดล็อกการดาวน์โหลด
-                </strong>
-                <span id="progress-cert-gate-pill" class="status-pill is-warn">ต้องผ่านครบ 16 หน่วย</span>
+            <div class="cert-gate-mascot-info">
+              <img src="images/mascot/mascot-cert.png" alt="" class="mascot-sticker mascot-sticker--cert-gate" aria-hidden="true" loading="lazy" />
+              <div style="max-width: 580px;">
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                  <strong id="progress-cert-gate-title" style="font-size: 0.96rem; font-weight: 600;">
+                    สถานะเกียรติบัตร: ยังไม่ปลดล็อกการดาวน์โหลด
+                  </strong>
+                  <span id="progress-cert-gate-pill" class="status-pill is-warn">ต้องผ่านครบ 16 หน่วย</span>
+                </div>
+                <p id="progress-cert-gate-desc" style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 4px;">
+                  ระบบบังคับให้เรียนเนื้อหาและทำแบบทดสอบท้ายหน่วยได้คะแนน 80% ขึ้นไปครบทั้ง 16 หน่วย (100%) ก่อนจึงจะสามารถกดดาวน์โหลดเกียรติบัตรได้
+                </p>
               </div>
-              <p id="progress-cert-gate-desc" style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 4px;">
-                ระบบบังคับให้เรียนเนื้อหาและทำแบบทดสอบท้ายหน่วยได้คะแนน 80% ขึ้นไปครบทั้ง 16 หน่วย (100%) ก่อนจึงจะสามารถกดดาวน์โหลดเกียรติบัตรได้
-              </p>
             </div>
 
             <div style="display: flex; flex-wrap: wrap; gap: 10px;">
@@ -1168,22 +1201,59 @@
     </div>
   </div>
 
+  <!-- Interactive Floating Chibi Mascot Companion -->
+  <aside id="studio-mascot-companion" class="studio-mascot-companion" aria-label="ผู้ช่วยแนะนำการเรียน">
+    <button
+      id="mascot-companion-trigger"
+      type="button"
+      class="mascot-companion-btn"
+      aria-label="คลิกเพื่อดูเคล็ดลับการเรียนจากผู้ช่วย"
+      title="คลิกเพื่อดูเคล็ดลับการเรียน"
+    >
+      <img
+        id="mascot-companion-img"
+        src="images/mascot/mascot-keyboard.png"
+        alt="ตัวการ์ตูนผู้ช่วยการเรียน"
+        class="mascot-companion-avatar"
+      />
+    </button>
+
+    <div id="mascot-companion-bubble" class="mascot-companion-bubble">
+      <p id="mascot-companion-text" class="mascot-companion-text">
+        สวัสดี! ลงชื่อเข้าใช้ด้วยรหัสนักเรียนเพื่อเริ่มบทเรียนได้เลย
+      </p>
+      <button
+        id="mascot-companion-close"
+        type="button"
+        class="mascot-companion-close"
+        aria-label="ซ่อนข้อความผู้ช่วย"
+        title="ซ่อนข้อความ"
+      >
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </aside>
+
   <!-- Toast Notification Stack -->
   <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
 
   <!-- Application Scripts -->
-  <script src="js/config.js?v=4.0"></script>
-  <script src="js/sound.js?v=4.0"></script>
-  <script src="js/api.js?v=4.0"></script>
-  <script src="js/motion.js?v=4.0"></script>
-  <script src="js/bg-matrix.js?v=4.0"></script>
-  <script src="js/auth.js?v=4.0"></script>
-  <script src="js/certificate.js?v=4.0"></script>
-  <script src="js/curriculum-part1.js?v=4.0"></script>
-  <script src="js/curriculum-part2.js?v=4.0"></script>
-  <script src="js/ean13-guide.js?v=4.0"></script>
-  <script src="js/minigames.js?v=4.0"></script>
-  <script src="js/learning.js?v=4.0"></script>
-  <script src="js/app.js?v=4.0"></script>
+  <script src="js/config.js?v=4.2"></script>
+  <script src="js/sound.js?v=4.2"></script>
+  <script src="js/api.js?v=4.2"></script>
+  <script src="js/motion.js?v=4.2"></script>
+  <script src="js/bg-matrix.js?v=4.2"></script>
+  <script src="js/auth.js?v=4.2"></script>
+  <script src="js/certificate.js?v=4.2"></script>
+  <script src="js/curriculum-part1.js?v=4.2"></script>
+  <script src="js/curriculum-part2.js?v=4.2"></script>
+  <script src="js/ean13-guide.js?v=4.2"></script>
+  <script src="js/minigames.js?v=4.2"></script>
+  <script src="js/learning.js?v=4.2"></script>
+  <script src="js/mascot.js?v=4.2"></script>
+  <script src="js/app.js?v=4.2"></script>
 </body>
 </html>

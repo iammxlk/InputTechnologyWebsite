@@ -329,11 +329,13 @@
       downloadBtn.disabled = !isUnlocked;
     }
 
+    if (gateBox) {
+      gateBox.classList.toggle("is-unlocked", isUnlocked);
+      gateBox.style.removeProperty("background-color");
+      gateBox.style.removeProperty("border-color");
+    }
+
     if (isUnlocked) {
-      if (gateBox) {
-        gateBox.style.backgroundColor = "#EEF4FC";
-        gateBox.style.borderColor = "#DCE8FA";
-      }
       if (gateTitle) {
         gateTitle.textContent = "สถานะเกียรติบัตร: ปลดล็อกแล้ว พร้อมดาวน์โหลด";
       }
@@ -348,10 +350,6 @@
         gateDesc.textContent = `คุณผ่านเกณฑ์การประเมินครบถ้วนทุกหน่วยแล้ว รหัสยืนยันเกียรติบัตร CDTI-21901-${user.student_id} (ออกให้ ณ วันที่ ${issueDate})`;
       }
     } else {
-      if (gateBox) {
-        gateBox.style.backgroundColor = "var(--bg-ground)";
-        gateBox.style.borderColor = "var(--border-subtle)";
-      }
       if (gateTitle) {
         gateTitle.textContent = "สถานะเกียรติบัตร: ยังไม่ปลดล็อกการดาวน์โหลด";
       }
