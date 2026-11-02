@@ -462,6 +462,7 @@
   function animateModalOpen(modalEl) {
     if (!modalEl) return;
     modalEl.classList.remove("hidden");
+    document.body.classList.add("is-modal-open");
     syncAllFloatingFields(modalEl);
     if (isReducedMotion()) return;
     modalEl.classList.remove("is-modal-entering");
@@ -473,6 +474,10 @@
     if (!modalEl) return;
     modalEl.classList.remove("is-modal-entering");
     modalEl.classList.add("hidden");
+    const anyModalOpen = Boolean(document.querySelector(".modal-overlay:not(.hidden)"));
+    if (!anyModalOpen) {
+      document.body.classList.remove("is-modal-open");
+    }
     if (typeof onClosed === "function") {
       onClosed();
     }

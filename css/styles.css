@@ -1119,14 +1119,28 @@ html[data-theme="dark"] .floating-action-btn:hover {
    7. MODALS (PROFILE / CHANGE PASSWORD / MINIGAME RULES) & TOASTS
    ============================================================================ */
 .modal-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  background-color: rgba(15, 23, 42, 0.48);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: fixed !important;
+  inset: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  z-index: 1000 !important;
+  background-color: rgba(15, 23, 42, 0.65) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   padding: 20px;
+  overscroll-behavior: contain;
+}
+
+body.is-modal-open {
+  overflow: hidden !important;
 }
 
 .modal-dialog {
@@ -8089,12 +8103,8 @@ html[data-theme="dark"] .mg-tab-badge {
 }
 
 .auth-wrapper,
-.sticky-navbar,
 main.app-container,
-.site-footer,
-.modal-overlay,
-.global-toast-container,
-.nav-backdrop {
+.site-footer {
   position: relative;
   z-index: 1;
 }

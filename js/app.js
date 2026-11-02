@@ -506,7 +506,14 @@
 
   function closeCertificateModal() {
     const modal = document.getElementById("cert-preview-modal");
-    if (modal) modal.classList.add("hidden");
+    if (modal) {
+      if (window.MotionEngine) {
+        window.MotionEngine.animateModalClose(modal);
+      } else {
+        modal.classList.add("hidden");
+        document.body.classList.remove("is-modal-open");
+      }
+    }
   }
 
   /* ==========================================================================
@@ -607,6 +614,7 @@
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         closeCertificateModal();
+        window.AuthManager?.closeProfileModal?.();
         return;
       }
 

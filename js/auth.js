@@ -179,7 +179,14 @@
 
   function closeProfileModal() {
     const modal = document.getElementById("profile-modal");
-    if (modal) modal.classList.add("hidden");
+    if (modal) {
+      if (window.MotionEngine) {
+        window.MotionEngine.animateModalClose(modal);
+      } else {
+        modal.classList.add("hidden");
+        document.body.classList.remove("is-modal-open");
+      }
+    }
   }
 
   /* ==========================================================================
@@ -523,6 +530,7 @@
       }
     },
     enforceRouteGuard,
-    openProfileModal
+    openProfileModal,
+    closeProfileModal
   };
 })();
