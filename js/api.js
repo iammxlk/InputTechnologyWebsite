@@ -396,11 +396,20 @@
       const fullName = String(payload.full_name || "").trim();
       const avatarBase64 = String(payload.avatar_base64 || "");
 
-      if (!studentId || studentId.length < 3) {
-        return { ok: false, error: "กรุณากรอกรหัสนักเรียนอย่างน้อย 3 ตัวอักษร" };
+      if (!studentId || !/^\d+$/.test(studentId)) {
+        return { ok: false, error: "รหัสนักเรียน (Username) ต้องเป็นตัวเลขเท่านั้น" };
       }
-      if (!password || password.length < 4) {
-        return { ok: false, error: "กรุณาตั้งรหัสผ่านอย่างน้อย 4 ตัวอักษร" };
+      if (studentId.length < 3) {
+        return { ok: false, error: "รหัสนักเรียนต้องมีอย่างน้อย 3 ตัวเลข" };
+      }
+      if (!password || password.length < 8) {
+        return { ok: false, error: "รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร" };
+      }
+      if (!/[A-Z]/.test(password)) {
+        return { ok: false, error: "รหัสผ่านต้องมีตัวอักษรพิมพ์ใหญ่ (A-Z) อย่างน้อย 1 ตัว" };
+      }
+      if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/.test(password)) {
+        return { ok: false, error: "รหัสผ่านต้องมีอักขระพิเศษ (เช่น !@#$%^&*) อย่างน้อย 1 ตัว" };
       }
       if (!fullName) {
         return { ok: false, error: "กรุณากรอกชื่อ-นามสกุลจริง" };
@@ -528,8 +537,14 @@
       const currentPwd = String(payload.current_password || "");
       const newPwd = String(payload.new_password || "");
 
-      if (newPwd.length < 4) {
-        return { ok: false, error: "รหัสผ่านใหม่ต้องมีอย่างน้อย 4 ตัวอักษร" };
+      if (!newPwd || newPwd.length < 8) {
+        return { ok: false, error: "รหัสผ่านใหม่ต้องมีความยาวอย่างน้อย 8 ตัวอักษร" };
+      }
+      if (!/[A-Z]/.test(newPwd)) {
+        return { ok: false, error: "รหัสผ่านใหม่ต้องมีตัวอักษรพิมพ์ใหญ่ (A-Z) อย่างน้อย 1 ตัว" };
+      }
+      if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/.test(newPwd)) {
+        return { ok: false, error: "รหัสผ่านใหม่ต้องมีอักขระพิเศษ (เช่น !@#$%^&*) อย่างน้อย 1 ตัว" };
       }
 
       const found = db.users.find(

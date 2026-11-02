@@ -245,13 +245,16 @@
               <input
                 id="reg-student-id"
                 type="text"
+                inputmode="numeric"
+                pattern="[0-9]*"
                 class="input-control font-notch"
                 placeholder=" "
                 required
               />
-              <label for="reg-student-id" class="floating-label">รหัสนักเรียน (Username) • เช่น 6720101015</label>
+              <label for="reg-student-id" class="floating-label">รหัสนักเรียน (ตัวเลขเท่านั้น) • เช่น 6720101015</label>
               <span class="input-focus-line" aria-hidden="true"></span>
             </div>
+            <p class="field-hint" style="font-size: 0.75rem; color: var(--color-ink-subtle, #64748b); margin: 4px 0 0 2px;">บังคับเฉพาะตัวเลข 0-9 เท่านั้น</p>
           </div>
 
           <div class="field-group">
@@ -278,7 +281,7 @@
                   placeholder=" "
                   required
                 />
-                <label for="reg-password" class="floating-label">รหัสผ่าน (4+ ตัว)</label>
+                <label for="reg-password" class="floating-label">รหัสผ่าน (8+ ตัว, A-Z, อักขระพิเศษ)</label>
                 <button type="button" class="pwd-toggle-btn" data-toggle-pwd="reg-password" aria-label="แสดงรหัสผ่าน">
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                     <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/>
@@ -303,6 +306,7 @@
               </div>
             </div>
           </div>
+          <p class="field-hint" style="font-size: 0.75rem; color: var(--color-ink-subtle, #64748b); margin: -4px 0 8px 2px; line-height: 1.4;">เงื่อนไขรหัสผ่าน: ความยาวอย่างน้อย 8 ตัวอักษร, มีตัวพิมพ์ใหญ่ (A-Z) อย่างน้อย 1 ตัว และอักขระพิเศษ (!@#$%^&*) อย่างน้อย 1 ตัว</p>
 
           <button id="register-submit-btn" type="submit" class="btn-primary" style="margin-top: 6px; width: 100%;">
             <span>สมัครสมาชิกและเริ่มเรียน</span>
@@ -1055,7 +1059,7 @@
           <div class="field-group">
             <div class="floating-field">
               <input id="pwd-new" type="password" class="input-control" placeholder=" " required />
-              <label for="pwd-new" class="floating-label">รหัสผ่านใหม่ (4+ ตัว)</label>
+              <label for="pwd-new" class="floating-label">รหัสผ่านใหม่ (8+ ตัว, A-Z, อักขระพิเศษ)</label>
               <span class="input-focus-line" aria-hidden="true"></span>
             </div>
           </div>
@@ -1067,6 +1071,7 @@
             </div>
           </div>
         </div>
+        <p class="field-hint" style="font-size: 0.75rem; color: var(--color-ink-subtle, #64748b); margin: -4px 0 8px 2px; line-height: 1.4;">เงื่อนไขรหัสผ่าน: ความยาวอย่างน้อย 8 ตัวอักษร, มีพิมพ์ใหญ่ (A-Z) และอักขระพิเศษอย่างน้อย 1 ตัว</p>
 
         <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 8px;">
           <button id="logout-btn" type="button" class="btn-danger-outline">

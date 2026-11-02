@@ -298,6 +298,16 @@
       }
     });
 
+    // Real-time numeric enforcement on register student ID
+    const regStudentIdInput = document.getElementById("reg-student-id");
+    regStudentIdInput?.addEventListener("input", (e) => {
+      const val = e.target.value;
+      const clean = val.replace(/\D/g, "");
+      if (val !== clean) {
+        e.target.value = clean;
+      }
+    });
+
     // Register Submit
     const registerForm = document.getElementById("register-form");
     registerForm?.addEventListener("submit", async (e) => {
@@ -314,16 +324,32 @@
         setFormAlert("register-alert", "กรุณาอัปโหลดรูปโปรไฟล์ก่อนสมัครสมาชิก");
         return;
       }
-      if (!studentId || studentId.length < 3) {
-        setFormAlert("register-alert", "กรุณากรอกรหัสนักเรียนอย่างน้อย 3 ตัวอักษร");
+      if (!studentId) {
+        setFormAlert("register-alert", "กรุณากรอกรหัสนักเรียน");
+        return;
+      }
+      if (!/^\d+$/.test(studentId)) {
+        setFormAlert("register-alert", "รหัสนักเรียน (Username) ต้องเป็นตัวเลขเท่านั้น");
+        return;
+      }
+      if (studentId.length < 3) {
+        setFormAlert("register-alert", "รหัสนักเรียนต้องมีอย่างน้อย 3 ตัวเลข");
         return;
       }
       if (!fullName) {
         setFormAlert("register-alert", "กรุณากรอกชื่อ-นามสกุลจริง");
         return;
       }
-      if (password.length < 4) {
-        setFormAlert("register-alert", "รหัสผ่านต้องมีอย่างน้อย 4 ตัวอักษร");
+      if (password.length < 8) {
+        setFormAlert("register-alert", "รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร");
+        return;
+      }
+      if (!/[A-Z]/.test(password)) {
+        setFormAlert("register-alert", "รหัสผ่านต้องมีตัวอักษรพิมพ์ใหญ่ (A-Z) อย่างน้อย 1 ตัว");
+        return;
+      }
+      if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/.test(password)) {
+        setFormAlert("register-alert", "รหัสผ่านต้องมีอักขระพิเศษ (เช่น !@#$%^&*) อย่างน้อย 1 ตัว");
         return;
       }
       if (password !== confirmPwd) {
@@ -433,8 +459,16 @@
         setFormAlert("profile-modal-alert", "กรุณากรอกข้อมูลรหัสผ่านให้ครบทุกช่อง");
         return;
       }
-      if (newPwd.length < 4) {
-        setFormAlert("profile-modal-alert", "รหัสผ่านใหม่ต้องมีอย่างน้อย 4 ตัวอักษร");
+      if (newPwd.length < 8) {
+        setFormAlert("profile-modal-alert", "รหัสผ่านใหม่ต้องมีความยาวอย่างน้อย 8 ตัวอักษร");
+        return;
+      }
+      if (!/[A-Z]/.test(newPwd)) {
+        setFormAlert("profile-modal-alert", "รหัสผ่านใหม่ต้องมีตัวอักษรพิมพ์ใหญ่ (A-Z) อย่างน้อย 1 ตัว");
+        return;
+      }
+      if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/.test(newPwd)) {
+        setFormAlert("profile-modal-alert", "รหัสผ่านใหม่ต้องมีอักขระพิเศษ (เช่น !@#$%^&*) อย่างน้อย 1 ตัว");
         return;
       }
       if (newPwd !== confPwd) {
