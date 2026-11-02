@@ -273,6 +273,15 @@
                       `
                       : ""
                   }
+                  ${
+                    window.MiniGameEngine && window.MiniGameEngine.getGameForMilestoneUnit(currentUnit.no)
+                      ? `
+                        <button type="button" class="btn-secondary" data-open-minigame="${currentUnit.no}" style="min-height: 44px; padding: 10px 18px; font-weight: 700; border: 2px solid var(--border-ink);">
+                          มินิเกมประลองความไว (Endless)
+                        </button>
+                      `
+                      : ""
+                  }
                   <button type="button" class="btn-primary" data-enter-unit="${currentUnit.no}">
                     ${
                       isPassed || isContentRead
@@ -1609,6 +1618,18 @@
         const uNo = Number(startQuizBtn.getAttribute("data-start-unit-quiz")) || 1;
         openUnit(uNo, "quiz");
         window.scrollTo({ top: 0, behavior: "smooth" });
+        return;
+      }
+
+      // Milestone Minigame Trigger
+      const mgBtn = e.target.closest("[data-open-minigame]");
+      if (mgBtn) {
+        e.preventDefault();
+        const unitNo = Number(mgBtn.getAttribute("data-open-minigame"));
+        const game = window.MiniGameEngine?.getGameForMilestoneUnit(unitNo);
+        if (game) {
+          window.MiniGameEngine.openRuleModal(game.id);
+        }
         return;
       }
 

@@ -244,14 +244,24 @@
               <span class="font-notch tabular-nums" style="font-size: 0.78rem; color: var(--text-muted);">
                 หลักสูตร 4 หน่วยการเรียนรู้
               </span>
-              <button
-                type="button"
-                class="btn-secondary"
-                style="min-height: 34px; padding: 5px 14px; font-size: 0.8rem;"
-                data-open-unit="${modUnits[0].no}"
-              >
-                เข้าสู่บทเรียนหมวดที่ ${mod.id}
-              </button>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-left: auto;">
+                <button
+                  type="button"
+                  class="btn-secondary"
+                  style="min-height: 34px; padding: 5px 12px; font-size: 0.78rem; font-weight: 700;"
+                  data-open-minigame-mod="${mod.id}"
+                >
+                  มินิเกมหมวด ${mod.id} (G0${mod.id})
+                </button>
+                <button
+                  type="button"
+                  class="btn-primary"
+                  style="min-height: 34px; padding: 5px 14px; font-size: 0.8rem;"
+                  data-open-unit="${modUnits[0].no}"
+                >
+                  เข้าสู่บทเรียนหมวดที่ ${mod.id}
+                </button>
+              </div>
             </div>
           </article>
         `;
@@ -599,6 +609,18 @@
     document.getElementById("cert-preview-modal")?.addEventListener("click", (e) => {
       if (e.target && e.target.id === "cert-preview-modal") {
         closeCertificateModal();
+      }
+    });
+
+    // Milestone Minigame Triggers
+    document.addEventListener("click", (e) => {
+      const mgBtn = e.target.closest("[data-open-minigame-mod]");
+      if (mgBtn) {
+        e.preventDefault();
+        const modId = Number(mgBtn.getAttribute("data-open-minigame-mod"));
+        const gameKeys = { 1: "G01", 2: "G02", 3: "G03", 4: "G04" };
+        const gKey = gameKeys[modId] || "G01";
+        window.MiniGameEngine?.openRuleModal(gKey);
       }
     });
 

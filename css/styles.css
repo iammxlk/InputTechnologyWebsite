@@ -212,7 +212,8 @@ h1, h2, h3, h4, p {
 .modal-overlay.hidden,
 #cert-preview-modal.hidden,
 #profile-modal.hidden,
-#minigame-rules-modal.hidden {
+#minigame-rules-modal.hidden,
+#minigame-rule-modal.hidden {
   display: none !important;
 }
 
