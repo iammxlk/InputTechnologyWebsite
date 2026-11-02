@@ -236,12 +236,11 @@
 
   function shakeElement(el) {
     if (!el || isReducedMotion()) return;
-    el.classList.remove("is-shaking");
-    // Trigger composite keyframe replay cleanly
+    el.classList.remove("is-shaking", "is-glitch-shaking");
     void el.offsetWidth;
-    el.classList.add("is-shaking");
+    el.classList.add("is-glitch-shaking");
     setTimeout(() => {
-      el.classList.remove("is-shaking");
+      el.classList.remove("is-shaking", "is-glitch-shaking");
     }, 440);
   }
 
@@ -533,7 +532,16 @@
     activeTickers.set(el, requestAnimationFrame(step));
   }
 
-  function burstCelebration() {
+  const STUDIO_CONFETTI_PALETTE = [
+    "#FF3D9A", // Magenta
+    "#00C6E0", // Cyan
+    "#FFD23F", // Yellow
+    "#2EE59D", // Mint
+    "#7B4DFF", // Studio Violet
+    "#FF7A45"  // Coral
+  ];
+
+  function launchConfettiParticles(pieceCount, durationLimitMs, originRatioY) {
     if (isReducedMotion()) return;
     const existing = document.getElementById("celebration-fx-canvas");
     if (existing && existing.parentNode) {
@@ -558,21 +566,21 @@
     }
     ctx.scale(dpr, dpr);
 
-    const palette = ["#15499F", "#1B5BC4", "#166534", "#0284C7", "#DCE8FA"];
     const pieces = [];
-    for (let i = 0; i < 42; i++) {
-      const angle = -Math.PI / 2 + (Math.random() - 0.5) * 1.35;
-      const speed = 6 + Math.random() * 7.5;
+    for (let i = 0; i < pieceCount; i++) {
+      const angle = -Math.PI / 2 + (Math.random() - 0.5) * 1.5;
+      const speed = 5.5 + Math.random() * 8.5;
       pieces.push({
-        x: vw * 0.5 + (Math.random() - 0.5) * 140,
-        y: vh * 0.28,
+        x: vw * 0.5 + (Math.random() - 0.5) * 180,
+        y: vh * originRatioY,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
-        w: 6 + Math.random() * 5,
-        h: 4 + Math.random() * 4,
+        w: 7 + Math.random() * 6,
+        h: 5 + Math.random() * 5,
+        isCircle: i % 4 === 0,
         rot: Math.random() * Math.PI,
-        vRot: (Math.random() - 0.5) * 0.22,
-        color: palette[i % palette.length],
+        vRot: (Math.random() - 0.5) * 0.24,
+        color: STUDIO_CONFETTI_PALETTE[i % STUDIO_CONFETTI_PALETTE.length],
         alpha: 1
       });
     }
@@ -586,10 +594,10 @@
         const p = pieces[i];
         p.x += p.vx;
         p.y += p.vy;
-        p.vy += 0.26;
+        p.vy += 0.25;
         p.vx *= 0.985;
         p.rot += p.vRot;
-        p.alpha = Math.max(0, 1 - elapsed / 1150);
+        p.alpha = Math.max(0, 1 - elapsed / durationLimitMs);
         if (p.alpha > 0.02 && p.y < vh + 24) {
           alive += 1;
           ctx.save();
@@ -597,11 +605,21 @@
           ctx.translate(p.x, p.y);
           ctx.rotate(p.rot);
           ctx.fillStyle = p.color;
-          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.strokeStyle = "#1B1340";
+          ctx.lineWidth = 1.2;
+          if (p.isCircle) {
+            ctx.beginPath();
+            ctx.arc(0, 0, p.w * 0.45, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+          } else {
+            ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+            ctx.strokeRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          }
           ctx.restore();
         }
       }
-      if (alive > 0 && elapsed < 1200) {
+      if (alive > 0 && elapsed < durationLimitMs + 80) {
         requestAnimationFrame(frame);
       } else if (canvas.parentNode) {
         canvas.parentNode.removeChild(canvas);
@@ -610,9 +628,54 @@
     requestAnimationFrame(frame);
   }
 
+  function burstCelebration() {
+    launchConfettiParticles(54, 1300, 0.28);
+  }
+
+  function burstQuizConfetti() {
+    launchConfettiParticles(28, 920, 0.36);
+  }
+
   /* ==========================================================================
-     8. BOOTSTRAP MOTION ENGINE
+     8. REDUCED MOTION ACCESSIBILITY TOGGLE & BOOTSTRAP
      ========================================================================== */
+
+  function syncMotionToggleButtons() {
+    const reduced = isReducedMotion();
+    document.querySelectorAll(".motion-toggle-btn").forEach((btn) => {
+      btn.setAttribute("aria-pressed", reduced ? "true" : "false");
+      btn.setAttribute(
+        "title",
+        reduced ? "โหมดลดแอนิเมชัน: เปิดอยู่ (คลิกเพื่อเปิดแอนิเมชัน)" : "สลับโหมดลดแอนิเมชัน"
+      );
+    });
+  }
+
+  function toggleReducedMotion() {
+    const nextReduced = !isReducedMotion();
+    const modeVal = nextReduced ? "reduced" : "full";
+    document.documentElement.setAttribute("data-motion", modeVal);
+    try {
+      localStorage.setItem("cdti_motion_mode", modeVal);
+    } catch (e) {}
+    syncMotionToggleButtons();
+    window.SoundEngine?.playClick?.();
+    if (window.AppUtils && typeof window.AppUtils.showToast === "function") {
+      window.AppUtils.showToast(
+        nextReduced ? "เปิดโหมดลดแอนิเมชันแล้ว" : "เปิดแอนิเมชันปกติแล้ว",
+        "info"
+      );
+    }
+  }
+
+  function initMotionToggleControls() {
+    syncMotionToggleButtons();
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest && e.target.closest(".motion-toggle-btn");
+      if (!btn) return;
+      toggleReducedMotion();
+    });
+  }
 
   function initMotionEngine() {
     document.documentElement.classList.add("motion-ready");
@@ -620,6 +683,7 @@
     initFloatingInputs();
     initScrollAnimations();
     initParallaxSystem();
+    initMotionToggleControls();
   }
 
   if (document.readyState === "loading") {
@@ -630,6 +694,7 @@
 
   window.MotionEngine = {
     isReducedMotion,
+    toggleReducedMotion,
     startTopLoader,
     doneTopLoader,
     setButtonLoading,
@@ -644,6 +709,7 @@
     animateModalOpen,
     animateModalClose,
     animateNumber,
-    burstCelebration
+    burstCelebration,
+    burstQuizConfetti
   };
 })();

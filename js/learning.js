@@ -1065,6 +1065,7 @@
     renderQuizWorkspace();
     if (isCorrect) {
       window.SoundEngine?.playSuccess();
+      window.MotionEngine?.burstQuizConfetti?.();
     } else {
       window.SoundEngine?.playError();
       const qCard = document.querySelector("#lesson-workspace .quiz-question-card");
@@ -1127,10 +1128,10 @@
         if (hasAnswered) {
           if (idx === answerRecord.correctIdx) {
             stateCls = "is-correct";
-            badgeNote = `<span class="quiz-choice-verdict is-correct">เฉลยที่ถูกต้อง</span>`;
+            badgeNote = `<span class="quiz-choice-verdict is-correct" style="display:inline-flex;align-items:center;gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>เฉลยที่ถูกต้อง</span>`;
           } else if (idx === answerRecord.chosenIdx && !answerRecord.isCorrect) {
             stateCls = "is-wrong";
-            badgeNote = `<span class="quiz-choice-verdict is-wrong">คำตอบที่เลือก</span>`;
+            badgeNote = `<span class="quiz-choice-verdict is-wrong" style="display:inline-flex;align-items:center;gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>คำตอบที่เลือก</span>`;
           } else {
             stateCls = "is-muted";
           }
@@ -1160,11 +1161,11 @@
         <div class="quiz-feedback-box ${answerRecord.isCorrect ? "is-correct" : "is-wrong"}" id="quiz-feedback-banner">
           <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
             <div style="min-width: 0;">
-              <strong style="font-size: 1.25rem; font-weight: 800; display: block;">
+              <strong style="font-size: 1.25rem; font-weight: 800; display: inline-flex; align-items: center; gap: 8px;">
                 ${
                   answerRecord.isCorrect
-                    ? "คำตอบถูกต้อง (+1 คะแนน)"
-                    : `ยังไม่ถูกต้อง • คำตอบที่ถูกคือข้อ ${correctLetter}`
+                    ? `<span class="quiz-status-icon is-correct" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></span><span>คำตอบถูกต้อง (+1 คะแนน)</span>`
+                    : `<span class="quiz-status-icon is-wrong" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span><span>ยังไม่ถูกต้อง • คำตอบที่ถูกคือข้อ ${correctLetter}</span>`
                 }
               </strong>
               <span style="font-size: 0.92rem; opacity: 0.90; font-weight: 600; display: block; margin-top: 2px;">
@@ -1179,8 +1180,8 @@
               </svg>
             </button>
           </div>
-          <p style="font-size: 1.12rem; margin-top: 10px; line-height: 1.6; font-weight: 500;">
-            ${esc(qObj.explanation)}
+          <p style="font-size: 1.06rem; margin-top: 10px; line-height: 1.68; font-weight: 500;">
+            ${formatLessonText(qObj.explanation)}
           </p>
         </div>
       `;

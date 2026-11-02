@@ -8,158 +8,169 @@
  * ============================================================================
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600;700&family=Stack+Sans+Notch:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&family=Stack+Sans+Notch:wght@300..700&display=swap');
 
 :root {
-  /* Ground & Surfaces (Light Mode: Warm Industrial Lab Paper & Anodized White) */
-  --bg-ground: #F2F0E8;
+  /* Creative Studio Pop — Ground & Surfaces (Cream Studio Paper & Crisp Sticker White) */
+  --bg-ground: #FFFBF2;
   --bg-surface: #FFFFFF;
-  --bg-subtle: #E5E2D7;
-  --bg-hover: #EBE8DE;
+  --bg-subtle: #F7EFE0;
+  --bg-hover: #EFE4CE;
+  --bg-input-focus: #FFFBEB;
 
-  /* Crisp Structural Ink Borders (Neo-Brutalist Hardware Frame) */
-  --border-ink: #14171F;
-  --shadow-ink: #14171F;
-  --border-subtle: #CFCBC0;
-  --border-control: #14171F;
-  --border-focus: #FF4814;
+  /* Core Creative Studio Pop CMY & Studio Accents */
+  --pop-magenta: #FF3D9A;
+  --pop-magenta-cta: #E11D7E;
+  --pop-magenta-hover: #C4126B;
+  --pop-cyan: #00C6E0;
+  --pop-yellow: #FFD23F;
+  --pop-coral: #FF7A45;
+  --pop-purple: #7B4DFF;
+  --pop-mint: #2EE59D;
 
-  /* Ink Hierarchy (WCAG AAA High-Contrast Carbon Ink) */
-  --text-main: #111318;
-  --text-secondary: #2E3440;
-  --text-muted: #5C6474;
+  /* Crisp Sticker Borders & Hard Drop Shadow Ink (Deep Indigo-Navy #1B1340, WCAG AAA 15.4:1) */
+  --border-ink: #1B1340;
+  --shadow-ink: #1B1340;
+  --border-subtle: #DDD4EE;
+  --border-control: #1B1340;
+  --border-focus: #FF3D9A;
 
-  /* Hardware Signal Accent (International Signal Orange & Blueprint Cobalt) */
-  --accent-signal: #FF4814;
-  --accent-signal-soft: #FFF0EB;
-  --blue-700: #0D3694;
-  --blue-600: #1447BC;
-  --blue-500: #2563EB;
-  --blue-100: #D8E4FC;
-  --blue-50: #EDF3FE;
+  /* Ink Hierarchy */
+  --text-main: #1B1340;
+  --text-secondary: #352966;
+  --text-muted: #5F538C;
 
-  /* Vibrant 4-Module Hardware Cartridge Palettes */
-  --mod1-accent: #059669;
-  --mod1-bg: #E6FBF2;
+  /* Mapped Semantic Brand & Action Tokens */
+  --accent-signal: #FF3D9A;
+  --accent-signal-soft: #FFEAF4;
+  --accent-cyan: #00C6E0;
+  --accent-yellow: #FFD23F;
+  --blue-700: #5B2EFF;
+  --blue-600: #7B4DFF;
+  --blue-500: #00C6E0;
+  --blue-100: #D8F7FC;
+  --blue-50: #EDFCFF;
+
+  /* Vibrant 4-Module Studio Swatch Palettes */
+  --mod1-accent: #2EE59D;
+  --mod1-bg: #E6FCF3;
   --mod1-border: #059669;
-  --mod1-ink: #064E3B;
+  --mod1-ink: #065F46;
 
-  --mod2-accent: #EA580C;
-  --mod2-bg: #FFF4ED;
-  --mod2-border: #EA580C;
-  --mod2-ink: #7C2D12;
+  --mod2-accent: #00C6E0;
+  --mod2-bg: #E5FAFE;
+  --mod2-border: #0284C7;
+  --mod2-ink: #075985;
 
-  --mod3-accent: #E11D48;
-  --mod3-bg: #FFF0F3;
-  --mod3-border: #E11D48;
-  --mod3-ink: #881337;
+  --mod3-accent: #FF3D9A;
+  --mod3-bg: #FFEAF4;
+  --mod3-border: #DB2777;
+  --mod3-ink: #9D174D;
 
-  --mod4-accent: #4F46E5;
-  --mod4-bg: #EEF0FF;
-  --mod4-border: #4F46E5;
-  --mod4-ink: #312E81;
+  --mod4-accent: #7B4DFF;
+  --mod4-bg: #F1ECFF;
+  --mod4-border: #6D28D9;
+  --mod4-ink: #4C1D95;
 
   /* Vibrant KPI Metric Indicators */
   --metric-units-color: #059669;
-  --metric-percent-color: #1447BC;
-  --metric-score-color: #EA580C;
-  --metric-time-color: #7C3AED;
+  --metric-percent-color: #0099B8;
+  --metric-score-color: #E11D7E;
+  --metric-time-color: #7B4DFF;
 
-  /* Semantic Status Pairs */
-  --status-pass-bg: #D1FAE5;
+  /* Semantic Status Pairs (Mint Correct / Coral Wrong — WCAG AA Ink) */
+  --status-pass-bg: #D5FBF0;
   --status-pass-ink: #065F46;
-  --status-warn-bg: #FEF3C7;
-  --status-warn-ink: #92400E;
-  --status-fail-bg: #FEE2E2;
-  --status-fail-ink: #991B1B;
-  --status-info-bg: #DBEAFE;
-  --status-info-ink: #1E40AF;
+  --status-warn-bg: #FFF3BF;
+  --status-warn-ink: #854D0E;
+  --status-fail-bg: #FFE4DC;
+  --status-fail-ink: #9A1B1B;
+  --status-info-bg: #DFF9FD;
+  --status-info-ink: #075985;
 
-  /* Architectural Chamfered / Crisp Radii (No bubbly SaaS defaults) */
-  --radius-2xl: 10px;
-  --radius-xl: 8px;
-  --radius-md: 6px;
-  --radius-pill: 6px;
+  /* Creative Studio Pop Rounded Sticker Corners */
+  --radius-2xl: 20px;
+  --radius-xl: 14px;
+  --radius-lg: 14px;
+  --radius-md: 12px;
+  --radius-pill: 999px;
 
-  /* Tactile Hard-Offset Shadows (Zero Blurry SaaS Slop) */
-  --shadow-card: 4px 4px 0px #14171F;
-  --shadow-modal: 8px 8px 0px #14171F;
-  --shadow-glow: 4px 4px 0px #FF4814;
+  /* Sticker Hard-Offset Shadows (Zero Blur) */
+  --shadow-card: 5px 5px 0px #1B1340;
+  --shadow-modal: 8px 8px 0px #1B1340;
+  --shadow-glow: 4px 4px 0px #FF3D9A;
+
+  /* Motion Curves */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* ============================================================================
-   DARK THEME PALETTE (OSCILLOSCOPE & HARDWARE CONSOLE)
+   DARK THEME PALETTE (MIDNIGHT STUDIO POP)
    ============================================================================ */
 html[data-theme="dark"],
 :root[data-theme="dark"] {
-  /* Ground & Surfaces (Matte Carbon & Anodized Gunmetal) */
-  --bg-ground: #090D16;
-  --bg-surface: #121926;
-  --bg-subtle: #1A2436;
-  --bg-hover: #223049;
+  --bg-ground: #120D2B;
+  --bg-surface: #1E1642;
+  --bg-subtle: #2A2059;
+  --bg-hover: #35296E;
+  --bg-input-focus: #271E54;
 
-  /* Machined Structural Borders & Hard Shadows */
-  --border-ink: #384B6B;
-  --shadow-ink: #020409;
-  --border-subtle: #25344D;
-  --border-control: #465E85;
-  --border-focus: #38BDF8;
+  --border-ink: #6453AD;
+  --shadow-ink: #070414;
+  --border-subtle: #382C6E;
+  --border-control: #7664C4;
+  --border-focus: #00C6E0;
 
-  /* Ink Hierarchy */
-  --text-main: #F8FAFC;
-  --text-secondary: #CBD5E1;
-  --text-muted: #94A3B8;
+  --text-main: #FFFBF2;
+  --text-secondary: #DFD8F7;
+  --text-muted: #ABA0CF;
 
-  /* Luminous Signal Accents */
-  --accent-signal: #FF6338;
-  --accent-signal-soft: rgba(255, 99, 56, 0.16);
-  --blue-700: #7DD3FC;
-  --blue-600: #38BDF8;
-  --blue-500: #0EA5E9;
-  --blue-100: #1E3A5F;
-  --blue-50: #152742;
+  --accent-signal: #FF5CAD;
+  --accent-signal-soft: rgba(255, 61, 154, 0.2);
+  --blue-700: #7CE8F7;
+  --blue-600: #00C6E0;
+  --blue-500: #00C6E0;
+  --blue-100: #1B3B5A;
+  --blue-50: #162B47;
 
-  /* Vibrant Module Theme Palettes in Dark Mode */
-  --mod1-accent: #34D399;
-  --mod1-bg: rgba(16, 185, 129, 0.16);
-  --mod1-border: #34D399;
+  --mod1-accent: #2EE59D;
+  --mod1-bg: rgba(46, 229, 157, 0.16);
+  --mod1-border: #2EE59D;
   --mod1-ink: #6EE7B7;
 
-  --mod2-accent: #FB923C;
-  --mod2-bg: rgba(249, 115, 22, 0.16);
-  --mod2-border: #FB923C;
-  --mod2-ink: #FDBA74;
+  --mod2-accent: #00C6E0;
+  --mod2-bg: rgba(0, 198, 224, 0.16);
+  --mod2-border: #00C6E0;
+  --mod2-ink: #7DD3FC;
 
-  --mod3-accent: #FB7185;
-  --mod3-bg: rgba(244, 63, 94, 0.16);
-  --mod3-border: #FB7185;
-  --mod3-ink: #FECDD3;
+  --mod3-accent: #FF5CAD;
+  --mod3-bg: rgba(255, 61, 154, 0.18);
+  --mod3-border: #FF5CAD;
+  --mod3-ink: #FBCFE8;
 
-  --mod4-accent: #818CF8;
-  --mod4-bg: rgba(99, 102, 241, 0.16);
-  --mod4-border: #818CF8;
-  --mod4-ink: #C7D2FE;
+  --mod4-accent: #A78BFA;
+  --mod4-bg: rgba(123, 77, 255, 0.2);
+  --mod4-border: #A78BFA;
+  --mod4-ink: #DDD6FE;
 
-  /* Vibrant KPI Metrics in Dark Mode */
-  --metric-units-color: #34D399;
-  --metric-percent-color: #38BDF8;
-  --metric-score-color: #FB923C;
-  --metric-time-color: #C084FC;
+  --metric-units-color: #2EE59D;
+  --metric-percent-color: #00C6E0;
+  --metric-score-color: #FF5CAD;
+  --metric-time-color: #A78BFA;
 
-  /* Semantic Status Pairs in Dark Mode */
-  --status-pass-bg: rgba(16, 185, 129, 0.2);
-  --status-pass-ink: #34D399;
-  --status-warn-bg: rgba(245, 158, 11, 0.22);
-  --status-warn-ink: #FBBF24;
-  --status-fail-bg: rgba(239, 68, 68, 0.22);
-  --status-fail-ink: #F87171;
-  --status-info-bg: rgba(56, 189, 248, 0.2);
-  --status-info-ink: #38BDF8;
+  --status-pass-bg: rgba(46, 229, 157, 0.2);
+  --status-pass-ink: #2EE59D;
+  --status-warn-bg: rgba(255, 210, 63, 0.22);
+  --status-warn-ink: #FFD23F;
+  --status-fail-bg: rgba(255, 122, 69, 0.22);
+  --status-fail-ink: #FF9B73;
+  --status-info-bg: rgba(0, 198, 224, 0.2);
+  --status-info-ink: #5CE1F5;
 
-  /* Tactile Hard Dark Shadows */
-  --shadow-card: 4px 4px 0px #020409;
-  --shadow-modal: 8px 8px 0px #020409;
-  --shadow-glow: 4px 4px 0px #38BDF8;
+  --shadow-card: 5px 5px 0px #070414;
+  --shadow-modal: 8px 8px 0px #070414;
+  --shadow-glow: 4px 4px 0px #00C6E0;
 }
 
 /* ============================================================================
@@ -8334,4 +8345,798 @@ html[data-theme="dark"] .bg-fx-dot {
   text-wrap: pretty;
   word-break: normal;
   overflow-wrap: break-word;
+}
+
+
+/* ============================================================================
+   15. CREATIVE STUDIO POP DESIGN SYSTEM OVERHAUL (21901-2017 CAI)
+   Palette: #FFFBF2 Cream, CMY (#FF3D9A, #00C6E0, #FFD23F), Coral #FF7A45,
+            Studio Violet #7B4DFF, Mint #2EE59D, Deep Navy Ink #1B1340
+   Typography: Mitr (Headings & UI) + Sarabun (Body Content) + Stack Sans Notch
+   ============================================================================ */
+
+/* --- 15.1 Typography Pairing (Mitr Headings + Sarabun Body + Notch Figures) --- */
+body {
+  font-family: 'Sarabun', 'Mitr', system-ui, -apple-system, sans-serif;
+  font-weight: 400;
+  line-height: 1.68;
+  color: var(--text-main);
+  background-color: var(--bg-ground);
+}
+
+h1, h2, h3, h4,
+.brand-title,
+.nav-btn,
+.segmented-tab-btn,
+.filter-pill-btn,
+.btn-primary,
+.btn-secondary,
+.btn-danger-outline,
+.btn-pixel-action,
+.status-pill,
+.quiz-cockpit-question-title,
+.quiz-option-btn,
+.module-unit-title-text,
+.progress-unit-title,
+.floating-label,
+.ean13-lab-main-title,
+.ean13-board-title,
+.mg-tab-title,
+.mg-prompt-title {
+  font-family: 'Mitr', 'Sarabun', sans-serif;
+}
+
+p,
+li,
+td,
+.home-hero-lead,
+.home-card-subtitle,
+.home-cert-caption,
+.progress-unit-subtitle,
+.lesson-reader-card p,
+.lesson-reader-card li,
+.lesson-callout-box,
+.ean13-lab-lead,
+.ean13-board-desc,
+.field-hint {
+  font-family: 'Sarabun', 'Mitr', sans-serif;
+}
+
+.home-hero-lead,
+.lesson-reader-card p,
+.lesson-reader-card li {
+  font-size: 1.02rem;
+  line-height: 1.74;
+}
+
+.font-notch,
+.tabular-nums,
+.metric-value,
+.auth-spec-num {
+  font-family: 'Stack Sans Notch', 'Mitr', sans-serif;
+}
+
+/* --- 15.2 Ambient Studio Pop Backdrop (Slow CMY Gradient Blobs + Pixel Grid) --- */
+.studio-pop-backdrop {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  background-image:
+    linear-gradient(rgba(27, 19, 64, 0.038) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(27, 19, 64, 0.038) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+html[data-theme="dark"] .studio-pop-backdrop {
+  background-image:
+    linear-gradient(rgba(255, 251, 242, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 251, 242, 0.04) 1px, transparent 1px);
+}
+
+.studio-pop-blob {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.34;
+  will-change: transform;
+}
+
+html[data-theme="dark"] .studio-pop-blob {
+  opacity: 0.2;
+}
+
+.studio-pop-blob--magenta {
+  width: 520px;
+  height: 520px;
+  top: -160px;
+  left: -120px;
+  background: radial-gradient(circle, rgba(255, 61, 154, 0.42) 0%, rgba(255, 61, 154, 0) 70%);
+  animation: studioBlobFloatA 24s ease-in-out infinite alternate;
+}
+
+.studio-pop-blob--cyan {
+  width: 560px;
+  height: 560px;
+  top: 18%;
+  right: -180px;
+  background: radial-gradient(circle, rgba(0, 198, 224, 0.4) 0%, rgba(0, 198, 224, 0) 70%);
+  animation: studioBlobFloatB 28s ease-in-out infinite alternate;
+}
+
+.studio-pop-blob--yellow {
+  width: 500px;
+  height: 500px;
+  bottom: -180px;
+  left: 24%;
+  background: radial-gradient(circle, rgba(255, 210, 63, 0.46) 0%, rgba(255, 210, 63, 0) 70%);
+  animation: studioBlobFloatC 26s ease-in-out infinite alternate;
+}
+
+@keyframes studioBlobFloatA {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(60px, 45px, 0) scale(1.08); }
+}
+
+@keyframes studioBlobFloatB {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(-55px, 50px, 0) scale(1.06); }
+}
+
+@keyframes studioBlobFloatC {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(45px, -40px, 0) scale(1.07); }
+}
+
+/* --- 15.3 CMY Print Misregistration Effect on Hero Headings --- */
+@keyframes studioMisregSnap {
+  0% {
+    text-shadow:
+      -3.5px -2px 0px rgba(255, 61, 154, 0.85),
+      3.5px 2px 0px rgba(0, 198, 224, 0.85);
+  }
+  65% {
+    text-shadow:
+      1.5px 1px 0px rgba(255, 61, 154, 0.55),
+      -1.5px -1px 0px rgba(0, 198, 224, 0.55);
+  }
+  100% {
+    text-shadow:
+      2px 1.5px 0px rgba(0, 198, 224, 0.52),
+      -1px -1px 0px rgba(255, 61, 154, 0.34);
+  }
+}
+
+@keyframes studioMisregSnapDark {
+  0% {
+    text-shadow:
+      -3.5px -2px 0px rgba(255, 61, 154, 0.88),
+      3.5px 2px 0px rgba(0, 198, 224, 0.85);
+  }
+  65% {
+    text-shadow:
+      1.5px 1px 0px rgba(255, 61, 154, 0.65),
+      -1.5px -1px 0px rgba(0, 198, 224, 0.55);
+  }
+  100% {
+    text-shadow:
+      2px 1.5px 0px rgba(255, 61, 154, 0.72),
+      -1px -1px 0px rgba(0, 198, 224, 0.42);
+  }
+}
+
+.misreg-heading {
+  position: relative;
+  text-shadow:
+    2px 1.5px 0px rgba(0, 198, 224, 0.52),
+    -1px -1px 0px rgba(255, 61, 154, 0.34);
+  animation: studioMisregSnap 0.65s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+html[data-theme="dark"] .misreg-heading {
+  text-shadow:
+    2px 1.5px 0px rgba(255, 61, 154, 0.72),
+    -1px -1px 0px rgba(0, 198, 224, 0.42);
+  animation-name: studioMisregSnapDark;
+}
+
+/* --- 15.4 Sticker Borders (3px #1B1340) & Hard Offset Shadows --- */
+.auth-shell,
+.home-hero-header-card,
+.home-hero-card,
+.home-hero-main,
+.home-cert-showcase,
+.surface-card,
+.metric-strip,
+.module-overview-card,
+.my-rank-banner,
+.podium-strip,
+.lesson-reader-card,
+.lesson-workspace-topbar,
+.lesson-step-rail-card,
+.quiz-hud-card,
+.quiz-question-card,
+.quiz-cockpit-hud,
+.quiz-cockpit-card,
+.mg-cockpit-hud,
+.mg-cockpit-card,
+.quiz-result-card,
+.quiz-countdown-card {
+  border: 3px solid var(--border-ink) !important;
+  box-shadow: var(--shadow-card) !important;
+  border-radius: var(--radius-2xl) !important;
+}
+
+.modal-dialog,
+#minigame-rule-modal .modal-card {
+  border: 3px solid var(--border-ink) !important;
+  box-shadow: var(--shadow-modal) !important;
+  border-radius: var(--radius-2xl) !important;
+  background-color: var(--bg-surface) !important;
+}
+
+/* Top CMY Swatch Bar on Sticky Navbar, Loading Bar & Scroll Progress */
+.sticky-navbar {
+  border-bottom: 3px solid var(--border-ink) !important;
+  background-color: var(--bg-surface) !important;
+}
+
+.sticky-navbar::before,
+.top-loading-bar,
+.scroll-progress-bar {
+  background: linear-gradient(
+    90deg,
+    #FF3D9A 0%,
+    #FF3D9A 25%,
+    #00C6E0 25%,
+    #00C6E0 50%,
+    #FFD23F 50%,
+    #FFD23F 75%,
+    #7B4DFF 75%,
+    #2EE59D 100%
+  ) !important;
+  height: 4px !important;
+}
+
+.hw-telemetry-strip {
+  background-color: #1B1340 !important;
+  color: #FFFBF2 !important;
+  border-bottom: 2px solid var(--border-ink) !important;
+}
+
+html[data-theme="dark"] .hw-telemetry-strip {
+  background-color: #0B071D !important;
+}
+
+/* --- 15.5 Auth Screen — Creative Studio Pop Showcase --- */
+.auth-wrapper {
+  background: transparent !important;
+}
+
+.auth-showcase {
+  background-color: #FFF4D2 !important;
+  background-image:
+    radial-gradient(circle at 12% 16%, rgba(255, 61, 154, 0.22) 0%, transparent 48%),
+    radial-gradient(circle at 88% 24%, rgba(0, 198, 224, 0.25) 0%, transparent 52%),
+    radial-gradient(circle at 65% 88%, rgba(46, 229, 157, 0.22) 0%, transparent 48%),
+    linear-gradient(rgba(27, 19, 64, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(27, 19, 64, 0.06) 1px, transparent 1px) !important;
+  background-size: 100% 100%, 100% 100%, 100% 100%, 24px 24px, 24px 24px !important;
+  color: #1B1340 !important;
+  border-right: 3px solid var(--border-ink) !important;
+}
+
+.auth-showcase .parallax-layer rect,
+.auth-showcase .parallax-layer circle,
+.auth-showcase .parallax-layer line,
+.auth-showcase .parallax-layer path {
+  stroke: rgba(27, 19, 64, 0.16);
+}
+
+.auth-logo-chip {
+  background-color: #FFFFFF !important;
+  color: #1B1340 !important;
+  border: 2.5px solid #1B1340 !important;
+  box-shadow: 3px 3px 0px #1B1340 !important;
+  border-radius: 14px !important;
+}
+
+.studio-cmy-swatch-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 18px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background-color: #FFFFFF;
+  border: 2.5px solid #1B1340;
+  box-shadow: 3px 3px 0px #1B1340;
+  color: #1B1340;
+  width: fit-content;
+}
+
+.swatch-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+  border: 1.5px solid #1B1340;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.swatch-dot.is-magenta { background-color: #FF3D9A; }
+.swatch-dot.is-cyan { background-color: #00C6E0; }
+.swatch-dot.is-yellow { background-color: #FFD23F; }
+.swatch-dot.is-mint { background-color: #2EE59D; }
+
+.swatch-label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-left: 2px;
+}
+
+.auth-showcase h1 {
+  color: #1B1340 !important;
+  font-weight: 700 !important;
+}
+
+.auth-showcase p {
+  color: #352966 !important;
+  font-size: 0.98rem !important;
+  font-weight: 500;
+  line-height: 1.72 !important;
+}
+
+.auth-spec-list {
+  border-top: 2px dashed rgba(27, 19, 64, 0.22) !important;
+}
+
+.auth-spec-box {
+  background-color: #FFFFFF !important;
+  border: 2.5px solid #1B1340 !important;
+  border-left: 7px solid #00C6E0 !important;
+  border-radius: 14px !important;
+  box-shadow: 3px 3px 0px #1B1340 !important;
+  padding: 12px 14px !important;
+}
+
+.auth-spec-box:nth-child(2) {
+  border-left-color: #2EE59D !important;
+}
+
+.auth-spec-box.auth-spec-box--full {
+  border-left-color: #FF3D9A !important;
+}
+
+.auth-spec-num {
+  color: #1B1340 !important;
+}
+
+.auth-spec-text {
+  color: #352966 !important;
+  font-weight: 500;
+}
+
+/* Dark Mode Auth Showcase */
+html[data-theme="dark"] .auth-showcase {
+  background-color: #171038 !important;
+  background-image:
+    radial-gradient(circle at 15% 18%, rgba(255, 61, 154, 0.25) 0%, transparent 50%),
+    radial-gradient(circle at 85% 25%, rgba(0, 198, 224, 0.22) 0%, transparent 52%),
+    linear-gradient(rgba(255, 251, 242, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 251, 242, 0.05) 1px, transparent 1px) !important;
+  color: #FFFBF2 !important;
+}
+
+html[data-theme="dark"] .auth-showcase h1,
+html[data-theme="dark"] .auth-spec-num {
+  color: #FFFBF2 !important;
+}
+
+html[data-theme="dark"] .auth-showcase p,
+html[data-theme="dark"] .auth-spec-text {
+  color: #DFD8F7 !important;
+}
+
+html[data-theme="dark"] .auth-spec-box {
+  background-color: #241B4F !important;
+  border-color: #6453AD !important;
+  box-shadow: 3px 3px 0px #070414 !important;
+}
+
+/* --- 15.6 Squash & Spring Tactile Buttons (44px+ Tap Target) --- */
+.btn-primary {
+  background-color: var(--pop-magenta-cta) !important;
+  color: #FFFFFF !important;
+  border: 2.5px solid var(--border-ink) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: 4px 4px 0px var(--shadow-ink) !important;
+  font-weight: 600 !important;
+  min-height: 46px;
+  transition:
+    transform 0.16s var(--ease-spring),
+    box-shadow 0.16s var(--ease-out),
+    background-color 0.15s ease !important;
+}
+
+html[data-theme="dark"] .btn-primary {
+  background-color: #FF3D9A !important;
+  color: #FFFFFF !important;
+  border-color: #FFFBF2 !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover:not(:disabled) {
+    background-color: var(--pop-magenta-hover) !important;
+    transform: translate(-2px, -2px) !important;
+    box-shadow: 6px 6px 0px var(--shadow-ink) !important;
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    background-color: #FFF3BF !important;
+    color: #1B1340 !important;
+    transform: translate(-2px, -2px) !important;
+    box-shadow: 6px 6px 0px var(--shadow-ink) !important;
+  }
+
+  html[data-theme="dark"] .btn-secondary:hover:not(:disabled) {
+    background-color: #2F2466 !important;
+    color: #FFFBF2 !important;
+  }
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translate(2px, 3px) scale(0.98, 0.95) !important;
+  box-shadow: 1px 1px 0px var(--shadow-ink) !important;
+}
+
+.btn-secondary {
+  background-color: var(--bg-surface) !important;
+  color: var(--text-main) !important;
+  border: 2.5px solid var(--border-ink) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: 4px 4px 0px var(--shadow-ink) !important;
+  font-weight: 600 !important;
+  min-height: 44px;
+  transition:
+    transform 0.16s var(--ease-spring),
+    box-shadow 0.16s var(--ease-out),
+    background-color 0.15s ease !important;
+}
+
+.btn-secondary:active:not(:disabled) {
+  transform: translate(2px, 3px) scale(0.98, 0.95) !important;
+  box-shadow: 1px 1px 0px var(--shadow-ink) !important;
+}
+
+.btn-danger-outline {
+  border: 2.5px solid #C81E1E !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: 3px 3px 0px #9A1B1B !important;
+  font-weight: 600 !important;
+  min-height: 44px;
+  transition: transform 0.16s var(--ease-spring), box-shadow 0.16s var(--ease-out) !important;
+}
+
+.btn-danger-outline:active:not(:disabled) {
+  transform: translate(2px, 2px) scale(0.98, 0.95) !important;
+  box-shadow: 0px 0px 0px #9A1B1B !important;
+}
+
+/* Segmented Tabs, Filter Pills & Nav Buttons */
+.segmented-tabs {
+  border: 2.5px solid var(--border-ink);
+  background-color: var(--bg-subtle);
+  padding: 5px;
+  border-radius: 14px;
+}
+
+.segmented-tab-btn.is-active {
+  background-color: var(--pop-yellow) !important;
+  color: #1B1340 !important;
+  border: 2px solid #1B1340;
+  box-shadow: 2px 2px 0px #1B1340;
+  font-weight: 600;
+}
+
+.nav-btn.is-active,
+html[data-theme="dark"] .nav-btn.is-active {
+  background-color: var(--pop-yellow) !important;
+  color: #1B1340 !important;
+  border: 2.5px solid #1B1340 !important;
+  box-shadow: 3px 3px 0px #1B1340 !important;
+  font-weight: 600;
+}
+
+.nav-btn.is-active .nav-keycap,
+html[data-theme="dark"] .nav-btn.is-active .nav-keycap {
+  background-color: #1B1340 !important;
+  color: #FFD23F !important;
+  border-color: #1B1340 !important;
+}
+
+.filter-pill-btn {
+  border: 2px solid var(--border-ink) !important;
+  border-radius: 999px !important;
+  box-shadow: 2px 2px 0px var(--shadow-ink);
+  font-weight: 500;
+  transition: transform 0.14s var(--ease-spring), box-shadow 0.14s ease, background-color 0.14s ease;
+}
+
+.filter-pill-btn.is-active {
+  background-color: var(--pop-cyan) !important;
+  color: #1B1340 !important;
+  border-color: #1B1340 !important;
+  box-shadow: 3px 3px 0px #1B1340 !important;
+  font-weight: 600 !important;
+}
+
+/* Motion Toggle Active State (When Reduced Motion is ON) */
+html[data-motion="reduced"] .motion-toggle-btn {
+  background-color: var(--pop-yellow) !important;
+  color: #1B1340 !important;
+  border-color: #1B1340 !important;
+}
+
+/* --- 15.7 Sticker Inputs with Warm Studio Yellow Focus --- */
+.input-control {
+  border: 2.5px solid var(--border-control) !important;
+  border-radius: 14px !important;
+  box-shadow: 2px 2px 0px rgba(27, 19, 64, 0.12);
+  transition: background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease !important;
+}
+
+.input-control:focus {
+  background-color: var(--bg-input-focus) !important;
+  border-color: var(--border-ink) !important;
+  box-shadow: 4px 4px 0px var(--pop-yellow) !important;
+}
+
+.floating-field.is-focused .floating-label,
+.floating-field.has-value .floating-label,
+.floating-field .input-control:focus ~ .floating-label,
+.floating-field .input-control:not(:placeholder-shown) ~ .floating-label {
+  color: var(--pop-magenta-cta) !important;
+  font-weight: 600;
+}
+
+html[data-theme="dark"] .floating-field.is-focused .floating-label,
+html[data-theme="dark"] .floating-field.has-value .floating-label,
+html[data-theme="dark"] .floating-field .input-control:focus ~ .floating-label,
+html[data-theme="dark"] .floating-field .input-control:not(:placeholder-shown) ~ .floating-label {
+  color: var(--pop-cyan) !important;
+}
+
+.input-focus-line {
+  background: linear-gradient(90deg, #FF3D9A, #00C6E0) !important;
+  height: 3px !important;
+}
+
+/* --- 15.8 Home Hero, Step Cards & 4-Module CMY Sticker Headers --- */
+.home-hero-header-card {
+  border-top: 8px solid var(--pop-magenta) !important;
+  background-image:
+    radial-gradient(circle at 96% 12%, rgba(0, 198, 224, 0.14) 0%, transparent 40%),
+    radial-gradient(circle at 4% 92%, rgba(255, 210, 63, 0.18) 0%, transparent 38%);
+}
+
+.home-hero-scanner-card {
+  border-top: 8px solid var(--pop-cyan) !important;
+}
+
+.home-hero-cert-card,
+.home-cert-showcase {
+  border-top: 8px solid var(--pop-yellow) !important;
+}
+
+.learning-step-card {
+  border: 2.5px solid var(--border-ink) !important;
+  border-radius: 16px !important;
+  box-shadow: 4px 4px 0px var(--shadow-ink) !important;
+  padding: 18px !important;
+  background-color: var(--bg-surface);
+}
+
+.learning-step-card.step-color-1 { border-top: 6px solid #2EE59D !important; }
+.learning-step-card.step-color-2 { border-top: 6px solid #00C6E0 !important; }
+.learning-step-card.step-color-3 { border-top: 6px solid #FF3D9A !important; }
+
+.module-overview-card.module-theme-1 { border-top: 8px solid #2EE59D !important; }
+.module-overview-card.module-theme-2 { border-top: 8px solid #00C6E0 !important; }
+.module-overview-card.module-theme-3 { border-top: 8px solid #FF3D9A !important; }
+.module-overview-card.module-theme-4 { border-top: 8px solid #7B4DFF !important; }
+
+.progress-track {
+  border: 2px solid var(--border-ink);
+  border-radius: 999px;
+  background-color: var(--bg-subtle);
+  overflow: hidden;
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, #2EE59D 0%, #00C6E0 55%, #7B4DFF 100%) !important;
+}
+
+/* --- 15.9 Quiz Options: Mint Correct, Coral Wrong + Studio Glitch Shake --- */
+.quiz-cockpit-options-grid .quiz-option-btn {
+  border: 3px solid var(--border-ink) !important;
+  border-radius: 16px !important;
+  box-shadow: 4px 4px 0px var(--shadow-ink) !important;
+  transition:
+    transform 0.15s var(--ease-spring),
+    box-shadow 0.15s var(--ease-out),
+    background-color 0.14s ease,
+    border-color 0.14s ease !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .quiz-cockpit-options-grid .quiz-option-btn:hover:not(:disabled) {
+    transform: translate(-2px, -3px) !important;
+    box-shadow: 6px 6px 0px var(--shadow-ink) !important;
+    border-color: var(--border-ink) !important;
+    background-color: #FFF8DB !important;
+  }
+  html[data-theme="dark"] .quiz-cockpit-options-grid .quiz-option-btn:hover:not(:disabled) {
+    background-color: #2B205E !important;
+  }
+}
+
+.quiz-cockpit-options-grid .quiz-option-btn:active:not(:disabled) {
+  transform: translate(2px, 3px) scale(0.98, 0.96) !important;
+  box-shadow: 1px 1px 0px var(--shadow-ink) !important;
+}
+
+.quiz-option-btn.is-correct {
+  background-color: #D5FBF0 !important;
+  border-color: #059669 !important;
+  color: #064E3B !important;
+  box-shadow: 4px 4px 0px #065F46 !important;
+}
+
+.quiz-option-btn.is-correct .quiz-option-prefix {
+  background-color: #2EE59D !important;
+  color: #1B1340 !important;
+  border-color: #1B1340 !important;
+}
+
+.quiz-option-btn.is-wrong {
+  background-color: #FFE4DC !important;
+  border-color: #E04F16 !important;
+  color: #7C1D1D !important;
+  box-shadow: 4px 4px 0px #9A1B1B !important;
+}
+
+.quiz-option-btn.is-wrong .quiz-option-prefix {
+  background-color: #FF7A45 !important;
+  color: #1B1340 !important;
+  border-color: #1B1340 !important;
+}
+
+.quiz-cockpit-dots .quiz-progress-dot.is-current {
+  background-color: #FFD23F !important;
+  color: #1B1340 !important;
+  border-color: #1B1340 !important;
+}
+
+.quiz-cockpit-dots .quiz-progress-dot.is-correct {
+  background-color: #2EE59D !important;
+  color: #1B1340 !important;
+  border-color: #1B1340 !important;
+}
+
+.quiz-cockpit-dots .quiz-progress-dot.is-wrong {
+  background-color: #FF7A45 !important;
+  color: #1B1340 !important;
+  border-color: #1B1340 !important;
+}
+
+@keyframes studioGlitchShake {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+    box-shadow: 5px 5px 0px var(--shadow-ink);
+  }
+  16% {
+    transform: translate3d(-7px, 1px, 0);
+    box-shadow: -4px 0px 0px #FF3D9A, 4px 0px 0px #00C6E0;
+  }
+  32% {
+    transform: translate3d(7px, -1px, 0);
+    box-shadow: 4px 0px 0px #FF7A45, -4px 0px 0px #00C6E0;
+  }
+  48% {
+    transform: translate3d(-5px, 0, 0);
+    box-shadow: -3px 0px 0px #FF3D9A, 3px 0px 0px #FFD23F;
+  }
+  64% {
+    transform: translate3d(5px, 1px, 0);
+  }
+  80% {
+    transform: translate3d(-2px, 0, 0);
+  }
+}
+
+.is-glitch-shaking {
+  animation: studioGlitchShake 0.42s cubic-bezier(0.36, 0.07, 0.19, 0.97) both !important;
+}
+
+/* Status Icon inside Quiz Options & Feedback Banner */
+.quiz-status-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #1B1340;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.quiz-status-icon.is-correct {
+  background-color: #2EE59D;
+  color: #1B1340;
+}
+
+.quiz-status-icon.is-wrong {
+  background-color: #FF7A45;
+  color: #1B1340;
+}
+
+/* --- 15.10 Reduced Motion Accessibility (System & User Toggle) --- */
+@media (prefers-reduced-motion: reduce) {
+  .studio-pop-blob,
+  .misreg-heading,
+  .pixel-sticker-badge {
+    animation: none !important;
+  }
+}
+
+html[data-motion="reduced"] .studio-pop-blob,
+html[data-motion="reduced"] .misreg-heading,
+html[data-motion="reduced"] .pixel-sticker-badge,
+html[data-motion="reduced"] .cyber-laser-beam {
+  animation: none !important;
+}
+
+html[data-motion="reduced"] .reveal-ready {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+/* --- 15.11 Mobile Auth Utility Bar & Reader Step Sticker Polish --- */
+.step-rail-btn {
+  border: 2px solid var(--border-subtle) !important;
+  border-radius: 12px !important;
+  transition: transform 0.14s var(--ease-spring), box-shadow 0.14s ease, background-color 0.14s ease !important;
+}
+
+.step-rail-btn.is-active {
+  background-color: var(--pop-violet) !important;
+  color: #FFFFFF !important;
+  border: 2px solid var(--border-ink) !important;
+  box-shadow: 3px 3px 0px var(--shadow-ink) !important;
+  font-weight: 600 !important;
+}
+
+@media (max-width: 768px) {
+  .auth-wrapper {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    padding: 12px 12px 24px !important;
+    gap: 10px !important;
+  }
+
+  .auth-floating-actions {
+    position: static !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
 }

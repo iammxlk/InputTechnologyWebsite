@@ -1,13 +1,12 @@
 /**
  * ============================================================================
- * js/bg-matrix.js — Interactive Data Input Telemetry & Signal Background Canvas
+ * js/bg-matrix.js — Creative Studio Pop Interactive Background Canvas (60fps)
  * รายวิชา: 21901-2017 เทคโนโลยีการนำเข้าข้อมูลสู่ระบบคอมพิวเตอร์
- * ฟีเจอร์ลูกเล่นพื้นหลัง:
- *   1. Optical Sensor Cursor Beam: ลำแสงเซนเซอร์และพิกัดดิจิทัลเคลื่อนตามเมาส์
- *   2. Data Packets & Binary Bits: ละอองสัญญาณดิจิทัล (0, 1, รหัสฐานสอง) ลอยละล่อง
- *   3. RFID Electromagnetic Ripple: คลื่นกระจายสัญญาณเมื่อคลิกหรือแตะหน้าจอ
- *   4. Periodic Optical Scanline Sweep: แสงกวาดบาร์โค้ดแนวนอนเป็นระยะ
- *   5. Theme-Aware & Battery-Friendly: ปรับสีตามโหมดมืด-สว่าง และหยุดทำงานเมื่อสลับแท็บ
+ * ฟีเจอร์พื้นหลังสไตล์ Creative Studio Pop:
+ *   1. CMY Pixel Swatches & Vector Anchor Nodes: พิกเซลสี่เหลี่ยมและจุดยึดเวกเตอร์ลอยตัวนุ่มนวล
+ *   2. Desktop Cursor CMY Sparkles: ประกายสีสวอตช์ CMY ตามเคอร์เซอร์ (เฉพาะเดสก์ท็อป)
+ *   3. Interactive Color Swatch Ripple: คลื่นวงแหวนสีเมื่อคลิกพื้นที่ว่าง
+ *   4. Reduced-Motion & Tab-Visibility Safe: เคารพ prefers-reduced-motion และประหยัดพลังงาน
  * ============================================================================
  */
 
@@ -15,7 +14,10 @@
   "use strict";
 
   const STORAGE_KEY = "cdti_bg_effect_mode"; // 'active' | 'subtle' | 'off'
-  let currentMode = localStorage.getItem(STORAGE_KEY) || "active";
+  let currentMode = "active";
+  try {
+    currentMode = localStorage.getItem(STORAGE_KEY) || "active";
+  } catch (e) {}
 
   const canvas = document.createElement("canvas");
   canvas.id = "bg-interactive-canvas";
@@ -28,28 +30,30 @@
   let height = 0;
   let dpr = 1;
 
-  // Mouse / Pointer State
+  // CMY + Studio Pop Palette
+  const POP_COLORS = [
+    "#FF3D9A", // Magenta
+    "#00C6E0", // Cyan
+    "#FFD23F", // Yellow
+    "#7B4DFF", // Purple
+    "#2EE59D", // Mint
+    "#FF7A45"  // Coral
+  ];
+
   const mouse = {
     x: -9999,
     y: -9999,
-    targetX: -9999,
-    targetY: -9999,
+    lastSparkleX: -9999,
+    lastSparkleY: -9999,
     active: false,
-    radius: 140
+    isFinePointer: false
   };
 
-  // Ripples pool
   const ripples = [];
-
-  // Data Particles pool
+  const sparkles = [];
   const particles = [];
-  const PARTICLE_COUNT = 32;
-  const DATA_SYMBOLS = ["0", "1", "0", "1", "•", "+", "0", "1", "::"];
-
-  // Scanline state
-  let scanlineY = -50;
-  let scanlineSpeed = 1.6;
-  let scanlineCooldown = 0;
+  const PARTICLE_COUNT = 26;
+  const MAX_SPARKLES = 20;
 
   function isDarkMode() {
     return document.documentElement.getAttribute("data-theme") === "dark";
@@ -59,7 +63,8 @@
     return (
       document.documentElement.getAttribute("data-motion") === "reduced" ||
       (window.matchMedia &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
+        document.documentElement.getAttribute("data-motion") !== "full")
     );
   }
 
@@ -79,20 +84,40 @@
 
   function initParticles() {
     particles.length = 0;
+    const shapes = ["pixel", "anchor", "swatch", "dot"];
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.45,
-        vy: -0.2 - Math.random() * 0.4, // float gently upwards
-        symbol: DATA_SYMBOLS[Math.floor(Math.random() * DATA_SYMBOLS.length)],
-        size: 9 + Math.random() * 4,
-        alpha: 0.15 + Math.random() * 0.35,
-        baseAlpha: 0.15 + Math.random() * 0.35,
-        pulseSpeed: 0.02 + Math.random() * 0.03,
-        pulseAngle: Math.random() * Math.PI * 2
+        vx: (Math.random() - 0.5) * 0.36,
+        vy: -0.18 - Math.random() * 0.34,
+        shape: shapes[i % shapes.length],
+        color: POP_COLORS[i % POP_COLORS.length],
+        size: 6 + Math.random() * 6,
+        rot: Math.random() * Math.PI,
+        vRot: (Math.random() - 0.5) * 0.012,
+        baseAlpha: 0.2 + Math.random() * 0.25,
+        pulseAngle: Math.random() * Math.PI * 2,
+        pulseSpeed: 0.018 + Math.random() * 0.02
       });
     }
+  }
+
+  function spawnSparkle(x, y) {
+    if (currentMode !== "active" || isReducedMotion()) return;
+    if (sparkles.length >= MAX_SPARKLES) sparkles.shift();
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 0.6 + Math.random() * 1.4;
+    sparkles.push({
+      x,
+      y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - 0.35,
+      size: 4 + Math.random() * 4.5,
+      color: POP_COLORS[Math.floor(Math.random() * POP_COLORS.length)],
+      alpha: 0.85,
+      rot: Math.random() * Math.PI
+    });
   }
 
   function spawnRipple(x, y) {
@@ -101,194 +126,122 @@
       x,
       y,
       radius: 8,
-      maxRadius: Math.min(width, height) * 0.32,
-      alpha: isDarkMode() ? 0.45 : 0.35,
-      speed: 3.8
+      maxRadius: Math.min(width, height) * 0.26,
+      alpha: 0.55,
+      speed: 3.6,
+      color: POP_COLORS[Math.floor(Math.random() * POP_COLORS.length)]
     });
-    // Keep max 6 ripples at a time
-    if (ripples.length > 6) ripples.shift();
+    if (ripples.length > 5) ripples.shift();
   }
 
-  function render(time) {
+  function render() {
     if (!ctx) return;
 
     if (currentMode === "off" || isReducedMotion()) {
       ctx.clearRect(0, 0, width, height);
+      animFrameId = null;
       return;
     }
 
     ctx.clearRect(0, 0, width, height);
-
     const dark = isDarkMode();
-    // Color Palette
-    const colorAccent = dark ? "#38BDF8" : "#FF4814"; // Cyan in dark, Signal Orange in light
-    const colorSubtle = dark ? "rgba(56, 189, 248, " : "rgba(20, 23, 31, ";
-    const colorBeam = dark ? "rgba(56, 189, 248, 0.07)" : "rgba(255, 72, 20, 0.06)";
+    const inkColor = dark ? "#FFFBF2" : "#1B1340";
 
-    // Smooth mouse interpolation
-    mouse.x += (mouse.targetX - mouse.x) * 0.15;
-    mouse.y += (mouse.targetY - mouse.y) * 0.15;
+    // 1. Draw Floating Studio Pop Motifs (Pixels, Vector Anchor Nodes, Swatches)
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += p.vRot;
+      p.pulseAngle += p.pulseSpeed;
 
-    // 1. Draw Optical Barcode Scanline Sweep
-    if (currentMode === "active") {
-      scanlineY += scanlineSpeed;
-      if (scanlineY > height + 40) {
-        scanlineCooldown += 1;
-        if (scanlineCooldown > 180) { // ~3 seconds gap
-          scanlineY = -30;
-          scanlineCooldown = 0;
-          scanlineSpeed = 1.4 + Math.random() * 0.8;
-        }
-      } else if (scanlineY >= -30) {
-        const grad = ctx.createLinearGradient(0, scanlineY - 18, 0, scanlineY + 18);
-        grad.addColorStop(0, "rgba(255, 255, 255, 0)");
-        grad.addColorStop(0.5, colorBeam);
-        grad.addColorStop(1, "rgba(255, 255, 255, 0)");
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, scanlineY - 18, width, 36);
-
-        // Scanline center laser thread
-        ctx.strokeStyle = dark ? "rgba(56, 189, 248, 0.18)" : "rgba(255, 72, 20, 0.14)";
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(0, scanlineY);
-        ctx.lineTo(width, scanlineY);
-        ctx.stroke();
+      if (p.y < -24) {
+        p.y = height + 16;
+        p.x = Math.random() * width;
       }
+      if (p.x < -24) p.x = width + 16;
+      if (p.x > width + 24) p.x = -16;
+
+      const alpha = Math.max(0.08, p.baseAlpha + Math.sin(p.pulseAngle) * 0.08);
+      ctx.save();
+      ctx.globalAlpha = currentMode === "subtle" ? alpha * 0.6 : alpha;
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+
+      if (p.shape === "pixel") {
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+        ctx.strokeStyle = inkColor;
+        ctx.lineWidth = 1.2;
+        ctx.strokeRect(-p.size / 2, -p.size / 2, p.size, p.size);
+      } else if (p.shape === "anchor") {
+        // Bezier vector anchor point handle motif
+        ctx.strokeStyle = p.color;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(-p.size, 0);
+        ctx.lineTo(p.size, 0);
+        ctx.stroke();
+        ctx.fillStyle = dark ? "#1E1642" : "#FFFFFF";
+        ctx.strokeStyle = inkColor;
+        ctx.fillRect(-3.5, -3.5, 7, 7);
+        ctx.strokeRect(-3.5, -3.5, 7, 7);
+      } else if (p.shape === "swatch") {
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size * 0.7, -p.size * 0.4, p.size * 1.4, p.size * 0.8);
+      } else {
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(0, 0, p.size * 0.42, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
     }
 
-    // 2. Draw Interactive RFID Ripples
+    // 2. Draw Interactive Click Swatch Ripples
     for (let i = ripples.length - 1; i >= 0; i--) {
       const r = ripples[i];
       r.radius += r.speed;
-      r.alpha *= 0.965;
+      r.alpha *= 0.955;
 
-      if (r.alpha <= 0.01 || r.radius >= r.maxRadius) {
+      if (r.alpha <= 0.015 || r.radius >= r.maxRadius) {
         ripples.splice(i, 1);
         continue;
       }
 
       ctx.save();
-      ctx.strokeStyle = dark
-        ? `rgba(56, 189, 248, ${r.alpha.toFixed(3)})`
-        : `rgba(255, 72, 20, ${r.alpha.toFixed(3)})`;
-      ctx.lineWidth = 1.5;
+      ctx.globalAlpha = r.alpha;
+      ctx.strokeStyle = r.color;
+      ctx.lineWidth = 2;
       ctx.setLineDash([6, 6]);
       ctx.beginPath();
       ctx.arc(r.x, r.y, r.radius, 0, Math.PI * 2);
       ctx.stroke();
-
-      // Inner faint secondary ring
-      if (r.radius > 20) {
-        ctx.strokeStyle = dark
-          ? `rgba(129, 140, 248, ${(r.alpha * 0.5).toFixed(3)})`
-          : `rgba(20, 23, 31, ${(r.alpha * 0.4).toFixed(3)})`;
-        ctx.setLineDash([2, 4]);
-        ctx.beginPath();
-        ctx.arc(r.x, r.y, r.radius * 0.65, 0, Math.PI * 2);
-        ctx.stroke();
-      }
       ctx.restore();
     }
 
-    // 3. Draw Floating Binary & Data Particles
-    ctx.font = "500 11px 'Stack Sans Notch', monospace";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
+    // 3. Draw Desktop Cursor CMY Sparkles
+    if (mouse.isFinePointer && sparkles.length > 0) {
+      for (let i = sparkles.length - 1; i >= 0; i--) {
+        const s = sparkles[i];
+        s.x += s.vx;
+        s.y += s.vy;
+        s.alpha -= 0.032;
+        s.rot += 0.06;
 
-    for (let i = 0; i < particles.length; i++) {
-      const p = particles[i];
-      p.x += p.vx;
-      p.y += p.vy;
-
-      // Wrap around edges
-      if (p.y < -20) {
-        p.y = height + 10;
-        p.x = Math.random() * width;
-      }
-      if (p.x < -20) p.x = width + 10;
-      if (p.x > width + 20) p.x = -10;
-
-      // Pulse alpha
-      p.pulseAngle += p.pulseSpeed;
-      const currentAlpha = p.baseAlpha + Math.sin(p.pulseAngle) * 0.12;
-
-      // Distance to cursor
-      let distToMouse = 9999;
-      if (mouse.active) {
-        const dx = p.x - mouse.x;
-        const dy = p.y - mouse.y;
-        distToMouse = Math.sqrt(dx * dx + dy * dy);
-      }
-
-      if (distToMouse < mouse.radius) {
-        // Light up and connect with laser line to cursor
-        const proximity = 1 - distToMouse / mouse.radius;
-        ctx.fillStyle = colorAccent;
-        ctx.globalAlpha = Math.min(0.85, currentAlpha + proximity * 0.6);
-
-        // Faint laser tether line
-        if (currentMode === "active" && proximity > 0.35) {
-          ctx.strokeStyle = dark
-            ? `rgba(56, 189, 248, ${(proximity * 0.22).toFixed(3)})`
-            : `rgba(255, 72, 20, ${(proximity * 0.18).toFixed(3)})`;
-          ctx.lineWidth = 0.8;
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(mouse.x, mouse.y);
-          ctx.stroke();
+        if (s.alpha <= 0.02) {
+          sparkles.splice(i, 1);
+          continue;
         }
-      } else {
-        ctx.fillStyle = colorSubtle + Math.max(0.06, currentAlpha).toFixed(3) + ")";
-        ctx.globalAlpha = 1;
+
+        ctx.save();
+        ctx.globalAlpha = s.alpha;
+        ctx.translate(s.x, s.y);
+        ctx.rotate(s.rot);
+        ctx.fillStyle = s.color;
+        ctx.fillRect(-s.size / 2, -s.size / 2, s.size, s.size);
+        ctx.restore();
       }
-
-      ctx.fillText(p.symbol, p.x, p.y);
-    }
-    ctx.globalAlpha = 1;
-
-    // 4. Draw Cursor Optical Scanner Beam / Target Aura
-    if (mouse.active && currentMode === "active") {
-      ctx.save();
-      // Outer subtle scanner ring
-      const ringGrad = ctx.createRadialGradient(
-        mouse.x,
-        mouse.y,
-        10,
-        mouse.x,
-        mouse.y,
-        mouse.radius
-      );
-      ringGrad.addColorStop(0, dark ? "rgba(56, 189, 248, 0.08)" : "rgba(255, 72, 20, 0.07)");
-      ringGrad.addColorStop(0.7, dark ? "rgba(56, 189, 248, 0.02)" : "rgba(255, 72, 20, 0.02)");
-      ringGrad.addColorStop(1, "rgba(255, 255, 255, 0)");
-      ctx.fillStyle = ringGrad;
-      ctx.beginPath();
-      ctx.arc(mouse.x, mouse.y, mouse.radius, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Precision crosshair ticks around cursor
-      ctx.strokeStyle = dark ? "rgba(56, 189, 248, 0.28)" : "rgba(255, 72, 20, 0.25)";
-      ctx.lineWidth = 1;
-      const tick = 6;
-      const offset = 14;
-
-      // Left tick
-      ctx.beginPath();
-      ctx.moveTo(mouse.x - offset - tick, mouse.y);
-      ctx.lineTo(mouse.x - offset, mouse.y);
-      // Right tick
-      ctx.moveTo(mouse.x + offset, mouse.y);
-      ctx.lineTo(mouse.x + offset + tick, mouse.y);
-      // Top tick
-      ctx.moveTo(mouse.x, mouse.y - offset - tick);
-      ctx.lineTo(mouse.x, mouse.y - offset);
-      // Bottom tick
-      ctx.moveTo(mouse.x, mouse.y + offset);
-      ctx.lineTo(mouse.x, mouse.y + offset + tick);
-      ctx.stroke();
-
-      ctx.restore();
     }
 
     animFrameId = requestAnimationFrame(render);
@@ -310,32 +263,35 @@
     }
   }
 
-  // Pointer event listeners
   function onPointerMove(e) {
-    if (currentMode === "off") return;
-    mouse.targetX = e.clientX;
-    mouse.targetY = e.clientY;
-    if (!mouse.active) {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-      mouse.active = true;
+    if (currentMode === "off" || isReducedMotion()) return;
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+    mouse.active = true;
+    mouse.isFinePointer = e.pointerType === "mouse" || (!e.pointerType && window.innerWidth >= 900);
+
+    if (mouse.isFinePointer && currentMode === "active") {
+      const dx = e.clientX - mouse.lastSparkleX;
+      const dy = e.clientY - mouse.lastSparkleY;
+      if (dx * dx + dy * dy > 520) {
+        mouse.lastSparkleX = e.clientX;
+        mouse.lastSparkleY = e.clientY;
+        spawnSparkle(e.clientX, e.clientY);
+      }
     }
   }
 
   function onPointerLeave() {
     mouse.active = false;
-    mouse.targetX = -9999;
-    mouse.targetY = -9999;
   }
 
   function onPointerDown(e) {
     if (e.target && e.target.closest("button, a, input, select, textarea")) {
-      return; // don't obstruct direct clicks
+      return;
     }
     spawnRipple(e.clientX, e.clientY);
   }
 
-  // Visibility and resize handlers
   function handleVisibilityChange() {
     if (document.hidden) {
       stopAnimation();
@@ -344,13 +300,14 @@
     }
   }
 
-  // Toggle Mode API
   function setMode(mode) {
     if (mode !== "active" && mode !== "subtle" && mode !== "off") mode = "active";
     currentMode = mode;
-    localStorage.setItem(STORAGE_KEY, mode);
+    try {
+      localStorage.setItem(STORAGE_KEY, mode);
+    } catch (e) {}
     updateToggleButtons();
-    if (mode === "off") {
+    if (mode === "off" || isReducedMotion()) {
       stopAnimation();
     } else {
       startAnimation();
@@ -368,7 +325,7 @@
     btns.forEach((btn) => {
       const modeLabel =
         currentMode === "active"
-          ? "FX: เรดาร์สัญญาณ"
+          ? "FX: สตูดิโอเต็มรูปแบบ"
           : currentMode === "subtle"
           ? "FX: ระดับเบา"
           : "FX: ปิดเอฟเฟกต์";
@@ -376,20 +333,13 @@
       btn.setAttribute("aria-label", `ลูกเล่นพื้นหลัง: ${modeLabel}`);
       const textSpan = btn.querySelector(".bg-fx-label");
       if (textSpan) textSpan.textContent = modeLabel;
-
-      if (currentMode === "off") {
-        btn.classList.add("is-disabled");
-      } else {
-        btn.classList.remove("is-disabled");
-      }
+      btn.classList.toggle("is-disabled", currentMode === "off");
     });
   }
 
-  // Mount system
   function mount() {
     if (document.getElementById("bg-interactive-canvas")) return;
 
-    // Insert canvas as first child of body so it sits behind all content
     document.body.insertBefore(canvas, document.body.firstChild);
     ctx = canvas.getContext("2d", { alpha: true });
 
@@ -406,11 +356,11 @@
     window.addEventListener("pointerdown", onPointerDown, { passive: true });
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    // Watch theme changes
     const observer = new MutationObserver(() => {
-      // Re-render immediately on theme change
-      if (ctx && currentMode !== "off") {
-        render(performance.now());
+      if (isReducedMotion() || currentMode === "off") {
+        stopAnimation();
+      } else {
+        startAnimation();
       }
     });
     observer.observe(document.documentElement, {
@@ -420,14 +370,11 @@
 
     updateToggleButtons();
 
-    // Attach click handler to any toggle button on the page
     document.addEventListener("click", (e) => {
       const btn = e.target.closest("[data-bg-effect-toggle]");
       if (btn) {
         cycleMode();
-        if (window.SoundFX && window.SoundFX.playBlip) {
-          window.SoundFX.playBlip();
-        }
+        window.SoundEngine?.playClick?.();
       }
     });
 
