@@ -1007,6 +1007,12 @@
         </div>
 
         <div class="quiz-countdown-meta">
+          <img
+            src="images/mascot/star-5-excited.png"
+            alt=""
+            class="mascot-sticker mascot-sticker--quiz-countdown"
+            aria-hidden="true"
+          />
           <span class="unit-number-badge font-notch">${esc(meta.code)}</span>
           <h2 class="quiz-countdown-title">เตรียมพร้อมทำแบบทดสอบ: หน่วยที่ ${meta.no}</h2>
           <p class="quiz-countdown-subtitle">${window.AppUtils.formatUnitTitleHtml(meta.title)} — ${esc(meta.subtitle)}</p>
@@ -1174,7 +1180,7 @@
           <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
             <div class="quiz-feedback-mascot-head">
               <img
-                src="images/mascot/${answerRecord.isCorrect ? "mascot-cheer.png" : "mascot-study.png"}"
+                src="images/mascot/${answerRecord.isCorrect ? "mascot-cheer.png" : "star-6-shy.png"}"
                 alt=""
                 class="mascot-sticker mascot-sticker--quiz-feedback"
                 aria-hidden="true"
@@ -1357,6 +1363,7 @@
       renderQuizResultWorkspace();
 
       const passed = quizState.score >= CFG.PASS_SCORE_PER_UNIT;
+      window.MascotCompanion?.setState?.(passed ? "quiz_pass" : "quiz_retry");
       if (passed) {
         window.MotionEngine?.burstCelebration();
         window.SoundEngine?.playSuccess();
@@ -1457,24 +1464,32 @@
 
       <div class="surface-card quiz-result-card">
         <div style="display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 14px;">
-          <div>
-            <span class="status-pill ${passedAttempt ? "is-pass" : "is-warn"}">
-              ${
-                passedAttempt
-                  ? "ผ่านเกณฑ์การประเมินประจำหน่วย (80% ขึ้นไป)"
-                  : "ยังไม่ผ่านเกณฑ์ 80% (ต้องทำได้ตั้งแต่ 8/10 คะแนน)"
-              }
-            </span>
-            <h2 style="font-size: 1.42rem; font-weight: 600; margin-top: 10px;">
-              ${
-                passedAttempt
-                  ? `ยอดเยี่ยม คุณสอบผ่านหน่วยที่ ${quizState.unitNo} เรียบร้อยแล้ว`
-                  : `ทำได้ ${score} จาก ${totalQ} คะแนน ลองทบทวนเนื้อหาแล้วสอบใหม่อีกครั้ง`
-              }
-            </h2>
-            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 4px;">
-              ระบบเก็บคะแนนสูงสุดและเวลาที่เร็วที่สุดของคุณเพื่อนำไปคำนวณความคืบหน้าและปลดล็อกเกียรติบัตร
-            </p>
+          <div class="quiz-result-mascot-head">
+            <img
+              src="images/mascot/${passedAttempt ? "star-9-congrats.png" : "mascot-study.png"}"
+              alt=""
+              class="mascot-sticker mascot-sticker--quiz-result"
+              aria-hidden="true"
+            />
+            <div>
+              <span class="status-pill ${passedAttempt ? "is-pass" : "is-warn"}">
+                ${
+                  passedAttempt
+                    ? "ผ่านเกณฑ์การประเมินประจำหน่วย (80% ขึ้นไป)"
+                    : "ยังไม่ผ่านเกณฑ์ 80% (ต้องทำได้ตั้งแต่ 8/10 คะแนน)"
+                }
+              </span>
+              <h2 style="font-size: 1.42rem; font-weight: 600; margin-top: 10px;">
+                ${
+                  passedAttempt
+                    ? `ยอดเยี่ยม คุณสอบผ่านหน่วยที่ ${quizState.unitNo} เรียบร้อยแล้ว`
+                    : `ทำได้ ${score} จาก ${totalQ} คะแนน ลองทบทวนเนื้อหาแล้วสอบใหม่อีกครั้ง`
+                }
+              </h2>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 4px;">
+                ระบบเก็บคะแนนสูงสุดและเวลาที่เร็วที่สุดของคุณเพื่อนำไปคำนวณความคืบหน้าและปลดล็อกเกียรติบัตร
+              </p>
+            </div>
           </div>
         </div>
 

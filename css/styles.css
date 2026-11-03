@@ -9230,21 +9230,29 @@ html[data-theme="dark"] .mascot-sticker {
 
 .ambient-mascot--left-top {
   left: max(14px, calc((100vw - 1220px) / 2 - 110px));
-  top: 23%;
+  top: 20%;
+  width: 92px;
   animation: mascotFloatGentle 5.4s ease-in-out infinite;
 }
 
+.ambient-mascot--left-mid {
+  left: max(16px, calc((100vw - 1220px) / 2 - 106px));
+  top: 54%;
+  width: 88px;
+  animation: mascotFloatReverse 5.8s ease-in-out infinite;
+}
+
 .ambient-mascot--right-mid {
-  right: max(14px, calc((100vw - 1220px) / 2 - 112px));
-  top: 34%;
-  width: 102px;
+  right: max(14px, calc((100vw - 1220px) / 2 - 110px));
+  top: 31%;
+  width: 94px;
   animation: mascotFloatReverse 6.1s ease-in-out infinite;
 }
 
 .ambient-mascot--right-low {
   right: max(18px, calc((100vw - 1220px) / 2 - 104px));
   bottom: 13%;
-  width: 90px;
+  width: 88px;
   animation: mascotFloatGentle 4.9s ease-in-out infinite;
 }
 
@@ -9389,6 +9397,25 @@ html[data-theme="dark"] .mascot-sticker {
   width: 88px;
   height: 88px;
   animation: mascotFloatGentle 4.9s ease-in-out infinite;
+}
+
+.progress-hero-score-cluster {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.mascot-sticker--progress-star {
+  width: 82px;
+  height: 82px;
+  animation: mascotFloatGentle 4.2s ease-in-out infinite;
+}
+
+.mascot-sticker--quiz-countdown {
+  width: 78px;
+  height: 78px;
+  margin-bottom: 2px;
+  animation: mascotFloatGentle 4.2s ease-in-out infinite;
 }
 
 /* 16.6 Bottom-Left Interactive Floating Mascot Companion */
@@ -9540,6 +9567,21 @@ html[data-theme="dark"] .mascot-sticker {
   .mascot-sticker--cert-gate {
     width: 68px;
     height: 68px;
+  }
+
+  .mascot-sticker--progress-star {
+    width: 60px;
+    height: 60px;
+  }
+
+  .mascot-sticker--quiz-countdown {
+    width: 62px;
+    height: 62px;
+  }
+
+  .mascot-sticker--quiz-result {
+    width: 78px;
+    height: 78px;
   }
 
   .studio-mascot-companion {

@@ -9,6 +9,7 @@
 (function () {
   const CFG = window.APP_CONFIG;
   let cachedLogoImg = null;
+  let cachedCongratsStarImg = null;
 
   function loadInstituteLogo() {
     if (cachedLogoImg) return Promise.resolve(cachedLogoImg);
@@ -21,6 +22,36 @@
       img.onerror = () => resolve(null);
       img.src = "cdti-logo.png";
     });
+  }
+
+  function loadCongratsStar() {
+    if (cachedCongratsStarImg) return Promise.resolve(cachedCongratsStarImg);
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        cachedCongratsStarImg = img;
+        resolve(img);
+      };
+      img.onerror = () => resolve(null);
+      img.src = "images/mascot/star-9-congrats.png?v=4.4";
+    });
+  }
+
+  function drawFourPointSparkle(ctx, cx, cy, outerR, innerR, color) {
+    ctx.save();
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    for (let i = 0; i < 8; i++) {
+      const angle = (Math.PI / 4) * i - Math.PI / 2;
+      const r = i % 2 === 0 ? outerR : innerR;
+      const px = cx + Math.cos(angle) * r;
+      const py = cy + Math.sin(angle) * r;
+      if (i === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
   }
 
   function drawRoundedRect(ctx, x, y, w, h, r) {
@@ -87,7 +118,10 @@
       }
     }
 
-    const logo = await loadInstituteLogo();
+    const [logo, congratsStar] = await Promise.all([
+      loadInstituteLogo(),
+      loadCongratsStar()
+    ]);
     const W = 1600;
     const H = 1131;
     canvas.width = W;
@@ -182,6 +216,65 @@
     ctx.fillStyle = "#475569";
     ctx.font = "500 22px 'Mitr', 'Stack Sans Notch', sans-serif";
     drawCenteredText(ctx, `รหัสนักเรียน ${studentId}  •  ${CFG.LEVEL_PROGRAM_TH}`, centerX, 568, 860);
+
+    // 6.5 Celebratory Jumping Star Mascot Stamp (star-9-congrats.png)
+    if (congratsStar) {
+      const starCx = 1382;
+      const starCy = 454;
+
+      ctx.save();
+      // Warm Golden Honor Halo behind the congratulatory star
+      ctx.fillStyle = "#FFFBEB";
+      ctx.beginPath();
+      ctx.arc(starCx, starCy + 4, 76, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = "#FDE68A";
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      ctx.setLineDash([6, 5]);
+      ctx.strokeStyle = "#F59E0B";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(starCx, starCy + 4, 67, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Festive 4-point sparkles around the star
+      drawFourPointSparkle(ctx, starCx - 74, starCy - 52, 11, 4, "#F59E0B");
+      drawFourPointSparkle(ctx, starCx + 76, starCy + 34, 9, 3.2, "#F59E0B");
+      drawFourPointSparkle(ctx, starCx - 66, starCy + 48, 8, 3, "#3B82F6");
+
+      //Jumping celebratory star sprite (pose #9)
+      const starH = 172;
+      const starW = (congratsStar.width / congratsStar.height) * starH;
+      ctx.shadowColor = "rgba(15, 23, 42, 0.14)";
+      ctx.shadowBlur = 10;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 5;
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+      ctx.drawImage(congratsStar, starCx - starW / 2, starCy - starH / 2, starW, starH);
+      ctx.shadowColor = "transparent";
+
+      // Celebratory Thai Ribbon Pill below the star
+      const pillW = 126;
+      const pillH = 32;
+      const pillX = starCx - pillW / 2;
+      const pillY = starCy + 90;
+      ctx.fillStyle = "#FEF3C7";
+      drawRoundedRect(ctx, pillX, pillY, pillW, pillH, 16);
+      ctx.fill();
+      ctx.strokeStyle = "#F59E0B";
+      ctx.lineWidth = 1.6;
+      ctx.stroke();
+
+      ctx.fillStyle = "#92400E";
+      ctx.font = "600 16px 'Mitr', sans-serif";
+      drawCenteredText(ctx, "ยินดีด้วย!", starCx, pillY + 22, pillW - 14);
+      ctx.restore();
+    }
 
     // 7. Course Achievement Statement
     ctx.fillStyle = "#334155";
