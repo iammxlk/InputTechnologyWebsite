@@ -1,0 +1,1985 @@
+/* ==========================================================================
+   css/ean13.css  EAN-13 check-digit lab (markup from js/ean13-guide.js)
+   - Every selector is scoped under #ean13-guide-root.
+   - Colours come only from css/tokens.css; dark mode works through tokens.
+   - Hues carry meaning: purple = focus/key value, success = solved/valid,
+     warning = pending/attention, danger = invalid/mismatch.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Root, local tokens, shared type
+   -------------------------------------------------------------------------- */
+#ean13-guide-root {
+  /* Opaque tints (mixed onto the surface) so ink-on-tint contrast is the
+     same wherever the element sits. */
+  --ean-accent-bg: color-mix(in srgb, var(--accent) 9%, var(--surface));
+  --ean-accent-bg-strong: color-mix(in srgb, var(--accent) 16%, var(--surface));
+  --ean-accent-line: color-mix(in srgb, var(--accent) 38%, transparent);
+  --ean-success-bg: color-mix(in srgb, var(--success) 10%, var(--surface));
+  --ean-warning-bg: color-mix(in srgb, var(--warning) 12%, var(--surface));
+  --ean-danger-bg: color-mix(in srgb, var(--danger) 8%, var(--surface));
+
+  /* The barcode picture stays dark-on-white in both themes so it remains a
+     faithful, scannable-looking label. These two tokens do not change with
+     the theme. */
+  --ean-barcode-paper: var(--text-on-gradient);
+  --ean-barcode-ink: var(--code-bg);
+  --ean-barcode-ink-invalid: color-mix(in srgb, var(--danger) 60%, var(--code-bg));
+  --ean-barcode-ink-check: color-mix(in srgb, var(--accent) 70%, var(--code-bg));
+
+  margin-block: 24px;
+  padding: clamp(14px, 3.2vw, 24px);
+  min-width: 0;
+  max-width: 100%;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: 0;
+  color: var(--text-body);
+}
+
+#ean13-guide-root *,
+#ean13-guide-root *::before,
+#ean13-guide-root *::after {
+  box-sizing: border-box;
+}
+
+#ean13-guide-root p {
+  margin: 0;
+}
+
+/* Barcode digits, equations and codes */
+#ean13-guide-root .ean13-cell,
+#ean13-guide-root .digits-strip,
+#ean13-guide-root .digit-box,
+#ean13-guide-root .prod-item,
+#ean13-guide-root .math-expr,
+#ean13-guide-root .math-res,
+#ean13-guide-root .split-pill strong,
+#ean13-guide-root .div-val,
+#ean13-guide-root .div-op,
+#ean13-guide-root .formula-math-display,
+#ean13-guide-root .zero-math-pill,
+#ean13-guide-root .complete-code-string,
+#ean13-guide-root .st-code,
+#ean13-guide-root .comp-num,
+#ean13-guide-root .verdict-symbol,
+#ean13-guide-root .ls-val,
+#ean13-guide-root .lv-num,
+#ean13-guide-root .lv-tag,
+#ean13-guide-root .live-char-count,
+#ean13-guide-root .live-barcode-input,
+#ean13-guide-root .ean13-step-progress-pill,
+#ean13-guide-root .ean13-step-dot,
+#ean13-guide-root .formula-em,
+#ean13-guide-root .ean13-meta-tag strong {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+/* Sprite icons and inline SVG glyphs inside the lab */
+#ean13-guide-root .icon {
+  width: 1.15em;
+  height: 1.15em;
+  flex: none;
+}
+
+#ean13-guide-root svg:not(.ean13-barcode-svg) {
+  flex: none;
+  vertical-align: -0.15em;
+}
+
+#ean13-guide-root :is(button, input):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   2. Lab header
+   -------------------------------------------------------------------------- */
+#ean13-guide-root .ean13-lab-header {
+  margin-bottom: 20px;
+}
+
+#ean13-guide-root .ean13-lab-tag-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  margin-bottom: 10px;
+}
+
+#ean13-guide-root .ean13-lab-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--ean-accent-bg);
+  border: 1px solid var(--ean-accent-line);
+  color: var(--accent-ink);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.04em; /* Latin-only label */
+}
+
+#ean13-guide-root .ean13-lab-status-dot {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+#ean13-guide-root .ean13-lab-live-text {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.04em; /* Latin-only label */
+}
+
+#ean13-guide-root .ean13-lab-main-title {
+  margin: 0 0 6px;
+  color: var(--text-primary);
+  font-size: clamp(1.15rem, 2.6vw, 1.4rem);
+  font-weight: 700;
+  line-height: 1.4;
+  text-wrap: balance;
+}
+
+#ean13-guide-root .ean13-lab-lead {
+  max-width: 72ch;
+  color: var(--text-muted);
+  font-size: 0.94rem;
+  line-height: 1.65;
+}
+
+/* --------------------------------------------------------------------------
+   3. Tabs
+   -------------------------------------------------------------------------- */
+#ean13-guide-root .ean13-tabs-track {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+#ean13-guide-root .ean13-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-body);
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease-out),
+    border-color var(--t-fast) var(--ease-out),
+    color var(--t-fast) var(--ease-out);
+}
+
+#ean13-guide-root .ean13-tab-btn:hover {
+  background: var(--surface-2);
+  border-color: var(--line-strong);
+  color: var(--text-primary);
+}
+
+#ean13-guide-root .ean13-tab-btn.is-active {
+  background: var(--ean-accent-bg);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+
+#ean13-guide-root .ean13-tab-content-area,
+#ean13-guide-root .ean13-example-pane,
+#ean13-guide-root .ean13-live-tester-pane {
+  min-width: 0;
+}
+
+/* --------------------------------------------------------------------------
+   4. Example header, badges, stepper
+   -------------------------------------------------------------------------- */
+#ean13-guide-root .ean13-pane-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+#ean13-guide-root .ean13-example-title {
+  margin: 6px 0 0;
+  color: var(--text-primary);
+  font-size: 1.14rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+#ean13-guide-root .ean13-step-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+#ean13-guide-root .ean13-step-badge.badge-info,
+#ean13-guide-root .ean13-step-badge.badge-accent {
+  background: var(--ean-accent-bg);
+  border-color: var(--ean-accent-line);
+  color: var(--accent-ink);
+}
+
+#ean13-guide-root .ean13-step-badge.badge-success {
+  background: var(--ean-success-bg);
+  border-color: var(--success-line);
+  color: var(--success);
+}
+
+#ean13-guide-root .ean13-step-badge.badge-warn {
+  background: var(--ean-warning-bg);
+  border-color: var(--warning-line);
+  color: var(--warning);
+}
+
+#ean13-guide-root .ean13-step-badge.badge-danger {
+  background: var(--ean-danger-bg);
+  border-color: var(--danger-line);
+  color: var(--danger);
+}
+
+#ean13-guide-root .ean13-step-progress-pill {
+  flex: none;
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  color: var(--text-body);
+  font-size: 0.84rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+#ean13-guide-root .ean13-stepper-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px 12px;
+  margin-bottom: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+}
+
+/* .btn-primary / .btn-secondary come from the global stylesheet; only the
+   lab-specific box and disabled state are set here. */
+#ean13-guide-root .ean13-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding-inline: 16px;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+#ean13-guide-root .ean13-nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+#ean13-guide-root .ean13-dots-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+/* The button is a 44px hit area; the visible dot is its inner span. */
+#ean13-guide-root .ean13-step-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+}
+
+#ean13-guide-root .ean13-step-dot > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: var(--surface);
+  transition: background-color var(--t-fast) var(--ease-out),
+    border-color var(--t-fast) var(--ease-out),
+    color var(--t-fast) var(--ease-out);
+}
+
+#ean13-guide-root .ean13-step-dot:hover > span {
+  background: var(--ean-accent-bg);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+#ean13-guide-root .ean13-step-dot.is-done {
+  color: var(--success);
+}
+
+#ean13-guide-root .ean13-step-dot.is-done > span {
+  background: var(--ean-success-bg);
+  border-color: var(--success-line);
+}
+
+#ean13-guide-root .ean13-step-dot.is-current {
+  color: var(--accent-ink);
+  font-weight: 700;
+}
+
+#ean13-guide-root .ean13-step-dot.is-current > span {
+  background: var(--ean-accent-bg-strong);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-tint);
+}
+
+#ean13-guide-root .ean13-step-dot .icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* --------------------------------------------------------------------------
+   5. Calculation matrix (12 payload columns + check-digit column)
+   -------------------------------------------------------------------------- */
+#ean13-guide-root .ean13-matrix-wrapper {
+  min-width: 0;
+  max-width: 100%;
+  margin-bottom: 20px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+}
+
+#ean13-guide-root .ean13-matrix-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+#ean13-guide-root .legend-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* The row being worked on in the current step */
+#ean13-guide-root .legend-chip.is-active-changed {
+  background: var(--ean-accent-bg);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+
+#ean13-guide-root .legend-pulse-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 1px 8px;
+  border: 1px solid var(--ean-accent-line);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--accent-ink);
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+#ean13-guide-root .legend-pulse-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+#ean13-guide-root .legend-pulse-badge.is-green {
+  border-color: var(--success-line);
+  color: var(--success);
+}
+
+/* Horizontal scrolling stays inside this pane on narrow screens. */
+#ean13-guide-root .ean13-matrix-scroll-pane {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 2px 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+#ean13-guide-root .ean13-matrix-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(52px, 1fr)) minmax(72px, 1.25fr);
+  gap: 4px;
+  min-width: 760px;
+}
+
+#ean13-guide-root .ean13-matrix-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+#ean13-guide-root .ean13-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 6px 2px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xs);
+  background: var(--surface);
+  color: var(--text-primary);
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* Row 1: position */
+#ean13-guide-root .ean13-cell.cell-pos {
+  min-height: 42px;
+  border-color: transparent;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+#ean13-guide-root .cell-sub {
+  margin-top: 2px;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Row 2: digit */
+#ean13-guide-root .ean13-cell.cell-digit {
+  min-height: 46px;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+/* Row 3: weight. Odd (x1) is neutral, even (x3) is the purple tint. */
+#ean13-guide-root .ean13-cell.cell-weight {
+  min-height: 34px;
+  font-size: 0.84rem;
+}
+
+#ean13-guide-root .ean13-cell.cell-weight.is-odd-weight {
+  background: var(--surface);
+  color: var(--text-body);
+  font-weight: 500;
+}
+
+#ean13-guide-root .ean13-cell.cell-weight.is-even-weight {
+  background: var(--ean-accent-bg);
+  border-color: var(--ean-accent-line);
+  color: var(--accent-ink);
+  font-weight: 700;
+}
+
+#ean13-guide-root .weight-badge {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+#ean13-guide-root .weight-badge.is-check-slot {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+/* Row 4: product */
+#ean13-guide-root .ean13-cell.cell-prod {
+  min-height: 40px;
+  font-size: 1.02rem;
+  font-weight: 600;
+}
+
+/* Rows not yet revealed in the current step */
+#ean13-guide-root .ean13-cell.is-dim {
+  opacity: 0.4;
+  border-style: dashed;
+  background: transparent;
+}
+
+#ean13-guide-root .ean13-cell.is-visible {
+  opacity: 1;
+}
+
+/* Step focus: the row the current step is about */
+#ean13-guide-root .ean13-matrix-col.is-highlight-digit .cell-digit,
+#ean13-guide-root .ean13-matrix-col.is-highlight-weight .cell-weight,
+#ean13-guide-root .ean13-matrix-col.is-highlight-prod .cell-prod,
+#ean13-guide-root .ean13-matrix-col.is-highlight-sum .cell-prod,
+#ean13-guide-root .ean13-cell.is-anim-sum-focus {
+  background: var(--ean-accent-bg-strong);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* Entrance of the cells that changed in this step, staggered per column */
+#ean13-guide-root .ean-cell-changed.is-anim-digit,
+#ean13-guide-root .ean-cell-changed.is-anim-weight,
+#ean13-guide-root .ean-cell-changed.is-anim-product {
+  animation: eanCellIn var(--t-med) var(--ease-out) both;
+  animation-delay: calc(var(--col-idx, 0) * 35ms);
+}
+
+/* Column 13: check digit */
+#ean13-guide-root .ean13-matrix-col.is-col-checkdigit {
+  margin-left: 4px;
+  padding-left: 8px;
+  border-left: 1px solid var(--line-strong);
+}
+
+#ean13-guide-root .ean13-matrix-col.is-col-checkdigit .cell-pos {
+  color: var(--text-primary);
+}
+
+#ean13-guide-root .ean13-matrix-col.is-col-checkdigit .cell-weight {
+  background: var(--surface-3);
+  border-color: transparent;
+}
+
+#ean13-guide-root .ean13-matrix-col.is-col-checkdigit .cell-prod {
+  font-size: 0.9rem;
+}
+
+/* Pending: not calculated yet */
+#ean13-guide-root .ean13-cell.cell-digit.is-waiting-check {
+  background: var(--ean-warning-bg);
+  border: 1px dashed var(--warning-line);
+  color: var(--warning);
+}
+
+#ean13-guide-root .ean13-cell.cell-digit.is-waiting-check > span {
+  animation: eanSoftPulse 1.8s ease-in-out infinite;
+}
+
+/* Solved / sealed: the calculated check digit */
+#ean13-guide-root .ean13-cell.cell-digit.is-anim-checkdigit-solved,
+#ean13-guide-root .ean13-cell.cell-digit.is-anim-checkdigit-sealed {
+  background: var(--ean-success-bg);
+  border-color: var(--success-line);
+  color: var(--success);
+}
+
+#ean13-guide-root .ean-cell-changed.is-anim-checkdigit-solved {
+  animation: eanSolvedPop 420ms var(--ease-spring) both;
+}
+
+/* Mismatch: the printed digit differs from the calculated one */
+#ean13-guide-root .ean13-cell.cell-digit.is-anim-invalid-shake {
+  background: var(--ean-danger-bg);
+  border-color: var(--danger-line);
+  color: var(--danger);
+}
+
+#ean13-guide-root .ean-cell-changed.is-anim-invalid-shake {
+  animation: eanMismatchShake 480ms ease-in-out both;
+}
+
+#ean13-guide-root .badge-solved-val,
+#ean13-guide-root .prod-badge-solved {
+  color: var(--success);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+#ean13-guide-root .badge-mismatch-val,
+#ean13-guide-root .prod-badge-mismatch {
+  color: var(--danger);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+#ean13-guide-root .badge-mismatch-val {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+
+#ean13-guide-root .ean13-scroll-hint {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   6. Step board, formula cards, callouts
+   -------------------------------------------------------------------------- */
+#ean13-guide-root .ean13-step-board {
+  min-width: 0;
+  padding: clamp(14px, 3vw, 20px);
+}
+
+#ean13-guide-root .ean13-board-header {
+  margin-bottom: 16px;
+}
+
+#ean13-guide-root .ean13-board-title {
+  margin: 8px 0 4px;
+  color: var(--text-primary);
+  font-size: 1.18rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+#ean13-guide-root .ean13-board-desc {
+  max-width: 72ch;
+  color: var(--text-body);
+  font-size: 0.94rem;
+  line-height: 1.65;
+}
+
+#ean13-guide-root .ean13-formula-card {
+  min-width: 0;
+  margin-bottom: 14px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+}
+
+#ean13-guide-root .ean13-formula-card.is-highlight {
+  border-color: var(--ean-accent-line);
+}
+
+#ean13-guide-root .ean13-formula-card.is-zero-card {
+  border-color: var(--warning-line);
+}
+
+#ean13-guide-root .ean13-formula-card.is-danger {
+  border-color: var(--danger-line);
+}
+
+#ean13-guide-root .ean13-formula-card.is-success {
+  border-color: var(--success-line);
+}
+
+#ean13-guide-root .formula-header {
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+#ean13-guide-root .formula-body {
+  min-width: 0;
+  color: var(--text-body);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+#ean13-guide-root .formula-caption {
+  margin-top: 10px;
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+#ean13-guide-root .formula-em {
+  font-weight: 700;
+}
+
+#ean13-guide-root .formula-em.is-country,
+#ean13-guide-root .formula-em.is-remainder {
+  color: var(--accent-ink);
+}
+
+#ean13-guide-root .formula-em.is-remainder {
+  font-size: 1.1rem;
+}
+
+#ean13-guide-root .formula-em.is-pending {
+  color: var(--warning);
+}
+
+/* Step 1: digit strip */
+#ean13-guide-root .digits-strip {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+#ean13-guide-root .digit-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 40px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-xs);
+  background: var(--surface);
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+#ean13-guide-root .digit-box.is-country {
+  background: var(--ean-accent-bg);
+  border-color: var(--ean-accent-line);
+  color: var(--accent-ink);
+}
+
+#ean13-guide-root .digit-box.is-unknown {
+  margin-left: 6px;
+  background: var(--ean-warning-bg);
+  border: 1px dashed var(--warning-line);
+  color: var(--warning);
+  animation: eanSoftPulse 1.8s ease-in-out infinite;
+}
+
+/* Step 2: weighting rules. Odd = neutral, even = purple tint. */
+#ean13-guide-root .weights-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: 12px;
+}
+
+#ean13-guide-root .weights-rule-box {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+#ean13-guide-root .weights-rule-box.is-even {
+  background: var(--ean-accent-bg);
+  border-color: var(--ean-accent-line);
+}
+
+#ean13-guide-root .badge-pill {
+  display: inline-block;
+  padding: 2px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+#ean13-guide-root .badge-pill.is-even {
+  background: var(--surface);
+  border-color: var(--ean-accent-line);
+  color: var(--accent-ink);
+}
+
+#ean13-guide-root .rule-math {
+  display: block;
+  margin-top: 8px;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+#ean13-guide-root .weights-rule-box.is-even .rule-math {
+  color: var(--accent-ink);
+}
+
+#ean13-guide-root .rule-desc {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+/* Step 3: products */
+#ean13-guide-root .products-compact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: 8px;
+}
+
+#ean13-guide-root .prod-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xs);
+  background: var(--surface);
+  color: var(--text-body);
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+#ean13-guide-root .prod-pos {
+  flex: none;
+  padding: 1px 6px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-3);
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+#ean13-guide-root .prod-math {
+  white-space: nowrap;
+}
+
+#ean13-guide-root .prod-math strong {
+  color: var(--accent-ink);
+  font-size: 0.96rem;
+  font-weight: 700;
+}
+
+/* Step 4: sum */
+#ean13-guide-root .math-equation-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+#ean13-guide-root .math-label {
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+
+#ean13-guide-root .math-expr {
+  min-width: 0;
+  color: var(--text-body);
+  overflow-wrap: anywhere;
+}
+
+#ean13-guide-root .math-res {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+#ean13-guide-root .math-res.is-accent {
+  color: var(--accent-ink);
+  font-size: 1.25rem;
+}
+
+#ean13-guide-root .math-split-box {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+#ean13-guide-root .split-pill {
+  padding: 4px 10px;
+  border-radius: var(--radius-xs);
+  background: var(--surface-2);
+  color: var(--text-body);
+  overflow-wrap: anywhere;
+}
+
+#ean13-guide-root .split-pill strong {
+  color: var(--accent-ink);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+#ean13-guide-root .split-plus,
+#ean13-guide-root .split-equal {
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+#ean13-guide-root .split-total {
+  padding: 4px 10px;
+  border: 1px solid var(--ean-accent-line);
+  border-radius: var(--radius-xs);
+  background: var(--ean-accent-bg);
+  color: var(--accent-ink);
+  font-family: var(--font-sans);
+  font-size: 1.02rem;
+  font-weight: 700;
+}
+
+/* Step 5: modulo 10 */
+#ean13-guide-root .division-board {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+#ean13-guide-root .div-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+#ean13-guide-root .div-label {
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+#ean13-guide-root .div-val {
+  color: var(--text-primary);
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+#ean13-guide-root .div-cell.is-remainder {
+  background: var(--ean-accent-bg);
+  border-color: var(--accent);
+}
+
+#ean13-guide-root .div-cell.is-remainder .div-label,
+#ean13-guide-root .div-val.is-neon {
+  color: var(--accent-ink);
+}
+
+#ean13-guide-root .div-val.is-neon {
+  font-size: 1.5rem;
+}
+
+#ean13-guide-root .div-op {
+  color: var(--text-muted);
+  font-size: 1.4rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* Step 6: check digit */
+#ean13-guide-root .zero-case-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--warning-line);
+  border-radius: var(--radius-sm);
+  background: var(--ean-warning-bg);
+}
+
+#ean13-guide-root .zero-alert-icon {
+  display: inline-flex;
+  flex: none;
+  color: var(--warning);
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+#ean13-guide-root .zero-alert-title {
+  display: block;
+  color: var(--warning);
+  font-family: var(--font-sans);
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+#ean13-guide-root .zero-alert-text {
+  margin-top: 4px;
+  color: var(--text-body);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+#ean13-guide-root .zero-math-pill {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 12px;
+  border: 1px solid var(--warning-line);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--warning);
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+#ean13-guide-root .standard-check-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#ean13-guide-root .formula-math-display {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--text-primary);
+  font-size: 1.12rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+#ean13-guide-root .f-part.is-target {
+  padding: 2px 12px;
+  border: 1px solid var(--success-line);
+  border-radius: var(--radius-xs);
+  background: var(--ean-success-bg);
+  color: var(--success);
+  font-size: 1.45rem;
+  font-weight: 700;
+}
+
+#ean13-guide-root .shortcut-tip-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--ean-accent-line);
+  border-radius: var(--radius-sm);
+  background: var(--ean-accent-bg);
+  color: var(--text-body);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+#ean13-guide-root .shortcut-icon {
+  display: inline-flex;
+  flex: none;
+  margin-top: 3px;
+  color: var(--accent-ink);
+}
+
+/* Step 7: completed code */
+#ean13-guide-root .complete-code-banner {
+  margin-bottom: 14px;
+}
+
+#ean13-guide-root .complete-label {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+#ean13-guide-root .complete-code-string {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  color: var(--text-primary);
+  font-size: clamp(1.15rem, 5vw, 1.55rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+#ean13-guide-root .c-sep {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+#ean13-guide-root .c-digit-badge {
+  padding: 0 10px;
+  border: 1px solid var(--success-line);
+  border-radius: var(--radius-xs);
+  background: var(--ean-success-bg);
+  color: var(--success);
+}
+
+/* Example 3: split and verdict */
+#ean13-guide-root .verification-split-view {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+#ean13-guide-root .split-target-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 10px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  text-align: center;
+}
+
+#ean13-guide-root .split-target-box.is-check {
+  background: var(--ean-accent-bg);
+  border-color: var(--ean-accent-line);
+}
+
+#ean13-guide-root .st-label {
+  display: block;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+#ean13-guide-root .st-code {
+  color: var(--text-primary);
+  font-size: clamp(1.1rem, 4.6vw, 1.35rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+#ean13-guide-root .st-code.is-given {
+  color: var(--accent-ink);
+  font-size: 1.6rem;
+}
+
+#ean13-guide-root .split-vs {
+  align-self: center;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+#ean13-guide-root .verdict-comparison-grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+#ean13-guide-root .verdict-comp-box {
+  min-width: 140px;
+  padding: 12px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  text-align: center;
+}
+
+#ean13-guide-root .verdict-comp-box.is-calculated {
+  background: var(--ean-success-bg);
+  border-color: var(--success-line);
+}
+
+#ean13-guide-root .verdict-comp-box.is-given {
+  background: var(--ean-danger-bg);
+  border-color: var(--danger-line);
+}
+
+#ean13-guide-root .comp-label {
+  display: block;
+  color: var(--text-body);
+  font-size: 0.76rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+#ean13-guide-root .comp-num {
+  display: block;
+  color: var(--success);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+#ean13-guide-root .comp-num.is-err {
+  color: var(--danger);
+}
+
+#ean13-guide-root .comp-note {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+
+#ean13-guide-root .verdict-symbol {
+  color: var(--danger);
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+#ean13-guide-root .verdict-banner-invalid {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding: 12px 16px;
+  border: 1px solid var(--danger-line);
+  border-radius: var(--radius-sm);
+  background: var(--ean-danger-bg);
+}
+
+#ean13-guide-root .v-icon {
+  display: inline-flex;
+  flex: none;
+  margin-top: 2px;
+  color: var(--danger);
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+#ean13-guide-root .v-title {
+  display: block;
+  color: var(--danger);
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+#ean13-guide-root .v-desc {
+  margin-top: 2px;
+  color: var(--text-body);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* Callouts under each step */
+#ean13-guide-root .ean13-callout-box {
+  padding: 12px 14px;
+  border: 1px solid var(--ean-accent-line);
+  border-radius: var(--radius-sm);
+  background: var(--ean-accent-bg);
+}
+
+#ean13-guide-root .ean13-callout-title {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--accent-ink);
+  font-size: 0.96rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+#ean13-guide-root .ean13-callout-text {
+  color: var(--text-body);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+/* Informational types share the purple treatment */
+#ean13-guide-root .ean13-callout-box.is-info,
+#ean13-guide-root .ean13-callout-box.is-rule,
+#ean13-guide-root .ean13-callout-box.is-calc,
+#ean13-guide-root .ean13-callout-box.is-sum,
+#ean13-guide-root .ean13-callout-box.is-mod {
+  background: var(--ean-accent-bg);
+  border-color: var(--ean-accent-line);
+}
+
+#ean13-guide-root .ean13-callout-box.is-success,
+#ean13-guide-root .ean13-callout-box.is-final {
+  background: var(--ean-success-bg);
+  border-color: var(--success-line);
+}
+
+#ean13-guide-root .ean13-callout-box.is-success .ean13-callout-title,
+#ean13-guide-root .ean13-callout-box.is-final .ean13-callout-title {
+  color: var(--success);
+}
+
+#ean13-guide-root .ean13-callout-box.is-warn {
+  background: var(--ean-warning-bg);
+  border-color: var(--warning-line);
+}
+
+#ean13-guide-root .ean13-callout-box.is-warn .ean13-callout-title {
+  color: var(--warning);
+}
+
+#ean13-guide-root .ean13-callout-box.is-danger {
+  background: var(--ean-danger-bg);
+  border-color: var(--danger-line);
+}
+
+#ean13-guide-root .ean13-callout-box.is-danger .ean13-callout-title {
+  color: var(--danger);
+}
+
+/* --------------------------------------------------------------------------
+   7. Barcode picture
+   -------------------------------------------------------------------------- */
+#ean13-guide-root .ean13-barcode-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+#ean13-guide-root .ean13-barcode-card.is-invalid-barcode {
+  border-color: var(--danger-line);
+}
+
+#ean13-guide-root .ean13-barcode-svg {
+  display: block;
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xs);
+}
+
+#ean13-guide-root .ean13-barcode-paper {
+  fill: var(--ean-barcode-paper);
+}
+
+#ean13-guide-root .ean13-barcode-ink {
+  fill: var(--ean-barcode-ink);
+}
+
+#ean13-guide-root .ean13-barcode-svg text {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+#ean13-guide-root .ean13-barcode-check {
+  fill: var(--ean-barcode-ink-check);
+}
+
+#ean13-guide-root .is-invalid-barcode .ean13-barcode-ink,
+#ean13-guide-root .is-invalid-barcode .ean13-barcode-check {
+  fill: var(--ean-barcode-ink-invalid);
+}
+
+#ean13-guide-root .ean13-barcode-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 96px;
+  margin-top: 12px;
+  padding: 16px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+#ean13-guide-root .ean13-barcode-meta {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#ean13-guide-root .ean13-meta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  color: var(--text-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+#ean13-guide-root .ean13-meta-tag.is-country {
+  background: var(--ean-accent-bg);
+  border-color: var(--ean-accent-line);
+  color: var(--accent-ink);
+}
+
+#ean13-guide-root .ean13-meta-tag.is-product {
+  background: var(--surface-2);
+  color: var(--text-body);
+}
+
+#ean13-guide-root .ean13-meta-tag.is-check {
+  background: var(--ean-success-bg);
+  border-color: var(--success-line);
+  color: var(--success);
+}
+
+#ean13-guide-root .ean13-meta-tag.is-err {
+  background: var(--ean-danger-bg);
+  border-color: var(--danger-line);
+  color: var(--danger);
+}
+
+/* --------------------------------------------------------------------------
+   8. Live validator
+   -------------------------------------------------------------------------- */
+#ean13-guide-root .live-input-card {
+  min-width: 0;
+  padding: clamp(14px, 3vw, 20px);
+}
+
+#ean13-guide-root .live-input-header {
+  margin-bottom: 16px;
+}
+
+#ean13-guide-root .live-input-header h3 {
+  margin-bottom: 0;
+  color: var(--text-primary);
+  line-height: 1.45;
+}
+
+#ean13-guide-root .live-input-header p {
+  line-height: 1.6;
+}
+
+#ean13-guide-root .live-input-row,
+#ean13-guide-root .live-field-group {
+  min-width: 0;
+}
+
+#ean13-guide-root .live-field-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+#ean13-guide-root .live-char-count {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+#ean13-guide-root .live-input-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#ean13-guide-root .live-barcode-input {
+  flex: 1 1 220px;
+  min-width: 0;
+  min-height: 48px;
+  padding: 8px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.4;
+  transition: border-color var(--t-fast) var(--ease-out),
+    box-shadow var(--t-fast) var(--ease-out);
+}
+
+#ean13-guide-root .live-barcode-input::placeholder {
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  font-weight: 400;
+  opacity: 1;
+}
+
+#ean13-guide-root .live-barcode-input:hover {
+  border-color: var(--accent);
+}
+
+#ean13-guide-root .live-barcode-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-tint);
+}
+
+#ean13-guide-root .live-random-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  gap: 6px;
+  min-height: 48px;
+  padding-inline: 16px;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+#ean13-guide-root .live-presets-wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+#ean13-guide-root .presets-label {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+#ean13-guide-root .presets-buttons-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+#ean13-guide-root .preset-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 6px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--text-body);
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0;
+  cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease-out),
+    border-color var(--t-fast) var(--ease-out),
+    color var(--t-fast) var(--ease-out);
+}
+
+#ean13-guide-root .preset-pill-btn:hover {
+  background: var(--ean-accent-bg);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+#ean13-guide-root .preset-pill-btn.is-wrong {
+  border-color: var(--danger-line);
+  color: var(--danger);
+}
+
+#ean13-guide-root .preset-pill-btn.is-wrong:hover {
+  background: var(--ean-danger-bg);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* Verdict banner */
+#ean13-guide-root .live-verdict-banner {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+
+#ean13-guide-root .live-verdict-banner > div {
+  min-width: min(100%, 200px);
+}
+
+#ean13-guide-root .lv-icon {
+  display: inline-flex;
+  flex: none;
+  color: var(--text-muted);
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+#ean13-guide-root .lv-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+#ean13-guide-root .lv-title {
+  display: block;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+#ean13-guide-root .lv-desc {
+  margin-top: 2px;
+  color: var(--text-body);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+#ean13-guide-root .lv-num {
+  font-weight: 700;
+}
+
+#ean13-guide-root .lv-num.is-given {
+  color: var(--danger);
+}
+
+#ean13-guide-root .lv-num.is-calc {
+  color: var(--accent-ink);
+}
+
+#ean13-guide-root .lv-num.is-lg {
+  font-size: 1.15rem;
+}
+
+#ean13-guide-root .lv-tag {
+  flex: none;
+  padding: 4px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+#ean13-guide-root .live-verdict-banner.is-valid {
+  background: var(--ean-success-bg);
+  border-color: var(--success-line);
+}
+
+#ean13-guide-root .live-verdict-banner.is-valid .lv-icon,
+#ean13-guide-root .live-verdict-banner.is-valid .lv-title,
+#ean13-guide-root .lv-tag.is-pass {
+  color: var(--success);
+}
+
+#ean13-guide-root .lv-tag.is-pass {
+  border-color: var(--success-line);
+}
+
+#ean13-guide-root .live-verdict-banner.is-invalid {
+  background: var(--ean-danger-bg);
+  border-color: var(--danger-line);
+}
+
+#ean13-guide-root .live-verdict-banner.is-invalid .lv-icon,
+#ean13-guide-root .live-verdict-banner.is-invalid .lv-title,
+#ean13-guide-root .lv-tag.is-fail {
+  color: var(--danger);
+}
+
+#ean13-guide-root .lv-tag.is-fail {
+  border-color: var(--danger-line);
+}
+
+#ean13-guide-root .live-verdict-banner.is-info {
+  background: var(--ean-accent-bg);
+  border-color: var(--ean-accent-line);
+}
+
+#ean13-guide-root .live-verdict-banner.is-info .lv-icon,
+#ean13-guide-root .live-verdict-banner.is-info .lv-title,
+#ean13-guide-root .lv-tag.is-calc {
+  color: var(--accent-ink);
+}
+
+#ean13-guide-root .lv-tag.is-calc {
+  border-color: var(--ean-accent-line);
+}
+
+#ean13-guide-root .live-verdict-banner.is-pending {
+  background: var(--ean-warning-bg);
+  border-color: var(--warning-line);
+}
+
+#ean13-guide-root .live-verdict-banner.is-pending .lv-icon,
+#ean13-guide-root .live-verdict-banner.is-pending .lv-title,
+#ean13-guide-root .lv-tag.is-pending {
+  color: var(--warning);
+}
+
+#ean13-guide-root .lv-tag.is-pending {
+  border-color: var(--warning-line);
+}
+
+#ean13-guide-root .live-section-title {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+#ean13-guide-root .live-summary-cards-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+  gap: 10px;
+}
+
+#ean13-guide-root .live-summary-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+
+#ean13-guide-root .live-summary-box.is-primary {
+  background: var(--ean-accent-bg);
+  border-color: var(--accent);
+}
+
+#ean13-guide-root .ls-label {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+#ean13-guide-root .ls-val {
+  color: var(--text-primary);
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+#ean13-guide-root .ls-val.is-mod {
+  color: var(--text-primary);
+}
+
+#ean13-guide-root .ls-val.is-check {
+  color: var(--accent-ink);
+}
+
+#ean13-guide-root .ls-sub {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+#ean13-guide-root .live-summary-box.is-primary .ls-label,
+#ean13-guide-root .live-summary-box.is-primary .ls-sub {
+  color: var(--text-body);
+}
+
+/* --------------------------------------------------------------------------
+   9. Keyframes (transform and opacity only)
+   -------------------------------------------------------------------------- */
+@keyframes eanSoftPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+@keyframes eanCellIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes eanSolvedPop {
+  0% { opacity: 0; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes eanMismatchShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
+}
+
+/* --------------------------------------------------------------------------
+   10. Responsive
+   -------------------------------------------------------------------------- */
+/* Below this width the 760px matrix no longer fits and scrolls in its pane. */
+@media (max-width: 920px) {
+  #ean13-guide-root .ean13-scroll-hint {
+    display: flex;
+  }
+}
+
+@media (max-width: 640px) {
+  #ean13-guide-root .ean13-tab-btn {
+    flex: 1 1 100%;
+  }
+
+  #ean13-guide-root .ean13-stepper-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  #ean13-guide-root .ean13-dots-group {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  #ean13-guide-root .ean13-nav-btn {
+    min-width: 0;
+    padding-inline: 10px;
+    white-space: normal;
+  }
+
+  #ean13-guide-root .ean13-matrix-wrapper {
+    padding: 10px;
+  }
+
+  #ean13-guide-root .ean13-formula-card {
+    padding: 12px;
+  }
+
+  #ean13-guide-root .verdict-comp-box {
+    flex: 1 1 120px;
+    min-width: 0;
+  }
+
+  #ean13-guide-root .live-random-btn {
+    flex: 1 1 100%;
+  }
+
+  #ean13-guide-root .preset-pill-btn {
+    flex: 1 1 100%;
+    border-radius: var(--radius-sm);
+    text-align: left;
+  }
+
+  #ean13-guide-root .presets-buttons-row {
+    width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  #ean13-guide-root .digit-box {
+    width: 30px;
+    height: 36px;
+    font-size: 1.05rem;
+  }
+
+  #ean13-guide-root .digits-strip {
+    gap: 4px;
+  }
+
+  #ean13-guide-root .div-cell {
+    padding: 8px 10px;
+  }
+
+  #ean13-guide-root .complete-code-string {
+    gap: 4px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   11. Reduced motion
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  #ean13-guide-root,
+  #ean13-guide-root *,
+  #ean13-guide-root *::before,
+  #ean13-guide-root *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+html[data-motion="reduced"] #ean13-guide-root,
+html[data-motion="reduced"] #ean13-guide-root *,
+html[data-motion="reduced"] #ean13-guide-root *::before,
+html[data-motion="reduced"] #ean13-guide-root *::after {
+  animation: none !important;
+  transition: none !important;
+}

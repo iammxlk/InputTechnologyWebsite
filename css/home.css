@@ -1,0 +1,715 @@
+/* ==========================================================================
+   css/home.css  Hero, glass grid, lesson cards, home panels
+   ========================================================================== */
+
+/* ---------- 1. Hero ---------- */
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3vw, 32px);
+  padding: clamp(12px, 3vw, 36px) 0 8px;
+  isolation: isolate;
+}
+
+/* แสงม่วงเรืองตามเคอร์เซอร์ ตำแหน่งกำหนดจาก JS ผ่าน --mx / --my */
+.hero-glow {
+  position: absolute;
+  z-index: -1;
+  left: var(--mx, 72%);
+  top: var(--my, 30%);
+  width: clamp(320px, 46vw, 620px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--cursor-glow) 0%, transparent 66%);
+  filter: blur(30px);
+  transform: translate(-50%, -50%);
+  transition: left 500ms var(--ease-out), top 500ms var(--ease-out);
+  pointer-events: none;
+}
+
+.hero-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px 24px;
+}
+
+.hero-welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.9375rem;
+  line-height: 1.35;
+  text-align: right;
+}
+
+.hero-welcome-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.hero-welcome strong {
+  color: var(--text-primary);
+}
+
+.hero-title {
+  display: flex;
+  flex-direction: column;
+  font-size: clamp(48px, 10vw, 140px);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.hero-line {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 0 clamp(12px, 2vw, 28px);
+}
+
+.hero-line-1 { animation: rise-in 600ms var(--ease-out) both; }
+.hero-line-2 { animation: rise-in 600ms var(--ease-out) 120ms both; }
+
+.hero-aside {
+  margin-left: auto;
+  padding-bottom: 0.42em;
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--accent-ink);
+  animation: rise-in 600ms var(--ease-out) 240ms both;
+}
+
+.hero-sparkles {
+  position: relative;
+  align-self: flex-start;
+  width: 0.62em;
+  height: 0.62em;
+  margin-top: 0.16em;
+  color: var(--sparkle);
+}
+
+.sparkle {
+  position: absolute;
+}
+
+.sparkle-lg {
+  left: 0;
+  top: 0;
+  width: 0.44em;
+  height: 0.44em;
+  animation: twinkle 3.2s ease-in-out infinite;
+}
+
+.sparkle-sm {
+  left: 0.34em;
+  top: 0.3em;
+  width: 0.3em;
+  height: 0.3em;
+  animation: twinkle 3.2s ease-in-out 1.6s infinite;
+}
+
+.hero-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 20px clamp(24px, 5vw, 64px);
+  align-items: end;
+}
+
+.hero-lead {
+  max-width: 68ch;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--text-body);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.hero-facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, auto));
+  justify-content: space-between;
+  gap: 12px 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.hero-facts dt {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.hero-facts dd {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px 24px;
+  padding: 20px clamp(18px, 3vw, 28px) 22px;
+  border-radius: var(--radius-lg);
+  background-color: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--glass-shadow);
+}
+
+.hero-stat {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.hero-stat-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-body);
+}
+
+.hero-stat-value {
+  font-size: clamp(1.5rem, 3vw, 2.125rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-stat-sub {
+  font-size: 0.8125rem;
+  color: var(--text-body);
+}
+
+.hero-stat-bar {
+  grid-column: 1 / -1;
+}
+
+/* ---------- 2. Glass zone ---------- */
+.glass-zone {
+  position: relative;
+  isolation: isolate;
+  margin: 0 calc(var(--gutter) * -0.5);
+  padding: clamp(210px, 33vw, 420px) calc(var(--gutter) * 0.5) clamp(28px, 4vw, 48px);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+/* หมอกม่วงใต้กริด: radial-gradient ซ้อนหลายชั้น + blur 40px
+   แถบบนกำหนดขนาดเป็น px ให้ม่วงเข้มอยู่ใต้ขอบขั้นบันไดเสมอ ไม่ขึ้นกับความสูงของโซน */
+.glass-fog {
+  position: absolute;
+  inset: 40px 0 0;
+  z-index: -2;
+  opacity: var(--fog-opacity);
+  background:
+    radial-gradient(52% 360px at 30% 330px, var(--fog-deep), transparent 72%),
+    radial-gradient(46% 320px at 76% 300px, var(--fog-mid), transparent 72%),
+    radial-gradient(70% 300px at 52% 200px, var(--fog-soft), transparent 74%),
+    radial-gradient(70% 34% at 18% 100%, var(--fog-deep), transparent 72%),
+    radial-gradient(64% 30% at 84% 96%, var(--fog-mid), transparent 72%),
+    radial-gradient(80% 36% at 50% 62%, var(--fog-deep), transparent 74%),
+    radial-gradient(60% 30% at 12% 40%, var(--fog-mid), transparent 72%),
+    radial-gradient(70% 34% at 88% 30%, var(--fog-soft), transparent 74%);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.glass-grid {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: grid;
+  grid-template-columns: repeat(var(--glass-cols, 10), minmax(0, 1fr));
+  gap: 2px;
+  align-content: start;
+  overflow: hidden;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  pointer-events: none;
+}
+
+.glass-tile {
+  aspect-ratio: 1;
+  border-radius: 12px;
+  background-color: var(--tile-bg);
+  border: 1px solid var(--tile-border);
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
+  animation: tile-rise 520ms var(--ease-out) both;
+  animation-delay: calc(var(--wave, 0) * 45ms);
+}
+
+/* แถวบนสุดซ้อนทับเส้นไกด์ จึงเบลอฉากหลังจริง */
+.glass-tile.is-edge {
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.glass-tile.is-void {
+  visibility: hidden;
+  animation: none;
+}
+
+.glass-zone-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.glass-zone-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px 24px;
+  padding: clamp(16px, 2.4vw, 24px);
+  border-radius: var(--radius-lg);
+  background-color: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
+}
+
+.glass-zone-desc {
+  margin-top: 6px;
+  max-width: 68ch;
+  font-size: 0.9375rem;
+  color: var(--text-body);
+}
+
+.syllabus-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.module-group {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.module-group-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px 16px;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  background-color: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
+}
+
+.module-group-num {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--accent-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.module-group-title {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.module-group-desc {
+  margin-top: 2px;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--text-body);
+}
+
+.module-group-count {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.module-group-count.is-complete {
+  color: var(--success);
+}
+
+/* ---------- 3. Lesson cards (กระจกฝ้า) ---------- */
+.lesson-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.lesson-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 228px;
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  background-color: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--glass-shadow);
+  color: var(--text-body);
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    transform var(--t-med) var(--ease-out),
+    background-color var(--t-med) ease,
+    border-color var(--t-med) ease,
+    box-shadow var(--t-med) ease;
+}
+
+.lesson-card:hover,
+.lesson-card:focus-within {
+  transform: scale(1.02);
+  background-color: var(--glass-bg-hover);
+  border-color: var(--accent-soft);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--glass-shadow-hover);
+}
+
+.lesson-card.is-selected-unit {
+  border-color: var(--accent);
+}
+
+.lesson-card-number {
+  position: absolute;
+  top: 2px;
+  right: 14px;
+  font-size: 5.5rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--number-ghost);
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  user-select: none;
+}
+
+.lesson-card-top {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding-right: 84px;
+}
+
+.lesson-card-title {
+  position: relative;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-primary);
+}
+
+/* ทั้งการ์ดคลิกได้ผ่านปุ่มชื่อบท */
+.lesson-card-link {
+  display: inline;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+
+.lesson-card-link::after {
+  content: "";
+  position: absolute;
+  inset: -200px -40px;
+}
+
+.lesson-card-link:focus-visible {
+  outline: none;
+}
+
+.lesson-card:has(.lesson-card-link:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.lesson-card-desc {
+  position: relative;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-body);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.lesson-card-foot {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  pointer-events: none;
+}
+
+.lesson-card-foot > * {
+  pointer-events: auto;
+}
+
+.lesson-card-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-body);
+  font-variant-numeric: tabular-nums;
+}
+
+.lesson-card-meta .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.lesson-card-actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lesson-card .status-pill {
+  background-color: var(--surface);
+}
+
+.lesson-card .status-pill.is-pass { background-color: color-mix(in srgb, var(--success) 12%, var(--surface)); }
+.lesson-card .status-pill.is-warn { background-color: color-mix(in srgb, var(--warning) 14%, var(--surface)); }
+.lesson-card .status-pill.is-info { background-color: color-mix(in srgb, var(--accent) 12%, var(--surface)); }
+
+.status-pill .icon-check-anim {
+  animation: pop 420ms var(--ease-spring) both;
+}
+
+/* ---------- 4. Home panels ---------- */
+.home-panels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+
+.home-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.home-panel .card-desc {
+  margin-top: 0;
+}
+
+.home-cert-caption {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.home-panel-foot {
+  margin-top: auto;
+  justify-content: flex-end;
+}
+
+.learning-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.plain-section {
+  padding-top: 8px;
+}
+
+.learning-step-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.learning-step-num {
+  position: absolute;
+  top: 6px;
+  right: 14px;
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--number-ghost);
+  font-variant-numeric: tabular-nums;
+}
+
+.learning-step-card h3 {
+  font-size: 1rem;
+  padding-right: 48px;
+}
+
+.learning-step-card p {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--text-body);
+}
+
+/* ---------- 5. Lessons directory ---------- */
+.directory-head {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.selected-unit-banner-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px 24px;
+}
+
+.selected-unit-copy {
+  flex: 1 1 420px;
+  min-width: 0;
+}
+
+.selected-unit-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.selected-unit-title {
+  margin-top: 10px;
+  font-size: clamp(1.25rem, 2.4vw, 1.625rem);
+  line-height: 1.35;
+}
+
+.selected-unit-desc {
+  margin-top: 6px;
+  max-width: 68ch;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+/* ---------- 6. Responsive ---------- */
+@media (max-width: 1023px) {
+  .lesson-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-body {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-actions {
+    justify-content: flex-start;
+  }
+
+  .hero-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-panels {
+    grid-template-columns: 1fr;
+  }
+
+  .learning-steps {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 639px) {
+  .lesson-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lesson-card {
+    min-height: 0;
+  }
+
+  .lesson-card:hover,
+  .lesson-card:focus-within {
+    transform: none;
+  }
+
+  .hero-welcome {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .hero-aside {
+    margin-left: 0;
+    padding-bottom: 0;
+    flex-basis: 100%;
+  }
+
+  .hero-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-actions .btn-primary,
+  .hero-actions .btn-secondary {
+    width: 100%;
+  }
+
+  .module-group-head {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .module-group-count {
+    grid-column: 2;
+  }
+
+  .glass-zone {
+    margin: 0 calc(var(--gutter) * -1);
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
+    border-radius: 0;
+  }
+
+  .glass-grid {
+    border-radius: 0;
+  }
+}

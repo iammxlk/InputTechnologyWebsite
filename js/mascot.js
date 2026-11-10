@@ -403,10 +403,6 @@
     lastAuthHidden = authEl ? authEl.classList.contains("hidden") : false;
 
     const observer = new MutationObserver(() => {
-      const mgWs = document.getElementById("minigame-workspace");
-      const isPlayingMinigame = mgWs && !mgWs.classList.contains("hidden");
-      root.classList.toggle("is-minigame-hidden", Boolean(isPlayingMinigame));
-
       const nowAuthHidden = authEl ? authEl.classList.contains("hidden") : false;
       if (nowAuthHidden !== lastAuthHidden) {
         lastAuthHidden = nowAuthHidden;
@@ -421,7 +417,6 @@
       "view-lessons",
       "view-progress",
       "lesson-workspace",
-      "minigame-workspace",
       "cert-preview-modal"
     ].forEach((id) => {
       const el = document.getElementById(id);

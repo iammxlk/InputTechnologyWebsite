@@ -212,6 +212,7 @@
      ========================================================================== */
 
   let currentTheme = "light";
+  let themeSwitchTimer = 0;
 
   function getSystemPreferredTheme() {
     if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
@@ -241,7 +242,13 @@
       const target = theme === "dark" ? "dark" : "light";
       currentTheme = target;
 
-      document.documentElement.setAttribute("data-theme", target);
+      const root = document.documentElement;
+      if (root.getAttribute("data-theme") !== target) {
+        root.classList.add("is-theme-switching");
+        clearTimeout(themeSwitchTimer);
+        themeSwitchTimer = setTimeout(() => root.classList.remove("is-theme-switching"), 450);
+      }
+      root.setAttribute("data-theme", target);
       if (document.body) {
         document.body.setAttribute("data-theme", target);
       }
@@ -274,9 +281,10 @@
 
     soundBtns.forEach((btn) => {
       btn.setAttribute("aria-pressed", muted ? "false" : "true");
+      btn.setAttribute("aria-label", muted ? "เปิดเสียงเอฟเฟกต์" : "ปิดเสียงเอฟเฟกต์");
       btn.setAttribute(
         "title",
-        muted ? "คลิกเพื่อเปิดเสียงเอฟเฟกต์ (Sound FX Off)" : "คลิกเพื่อปิดเสียงเอฟเฟกต์ (Sound FX On)"
+        muted ? "เปิดเสียงเอฟเฟกต์" : "ปิดเสียงเอฟเฟกต์"
       );
 
       const iconOn = btn.querySelector(".sound-icon-on");
@@ -294,8 +302,8 @@
     const themeBtns = document.querySelectorAll("#theme-toggle-btn, #auth-theme-toggle-btn");
 
     themeBtns.forEach((btn) => {
-      btn.setAttribute("aria-label", isDark ? "เปลี่ยนเป็นโหมดสว่าง (Light Mode)" : "เปลี่ยนเป็นโหมดมืด (Dark Mode)");
-      btn.setAttribute("title", isDark ? "เปลี่ยนเป็นโหมดสว่าง (Light Mode)" : "เปลี่ยนเป็นโหมดมืด (Dark Mode)");
+      btn.setAttribute("aria-label", isDark ? "สลับเป็นโหมดสว่าง" : "สลับเป็นโหมดมืด");
+      btn.setAttribute("title", isDark ? "สลับเป็นโหมดสว่าง" : "สลับเป็นโหมดมืด");
 
       const iconSun = btn.querySelector(".theme-icon-sun");
       const iconMoon = btn.querySelector(".theme-icon-moon");
@@ -324,7 +332,6 @@
     ".module-unit-link",
     ".step-rail-btn",
     ".pwd-toggle-btn",
-    ".mg-pad-btn",
     ".cert-action-btn",
     ".floating-action-btn"
   ].join(", ");

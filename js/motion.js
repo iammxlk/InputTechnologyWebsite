@@ -103,32 +103,6 @@
     }
   }
 
-  function buildLeaderboardSkeletonRows(rowCount = 5) {
-    let html = "";
-    for (let i = 0; i < rowCount; i++) {
-      html += `
-        <tr class="skeleton-table-row" aria-hidden="true">
-          <td><span class="skeleton-block" style="width: 30px; height: 30px; border-radius: 50%;"></span></td>
-          <td>
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <span class="skeleton-block" style="width: 34px; height: 34px; border-radius: 50%;"></span>
-              <div style="display: flex; flex-direction: column; gap: 6px;">
-                <span class="skeleton-block" style="width: 140px; height: 13px;"></span>
-                <span class="skeleton-block" style="width: 96px; height: 10px;"></span>
-              </div>
-            </div>
-          </td>
-          <td><span class="skeleton-block" style="width: 84px; height: 13px;"></span></td>
-          <td class="num"><span class="skeleton-block" style="width: 42px; height: 13px; margin-left: auto;"></span></td>
-          <td class="num"><span class="skeleton-block" style="width: 42px; height: 13px; margin-left: auto;"></span></td>
-          <td class="num"><span class="skeleton-block" style="width: 52px; height: 15px; margin-left: auto;"></span></td>
-          <td class="num"><span class="skeleton-block" style="width: 56px; height: 13px; margin-left: auto;"></span></td>
-        </tr>
-      `;
-    }
-    return html;
-  }
-
   /* ==========================================================================
      2. POINTER-ORIGIN BUTTON RIPPLE & TACTILE FEEDBACK
      ========================================================================== */
@@ -141,7 +115,7 @@
     ".segmented-tab-btn",
     ".filter-pill-btn",
     ".quiz-option-btn",
-    ".mg-pad-btn",
+    ".toc-item",
     ".step-rail-btn"
   ].join(", ");
 
@@ -249,14 +223,8 @@
      ========================================================================== */
 
   const REVEAL_SELECTOR = [
-    ".home-hero-main",
-    ".home-cert-showcase",
-    ".metric-strip",
     ".surface-card",
-    ".module-overview-card",
-    ".minigame-checkpoint-card",
-    ".podium-strip",
-    ".my-rank-banner",
+    ".module-group-head",
     ".lesson-flow-item",
     ".lesson-info-card",
     ".lesson-callout-box"
@@ -532,14 +500,13 @@
     activeTickers.set(el, requestAnimationFrame(step));
   }
 
-  const STUDIO_CONFETTI_PALETTE = [
-    "#FF3D9A", // Magenta
-    "#00C6E0", // Cyan
-    "#FFD23F", // Yellow
-    "#2EE59D", // Mint
-    "#7B4DFF", // Studio Violet
-    "#FF7A45"  // Coral
-  ];
+  // สีพลุกระดาษอ่านจากโทเคนของธีมปัจจุบัน (ม่วงโทนเดียว + เขียวสถานะผ่าน)
+  function readConfettiPalette() {
+    const cs = getComputedStyle(document.documentElement);
+    return ["--accent", "--accent-soft", "--accent-glow", "--accent-deep", "--sparkle", "--success"]
+      .map((name) => cs.getPropertyValue(name).trim())
+      .filter(Boolean);
+  }
 
   function launchConfettiParticles(pieceCount, durationLimitMs, originRatioY) {
     if (isReducedMotion()) return;
@@ -566,6 +533,7 @@
     }
     ctx.scale(dpr, dpr);
 
+    const palette = readConfettiPalette();
     const pieces = [];
     for (let i = 0; i < pieceCount; i++) {
       const angle = -Math.PI / 2 + (Math.random() - 0.5) * 1.5;
@@ -580,7 +548,7 @@
         isCircle: i % 4 === 0,
         rot: Math.random() * Math.PI,
         vRot: (Math.random() - 0.5) * 0.24,
-        color: STUDIO_CONFETTI_PALETTE[i % STUDIO_CONFETTI_PALETTE.length],
+        color: palette[i % palette.length],
         alpha: 1
       });
     }
@@ -605,16 +573,12 @@
           ctx.translate(p.x, p.y);
           ctx.rotate(p.rot);
           ctx.fillStyle = p.color;
-          ctx.strokeStyle = "#1B1340";
-          ctx.lineWidth = 1.2;
           if (p.isCircle) {
             ctx.beginPath();
             ctx.arc(0, 0, p.w * 0.45, 0, Math.PI * 2);
             ctx.fill();
-            ctx.stroke();
           } else {
             ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-            ctx.strokeRect(-p.w / 2, -p.h / 2, p.w, p.h);
           }
           ctx.restore();
         }
@@ -698,7 +662,6 @@
     startTopLoader,
     doneTopLoader,
     setButtonLoading,
-    buildLeaderboardSkeletonRows,
     syncAllFloatingFields,
     shakeElement,
     refreshScrollReveal,

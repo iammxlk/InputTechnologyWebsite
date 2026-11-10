@@ -1,0 +1,146 @@
+{
+  "totals": {
+    "units": 16,
+    "steps": 96,
+    "blocks": 301,
+    "questions": 160
+  },
+  "config": {
+    "totalUnits": 16,
+    "questionsPerUnit": 10,
+    "passScore": 8,
+    "unitsMeta": "3e281f49019990aa",
+    "modules": "aa213c1b7dc62175",
+    "course": "231fa6fc82b5e4a7"
+  },
+  "units": {
+    "1": {
+      "steps": 6,
+      "blocks": 24,
+      "questions": 10,
+      "lessonText": "9787109e39ea8c33",
+      "quizText": "f81abf4cd68b89ec",
+      "answers": "0213021302"
+    },
+    "2": {
+      "steps": 6,
+      "blocks": 23,
+      "questions": 10,
+      "lessonText": "f1f6bb9a7bfa12ff",
+      "quizText": "500779c02b2a3204",
+      "answers": "1302130213"
+    },
+    "3": {
+      "steps": 6,
+      "blocks": 21,
+      "questions": 10,
+      "lessonText": "3451caf48d8b80ee",
+      "quizText": "13002258482a9b5e",
+      "answers": "2031023101"
+    },
+    "4": {
+      "steps": 6,
+      "blocks": 19,
+      "questions": 10,
+      "lessonText": "65cdb226d5e158a8",
+      "quizText": "db5a8af64788a0f0",
+      "answers": "3120312032"
+    },
+    "5": {
+      "steps": 6,
+      "blocks": 19,
+      "questions": 10,
+      "lessonText": "e17dd692f39901ae",
+      "quizText": "7a9ba5c2bdf5b7ef",
+      "answers": "1023102320"
+    },
+    "6": {
+      "steps": 6,
+      "blocks": 17,
+      "questions": 10,
+      "lessonText": "a500677139ebb1e6",
+      "quizText": "5fc23519be33bb74",
+      "answers": "2301230131"
+    },
+    "7": {
+      "steps": 6,
+      "blocks": 18,
+      "questions": 10,
+      "lessonText": "3bdeeb5ddb003ca6",
+      "quizText": "a57160ffa6b15f0c",
+      "answers": "0132013202"
+    },
+    "8": {
+      "steps": 6,
+      "blocks": 17,
+      "questions": 10,
+      "lessonText": "3fd612711145c647",
+      "quizText": "2111d655d0c4a79d",
+      "answers": "3210321013"
+    },
+    "9": {
+      "steps": 6,
+      "blocks": 19,
+      "questions": 10,
+      "lessonText": "1273fc8dcc4b8bdd",
+      "quizText": "2fda788b12d32b02",
+      "answers": "2103210302"
+    },
+    "10": {
+      "steps": 6,
+      "blocks": 19,
+      "questions": 10,
+      "lessonText": "3a58f093e1d8ce43",
+      "quizText": "57c0319069cd86d5",
+      "answers": "1320132013"
+    },
+    "11": {
+      "steps": 6,
+      "blocks": 17,
+      "questions": 10,
+      "lessonText": "4ba528915829209a",
+      "quizText": "08cea5ebcb11caa5",
+      "answers": "0312031202"
+    },
+    "12": {
+      "steps": 6,
+      "blocks": 19,
+      "questions": 10,
+      "lessonText": "b4cce3383a74e520",
+      "quizText": "e078b1a8b615c2ae",
+      "answers": "3021302113"
+    },
+    "13": {
+      "steps": 6,
+      "blocks": 18,
+      "questions": 10,
+      "lessonText": "b8afb3958268f201",
+      "quizText": "4abaf0996fb4f555",
+      "answers": "2013201302"
+    },
+    "14": {
+      "steps": 6,
+      "blocks": 16,
+      "questions": 10,
+      "lessonText": "0051ced750128f19",
+      "quizText": "f0e777f5e2889254",
+      "answers": "1230123013"
+    },
+    "15": {
+      "steps": 6,
+      "blocks": 19,
+      "questions": 10,
+      "lessonText": "be596f71c4c4b16e",
+      "quizText": "5f6c600e637fd1cf",
+      "answers": "0231023102"
+    },
+    "16": {
+      "steps": 6,
+      "blocks": 16,
+      "questions": 10,
+      "lessonText": "ee9255f563ef0892",
+      "quizText": "67dabac3ae233399",
+      "answers": "3102310213"
+    }
+  }
+}

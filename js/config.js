@@ -222,8 +222,8 @@ window.AppUtils = {
     }
 
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
-      <rect width="128" height="128" rx="64" fill="#DCE8FA"/>
-      <text x="64" y="74" text-anchor="middle" font-family="Mitr, sans-serif" font-size="40" font-weight="600" fill="#10397E">${initials}</text>
+      <rect width="128" height="128" rx="64" fill="#E9DDFB"/>
+      <text x="64" y="74" text-anchor="middle" font-family="'IBM Plex Sans Thai', sans-serif" font-size="40" font-weight="600" fill="#5B1FC4">${initials}</text>
     </svg>`;
     return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
   },

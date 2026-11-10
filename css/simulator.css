@@ -1,0 +1,768 @@
+/* ==========================================================================
+   css/simulator.css  Data Input Simulator (home page)
+   Frosted "specimen chamber": mode tabs, chamber stage, four specimens, beam.
+   Every colour comes from css/tokens.css. Dark mode works through tokens only.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Card header controls (sit above the console)
+   -------------------------------------------------------------------------- */
+.pixel-led-dot {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-ring) 45%, transparent);
+}
+
+.cyber-scanner-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 28px;
+  padding: 4px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background-color: var(--surface);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* setScannerMode rewrites the badge with textContent, which removes the inline
+   .pixel-led-dot. The dot is drawn here so it survives; the inline one is
+   hidden to avoid a double dot before the first rewrite. */
+.cyber-scanner-badge::before {
+  content: "";
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-ring) 45%, transparent);
+}
+
+.cyber-scanner-badge .pixel-led-dot {
+  display: none;
+}
+
+.btn-pixel-action {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 6px 14px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-pill);
+  background-color: var(--accent-tint);
+  color: var(--accent-ink);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--t-fast) var(--ease-out),
+    box-shadow var(--t-fast) var(--ease-out),
+    transform var(--t-fast) var(--ease-out);
+}
+
+.btn-pixel-action svg {
+  flex-shrink: 0;
+}
+
+.btn-pixel-action:hover {
+  background-color: var(--accent-tint-strong);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-ring) 35%, transparent);
+}
+
+.btn-pixel-action:active {
+  transform: scale(0.97);
+}
+
+.btn-pixel-action:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   2. Console shell
+   -------------------------------------------------------------------------- */
+.cyber-scanner-console {
+  container-type: inline-size;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  min-height: 300px;
+  margin: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background-color: var(--surface-2);
+  color: var(--text-body);
+  font-family: var(--font-sans);
+}
+
+.cyber-scanner-console.is-embedded {
+  margin-top: 0;
+  box-shadow: none;
+}
+
+/* Technical Latin labels inside the console use the mono face */
+.cyber-scanner-console .font-notch,
+.cyber-scanner-badge.font-notch {
+  font-family: var(--font-mono);
+}
+
+/* --------------------------------------------------------------------------
+   3. Mode tabs
+   -------------------------------------------------------------------------- */
+.cyber-scanner-modes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+
+.cyber-mode-btn {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  min-height: 44px;
+  margin: 0;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background-color: var(--surface);
+  color: var(--text-body);
+  font-family: var(--font-sans);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color var(--t-fast) var(--ease-out),
+    border-color var(--t-fast) var(--ease-out),
+    color var(--t-fast) var(--ease-out);
+}
+
+.cyber-mode-btn:hover {
+  border-color: var(--line-strong);
+  background-color: var(--surface-3);
+}
+
+.cyber-mode-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.cyber-mode-btn.is-active {
+  border-color: var(--accent);
+  background-color: var(--accent-tint);
+  color: var(--accent-ink);
+}
+
+.cyber-mode-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.cyber-mode-text strong {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.cyber-mode-text span {
+  color: inherit;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+
+.cyber-mode-btn.is-active .cyber-mode-text strong {
+  color: var(--accent-ink);
+}
+
+/* LED: one hue for every mode. The legacy colour modifiers stay valid. */
+.mode-led-indicator,
+.mode-led-indicator.is-red,
+.mode-led-indicator.is-green,
+.mode-led-indicator.is-blue,
+.mode-led-indicator.is-purple {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--line-strong);
+  color: var(--accent);
+  box-shadow: none;
+  transition:
+    background-color var(--t-fast) var(--ease-out),
+    box-shadow var(--t-fast) var(--ease-out);
+}
+
+.cyber-mode-btn.is-active .mode-led-indicator,
+.cyber-mode-btn.is-active .mode-led-indicator.is-red,
+.cyber-mode-btn.is-active .mode-led-indicator.is-green,
+.cyber-mode-btn.is-active .mode-led-indicator.is-blue,
+.cyber-mode-btn.is-active .mode-led-indicator.is-purple {
+  background-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-ring) 50%, transparent);
+}
+
+/* --------------------------------------------------------------------------
+   4. Chamber stage and target frame
+   -------------------------------------------------------------------------- */
+.cyber-chamber-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background-color: color-mix(in srgb, var(--surface-3) 55%, transparent);
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--bg-grid-line) 0,
+    var(--bg-grid-line) 1px,
+    transparent 1px,
+    transparent 28px
+  );
+  box-shadow: inset 0 1px 3px var(--line);
+  overflow: hidden;
+}
+
+.cyber-target-frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: 220px;
+  padding: 24px 16px;
+  border: 1px solid transparent;
+  border-radius: inherit;
+  background-image: radial-gradient(
+    ellipse 60% 55% at 50% 45%,
+    var(--ambient-glow),
+    transparent 72%
+  );
+  overflow: hidden;
+}
+
+.cyber-target-frame.is-scanning-pulse {
+  animation: simChamberPulse 0.6s var(--ease-out);
+}
+
+/* Scanning beam: the element covers the frame and is translated, the visible
+   line is its ::before. The inline --beam-glow set by JS is not used. */
+.cyber-laser-beam {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.5;
+  transform: translate3d(0, 50%, 0);
+}
+
+.cyber-laser-beam::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  border-radius: var(--radius-pill);
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent-glow) 14%,
+    var(--accent-glow) 86%,
+    transparent
+  );
+  box-shadow: 0 0 10px 1px var(--accent-ring);
+}
+
+.cyber-laser-beam.is-beaming {
+  animation: simBeamSweep 1.4s ease-in-out 1 both;
+}
+
+/* Target items: only the active one takes part in layout */
+.cyber-target-item {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  min-width: 0;
+}
+
+.cyber-target-item.is-active {
+  display: flex;
+  animation: simTargetIn 0.24s var(--ease-out);
+}
+
+/* --------------------------------------------------------------------------
+   5. Captions and tech pill
+   -------------------------------------------------------------------------- */
+.target-tech-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  margin: 0;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background-color: var(--surface);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.tech-dot,
+.tech-dot.is-red,
+.tech-dot.is-green,
+.tech-dot.is-blue,
+.tech-dot.is-purple {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  margin: 0;
+  border-radius: 50%;
+  background-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-ring) 40%, transparent);
+}
+
+.barcode-num,
+.qr-caption,
+.rfid-freq,
+.bio-status {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   6. Specimen: 1D barcode
+   -------------------------------------------------------------------------- */
+.pixel-barcode-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+  padding: 14px 18px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background-color: var(--surface);
+}
+
+.barcode-bars {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  height: 52px;
+}
+
+.b-bar {
+  display: inline-block;
+  height: 100%;
+  background-color: var(--text-primary);
+}
+
+.b-bar.w1 { width: 2px; }
+.b-bar.w2 { width: 4px; }
+.b-bar.w3 { width: 6px; }
+.b-bar.w4 { width: 8px; }
+
+.barcode-num {
+  margin-top: 6px;
+  color: var(--text-primary);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+}
+
+/* --------------------------------------------------------------------------
+   7. Specimen: 2D QR code
+   -------------------------------------------------------------------------- */
+.pixel-qr-visual {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background-color: var(--surface);
+}
+
+.qr-matrix-grid {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  background:
+    linear-gradient(90deg, var(--text-primary) 4px, transparent 4px) 0 0 / 8px 8px,
+    linear-gradient(0deg, var(--text-primary) 4px, transparent 4px) 0 0 / 8px 8px;
+  background-color: var(--surface);
+}
+
+.qr-finder-box {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 4px solid var(--text-primary);
+  background-color: var(--surface);
+  /* quiet zone so the finder separates from the module pattern */
+  box-shadow: 0 0 0 2px var(--surface);
+}
+
+.qr-finder-box::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background-color: var(--text-primary);
+}
+
+.qr-finder-box.f-tl { top: 0; left: 0; }
+.qr-finder-box.f-tr { top: 0; right: 0; }
+.qr-finder-box.f-bl { bottom: 0; left: 0; }
+
+/* --------------------------------------------------------------------------
+   8. Specimen: RFID card and field rings
+   -------------------------------------------------------------------------- */
+.pixel-rfid-visual {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.rfid-card-icon {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 90px;
+  height: 56px;
+  padding: 6px 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-xs);
+  background-color: var(--surface);
+}
+
+.rfid-chip {
+  width: 14px;
+  height: 12px;
+  border: 1.5px solid var(--text-primary);
+  border-radius: 3px;
+  background-color: var(--accent-tint-strong);
+}
+
+.rfid-label {
+  align-self: flex-end;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.rfid-radar-rings {
+  position: absolute;
+  inset: -15px -25px;
+  pointer-events: none;
+}
+
+.rfid-wave-ring {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid var(--accent-ring);
+  border-radius: 50%;
+  opacity: 0;
+  animation: simRfidWave 2.4s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+}
+
+.rfid-wave-ring.r1 { animation-delay: 0s; }
+.rfid-wave-ring.r2 { animation-delay: 0.8s; }
+.rfid-wave-ring.r3 { animation-delay: 1.6s; }
+
+.rfid-freq {
+  position: relative;
+  z-index: 2;
+  margin-top: 10px;
+}
+
+/* --------------------------------------------------------------------------
+   9. Specimen: biometric fingerprint
+   -------------------------------------------------------------------------- */
+.pixel-bio-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  padding: 14px 18px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background-color: var(--surface);
+}
+
+.bio-fingerprint-core {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 80px;
+  border: 1.5px solid var(--text-primary);
+  border-radius: 35px 35px 25px 25px;
+}
+
+.bio-ridge {
+  position: absolute;
+  border: 1.5px solid var(--text-primary);
+  border-radius: 50%;
+}
+
+.bio-ridge.r-1 { width: 22px; height: 32px; }
+.bio-ridge.r-2 { width: 38px; height: 50px; }
+.bio-ridge.r-3 { width: 54px; height: 66px; }
+
+.bio-minutiae {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px color-mix(in srgb, var(--accent-ring) 45%, transparent);
+}
+
+.bio-minutiae.p1 { top: 24px; left: 18px; }
+.bio-minutiae.p2 { top: 38px; right: 20px; }
+.bio-minutiae.p3 { bottom: 22px; left: 28px; }
+
+.bio-status {
+  margin-top: 8px;
+}
+
+/* --------------------------------------------------------------------------
+   10. Keyframes
+   -------------------------------------------------------------------------- */
+@keyframes simBeamSweep {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 8%, 0);
+  }
+  12% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 1;
+    transform: translate3d(0, 92%, 0);
+  }
+  100% {
+    opacity: 0.5;
+    transform: translate3d(0, 50%, 0);
+  }
+}
+
+@keyframes simChamberPulse {
+  0% {
+    border-color: var(--accent);
+    box-shadow: inset 0 0 0 1px var(--accent-ring), inset 0 0 28px var(--accent-tint-strong);
+  }
+  100% {
+    border-color: transparent;
+    box-shadow: inset 0 0 0 1px transparent, inset 0 0 28px transparent;
+  }
+}
+
+@keyframes simTargetIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes simRfidWave {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+}
+
+@keyframes simLedBreathe {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   11. Responsive
+   -------------------------------------------------------------------------- */
+/* Narrow card on a wide viewport: fall back to 2x2 by the console's own width */
+@container (max-width: 520px) {
+  .cyber-scanner-modes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .cyber-scanner-console {
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .cyber-scanner-modes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .cyber-mode-btn {
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  .cyber-target-frame {
+    min-height: 200px;
+    padding: 20px 10px;
+  }
+
+  .target-tech-pill {
+    padding: 6px 10px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   12. Reduced motion (system setting, then the in-app toggle: same rules)
+   Active specimen stays visible, beam becomes a static centre line,
+   RFID rings become three static concentric rings.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .pixel-led-dot,
+  .cyber-scanner-badge::before,
+  .cyber-target-frame.is-scanning-pulse,
+  .cyber-target-item.is-active,
+  .cyber-laser-beam,
+  .cyber-laser-beam.is-beaming,
+  .rfid-wave-ring {
+    animation: none;
+  }
+
+  .btn-pixel-action,
+  .cyber-mode-btn,
+  .mode-led-indicator {
+    transition: none;
+  }
+
+  .btn-pixel-action:active {
+    transform: none;
+  }
+
+  .cyber-laser-beam,
+  .cyber-laser-beam.is-beaming {
+    opacity: 0.5;
+    transform: translate3d(0, 50%, 0);
+  }
+
+  .rfid-wave-ring.r1 { opacity: 0.7; transform: scale(0.7); }
+  .rfid-wave-ring.r2 { opacity: 0.45; transform: scale(1); }
+  .rfid-wave-ring.r3 { opacity: 0.25; transform: scale(1.3); }
+}
+
+html[data-motion="reduced"] .pixel-led-dot,
+html[data-motion="reduced"] .cyber-scanner-badge::before,
+html[data-motion="reduced"] .cyber-target-frame.is-scanning-pulse,
+html[data-motion="reduced"] .cyber-target-item.is-active,
+html[data-motion="reduced"] .cyber-laser-beam,
+html[data-motion="reduced"] .cyber-laser-beam.is-beaming,
+html[data-motion="reduced"] .rfid-wave-ring {
+  animation: none;
+}
+
+html[data-motion="reduced"] .btn-pixel-action,
+html[data-motion="reduced"] .cyber-mode-btn,
+html[data-motion="reduced"] .mode-led-indicator {
+  transition: none;
+}
+
+html[data-motion="reduced"] .btn-pixel-action:active {
+  transform: none;
+}
+
+html[data-motion="reduced"] .cyber-laser-beam,
+html[data-motion="reduced"] .cyber-laser-beam.is-beaming {
+  opacity: 0.5;
+  transform: translate3d(0, 50%, 0);
+}
+
+html[data-motion="reduced"] .rfid-wave-ring.r1 { opacity: 0.7; transform: scale(0.7); }
+html[data-motion="reduced"] .rfid-wave-ring.r2 { opacity: 0.45; transform: scale(1); }
+html[data-motion="reduced"] .rfid-wave-ring.r3 { opacity: 0.25; transform: scale(1.3); }

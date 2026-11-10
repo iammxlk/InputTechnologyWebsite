@@ -31,6 +31,7 @@
     }
     if (target !== "lessons") {
       window.LearningEngine?.stopActiveTimer();
+      document.body.classList.remove("is-reader-open", "is-drawer-open");
     }
     activeView = target;
 
@@ -130,12 +131,18 @@
     }
     if (metricScore) {
       if (window.MotionEngine) {
-        window.MotionEngine.animateNumber(metricScore, user.grand_total_score, (n) => `${Math.round(n)}`);
+        window.MotionEngine.animateNumber(metricScore, user.total_quiz_score, (n) => `${Math.round(n)}`);
       } else {
-        metricScore.textContent = `${user.grand_total_score}`;
+        metricScore.textContent = `${user.total_quiz_score}`;
       }
     }
     if (metricTime) metricTime.textContent = window.AppUtils.formatDuration(user.total_time_sec);
+
+    const homeFill = document.getElementById("home-progress-fill");
+    const homeTrack = document.getElementById("home-progress-track");
+    const homePercent = Math.min(100, Math.max(0, Number(user.progress_percent || 0)));
+    if (homeFill) homeFill.style.width = `${homePercent}%`;
+    if (homeTrack) homeTrack.setAttribute("aria-valuenow", String(homePercent));
 
     // 2. Continue Learning CTA
     const continueBtn = document.getElementById("home-cta-continue-btn");
@@ -143,11 +150,12 @@
     const nextMeta = CFG.UNITS_METADATA.find((u) => u.no === nextNo) || CFG.UNITS_METADATA[0];
 
     if (continueBtn) {
+      const labelEl = continueBtn.querySelector("[data-label]") || continueBtn;
       if (user.passed_units_count >= CFG.TOTAL_UNITS) {
-        continueBtn.textContent = "ทบทวนบทเรียนทั้ง 16 หน่วย";
+        labelEl.textContent = "ทบทวนบทเรียนทั้ง 16 หน่วย";
         continueBtn.onclick = () => openUnitInLessons(1);
       } else {
-        continueBtn.textContent = `เริ่มเรียนหน่วยที่ ${nextMeta.no}: ${nextMeta.title}`;
+        labelEl.textContent = `เริ่มเรียนหน่วยที่ ${nextMeta.no}: ${nextMeta.title}`;
         continueBtn.onclick = () => openUnitInLessons(nextMeta.no);
       }
     }
@@ -185,87 +193,33 @@
       }
     }
 
-    // 4. 4-Module Course Syllabus Grid (All 16 Official Units from edu-plan)
+    // 4. บทเรียนทั้งหมด: 4 หมวด หมวดละ 4 การ์ดหน่วย (ครบ 16 หน่วยตามแผนการจัดการเรียนรู้)
     const syllabusGrid = document.getElementById("home-syllabus-grid");
     if (syllabusGrid) {
       syllabusGrid.innerHTML = CFG.MODULES_SYLLABUS.map((mod) => {
         const modUnits = CFG.UNITS_METADATA.filter((u) => u.moduleId === mod.id);
         const passedInMod = modUnits.filter((u) => unitMap[u.no]?.is_passed).length;
-
-        const unitRowsHtml = modUnits
-          .map((u) => {
-            const uProg = unitMap[u.no];
-            const isPassed = Boolean(uProg && uProg.is_passed);
-            const hasTried = Boolean(uProg && uProg.attempts_count > 0);
-            const pillClass = isPassed ? "is-pass" : hasTried ? "is-warn" : "is-neutral";
-            const pillText = isPassed
-              ? `ผ่านแล้ว (${uProg.best_quiz_score}/10)`
-              : hasTried
-              ? `${uProg.best_quiz_score}/10 คะแนน`
-              : "รอเข้าเรียน";
-
-            return `
-              <button type="button" class="module-unit-link" data-open-unit="${u.no}">
-                <span class="module-unit-link-title-group">
-                  <span class="font-notch module-unit-code" style="color: var(--mod${mod.id}-accent); flex-shrink: 0;">${esc(u.code)}</span>
-                  <span class="module-unit-title-text">${window.AppUtils.formatUnitTitleHtml(u.title)}</span>
-                </span>
-                <span class="status-pill ${pillClass}" style="flex-shrink: 0;">${esc(pillText)}</span>
-              </button>
-            `;
-          })
+        const cardsHtml = modUnits
+          .map((u) => window.AppUtils.renderLessonCard(u, unitMap, { mode: "home" }))
           .join("");
 
         return `
-          <article class="module-overview-card module-theme-${mod.id}">
-            <div>
-              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
-                <span class="status-pill module-pill-badge font-notch">MODULE ${mod.id}  •  ${esc(mod.unitRange)}</span>
-                <span class="font-notch tabular-nums" style="font-size: 0.8rem; font-weight: 600; color: ${
-                  passedInMod === modUnits.length ? "var(--status-pass-ink)" : "var(--text-muted)"
-                };">
-                  ผ่านแล้ว ${passedInMod} / ${modUnits.length} หน่วย
-                </span>
+          <section class="module-group" aria-label="${esc(mod.title)}">
+            <header class="module-group-head">
+              <span class="module-group-num" aria-hidden="true">${String(mod.id).padStart(2, "0")}</span>
+              <div>
+                <h3 class="module-group-title">${esc(mod.title)}</h3>
+                <p class="module-group-desc">${esc(mod.description)}</p>
               </div>
-
-              <h3 style="font-size: 1.04rem; font-weight: 600; margin-top: 10px; line-height: 1.4;">
-                ${esc(mod.title)}
-              </h3>
-              <p style="font-size: 0.83rem; color: var(--text-secondary); margin-top: 6px; line-height: 1.58;">
-                ${esc(mod.description)}
-              </p>
-
-              <div class="module-unit-mini-list" style="margin-top: 14px;">
-                ${unitRowsHtml}
-              </div>
-            </div>
-
-            <div style="padding-top: 12px; border-top: 1px solid var(--border-subtle); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; font-size: 0.8rem;">
-              <span class="font-notch tabular-nums" style="font-size: 0.78rem; color: var(--text-muted);">
-                หลักสูตร 4 หน่วยการเรียนรู้
+              <span class="module-group-count ${passedInMod === modUnits.length ? "is-complete" : ""}">
+                ${esc(mod.unitRange)} ผ่านแล้ว ${passedInMod} / ${modUnits.length} หน่วย
               </span>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-left: auto;">
-                <button
-                  type="button"
-                  class="btn-secondary"
-                  style="min-height: 34px; padding: 5px 12px; font-size: 0.78rem; font-weight: 700;"
-                  data-open-minigame-mod="${mod.id}"
-                >
-                  มินิเกมหมวด ${mod.id} (G0${mod.id})
-                </button>
-                <button
-                  type="button"
-                  class="btn-primary"
-                  style="min-height: 34px; padding: 5px 14px; font-size: 0.8rem;"
-                  data-open-unit="${modUnits[0].no}"
-                >
-                  เข้าสู่บทเรียนหมวดที่ ${mod.id}
-                </button>
-              </div>
-            </div>
-          </article>
+            </header>
+            <div class="lesson-card-grid">${cardsHtml}</div>
+          </section>
         `;
       }).join("");
+      window.GlassGrid?.refresh();
     }
   }
 
@@ -385,7 +339,7 @@
       if (filtered.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="7" style="padding: 36px 24px; text-align: center; color: var(--text-muted);">
+            <td colspan="7" class="table-empty">
               ${
                 progressStatusFilter === "passed"
                   ? "ยังไม่มีหน่วยการเรียนรู้ที่สอบผ่านเกณฑ์ 80% เริ่มต้นเรียนหน่วยที่ 1 ได้ทันที"
@@ -406,13 +360,13 @@
             const bestTime = Number(prog.best_quiz_time_sec || 0);
 
             let readLabel = "ยังเรียนไม่ครบหน่วย";
-            let readColor = "var(--text-muted)";
+            let readClass = "";
             if (isRead) {
               readLabel = "เรียนครบแล้ว";
-              readColor = "var(--status-pass-ink)";
+              readClass = "is-done";
             } else if (stepsDone > 0) {
               readLabel = `ยังเรียนไม่ครบ (${stepsDone} สเต็ป)`;
-              readColor = "var(--accent-signal)";
+              readClass = "is-partial";
             }
 
             let statusPillClass = "is-neutral";
@@ -439,28 +393,25 @@
                   </span>
                 </td>
                 <td>
-                  <span style="font-size: 0.83rem; font-weight: 500; color: ${readColor};">
-                    ${esc(readLabel)}
-                  </span>
+                  <span class="progress-read-state ${readClass}">${esc(readLabel)}</span>
                 </td>
-                <td class="num font-notch">
-                  ${attempts > 0 ? `<strong>${bestScore}</strong> / 10` : `<span style="color: var(--text-muted);">- / 10</span>`}
+                <td class="num">
+                  ${attempts > 0 ? `<strong>${bestScore}</strong> / 10` : `<span class="text-muted">- / 10</span>`}
                 </td>
-                <td class="num font-notch">
+                <td class="num">
                   ${
                     attempts > 0 && bestTime > 0
                       ? window.AppUtils.formatDuration(bestTime)
-                      : `<span style="color: var(--text-muted);">--:--</span>`
+                      : `<span class="text-muted">--:--</span>`
                   }
                 </td>
                 <td>
-                  <span class="status-pill ${statusPillClass}">${esc(statusPillText)}</span>
+                  <span class="status-pill ${statusPillClass}">${isPassed ? window.AppUtils.icon("check") : ""}${esc(statusPillText)}</span>
                 </td>
                 <td class="num">
                   <button
                     type="button"
-                    class="${isPassed ? "btn-secondary" : "btn-primary"}"
-                    style="min-height: 34px; padding: 5px 14px; font-size: 0.8rem;"
+                    class="${isPassed ? "btn-secondary" : "btn-primary"} btn-sm"
                     data-open-unit="${u.no}"
                   >
                     ${isPassed ? "ทบทวน" : "เข้าเรียน"}
@@ -610,18 +561,6 @@
       }
     });
 
-    // Milestone Minigame Triggers
-    document.addEventListener("click", (e) => {
-      const mgBtn = e.target.closest("[data-open-minigame-mod]");
-      if (mgBtn) {
-        e.preventDefault();
-        const modId = Number(mgBtn.getAttribute("data-open-minigame-mod"));
-        const gameKeys = { 1: "G01", 2: "G02", 3: "G03", 4: "G04" };
-        const gKey = gameKeys[modId] || "G01";
-        window.MiniGameEngine?.openRuleModal(gKey);
-      }
-    });
-
     // Certificate Download Buttons (Progress View + Modal)
     document
       .getElementById("progress-download-cert-btn")
@@ -634,7 +573,7 @@
         window.CertificateEngine?.downloadOfficialCertificate();
       });
 
-    // Escape key closes open modals + Number keys [1-4] switch views when outside inputs/games
+    // Escape key closes open modals + Number keys [1-3] switch views when outside inputs/games
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         closeCertificateModal();
@@ -675,8 +614,7 @@
       latency: "1.2ms",
       raw: "REFLECTANCE_PULSE: [1,0,1,1,0,0,1,0] @ 650nm RED BEAM",
       bin: "UPC-A: 885012345678  |  MOD10 CHECK_DIGIT: 8 [VALID]",
-      out: "ยิงสแกนแถบรหัสแท่ง 1 มิติสำเร็จ: แปลงแถบสว่าง-มืดเป็นชุดรหัสตัวเลขส่งเข้าบัสระบบทันที",
-      beamColor: "#EF4444"
+      out: "ยิงสแกนแถบรหัสแท่ง 1 มิติสำเร็จ: แปลงแถบสว่าง-มืดเป็นชุดรหัสตัวเลขส่งเข้าบัสระบบทันที"
     },
     qr: {
       id: "qr",
@@ -688,8 +626,7 @@
       latency: "2.8ms",
       raw: "FINDER_DETECT(3/3) -> TIMING_ALIGN(OK) -> MASK_PATTERN(010)",
       bin: "PAYLOAD: https://cdti.ac.th/course/21901-2017  |  ECC: Level-H (30%)",
-      out: "จับภาพรหัสสองมิติ 33x33 โมดูลและกู้คืนความผิดพลาดด้วย Reed-Solomon สำเร็จ 100%",
-      beamColor: "#06B6D4"
+      out: "จับภาพรหัสสองมิติ 33x33 โมดูลและกู้คืนความผิดพลาดด้วย Reed-Solomon สำเร็จ 100%"
     },
     rfid: {
       id: "rfid",
@@ -701,8 +638,7 @@
       latency: "0.8ms",
       raw: "EM_INDUCTION_13.56MHz -> LOAD_MODULATION -> ANTI_COLLISION(OK)",
       bin: "EPC_UID: 04:A2:9C:81:F0:22:80  |  AUTH_TOKEN: SHA256_PASS",
-      out: "เหนี่ยวนำสนามแม่เหล็กไฟฟ้าไร้สาย สแกนสมาร์ตการ์ดผ่านอากาศโดยไม่ต้องสัมผัสพื้นผิว",
-      beamColor: "#3B82F6"
+      out: "เหนี่ยวนำสนามแม่เหล็กไฟฟ้าไร้สาย สแกนสมาร์ตการ์ดผ่านอากาศโดยไม่ต้องสัมผัสพื้นผิว"
     },
     bio: {
       id: "bio",
@@ -714,8 +650,7 @@
       latency: "4.1ms",
       raw: "RIDGE_COUNT: 48  |  BIFURCATIONS: 14  |  ENDINGS: 22",
       bin: "MINUTIAE_HASH: 7a8f9c1b3e4d5678  |  MATCH_SCORE: 99.6%",
-      out: "ประมวลผลจุดแยกและจุดสิ้นสุดของลายนิ้วมือ แปลงเป็นเวกเตอร์ไบโอเมตริกยืนยันตัวตนสำเร็จ",
-      beamColor: "#A855F7"
+      out: "ประมวลผลจุดแยกและจุดสิ้นสุดของลายนิ้วมือ แปลงเป็นเวกเตอร์ไบโอเมตริกยืนยันตัวตนสำเร็จ"
     }
   };
 
@@ -727,7 +662,9 @@
 
     // Update active tab buttons
     document.querySelectorAll("[data-scanner-mode]").forEach((btn) => {
-      btn.classList.toggle("is-active", btn.getAttribute("data-scanner-mode") === mode);
+      const isActive = btn.getAttribute("data-scanner-mode") === mode;
+      btn.classList.toggle("is-active", isActive);
+      btn.setAttribute("aria-pressed", isActive ? "true" : "false");
     });
 
     // Update target view
@@ -740,7 +677,6 @@
     // Update laser beam color/glow
     const beam = document.getElementById("cyber-laser-beam");
     if (beam) {
-      beam.style.setProperty("--beam-glow", preset.beamColor);
       beam.classList.remove("is-beaming");
       void beam.offsetWidth;
       beam.classList.add("is-beaming");
