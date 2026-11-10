@@ -1442,10 +1442,12 @@ html[data-motion="reduced"].motion-ready .reveal-ready {
     grid-template-columns: 1fr;
   }
 
+  /* จอเล็ก: แจ้งเตือนขึ้นใต้แถบบน ไม่ทับผู้ช่วยและเมนูล่าง */
   .toast-stack {
     left: 16px;
     right: 16px;
-    bottom: 84px;
+    top: calc(var(--header-h) + 8px);
+    bottom: auto;
     max-width: none;
     align-items: stretch;
   }

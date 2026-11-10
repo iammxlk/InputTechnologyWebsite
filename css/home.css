@@ -785,6 +785,15 @@
     text-align: left;
   }
 
+  /* จอเล็ก: เหลือประกายเฉพาะมุมบนขวา ไม่ให้ทับตัวอ่าน */
+  .hero-sparkle-field .f1 { left: 88%; top: 3%; }
+  .hero-sparkle-field .f2 { left: 74%; top: 12%; width: 18px; height: 18px; }
+  .hero-sparkle-field .f3,
+  .hero-sparkle-field .f4,
+  .hero-sparkle-field .f5 {
+    display: none;
+  }
+
   .hero-aside {
     margin-left: 0;
     padding-bottom: 0;
