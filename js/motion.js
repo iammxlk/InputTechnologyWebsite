@@ -115,7 +115,7 @@
     ".segmented-tab-btn",
     ".filter-pill-btn",
     ".quiz-option-btn",
-    ".mg-pad-btn",
+    ".toc-item",
     ".step-rail-btn"
   ].join(", ");
 
@@ -223,13 +223,8 @@
      ========================================================================== */
 
   const REVEAL_SELECTOR = [
-    ".home-hero-main",
-    ".home-cert-showcase",
-    ".metric-strip",
     ".surface-card",
-    ".module-overview-card",
-    ".podium-strip",
-    ".my-rank-banner",
+    ".module-group-head",
     ".lesson-flow-item",
     ".lesson-info-card",
     ".lesson-callout-box"
@@ -505,14 +500,13 @@
     activeTickers.set(el, requestAnimationFrame(step));
   }
 
-  const STUDIO_CONFETTI_PALETTE = [
-    "#FF3D9A", // Magenta
-    "#00C6E0", // Cyan
-    "#FFD23F", // Yellow
-    "#2EE59D", // Mint
-    "#7B4DFF", // Studio Violet
-    "#FF7A45"  // Coral
-  ];
+  // สีพลุกระดาษอ่านจากโทเคนของธีมปัจจุบัน (ม่วงโทนเดียว + เขียวสถานะผ่าน)
+  function readConfettiPalette() {
+    const cs = getComputedStyle(document.documentElement);
+    return ["--accent", "--accent-soft", "--accent-glow", "--accent-deep", "--sparkle", "--success"]
+      .map((name) => cs.getPropertyValue(name).trim())
+      .filter(Boolean);
+  }
 
   function launchConfettiParticles(pieceCount, durationLimitMs, originRatioY) {
     if (isReducedMotion()) return;
@@ -539,6 +533,7 @@
     }
     ctx.scale(dpr, dpr);
 
+    const palette = readConfettiPalette();
     const pieces = [];
     for (let i = 0; i < pieceCount; i++) {
       const angle = -Math.PI / 2 + (Math.random() - 0.5) * 1.5;
@@ -553,7 +548,7 @@
         isCircle: i % 4 === 0,
         rot: Math.random() * Math.PI,
         vRot: (Math.random() - 0.5) * 0.24,
-        color: STUDIO_CONFETTI_PALETTE[i % STUDIO_CONFETTI_PALETTE.length],
+        color: palette[i % palette.length],
         alpha: 1
       });
     }
@@ -578,16 +573,12 @@
           ctx.translate(p.x, p.y);
           ctx.rotate(p.rot);
           ctx.fillStyle = p.color;
-          ctx.strokeStyle = "#1B1340";
-          ctx.lineWidth = 1.2;
           if (p.isCircle) {
             ctx.beginPath();
             ctx.arc(0, 0, p.w * 0.45, 0, Math.PI * 2);
             ctx.fill();
-            ctx.stroke();
           } else {
             ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-            ctx.strokeRect(-p.w / 2, -p.h / 2, p.w, p.h);
           }
           ctx.restore();
         }

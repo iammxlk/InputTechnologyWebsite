@@ -22,15 +22,15 @@
     weight: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v18"></path><path d="M6 8l6-5 6 5"></path><path d="M4 14l4 4 4-4"></path><path d="M16 14l4 4 4-4"></path></svg>',
     prod: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>',
     check: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>',
-    checkGreen: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>',
-    crossRed: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>',
-    keyBlue: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2"><circle cx="7.5" cy="15.5" r="5.5"></circle><path d="M21 2l-9.6 9.6"></path><path d="M15.5 7.5l3 3L22 7l-3-3"></path></svg>',
-    keyboard: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.2"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="6" y1="8" x2="6" y2="8"></line><line x1="10" y1="8" x2="10" y2="8"></line><line x1="14" y1="8" x2="14" y2="8"></line><line x1="18" y1="8" x2="18" y2="8"></line><line x1="6" y1="12" x2="6" y2="12"></line><line x1="10" y1="12" x2="10" y2="12"></line><line x1="14" y1="12" x2="14" y2="12"></line><line x1="18" y1="12" x2="18" y2="12"></line><line x1="7" y1="16" x2="17" y2="16"></line></svg>',
-    shuffle: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>',
-    spark: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>',
-    bulb: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"></path></svg>',
-    arrowLeft: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>',
-    arrowRight: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>',
+    checkGreen: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-tick"></use></svg>',
+    crossRed: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-x-circle"></use></svg>',
+    keyBlue: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="7.5" cy="15.5" r="5.5"></circle><path d="M21 2l-9.6 9.6"></path><path d="M15.5 7.5l3 3L22 7l-3-3"></path></svg>',
+    keyboard: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="6" y1="8" x2="6" y2="8"></line><line x1="10" y1="8" x2="10" y2="8"></line><line x1="14" y1="8" x2="14" y2="8"></line><line x1="18" y1="8" x2="18" y2="8"></line><line x1="6" y1="12" x2="6" y2="12"></line><line x1="10" y1="12" x2="10" y2="12"></line><line x1="14" y1="12" x2="14" y2="12"></line><line x1="18" y1="12" x2="18" y2="12"></line><line x1="7" y1="16" x2="17" y2="16"></line></svg>',
+    shuffle: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-shuffle"></use></svg>',
+    spark: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-alert"></use></svg>',
+    bulb: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"></path></svg>',
+    arrowLeft: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-left"></use></svg>',
+    arrowRight: '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>',
     globe: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>',
     package: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>'
   };
@@ -125,19 +125,19 @@
       if (pattern[i] === "1") {
         const isGuard = i < 3 || (i >= 45 && i < 50) || i >= 92;
         const h = isGuard ? 74 : 64;
-        rects += `<rect x="${(startX + i * barW).toFixed(1)}" y="10" width="${barW}" height="${h}" fill="${isInvalid ? "#ef4444" : "#111827"}" />`;
+        rects += `<rect x="${(startX + i * barW).toFixed(1)}" y="10" width="${barW}" height="${h}" />`;
       }
     }
 
     return `
       <div class="ean13-barcode-card ${isInvalid ? "is-invalid-barcode" : ""}">
         <svg viewBox="0 0 285 106" class="ean13-barcode-svg" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="EAN-13 Barcode ${esc(code13)}">
-          <rect width="285" height="106" fill="white" rx="4" />
-          <g fill="${isInvalid ? "#b91c1c" : "#111827"}">
+          <rect class="ean13-barcode-paper" width="285" height="106" rx="4" />
+          <g class="ean13-barcode-ink">
             ${rects}
             <text x="12" y="86" font-family="'Stack Sans Notch', monospace" font-size="14" font-weight="700">${code13[0]}</text>
             <text x="76" y="94" font-family="'Stack Sans Notch', monospace" font-size="13" font-weight="600" letter-spacing="2.8">${code13.slice(1, 7)}</text>
-            <text x="174" y="94" font-family="'Stack Sans Notch', monospace" font-size="13" font-weight="600" letter-spacing="2.8">${code13.slice(7, 12)}<tspan fill="${isInvalid ? "#ef4444" : "#2563eb"}" font-weight="800">${code13[12]}</tspan></text>
+            <text x="174" y="94" font-family="'Stack Sans Notch', monospace" font-size="13" font-weight="600" letter-spacing="2.8">${code13.slice(7, 12)}<tspan class="ean13-barcode-check" font-weight="800">${code13[12]}</tspan></text>
           </g>
         </svg>
         <div class="ean13-barcode-meta">
@@ -157,7 +157,7 @@
       id: "ex1",
       tabTitle: "ตัวอย่างที่ 1: คำนวณทีละขั้นตอนอย่างละเอียด",
       shortTitle: "ตัวอย่างที่ 1 (885123456789)",
-      badge: "ตัวอย่างมาตรฐาน • ละเอียดครบ 7 สเต็ป",
+      badge: "ตัวอย่างมาตรฐาน - ละเอียดครบ 7 สเต็ป",
       digits12: "885123456789",
       totalSteps: 7,
       steps: [
@@ -186,7 +186,7 @@
           callout: {
             type: "rule",
             title: "กฎเหล็กการคูณประจำตำแหน่ง (Positional Weighting)",
-            text: "• ตำแหน่งคี่ (หลักที่ 1, 3, 5, 7, 9, 11) ให้คูณด้วย 1\n• ตำแหน่งคู่ (หลักที่ 2, 4, 6, 8, 10, 12) ให้คูณด้วย 3 เสมอ\n(เหตุผลทางคณิตศาสตร์: เพื่อให้ตรวจจับความผิดพลาดกรณีพิมพ์ตัวเลขสลับหลัก เช่น พิมพ์ 15 กลายเป็น 51 ได้อย่างแม่นยำ)"
+            text: "- ตำแหน่งคี่ (หลักที่ 1, 3, 5, 7, 9, 11) ให้คูณด้วย 1\n- ตำแหน่งคู่ (หลักที่ 2, 4, 6, 8, 10, 12) ให้คูณด้วย 3 เสมอ\n(เหตุผลทางคณิตศาสตร์: เพื่อให้ตรวจจับความผิดพลาดกรณีพิมพ์ตัวเลขสลับหลัก เช่น พิมพ์ 15 กลายเป็น 51 ได้อย่างแม่นยำ)"
           }
         },
         {
@@ -214,7 +214,7 @@
           callout: {
             type: "sum",
             title: "การคำนวณผลรวม (เลือกใช้วิธีใดวิธีหนึ่ง)",
-            text: "• วิธีที่ 1 (บวกเรียงทีละหลัก): 8 + 24 + 5 + 3 + 2 + 9 + 4 + 15 + 6 + 21 + 8 + 27 = 132\n• วิธีที่ 2 (คิดแยกกลุ่ม): ผลรวมตำแหน่งคี่ (8+5+2+4+6+8)×1 = 33 บวกกับ ผลรวมตำแหน่งคู่ (8+1+3+5+7+9)×3 = 33×3 = 99 -> รวมทั้งหมด 33 + 99 = 132"
+            text: "- วิธีที่ 1 (บวกเรียงทีละหลัก): 8 + 24 + 5 + 3 + 2 + 9 + 4 + 15 + 6 + 21 + 8 + 27 = 132\n- วิธีที่ 2 (คิดแยกกลุ่ม): ผลรวมตำแหน่งคี่ (8+5+2+4+6+8)×1 = 33 บวกกับ ผลรวมตำแหน่งคู่ (8+1+3+5+7+9)×3 = 33×3 = 99 -> รวมทั้งหมด 33 + 99 = 132"
           }
         },
         {
@@ -242,7 +242,7 @@
           callout: {
             type: "success",
             title: "สูตรคำนวณ Check Digit และวิธีคิดลัด",
-            text: "• สูตรมาตรฐาน: 10 - เศษ = 10 - 2 = 8\n• วิธีคิดลัด (Short Cut): ปัดผลรวม 132 ขึ้นเป็นจำนวนเต็มสิบถัดไป คือ 140 แล้วนำ 140 - 132 = 8 ได้ผลลัพธ์เท่ากันทันที!"
+            text: "- สูตรมาตรฐาน: 10 - เศษ = 10 - 2 = 8\n- วิธีคิดลัด (Short Cut): ปัดผลรวม 132 ขึ้นเป็นจำนวนเต็มสิบถัดไป คือ 140 แล้วนำ 140 - 132 = 8 ได้ผลลัพธ์เท่ากันทันที!"
           }
         },
         {
@@ -350,7 +350,7 @@
           callout: {
             type: "danger",
             title: "ข้อควรระวังสำคัญที่ผู้เรียนมักพลาด!",
-            text: "• เมื่อเศษเป็น 0 ให้ตอบ Check Digit = 0 ทันที!\n• ข้อห้าม: ห้ามนำ 10 - 0 = 10 เด็ดขาด! เพราะ Check Digit ของระบบบาร์โค้ดจะต้องเป็นเลขโดดหลักเดียว (0 ถึง 9) เท่านั้น ไม่มีช่องสำหรับเลข 10\n• วิธีคิดลัด: ผลรวม 120 เป็นจำนวนเต็มสิบอยู่แล้ว ผลต่างคือ 120 - 120 = 0"
+            text: "- เมื่อเศษเป็น 0 ให้ตอบ Check Digit = 0 ทันที!\n- ข้อห้าม: ห้ามนำ 10 - 0 = 10 เด็ดขาด! เพราะ Check Digit ของระบบบาร์โค้ดจะต้องเป็นเลขโดดหลักเดียว (0 ถึง 9) เท่านั้น ไม่มีช่องสำหรับเลข 10\n- วิธีคิดลัด: ผลรวม 120 เป็นจำนวนเต็มสิบอยู่แล้ว ผลต่างคือ 120 - 120 = 0"
           }
         },
         {
@@ -373,7 +373,7 @@
       id: "ex3",
       tabTitle: "ตัวอย่างที่ 3: ตรวจสอบความถูกต้องของบาร์โค้ด (Validation)",
       shortTitle: "ตัวอย่างที่ 3 (ตรวจสอบบาร์โค้ด)",
-      badge: "โจทย์ตรวจสอบบาร์โค้ดจริง • จับผิดรหัสเพี้ยน",
+      badge: "โจทย์ตรวจสอบบาร์โค้ดจริง - จับผิดรหัสเพี้ยน",
       barcode13: "8850010020037",
       digits12: "885001002003",
       givenCheckDigit: 7,
@@ -390,7 +390,7 @@
           callout: {
             type: "info",
             title: "การแยกองค์ประกอบเพื่อตรวจสอบ",
-            text: "• รหัส 12 หลักแรกที่จะนำมาคำนวณ: 885001002003\n• เลขหลักที่ 13 ที่ระบุมาบนตัวสินค้า: 7 (เก็บไว้เป็นตัวเปรียบเทียบ)"
+            text: "- รหัส 12 หลักแรกที่จะนำมาคำนวณ: 885001002003\n- เลขหลักที่ 13 ที่ระบุมาบนตัวสินค้า: 7 (เก็บไว้เป็นตัวเปรียบเทียบ)"
           }
         },
         {
@@ -418,7 +418,7 @@
           callout: {
             type: "sum",
             title: "ผลรวมและเศษเหลือ",
-            text: "• ผลรวม: 8 + 24 + 5 + 0 + 0 + 3 + 0 + 0 + 2 + 0 + 0 + 9 = 51\n(หรือแยกกลุ่ม: คี่ 15 + คู่ 12×3 = 36 -> 15 + 36 = 51)\n• นำ 51 หารด้วย 10: ได้ 5 เศษ 1"
+            text: "- ผลรวม: 8 + 24 + 5 + 0 + 0 + 3 + 0 + 0 + 2 + 0 + 0 + 9 = 51\n(หรือแยกกลุ่ม: คี่ 15 + คู่ 12×3 = 36 -> 15 + 36 = 51)\n- นำ 51 หารด้วย 10: ได้ 5 เศษ 1"
           }
         },
         {
@@ -446,7 +446,7 @@
           callout: {
             type: "danger",
             title: "ผลการตรวจสอบ: รหัสนี้ 'ไม่ถูกต้อง' (INVALID)!",
-            text: "• Check Digit ที่คำนวณได้จริง: 9\n• เลขหลักที่ 13 ที่พิมพ์มาบนสินค้า: 7\n• การเปรียบเทียบ: 9 ≠ 7 (ไม่ตรงกัน!)\n\nบทวิเคราะห์เชิงเทคนิค: บาร์โค้ดนี้เกิดข้อผิดพลาด อาจเกิดจากผู้ใช้งานคีย์ข้อมูลสลับหลัก พิมพ์ผิด หรือเครื่องอ่านอ่านแถบเส้นบาร์โค้ดที่ชำรุด ระบบ POS จะปฏิเสธการทำรายการทันทีเพื่อป้องกันข้อมูลผิดพลาด!"
+            text: "- Check Digit ที่คำนวณได้จริง: 9\n- เลขหลักที่ 13 ที่พิมพ์มาบนสินค้า: 7\n- การเปรียบเทียบ: 9 ≠ 7 (ไม่ตรงกัน!)\n\nบทวิเคราะห์เชิงเทคนิค: บาร์โค้ดนี้เกิดข้อผิดพลาด อาจเกิดจากผู้ใช้งานคีย์ข้อมูลสลับหลัก พิมพ์ผิด หรือเครื่องอ่านอ่านแถบเส้นบาร์โค้ดที่ชำรุด ระบบ POS จะปฏิเสธการทำรายการทันทีเพื่อป้องกันข้อมูลผิดพลาด!"
           }
         }
       ]
@@ -541,7 +541,7 @@
     } else if (focus === "verdict" && isEx3) {
       checkDigitContent = `<span class="badge-mismatch-val font-notch">${example.givenCheckDigit}</span>`;
       checkDigitAnimCls = "ean-cell-changed is-anim-invalid-shake";
-      checkDigitProdHtml = `<span class="font-notch" style="color:#b91c1c; font-weight:800;">≠ ${calc.checkDigit}</span>`;
+      checkDigitProdHtml = `<span class="prod-badge-mismatch font-notch">≠ ${calc.checkDigit}</span>`;
     } else if (highlightRow === "all") {
       // In Tab 4 (Live Validator)
       checkDigitContent = `<span class="badge-solved-val font-notch">${calc.checkDigit}</span>`;
@@ -587,22 +587,22 @@
           <span class="legend-chip is-digit ${isDigitActive ? "is-active-changed" : ""}">
             ${SVG.digits}
             <span>ตัวเลข (Digits)</span>
-            ${isDigitActive ? '<span class="legend-pulse-badge">● ค่าตั้งต้น</span>' : ''}
+            ${isDigitActive ? '<span class="legend-pulse-badge">ค่าตั้งต้น</span>' : ''}
           </span>
           <span class="legend-chip is-weight ${isWeightActive ? "is-active-changed" : ""}">
             ${SVG.weight}
             <span>ตัวคูณ (คี่ ×1, คู่ ×3)</span>
-            ${isWeightActive ? '<span class="legend-pulse-badge">● เพิ่มตัวคูณใหม่</span>' : ''}
+            ${isWeightActive ? '<span class="legend-pulse-badge">เพิ่มตัวคูณใหม่</span>' : ''}
           </span>
           <span class="legend-chip is-prod ${isProdActive ? "is-active-changed" : ""}">
             ${SVG.prod}
             <span>ผลคูณ (Product)</span>
-            ${isProdActive ? '<span class="legend-pulse-badge">● คำนวณผลลัพธ์</span>' : ''}
+            ${isProdActive ? '<span class="legend-pulse-badge">คำนวณผลลัพธ์</span>' : ''}
           </span>
           <span class="legend-chip is-check ${isCheckActive ? "is-active-changed" : ""}">
             ${SVG.check}
             <span>หลักที่ 13 (Check Digit)</span>
-            ${focus === "checkDigit" ? '<span class="legend-pulse-badge is-green">● คำนวณสำเร็จ</span>' : ''}
+            ${focus === "checkDigit" ? '<span class="legend-pulse-badge is-green">คำนวณสำเร็จ</span>' : ''}
           </span>
         </div>
 
@@ -642,7 +642,7 @@
       visualMathHtml = `
         <div class="ean13-formula-card">
           <div class="formula-header">
-            <span class="font-notch">INPUT DATA • ข้อมูลรหัสบาร์โค้ด 12 หลัก</span>
+            <span class="font-notch">INPUT DATA: ข้อมูลรหัสบาร์โค้ด 12 หลัก</span>
           </div>
           <div class="formula-body">
             <div class="digits-strip font-notch">
@@ -650,7 +650,7 @@
               <span class="digit-box is-unknown" title="หลักที่ 13 (Check Digit ที่ต้องการหา)">?</span>
             </div>
             <p class="formula-caption">
-              3 หลักแรก (<strong style="color:var(--blue-600);">885</strong>) = รหัสประเทศไทย | 9 หลักถัดมา = รหัสสินค้า | หลักที่ 13 = <strong style="color:var(--accent-orange, #f97316);">Check Digit (?)</strong>
+              3 หลักแรก (<strong class="formula-em is-country">885</strong>) = รหัสประเทศไทย | 9 หลักถัดมา = รหัสสินค้า | หลักที่ 13 = <strong class="formula-em is-pending">Check Digit (?)</strong>
             </p>
           </div>
         </div>
@@ -659,7 +659,7 @@
       visualMathHtml = `
         <div class="ean13-formula-card">
           <div class="formula-header">
-            <span class="font-notch">WEIGHTING RULE • กฎการถ่วงน้ำหนักคูณตำแหน่งคู่และคี่</span>
+            <span class="font-notch">WEIGHTING RULE: กฎการถ่วงน้ำหนักคูณตำแหน่งคู่และคี่</span>
           </div>
           <div class="formula-body weights-summary-grid">
             <div class="weights-rule-box is-odd">
@@ -679,7 +679,7 @@
       visualMathHtml = `
         <div class="ean13-formula-card">
           <div class="formula-header">
-            <span class="font-notch">MULTIPLICATION PHASE • ตัวอย่างการคำนวณผลคูณ</span>
+            <span class="font-notch">MULTIPLICATION PHASE: ตัวอย่างการคำนวณผลคูณ</span>
           </div>
           <div class="formula-body">
             <div class="products-compact-grid font-notch">
@@ -701,7 +701,7 @@
       visualMathHtml = `
         <div class="ean13-formula-card is-highlight">
           <div class="formula-header">
-            <span class="font-notch">SUM OF PRODUCTS • การรวมผลคูณทั้งหมด</span>
+            <span class="font-notch">SUM OF PRODUCTS: การรวมผลคูณทั้งหมด</span>
           </div>
           <div class="formula-body">
             <div class="math-equation-row font-notch">
@@ -723,7 +723,7 @@
       visualMathHtml = `
         <div class="ean13-formula-card is-highlight">
           <div class="formula-header">
-            <span class="font-notch">MODULO 10 DIVISION • การหารหาเศษด้วย 10</span>
+            <span class="font-notch">MODULO 10 DIVISION: การหารหาเศษด้วย 10</span>
           </div>
           <div class="formula-body">
             <div class="division-board font-notch">
@@ -747,7 +747,7 @@
               </div>
             </div>
             <p class="formula-caption">
-              นำผลรวม ${calc.totalSum} ไปหารด้วย 10 จะได้เศษเหลือเท่ากับ <strong style="color:var(--accent-red, #dc2626); font-size:1.1rem;">${calc.remainder}</strong>
+              นำผลรวม ${calc.totalSum} ไปหารด้วย 10 จะได้เศษเหลือเท่ากับ <strong class="formula-em is-remainder">${calc.remainder}</strong>
             </p>
           </div>
         </div>
@@ -757,7 +757,7 @@
       visualMathHtml = `
         <div class="ean13-formula-card ${isZeroCase ? "is-zero-card" : "is-highlight"}">
           <div class="formula-header">
-            <span class="font-notch">CHECK DIGIT FORMULA • การหาเลขตรวจสอบหลักสุดท้าย</span>
+            <span class="font-notch">CHECK DIGIT FORMULA: การหาเลขตรวจสอบหลักสุดท้าย</span>
           </div>
           <div class="formula-body">
             ${
@@ -796,18 +796,18 @@
       visualMathHtml = `
         <div class="ean13-formula-card is-success">
           <div class="formula-header">
-            <span class="font-notch">COMPLETED BARCODE • รหัสบาร์โค้ด EAN-13 สมบูรณ์</span>
+            <span class="font-notch">COMPLETED BARCODE: รหัสบาร์โค้ด EAN-13 สมบูรณ์</span>
           </div>
           <div class="formula-body">
             <div class="complete-code-banner">
               <span class="complete-label">รหัสบาร์โค้ด 13 หลักพร้อมใช้งาน:</span>
               <div class="complete-code-string font-notch">
                 <span class="c-segment">${calc.digits12.slice(0, 3)}</span>
-                <span class="c-sep">·</span>
+                <span class="c-sep">-</span>
                 <span class="c-segment">${calc.digits12.slice(3, 9)}</span>
-                <span class="c-sep">·</span>
+                <span class="c-sep">-</span>
                 <span class="c-segment">${calc.digits12.slice(9, 12)}</span>
-                <span class="c-sep">·</span>
+                <span class="c-sep">-</span>
                 <span class="c-digit-badge">${calc.checkDigit}</span>
               </div>
             </div>
@@ -819,7 +819,7 @@
       visualMathHtml = `
         <div class="ean13-formula-card">
           <div class="formula-header">
-            <span class="font-notch">BARCODE VERIFICATION • การแยกองค์ประกอบเพื่อตรวจสอบ</span>
+            <span class="font-notch">BARCODE VERIFICATION: การแยกองค์ประกอบเพื่อตรวจสอบ</span>
           </div>
           <div class="formula-body">
             <div class="verification-split-view">
@@ -840,12 +840,12 @@
       visualMathHtml = `
         <div class="ean13-formula-card is-highlight">
           <div class="formula-header">
-            <span class="font-notch">CALCULATING CHECK DIGIT • คำนวณหาเลขตรวจสอบที่แท้จริง</span>
+            <span class="font-notch">CALCULATING CHECK DIGIT: คำนวณหาเลขตรวจสอบที่แท้จริง</span>
           </div>
           <div class="formula-body">
             <div class="math-split-box">
               <span class="split-pill">ผลรวม 12 หลักแรก = <strong>${calc.totalSum}</strong></span>
-              <span class="split-plus">→</span>
+              <span class="split-plus"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-right"></use></svg></span>
               <span class="split-pill">หารด้วย 10: ${calc.totalSum} ÷ 10 = ${Math.floor(calc.totalSum / 10)} <strong>เศษ ${calc.remainder}</strong></span>
             </div>
           </div>
@@ -855,7 +855,7 @@
       visualMathHtml = `
         <div class="ean13-formula-card is-danger">
           <div class="formula-header">
-            <span class="font-notch">VERDICT AUDIT • เปรียบเทียบผลลัพธ์และสรุปการตรวจสอบ</span>
+            <span class="font-notch">VERDICT AUDIT: เปรียบเทียบผลลัพธ์และสรุปการตรวจสอบ</span>
           </div>
           <div class="formula-body">
             <div class="verdict-comparison-grid">
@@ -937,9 +937,7 @@
           ${isFirst ? "disabled" : ""}
           title="ย้อนกลับขั้นตอนก่อนหน้า"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-left"></use></svg>
           <span>ย้อนกลับ (Prev)</span>
         </button>
 
@@ -955,9 +953,7 @@
           title="${isLast ? "สิ้นสุดขั้นตอนตัวอย่างนี้แล้ว" : "ดูขั้นตอนถัดไป (Next Step)"}"
         >
           <span>${isLast ? "ครบทุกขั้นตอนแล้ว" : "ขั้นตอนถัดไป (Next)"}</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
         </button>
       </div>
     `;
@@ -1001,7 +997,7 @@
                 <span class="lv-icon">${SVG.crossRed}</span>
                 <div style="flex:1;">
                   <strong class="lv-title font-notch">รหัสบาร์โค้ดไม่ถูกต้อง (INVALID BARCODE)</strong>
-                  <p class="lv-desc">เลขหลักที่ 13 ที่ป้อนมาคือ <strong class="font-notch" style="color:#ef4444;">${given13th}</strong> แต่ค่าที่คำนวณได้จริงคือ <strong class="font-notch" style="color:#2563eb;">${calculated13th}</strong> (ระบบจะไม่อนุญาตให้ผ่าน)</p>
+                  <p class="lv-desc">เลขหลักที่ 13 ที่ป้อนมาคือ <strong class="lv-num is-given font-notch">${given13th}</strong> แต่ค่าที่คำนวณได้จริงคือ <strong class="lv-num is-calc font-notch">${calculated13th}</strong> (ระบบจะไม่อนุญาตให้ผ่าน)</p>
                 </div>
                 <span class="lv-tag is-fail font-notch">ERROR MISMATCH</span>
               </div>
@@ -1013,7 +1009,7 @@
               <span class="lv-icon">${SVG.keyBlue}</span>
               <div style="flex:1;">
                 <strong class="lv-title font-notch">คำนวณ Check Digit หลักที่ 13 สำเร็จ!</strong>
-                <p class="lv-desc">จากรหัส 12 หลักที่ป้อนมา เลขตรวจสอบที่ต้องใช้ต่อท้ายคือ <strong class="font-notch" style="color:var(--blue-600); font-size:1.15rem;">${calc.checkDigit}</strong> (รหัสสมบูรณ์คือ ${calc.fullCode})</p>
+                <p class="lv-desc">จากรหัส 12 หลักที่ป้อนมา เลขตรวจสอบที่ต้องใช้ต่อท้ายคือ <strong class="lv-num is-calc is-lg font-notch">${calc.checkDigit}</strong> (รหัสสมบูรณ์คือ ${calc.fullCode})</p>
               </div>
               <span class="lv-tag is-calc font-notch">CALCULATED</span>
             </div>

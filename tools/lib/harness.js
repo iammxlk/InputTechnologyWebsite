@@ -206,14 +206,32 @@ async function launch(options = {}) {
     },
 
     async screenshot(file, fullPage = false) {
-      const params = { format: "png" };
+      let restore = null;
       if (fullPage) {
         const m = await send("Page.getLayoutMetrics");
         const size = m.cssContentSize || m.contentSize;
-        params.clip = { x: 0, y: 0, width: size.width, height: Math.min(size.height, 12000), scale: 1 };
-        params.captureBeyondViewport = true;
+        const vp = m.cssLayoutViewport || m.layoutViewport;
+        const fullH = Math.min(Math.ceil(size.height), 12000);
+        if (fullH > vp.clientHeight) {
+          restore = { width: vp.clientWidth, height: vp.clientHeight };
+          await send("Emulation.setDeviceMetricsOverride", {
+            width: vp.clientWidth,
+            height: fullH,
+            deviceScaleFactor: 1,
+            mobile: Boolean(options.mobile)
+          });
+          await sleep(350);
+        }
       }
-      const shot = await send("Page.captureScreenshot", params);
+      const shot = await send("Page.captureScreenshot", { format: "png" });
+      if (restore) {
+        await send("Emulation.setDeviceMetricsOverride", {
+          width: restore.width,
+          height: restore.height,
+          deviceScaleFactor: 1,
+          mobile: Boolean(options.mobile)
+        });
+      }
       fs.mkdirSync(path.dirname(file), { recursive: true });
       fs.writeFileSync(file, Buffer.from(shot.data, "base64"));
     },

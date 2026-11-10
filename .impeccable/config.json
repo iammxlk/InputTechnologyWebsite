@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-10T07:09:01.115Z",
+        "reason": "user brief section 2: dark mode purple grid must glow like neon on black"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "css/layout.css"
+        ],
+        "createdAt": "2026-11-10T07:10:58.628Z",
+        "reason": "user brief section 3: hero line 1 soft black gradient, line 2 purple gradient #9B5CF0 to #7A2BD9"
+      }
+    ]
+  }
+}

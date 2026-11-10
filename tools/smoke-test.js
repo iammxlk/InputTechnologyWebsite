@@ -210,7 +210,7 @@ const IN_PAGE = String.raw`
 
     for (let s = 0; s < unit.steps.length; s++) {
       const step = unit.steps[s];
-      await waitFor(() => $(".lesson-step-title", ws()) && $(".lesson-step-title", ws()).textContent.trim() === String(step.title).trim());
+      await waitFor(() => $(".lesson-step-title", ws()) && $(".lesson-step-title", ws()).textContent.trim() === String(step.title).replace(/\*\*/g, "").trim());
       const card = $(".lesson-reader-card", ws());
       const body = $(".lesson-step-body", ws());
       const flat = card.textContent.replace(/[\s*]+/g, "");
@@ -276,13 +276,13 @@ const IN_PAGE = String.raw`
     check(tag + ": finish button on last step", !!$("#btn-finish-steps-start-quiz"));
     if (unitNo === 1) {
       click('[data-goto-step="0"]');
-      await waitFor(() => $(".lesson-step-title", ws()).textContent.trim() === String(unit.steps[0].title).trim());
+      await waitFor(() => $(".lesson-step-title", ws()).textContent.trim() === String(unit.steps[0].title).replace(/\*\*/g, "").trim());
       check("reader: can jump back to visited step", !$("#btn-next-step").disabled && $("#btn-prev-step").disabled);
       click('[data-goto-step="' + (unit.steps.length - 1) + '"]');
       await waitFor(() => $("#btn-finish-steps-start-quiz"));
       click("#btn-prev-step");
       await waitFor(() => $("#btn-next-step"));
-      check("reader: previous button works", $(".lesson-step-title", ws()).textContent.trim() === String(unit.steps[unit.steps.length - 2].title).trim());
+      check("reader: previous button works", $(".lesson-step-title", ws()).textContent.trim() === String(unit.steps[unit.steps.length - 2].title).replace(/\*\*/g, "").trim());
       click("#btn-next-step");
       await waitFor(() => $("#btn-finish-steps-start-quiz"));
     }

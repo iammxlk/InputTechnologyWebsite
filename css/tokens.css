@@ -1,0 +1,212 @@
+/* ==========================================================================
+   css/tokens.css  Design tokens: Glassmorphism Grid Gradient
+   สีทั้งหมดของระบบประกาศที่ไฟล์นี้ไฟล์เดียว component ห้ามฮาร์ดโค้ดสี
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* ---- Brief tokens (light) ---- */
+  --bg: #F2F2F3;
+  --bg-grid-line: rgba(0, 0, 0, 0.05);
+  --text-primary: #1A1A1A;
+  --text-secondary: #A8A8AD; /* ป้ายตกแต่งขนาดใหญ่เท่านั้น ไม่ผ่าน AA สำหรับตัวอ่าน */
+  --accent: #8B3FE0;
+  --accent-soft: #B98CF0;
+  --accent-glow: #C85BE8;
+  --accent-deep: #7A2BD9;
+  --sparkle: #4A4F7A;
+  --tile-bg: rgba(255, 255, 255, 0.35);
+  --tile-border: rgba(255, 255, 255, 0.6);
+  --text-on-gradient: #FFFFFF;
+
+  /* ---- Lesson-site additions ---- */
+  --surface: #FFFFFF;
+  --surface-2: #F6F5FA;
+  --surface-3: #EDEBF4;
+  --text-body: #2B2B33;
+  --text-muted: #5C5C68;
+  --line: rgba(20, 16, 40, 0.10);
+  --line-strong: rgba(20, 16, 40, 0.18);
+
+  --accent-ink: #7A2BD9;                    /* ตัวอักษรม่วงบนพื้นสว่าง */
+  --accent-tint: rgba(139, 63, 224, 0.10);  /* พื้นไฮไลต์ม่วงจาง */
+  --accent-tint-strong: rgba(139, 63, 224, 0.18);
+  --accent-ring: rgba(139, 63, 224, 0.42);
+
+  --grad-title-from: #9B5CF0;
+  --grad-title-to: #7A2BD9;
+  --grad-ink-from: #1A1A1A;
+  --grad-ink-to: #55555F;
+  --btn-from: #8B3FE0;
+  --btn-to: #7226CF;
+  --btn-shadow: rgba(122, 43, 217, 0.32);
+
+  --success: #1A7A4F;
+  --success-tint: rgba(26, 122, 79, 0.11);
+  --success-line: rgba(26, 122, 79, 0.34);
+  --warning: #8A5A00;
+  --warning-tint: rgba(196, 134, 0, 0.14);
+  --warning-line: rgba(160, 108, 0, 0.36);
+  --danger: #B3261E;
+  --danger-tint: rgba(179, 38, 30, 0.09);
+  --danger-line: rgba(179, 38, 30, 0.34);
+
+  /* Glass */
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-bg-hover: rgba(255, 255, 255, 0.88);
+  --glass-border: rgba(255, 255, 255, 0.85);
+  --glass-highlight: rgba(255, 255, 255, 0.9);
+  --glass-shadow: 0 10px 30px rgba(74, 40, 140, 0.10);
+  --glass-shadow-hover: 0 18px 44px rgba(74, 40, 140, 0.18);
+  --header-bg: rgba(242, 242, 243, 0.72);
+  --overlay: rgba(20, 16, 40, 0.42);
+  --number-ghost: rgba(122, 43, 217, 0.16);
+
+  /* Fog under the glass grid */
+  --fog-deep: rgba(122, 43, 217, 0.78);
+  --fog-mid: rgba(200, 91, 232, 0.55);
+  --fog-soft: rgba(185, 140, 240, 0.62);
+  --fog-opacity: 0.9;
+  --ambient-glow: rgba(185, 140, 240, 0.34);
+  --cursor-glow: rgba(200, 91, 232, 0.22);
+
+  /* Code block */
+  --code-bg: #17141F;
+  --code-text: #ECE8F7;
+  --code-muted: #A79FC0;
+  --code-line: rgba(255, 255, 255, 0.10);
+
+  --shadow-card: 0 1px 2px rgba(20, 16, 40, 0.04), 0 8px 24px rgba(20, 16, 40, 0.06);
+  --shadow-pop: 0 24px 60px rgba(20, 16, 40, 0.22);
+
+  /* ---- Shape, type, motion ---- */
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+
+  --font-sans: "Inter Tight", "IBM Plex Sans Thai", "Noto Sans Thai", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-thai: "IBM Plex Sans Thai", "Noto Sans Thai", "Inter Tight", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  --container: 1200px;
+  --gutter: clamp(16px, 4vw, 32px);
+  --header-h: 68px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --t-fast: 160ms;
+  --t-med: 250ms;
+  --t-theme: 400ms;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #0B0A10;
+  --bg-grid-line: rgba(255, 255, 255, 0.06);
+  --text-primary: #F5F5F7;
+  --text-secondary: #6E6E78;
+  --accent: #A66BFF;
+  --accent-soft: #7F4FD6;
+  --accent-glow: #D46BFF;
+  --accent-deep: #5B1FC4;
+  --sparkle: #9EA4E0;
+  --tile-bg: rgba(255, 255, 255, 0.06);
+  --tile-border: rgba(255, 255, 255, 0.14);
+  --text-on-gradient: #FFFFFF;
+
+  --surface: #14131C;
+  --surface-2: #1B1A26;
+  --surface-3: #242231;
+  --text-body: #DADAE2;
+  --text-muted: #A6A6B4;
+  --line: rgba(255, 255, 255, 0.10);
+  --line-strong: rgba(255, 255, 255, 0.20);
+
+  --accent-ink: #B88BFF;
+  --accent-tint: rgba(166, 107, 255, 0.14);
+  --accent-tint-strong: rgba(166, 107, 255, 0.26);
+  --accent-ring: rgba(166, 107, 255, 0.55);
+
+  --grad-title-from: #B88BFF;
+  --grad-title-to: #8B4DF2;
+  --grad-ink-from: #FFFFFF;
+  --grad-ink-to: #B9B9C6;
+  --btn-from: #8B3FE0;
+  --btn-to: #6A22C8;
+  --btn-shadow: rgba(166, 107, 255, 0.42);
+
+  --success: #5FD3A0;
+  --success-tint: rgba(95, 211, 160, 0.13);
+  --success-line: rgba(95, 211, 160, 0.36);
+  --warning: #F0C169;
+  --warning-tint: rgba(240, 193, 105, 0.13);
+  --warning-line: rgba(240, 193, 105, 0.36);
+  --danger: #FF8F86;
+  --danger-tint: rgba(255, 143, 134, 0.13);
+  --danger-line: rgba(255, 143, 134, 0.38);
+
+  --glass-bg: rgba(20, 19, 28, 0.66);
+  --glass-bg-hover: rgba(30, 27, 44, 0.78);
+  --glass-border: rgba(255, 255, 255, 0.16);
+  --glass-highlight: rgba(255, 255, 255, 0.22);
+  --glass-shadow: 0 10px 34px rgba(0, 0, 0, 0.45);
+  --glass-shadow-hover: 0 18px 50px rgba(120, 60, 255, 0.34);
+  --header-bg: rgba(11, 10, 16, 0.68);
+  --overlay: rgba(4, 3, 10, 0.68);
+  --number-ghost: rgba(184, 139, 255, 0.20);
+
+  --fog-deep: rgba(110, 40, 235, 0.95);
+  --fog-mid: rgba(212, 107, 255, 0.72);
+  --fog-soft: rgba(127, 79, 214, 0.80);
+  --fog-opacity: 1;
+  --ambient-glow: rgba(127, 79, 214, 0.30);
+  --cursor-glow: rgba(212, 107, 255, 0.26);
+
+  --code-bg: #0E0D15;
+  --code-text: #ECE8F7;
+  --code-muted: #9A93B5;
+  --code-line: rgba(255, 255, 255, 0.10);
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 30px rgba(0, 0, 0, 0.32);
+  --shadow-pop: 0 24px 70px rgba(0, 0, 0, 0.6);
+}
+
+/* --------------------------------------------------------------------------
+   ชื่อโทเคนเดิมที่เทมเพลต JS ยังอ้างถึง ชี้มาที่โทเคนใหม่ทั้งหมด
+   -------------------------------------------------------------------------- */
+:root,
+[data-theme="dark"] {
+  --bg-ground: var(--bg);
+  --bg-surface: var(--surface);
+  --bg-subtle: var(--surface-2);
+  --bg-hover: var(--surface-3);
+  --bg-card: var(--surface);
+  --surface-card: var(--surface);
+  --surface-secondary: var(--surface-2);
+  --text-main: var(--text-primary);
+  --color-ink-subtle: var(--text-muted);
+  --border-subtle: var(--line);
+  --border-ink: var(--line-strong);
+  --border-control: var(--line-strong);
+  --border-focus: var(--accent);
+  --shadow-ink: transparent;
+  --accent-signal: var(--accent-ink);
+  --brand-accent: var(--accent-ink);
+  --blue-700: var(--accent-deep);
+  --blue-600: var(--accent-ink);
+  --blue-500: var(--accent);
+  --blue-100: var(--accent-tint-strong);
+  --blue-50: var(--accent-tint);
+  --status-pass-bg: var(--success-tint);
+  --status-pass-ink: var(--success);
+  --status-warn-bg: var(--warning-tint);
+  --status-warn-ink: var(--warning);
+  --status-fail-bg: var(--danger-tint);
+  --status-fail-ink: var(--danger);
+  --status-info-bg: var(--accent-tint);
+  --status-info-ink: var(--accent-ink);
+}

@@ -104,9 +104,15 @@
     }
   }
 
+  function setReaderChrome(isReader) {
+    document.body.classList.toggle("is-reader-open", Boolean(isReader));
+    if (!isReader) closeTocDrawer(false);
+  }
+
   function toggleLessonsContainers(isDirectory) {
     if (isDirectory) {
       setQuizFocusMode(false);
+      setReaderChrome(false);
     }
     const dirShell = document.getElementById("lessons-directory-shell");
     const workspace = document.getElementById("lesson-workspace");
@@ -219,83 +225,45 @@
     );
 
     // 1. Selected Unit Banner
+    const icon = window.AppUtils.icon;
+    const st = window.AppUtils.getUnitState(currentUnit.no, unitMap);
     const bannerEl = document.getElementById("lessons-selected-unit-banner");
     if (bannerEl) {
       bannerEl.innerHTML = `
         <div class="selected-unit-banner-inner">
-          <div class="selected-unit-mascot-lead">
-            <img
-              src="${window.MascotCompanion ? window.MascotCompanion.getPoseForModule(currentUnit.moduleId) : 'images/mascot/mascot-study.png'}"
-              alt=""
-              class="mascot-sticker mascot-sticker--unit-banner"
-              aria-hidden="true"
-            />
-            <div style="min-width: 0; max-width: 680px;">
-            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+          <div class="selected-unit-copy">
+            <div class="selected-unit-tags">
               <span class="unit-number-badge ${isPassed ? "is-done" : ""}">${esc(currentUnit.code)}</span>
-              <span class="status-pill is-neutral">${esc(currentMod ? currentMod.title : "")}</span>
-              <span class="status-pill ${
-                isPassed
-                  ? "is-pass"
-                  : isContentRead
-                  ? "is-info"
-                  : isAvailable
-                  ? stepsDone > 0
-                    ? "is-warn"
-                    : "is-neutral"
-                  : "is-warn"
-              }">
-                ${
-                  isPassed
-                    ? `สอบผ่านแล้ว (${currentProg.best_quiz_score}/10)`
-                    : isContentRead
-                    ? "เรียนครบแล้ว • พร้อมทำควิซ"
-                    : isAvailable
-                    ? stepsDone > 0
-                      ? `ยังเรียนไม่ครบหน่วย (${stepsDone}/${totalSteps} สเต็ป)`
-                      : "ยังเรียนไม่ครบหน่วย"
-                    : "รออัปเดตเนื้อหา"
-                }
-              </span>
+              <span class="status-pill is-neutral is-wrap">${esc(currentMod ? currentMod.title : "")}</span>
+              <span class="status-pill ${st.statusClass}">${st.statusIcon}${esc(st.statusLabel)}</span>
             </div>
-
-            <h2 style="font-size: 1.28rem; font-weight: 600; margin-top: 12px; line-height: 1.38;">
+            <h2 class="selected-unit-title">
               หน่วยที่ ${currentUnit.no}: ${window.AppUtils.formatUnitTitleHtml(currentUnit.title)}
             </h2>
-            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 6px; line-height: 1.6;">
-              ${esc(currentUnit.subtitle)}
-            </p>
-            </div>
+            <p class="selected-unit-desc">${esc(currentUnit.subtitle)}</p>
           </div>
 
-          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
+          <div class="btn-row">
             ${
               isAvailable
                 ? `
                   ${
                     isContentRead
-                      ? `
-                        <button type="button" class="btn-secondary" data-start-unit-quiz="${currentUnit.no}">
-                          ทำแบบทดสอบ (10 ข้อ)
-                        </button>
-                      `
+                      ? `<button type="button" class="btn-secondary" data-start-unit-quiz="${currentUnit.no}">ทำแบบทดสอบ (10 ข้อ)</button>`
                       : ""
                   }
                   <button type="button" class="btn-primary" data-enter-unit="${currentUnit.no}">
-                    ${
+                    <span>${
                       isPassed || isContentRead
                         ? "ทบทวนเนื้อหาบทเรียน"
                         : stepsDone > 0
                         ? `เรียนต่อสเต็ปที่ ${Math.min(totalSteps, stepsDone + 1)}`
                         : "เริ่มเรียนเนื้อหาทีละสเต็ป"
-                    }
+                    }</span>
+                    ${icon("arrow-right", "icon-nudge-right")}
                   </button>
                 `
-                : `
-                  <span style="font-size: 0.84rem; color: var(--text-muted);">
-                    กำลังเตรียมข้อมูลเนื้อหาหน่วยนี้
-                  </span>
-                `
+                : `<span class="text-muted">กำลังเตรียมข้อมูลเนื้อหาหน่วยนี้</span>`
             }
           </div>
         </div>
@@ -311,117 +279,9 @@
           : CFG.UNITS_METADATA.filter((u) => String(u.moduleId) === String(moduleFilter));
 
       gridEl.innerHTML = filteredUnits
-        .map((u) => {
-          const prog = unitMap[u.no] || {};
-          const passed = Boolean(prog.is_passed);
-          const isContentRead = Boolean(prog.is_content_read || passed);
-          const attempts = Number(prog.attempts_count || 0);
-          const available = hasUnitCurriculum(u.no);
-          const uData = getUnitCurriculum(u.no);
-          const uTotalSteps = uData ? uData.steps.length : 5;
-          const uStepsDone = Math.min(
-            uTotalSteps,
-            isContentRead ? uTotalSteps : Number(prog.steps_completed || 0)
-          );
-          const isSelected = u.no === activeUnitNo;
-
-          let statusClass = "is-neutral";
-          let statusLabel = available ? "ยังเรียนไม่ครบหน่วย" : "รออัปเดต";
-          if (passed) {
-            statusClass = "is-pass";
-            statusLabel = `ผ่านเกณฑ์ (${prog.best_quiz_score}/10)`;
-          } else if (attempts > 0) {
-            statusClass = "is-warn";
-            statusLabel = `สูงสุด ${prog.best_quiz_score}/10`;
-          } else if (isContentRead) {
-            statusClass = "is-info";
-            statusLabel = "เรียนครบแล้ว • พร้อมทำควิซ";
-          } else if (uStepsDone > 0) {
-            statusClass = "is-warn";
-            statusLabel = `ยังเรียนไม่ครบหน่วย (${uStepsDone}/${uTotalSteps} สเต็ป)`;
-          } else if (available) {
-            statusClass = "is-neutral";
-            statusLabel = "ยังเรียนไม่ครบหน่วย";
-          }
-
-          const unitCardHtml = `
-            <article class="module-overview-card module-theme-${u.moduleId} ${isSelected ? "is-selected-unit" : ""}" data-unit-no="${u.no}" style="cursor: pointer;">
-              <div>
-                <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
-                  <span class="unit-number-badge ${passed ? "is-done" : ""}">${esc(u.code)}</span>
-                  <span class="status-pill ${statusClass}">${esc(statusLabel)}</span>
-                </div>
-
-                <h3 style="font-size: 1.03rem; font-weight: 600; margin-top: 12px; line-height: 1.4;">
-                  หน่วยที่ ${u.no}: ${window.AppUtils.formatUnitTitleHtml(u.title)}
-                </h3>
-                <p style="font-size: 0.84rem; color: var(--text-secondary); margin-top: 6px; line-height: 1.56;">
-                  ${esc(u.subtitle)}
-                </p>
-              </div>
-
-              <div style="padding-top: 12px; border-top: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
-                <span class="font-notch tabular-nums" style="font-size: 0.8rem; color: var(--text-muted);">
-                  ${
-                    attempts > 0 && prog.best_quiz_time_sec > 0
-                      ? `เวลาเร็วสุด ${window.AppUtils.formatDuration(prog.best_quiz_time_sec)}`
-                      : available
-                      ? `${uTotalSteps} สเต็ป • ควิซ 10 ข้อ`
-                      : "รออัปเดตเนื้อหา"
-                  }
-                </span>
-
-                <div style="display: flex; align-items: center; gap: 8px;">
-                  ${
-                    available
-                      ? `
-                        ${
-                          isContentRead
-                            ? `
-                              <button
-                                type="button"
-                                class="btn-secondary"
-                                style="min-height: 36px; padding: 6px 12px; font-size: 0.8rem;"
-                                data-start-unit-quiz="${u.no}"
-                              >
-                                ทำควิซ
-                              </button>
-                            `
-                            : ""
-                        }
-                        <button
-                          type="button"
-                          class="btn-primary"
-                          style="min-height: 36px; padding: 6px 14px; font-size: 0.82rem;"
-                          data-enter-unit="${u.no}"
-                        >
-                          ${
-                            passed || isContentRead
-                              ? "ทบทวน"
-                              : uStepsDone > 0
-                              ? "เรียนต่อ"
-                              : "เข้าเรียน"
-                          }
-                        </button>
-                      `
-                      : `
-                        <button
-                          type="button"
-                          class="btn-secondary"
-                          style="min-height: 36px; padding: 6px 14px; font-size: 0.8rem;"
-                          data-select-lesson-unit="${u.no}"
-                        >
-                          ดูรายละเอียด
-                        </button>
-                      `
-                  }
-                </div>
-              </div>
-            </article>
-          `;
-
-          return unitCardHtml;
-        })
+        .map((u) =>
+          window.AppUtils.renderLessonCard(u, unitMap, { mode: "lessons", selected: u.no === activeUnitNo })
+        )
         .join("");
     }
   }
@@ -534,7 +394,7 @@
       /(^|\n)((?:\*\*)?(?:ตัวอย่างที่\s*\d+|ตัวอย่าง|กรณีศึกษา|ข้อสังเกตสำคัญ|ข้อควรระวัง|สาเหตุที่พบบ่อย|แนวทางการแก้ไข|วิธีตรวจสอบ[^\n:]*|ขั้นตอนการปฏิบัติ[^\n:]*):[^\n*]+(?:\*\*)?)/g,
       (m, p1, p2) => {
         const clean = p2.replace(/\*\*/g, '');
-        return `${p1}<strong class="lesson-subheading font-notch">${clean}</strong>`;
+        return `${p1}<strong class="lesson-subheading">${clean}</strong>`;
       }
     );
 
@@ -557,7 +417,7 @@
 
     if (block.type === "table") {
       const headersHtml = (block.headers || [])
-        .map((h) => `<th>${esc(h)}</th>`)
+        .map((h) => `<th scope="col">${esc(String(h).replace(/\*\*/g, ""))}</th>`)
         .join("");
       const rowsHtml = (block.rows || [])
         .map(
@@ -594,8 +454,8 @@
         .map(
           (st, idx) => `
             <div class="lesson-flow-item">
-              <span class="lesson-flow-num font-notch tabular-nums">${idx + 1}</span>
-              <div style="min-width: 0; flex: 1;">
+              <span class="lesson-flow-num">${idx + 1}</span>
+              <div class="lesson-flow-copy">
                 <strong class="lesson-flow-title">${esc(st.stepTitle)}</strong>
                 <p class="lesson-flow-desc">${formatLessonText(st.stepDesc)}</p>
               </div>
@@ -666,6 +526,21 @@
       `;
     }
 
+    if (block.type === "code") {
+      return `
+        <figure class="lesson-code-box">
+          <figcaption class="lesson-code-head">
+            <span>${esc(block.language || block.caption || "ตัวอย่างโค้ด")}</span>
+            <button type="button" class="lesson-code-copy" data-copy-code aria-label="คัดลอกโค้ด">
+              ${window.AppUtils.icon("copy")}
+              <span data-copy-label>คัดลอก</span>
+            </button>
+          </figcaption>
+          <pre><code>${esc(block.code || block.text || "")}</code></pre>
+        </figure>
+      `;
+    }
+
     if (block.type === "ean13-guide") {
       return window.Ean13GuideEngine ? window.Ean13GuideEngine.renderRootHtml() : "";
     }
@@ -675,6 +550,7 @@
 
   function renderWorkspaceTopBar(activeTab) {
     const esc = window.AppUtils.escapeHtml;
+    const icon = window.AppUtils.icon;
     const meta = getUnitMeta(activeUnitNo);
     const mod = CFG.MODULES_SYLLABUS.find((m) => m.id === meta.moduleId);
     const unitData = getUnitCurriculum(activeUnitNo);
@@ -683,65 +559,51 @@
     const isPassed = Boolean(prog.is_passed);
     const isContentRead = Boolean(prog.is_content_read || isPassed);
     const totalSteps = unitData ? unitData.steps.length : 5;
+    const isReader = activeTab === "reader";
 
     return `
-      <div class="lesson-workspace-topbar surface-card">
-        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px;">
-          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; min-width: 0;">
-            <button type="button" class="btn-secondary lesson-back-btn" id="btn-back-to-directory">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
-              <span>หน้ารวมบทเรียน</span>
-            </button>
-            <span class="unit-number-badge ${isPassed ? "is-done" : ""}">${esc(meta.code)}</span>
-            <span class="status-pill ${isPassed ? "is-pass" : isContentRead ? "is-info" : "is-warn"}">
-              ${
-                isPassed
-                  ? `ผ่านเกณฑ์แล้ว (${prog.best_quiz_score}/10)`
-                  : isContentRead
-                  ? "เรียนครบแล้ว • พร้อมทำควิซ"
-                  : `ยังเรียนไม่ครบหน่วย (${currentStepIdx + 1}/${totalSteps} สเต็ป)`
-              }
-            </span>
-          </div>
-
-          <div class="filter-pills-row" role="tablist" aria-label="สลับโหมดการเรียน">
-            <button
-              type="button"
-              class="filter-pill-btn ${activeTab === "reader" ? "is-active" : ""}"
-              id="tab-switch-reader"
-            >
-              เนื้อหาบทเรียน (${totalSteps} สเต็ป)
-            </button>
+      <header class="lesson-workspace-topbar">
+        <div class="lesson-topbar-row">
+          <button type="button" class="btn-secondary btn-sm lesson-back-btn" id="btn-back-to-directory">
+            ${icon("arrow-left", "icon-nudge-left")}
+            <span>หน้ารวมบทเรียน</span>
+          </button>
+          <span class="unit-number-badge ${isPassed ? "is-done" : ""}">${esc(meta.code)}</span>
+          <span class="status-pill ${isPassed ? "is-pass" : isContentRead ? "is-info" : "is-warn"}">
+            ${isPassed ? icon("check") : ""}
             ${
-              isContentRead
-                ? `
-                  <button
-                    type="button"
-                    class="filter-pill-btn ${activeTab !== "reader" ? "is-active" : ""}"
-                    id="tab-switch-quiz"
-                  >
-                    แบบทดสอบท้ายหน่วย (10 ข้อ)
-                  </button>
-                `
-                : ""
+              isPassed
+                ? `เรียนจบ (${prog.best_quiz_score}/10)`
+                : isContentRead
+                ? "เรียนครบแล้ว พร้อมทำแบบทดสอบ"
+                : `กำลังเรียน (${currentStepIdx + 1}/${totalSteps} สเต็ป)`
             }
-          </div>
+          </span>
+          ${
+            isReader
+              ? ""
+              : `<button type="button" class="btn-secondary btn-sm lesson-topbar-switch" id="tab-switch-reader">
+                   ${icon("book")}
+                   <span>เนื้อหาบทเรียน (${totalSteps} สเต็ป)</span>
+                 </button>`
+          }
         </div>
-
-        <div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border-subtle); display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px;">
-          <div style="min-width: 0;">
-            <span style="font-size: 0.78rem; color: var(--text-muted); display: block;">
-              ${esc(mod ? mod.title : "")}
-            </span>
-            <h1 style="font-size: 1.32rem; font-weight: 600; margin-top: 2px; line-height: 1.35;">
-              หน่วยที่ ${meta.no}: ${window.AppUtils.formatUnitTitleHtml(meta.title)}
-            </h1>
-          </div>
-        </div>
-      </div>
+        <p class="lesson-topbar-module">${esc(mod ? mod.title : "")}</p>
+        <h1 class="lesson-topbar-title">หน่วยที่ ${meta.no}: ${window.AppUtils.formatUnitTitleHtml(meta.title)}</h1>
+      </header>
     `;
+  }
+
+  // ชื่อสเต็ปบางรายการในข้อมูลมีเครื่องหมายตัวหนาแบบ markdown ครอบอยู่
+  function cleanTitle(text) {
+    return String(text || "").replace(/\*\*/g, "").trim();
+  }
+
+  function splitStepTag(tag) {
+    const parts = String(tag || "")
+      .split(/\s*[:|]\s*/)
+      .filter(Boolean);
+    return { code: parts[0] || "", topic: parts.slice(1).join(" ") };
   }
 
   function renderReaderWorkspace() {
@@ -750,6 +612,8 @@
     if (!workspace || !unitData) return;
 
     const esc = window.AppUtils.escapeHtml;
+    const icon = window.AppUtils.icon;
+    const meta = getUnitMeta(activeUnitNo);
     const totalSteps = unitData.steps.length;
     const stepObj = unitData.steps[currentStepIdx] || unitData.steps[0];
     const stepPercent = Math.round(((currentStepIdx + 1) / totalSteps) * 100);
@@ -757,113 +621,222 @@
     const isLastStep = currentStepIdx === totalSteps - 1;
     const unitMap = window.AuthManager?.getUnitProgressMap() || {};
     const prog = unitMap[activeUnitNo] || {};
-    const isContentRead = Boolean(prog.is_content_read || prog.is_passed);
+    const isPassed = Boolean(prog.is_passed);
+    const isContentRead = Boolean(prog.is_content_read || isPassed);
+    const tag = splitStepTag(stepObj.tag);
+    const bookmarked = window.Bookmarks ? window.Bookmarks.has(activeUnitNo) : false;
 
-    const stepPillsHtml = unitData.steps
+    const tocItemsHtml = unitData.steps
       .map((s, idx) => {
         const isCurrent = idx === currentStepIdx;
         const isLocked = idx > maxStepReachedInSession;
-        const isVisited = idx <= maxStepReachedInSession;
-        const stateCls = isCurrent
-          ? "is-current"
-          : isVisited
-          ? "is-visited"
-          : "is-locked";
+        const stateCls = isCurrent ? "is-current" : isLocked ? "is-locked" : "is-visited";
+        const stateIcon = isLocked ? icon("lock") : isCurrent ? "" : icon("check");
         return `
-          <button
-            type="button"
-            class="step-rail-btn ${stateCls}"
-            data-goto-step="${idx}"
-            ${isLocked ? 'disabled title="ไม่อนุญาตให้กดข้ามสเต็ป กรุณาเรียนตามลำดับ"' : `title="ไปยังสเต็ปที่ ${idx + 1}"`}
-          >
-            <span class="font-notch tabular-nums">${isLocked ? `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:middle; margin-right:4px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>` : ""}สเต็ปที่ ${idx + 1}</span>
-          </button>
+          <li>
+            <button
+              type="button"
+              class="toc-item step-rail-btn ${stateCls}"
+              data-goto-step="${idx}"
+              ${isCurrent ? 'aria-current="step"' : ""}
+              ${
+                isLocked
+                  ? 'disabled title="ไม่อนุญาตให้กดข้ามสเต็ป กรุณาเรียนตามลำดับ"'
+                  : `title="ไปยังสเต็ปที่ ${idx + 1}"`
+              }
+            >
+              <span class="toc-item-index">${idx + 1}</span>
+              <span class="toc-item-title">${esc(cleanTitle(s.title))}</span>
+              <span class="toc-item-state">${stateIcon}</span>
+            </button>
+          </li>
         `;
       })
       .join("");
 
     const blocksHtml = (stepObj.blocks || []).map(renderStepBlockHtml).join("");
 
+    setReaderChrome(true);
     workspace.innerHTML = `
-      ${renderWorkspaceTopBar("reader")}
+      <div class="reader-layout">
+        <div class="toc-overlay" data-close-toc></div>
 
-      <!-- Step Progress Rail Card -->
-      <div class="surface-card lesson-step-rail-card">
-        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;">
-          <span style="font-size: 0.85rem; font-weight: 500; color: var(--text-secondary);">
-            ความคืบหน้าการอ่านเนื้อหาหน่วยที่ ${activeUnitNo}
-          </span>
-          <span class="font-notch tabular-nums" style="font-size: 0.86rem; font-weight: 600; color: var(--blue-600);">
-            สเต็ปที่ ${currentStepIdx + 1} จาก ${totalSteps} (${stepPercent}%)
-          </span>
-        </div>
+        <aside id="lesson-toc" class="lesson-toc" aria-label="สารบัญบทเรียน">
+          <div class="lesson-toc-head">
+            <span class="eyebrow">สารบัญหน่วยที่ ${activeUnitNo}</span>
+            <button type="button" class="icon-btn toc-close-btn" data-close-toc aria-label="ปิดสารบัญบทเรียน">
+              ${icon("close")}
+            </button>
+          </div>
 
-        <div class="progress-track" style="height: 8px; margin-top: 10px;">
-          <div class="progress-fill" style="width: ${stepPercent}%;"></div>
-        </div>
+          <div class="toc-progress">
+            <div class="toc-progress-row">
+              <span>ความคืบหน้าการอ่านเนื้อหาหน่วยที่ ${activeUnitNo}</span>
+              <strong>สเต็ปที่ ${currentStepIdx + 1} จาก ${totalSteps} (${stepPercent}%)</strong>
+            </div>
+            <div class="progress-track is-thin">
+              <div class="progress-fill" style="width: ${stepPercent}%;"></div>
+            </div>
+          </div>
 
-        <div class="step-rail-pills" style="margin-top: 14px;">
-          ${stepPillsHtml}
+          <ol class="toc-list step-rail-pills">
+            ${tocItemsHtml}
+          </ol>
+
+          <div class="toc-quiz">
+            ${
+              isContentRead
+                ? `<button type="button" class="toc-item toc-item--quiz is-visited" id="tab-switch-quiz">
+                     <span class="toc-item-index">${icon("timer")}</span>
+                     <span class="toc-item-title">แบบทดสอบท้ายหน่วย (10 ข้อ)</span>
+                     <span class="toc-item-state">${isPassed ? icon("check") : icon("arrow-right")}</span>
+                   </button>`
+                : `<p class="toc-item toc-item--quiz is-locked">
+                     <span class="toc-item-index">${icon("timer")}</span>
+                     <span class="toc-item-title">แบบทดสอบท้ายหน่วย (ปลดล็อกเมื่อเรียนครบทุกสเต็ป)</span>
+                     <span class="toc-item-state">${icon("lock")}</span>
+                   </p>`
+            }
+          </div>
+        </aside>
+
+        <div class="reader-main">
+          ${renderWorkspaceTopBar("reader")}
+
+          <article class="surface-card lesson-reader-card">
+            <div class="lesson-step-header">
+              <div class="lesson-step-meta">
+                <p class="lesson-step-tag">
+                  <span>${esc(tag.code)}</span>
+                  ${tag.topic ? `<span class="dot-sep" aria-hidden="true"></span><span>${esc(tag.topic)}</span>` : ""}
+                  <span class="dot-sep" aria-hidden="true"></span>
+                  <span>สเต็ปที่ ${currentStepIdx + 1} จาก ${totalSteps}</span>
+                </p>
+                <button
+                  type="button"
+                  class="bookmark-btn ${bookmarked ? "is-saved" : ""}"
+                  data-toggle-bookmark="${activeUnitNo}"
+                  aria-pressed="${bookmarked ? "true" : "false"}"
+                  aria-label="${bookmarked ? "ยกเลิกการบันทึก" : "บันทึก"}หน่วยที่ ${meta.no}"
+                >
+                  ${icon("bookmark")}
+                  <span data-bookmark-label>${bookmarked ? "บันทึกแล้ว" : "บันทึก"}</span>
+                </button>
+              </div>
+              <h2 class="lesson-step-title">${esc(cleanTitle(stepObj.title))}</h2>
+              <p class="lesson-step-lead">${esc(stepObj.lead)}</p>
+            </div>
+
+            <div class="lesson-step-body">
+              ${blocksHtml}
+            </div>
+
+            <div class="lesson-takeaway-box">
+              <span class="lesson-takeaway-badge">Key takeaway<span class="dot-sep" aria-hidden="true"></span>สรุปประเด็นสำคัญประจำสเต็ป</span>
+              <p class="lesson-takeaway-text">${esc(stepObj.keyTakeaway)}</p>
+            </div>
+
+            <div class="lesson-step-footer">
+              <button type="button" class="btn-secondary" id="btn-prev-step" ${isFirstStep ? "disabled" : ""}>
+                ${icon("arrow-left", "icon-nudge-left")}
+                <span>สเต็ปก่อนหน้า</span>
+              </button>
+
+              <span class="lesson-step-counter">Step ${currentStepIdx + 1} / ${totalSteps}</span>
+
+              ${
+                !isLastStep
+                  ? `
+                    <button type="button" class="btn-primary" id="btn-next-step">
+                      <span>ถัดไป (Next): สเต็ปที่ ${currentStepIdx + 2}</span>
+                      ${icon("arrow-right", "icon-nudge-right")}
+                    </button>
+                  `
+                  : `
+                    <button type="button" class="btn-primary" id="btn-finish-steps-start-quiz">
+                      <span>เรียนครบเนื้อหาแล้ว เริ่มทำแบบทดสอบ (10 ข้อ)</span>
+                      ${icon("arrow-right", "icon-nudge-right")}
+                    </button>
+                  `
+              }
+            </div>
+          </article>
         </div>
       </div>
-
-      <!-- Main Bite-sized Step Content Card -->
-      <article class="surface-card lesson-reader-card">
-        <div class="lesson-step-header">
-          <span class="font-notch lesson-step-tag">${esc(stepObj.tag)}</span>
-          <h2 class="lesson-step-title">${esc(stepObj.title)}</h2>
-          <p class="lesson-step-lead">${esc(stepObj.lead)}</p>
-        </div>
-
-        <div class="lesson-step-body">
-          ${blocksHtml}
-        </div>
-
-        <div class="lesson-takeaway-box">
-          <span class="font-notch lesson-takeaway-badge">KEY TAKEAWAY • สรุปประเด็นสำคัญประจำสเต็ป</span>
-          <p class="lesson-takeaway-text">${esc(stepObj.keyTakeaway)}</p>
-        </div>
-
-        <!-- Step Navigation Footer -->
-        <div class="lesson-step-footer">
-          <button
-            type="button"
-            class="btn-secondary"
-            id="btn-prev-step"
-            ${isFirstStep ? "disabled" : ""}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-            <span>สเต็ปก่อนหน้า</span>
-          </button>
-
-          <span class="font-notch tabular-nums" style="font-size: 0.84rem; color: var(--text-muted);">
-            Step ${currentStepIdx + 1} / ${totalSteps}
-          </span>
-
-          ${
-            !isLastStep
-              ? `
-                <button type="button" class="btn-primary" id="btn-next-step">
-                  <span>ถัดไป (Next): สเต็ปที่ ${currentStepIdx + 2}</span>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                  </svg>
-                </button>
-              `
-              : `
-                <button type="button" class="btn-primary" id="btn-finish-steps-start-quiz">
-                  <span>เรียนครบเนื้อหาแล้ว • เริ่มทำแบบทดสอบ (10 ข้อ)</span>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                  </svg>
-                </button>
-              `
-          }
-        </div>
-      </article>
     `;
+  }
+
+  /* ==========================================================================
+     4.1 TOC DRAWER (MOBILE) + FOCUS MANAGEMENT
+     ========================================================================== */
+
+  function getTocFocusables() {
+    const toc = document.getElementById("lesson-toc");
+    if (!toc) return [];
+    return Array.from(toc.querySelectorAll("button:not([disabled]), [href], [tabindex]:not([tabindex='-1'])")).filter(
+      (el) => el.offsetParent !== null
+    );
+  }
+
+  function openTocDrawer() {
+    const toc = document.getElementById("lesson-toc");
+    const btn = document.getElementById("toc-menu-btn");
+    if (!toc) return;
+    document.body.classList.add("is-drawer-open");
+    if (btn) {
+      btn.setAttribute("aria-expanded", "true");
+      btn.setAttribute("aria-label", "ปิดสารบัญบทเรียน");
+    }
+    const current = toc.querySelector(".toc-item.is-current") || getTocFocusables()[0];
+    if (current) current.focus({ preventScroll: true });
+  }
+
+  function closeTocDrawer(restoreFocus = true) {
+    if (!document.body.classList.contains("is-drawer-open")) return;
+    const btn = document.getElementById("toc-menu-btn");
+    document.body.classList.remove("is-drawer-open");
+    if (btn) {
+      btn.setAttribute("aria-expanded", "false");
+      btn.setAttribute("aria-label", "เปิดสารบัญบทเรียน");
+      if (restoreFocus) btn.focus({ preventScroll: true });
+    }
+  }
+
+  function bindTocDrawerEvents() {
+    document.getElementById("toc-menu-btn")?.addEventListener("click", () => {
+      if (document.body.classList.contains("is-drawer-open")) closeTocDrawer(true);
+      else openTocDrawer();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (!document.body.classList.contains("is-drawer-open")) return;
+      if (e.key === "Escape") {
+        e.preventDefault();
+        e.stopPropagation();
+        closeTocDrawer(true);
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const items = getTocFocusables();
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement;
+      if (!document.getElementById("lesson-toc").contains(active)) {
+        e.preventDefault();
+        first.focus();
+      } else if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }, true);
+
+    window.matchMedia("(min-width: 1024px)").addEventListener?.("change", (ev) => {
+      if (ev.matches) closeTocDrawer(false);
+    });
   }
 
   /* ==========================================================================
@@ -985,54 +958,50 @@
     if (!workspace || !quizState) return;
 
     const esc = window.AppUtils.escapeHtml;
+    const icon = window.AppUtils.icon;
     const meta = getUnitMeta(quizState.unitNo);
 
+    setReaderChrome(false);
     workspace.innerHTML = `
       ${renderWorkspaceTopBar("quiz")}
 
       <div class="surface-card quiz-countdown-card">
         <div class="quiz-countdown-badge-row">
-          <span class="status-pill is-info font-notch">SPEEDRUN CHALLENGE • 10 QUESTIONS</span>
-          <span class="status-pill is-pass font-notch">เกณฑ์ผ่าน 8 / 10 (80%)</span>
-          <span class="status-pill is-neutral font-notch">จับเวลาความเร็วและบันทึกสถิติ</span>
+          <span class="status-pill is-info">แบบทดสอบท้ายหน่วย 10 ข้อ</span>
+          <span class="status-pill is-pass">เกณฑ์ผ่าน 8 / 10 (80%)</span>
+          <span class="status-pill is-neutral">จับเวลาความเร็วและบันทึกสถิติ</span>
         </div>
 
         <div class="quiz-countdown-meta">
-          <img
-            src="images/mascot/star-5-excited.png"
-            alt=""
-            class="mascot-sticker mascot-sticker--quiz-countdown"
-            aria-hidden="true"
-          />
-          <span class="unit-number-badge font-notch">${esc(meta.code)}</span>
+          <span class="unit-number-badge">${esc(meta.code)}</span>
           <h2 class="quiz-countdown-title">เตรียมพร้อมทำแบบทดสอบ: หน่วยที่ ${meta.no}</h2>
-          <p class="quiz-countdown-subtitle">${window.AppUtils.formatUnitTitleHtml(meta.title)} — ${esc(meta.subtitle)}</p>
+          <p class="quiz-countdown-subtitle">${window.AppUtils.formatUnitTitleHtml(meta.title)}: ${esc(meta.subtitle)}</p>
         </div>
 
         <div class="quiz-countdown-display-wrap">
           <div class="quiz-countdown-ring" id="quiz-countdown-ring">
-            <span class="quiz-countdown-number font-notch animate-pop" id="quiz-countdown-num">5</span>
+            <span class="quiz-countdown-number animate-pop" id="quiz-countdown-num">5</span>
           </div>
-          <span class="quiz-countdown-hint font-notch" id="quiz-countdown-hint">แบบทดสอบจะเริ่มในอีก 5 วินาที...</span>
+          <span class="quiz-countdown-hint" id="quiz-countdown-hint" aria-live="polite">แบบทดสอบจะเริ่มในอีก 5 วินาที...</span>
         </div>
 
-        <div class="quiz-countdown-tips">
-          <div class="quiz-countdown-tip-item">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <ul class="quiz-countdown-tips">
+          <li class="quiz-countdown-tip-item">
+            ${icon("clock")}
             <span><strong>เวลาเริ่มนับหลังครบ 5 วิ:</strong> เวลาทำข้อสอบจะไม่ถูกหักระหว่างนับถอยหลัง</span>
-          </div>
-          <div class="quiz-countdown-tip-item">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          </li>
+          <li class="quiz-countdown-tip-item">
+            ${icon("check")}
             <span><strong>ตรวจผลทันที:</strong> รู้คะแนนข้อต่อข้อ พร้อมคำอธิบายและแนวคิดทางเทคนิค</span>
-          </div>
-        </div>
+          </li>
+        </ul>
 
         <div class="quiz-countdown-actions">
-          <button type="button" class="btn-primary" id="btn-skip-countdown">
+          <button type="button" class="btn-primary btn-lg" id="btn-skip-countdown">
             <span>เริ่มทำทันที (Skip)</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            ${icon("play")}
           </button>
-          <button type="button" class="btn-secondary" id="btn-cancel-countdown">
+          <button type="button" class="btn-secondary btn-lg" id="btn-cancel-countdown">
             <span>ย้อนกลับหน้ารวม</span>
           </button>
         </div>
@@ -1109,6 +1078,7 @@
     if (!workspace || !quizState) return;
 
     const esc = window.AppUtils.escapeHtml;
+    const icon = window.AppUtils.icon;
     const totalQ = quizState.questions.length;
     const qIdx = quizState.currentIdx;
     const qObj = quizState.questions[qIdx];
@@ -1120,12 +1090,15 @@
       .map((_, idx) => {
         const ans = quizState.answers[idx];
         let cls = "";
+        let label = `ข้อ ${idx + 1} ยังไม่ได้ตอบ`;
         if (ans) {
           cls = ans.isCorrect ? "is-correct" : "is-wrong";
+          label = `ข้อ ${idx + 1} ${ans.isCorrect ? "ตอบถูก" : "ตอบผิด"}`;
         } else if (idx === qIdx) {
           cls = "is-current";
+          label = `ข้อ ${idx + 1} กำลังทำ`;
         }
-        return `<span class="quiz-progress-dot font-notch tabular-nums ${cls}">${idx + 1}</span>`;
+        return `<li class="quiz-progress-dot ${cls}" aria-label="${label}">${idx + 1}</li>`;
       })
       .join("");
 
@@ -1137,10 +1110,10 @@
         if (hasAnswered) {
           if (idx === answerRecord.correctIdx) {
             stateCls = "is-correct";
-            badgeNote = `<span class="quiz-choice-verdict is-correct" style="display:inline-flex;align-items:center;gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>เฉลยที่ถูกต้อง</span>`;
+            badgeNote = `<span class="quiz-choice-verdict is-correct">${icon("tick")}เฉลยที่ถูกต้อง</span>`;
           } else if (idx === answerRecord.chosenIdx && !answerRecord.isCorrect) {
             stateCls = "is-wrong";
-            badgeNote = `<span class="quiz-choice-verdict is-wrong" style="display:inline-flex;align-items:center;gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>คำตอบที่เลือก</span>`;
+            badgeNote = `<span class="quiz-choice-verdict is-wrong">${icon("close")}คำตอบที่เลือก</span>`;
           } else {
             stateCls = "is-muted";
           }
@@ -1153,7 +1126,7 @@
             data-quiz-choice="${idx}"
             ${hasAnswered ? "disabled" : ""}
           >
-            <span class="quiz-option-prefix font-notch">${CHOICE_LABELS[idx]}</span>
+            <span class="quiz-option-prefix">${CHOICE_LABELS[idx]}</span>
             <span class="quiz-option-text">${esc(choiceText)}</span>
             ${badgeNote}
           </button>
@@ -1167,129 +1140,82 @@
       const isLastQ = qIdx >= totalQ - 1;
       const nextBtnText = isLastQ ? "ตรวจผลสอบและบันทึกคะแนน" : `ข้อถัดไป (${qIdx + 2}/${totalQ})`;
       feedbackHtml = `
-        <div class="quiz-feedback-box ${answerRecord.isCorrect ? "is-correct" : "is-wrong"}" id="quiz-feedback-banner">
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
-            <div class="quiz-feedback-mascot-head">
-              <img
-                src="images/mascot/${answerRecord.isCorrect ? "mascot-cheer.png" : "star-6-shy.png"}"
-                alt=""
-                class="mascot-sticker mascot-sticker--quiz-feedback"
-                aria-hidden="true"
-              />
-              <div style="min-width: 0;">
-              <strong style="font-size: 1.25rem; font-weight: 800; display: inline-flex; align-items: center; gap: 8px;">
-                ${
-                  answerRecord.isCorrect
-                    ? `<span class="quiz-status-icon is-correct" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></span><span>คำตอบถูกต้อง (+1 คะแนน)</span>`
-                    : `<span class="quiz-status-icon is-wrong" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span><span>ยังไม่ถูกต้อง • คำตอบที่ถูกคือข้อ ${correctLetter}</span>`
-                }
-              </strong>
-              <span style="font-size: 0.92rem; opacity: 0.90; font-weight: 600; display: block; margin-top: 2px;">
-                หยุดเวลาชั่วคราวขณะอ่านคำอธิบาย
-              </span>
-              </div>
+        <div class="quiz-feedback-box ${answerRecord.isCorrect ? "is-correct" : "is-wrong"}" id="quiz-feedback-banner" role="status">
+          <div class="quiz-feedback-head">
+            <span class="quiz-status-icon" aria-hidden="true">${icon(answerRecord.isCorrect ? "check" : "x-circle")}</span>
+            <div>
+              <strong class="quiz-feedback-title">${
+                answerRecord.isCorrect
+                  ? "คำตอบถูกต้อง (+1 คะแนน)"
+                  : `ยังไม่ถูกต้อง คำตอบที่ถูกคือข้อ ${correctLetter}`
+              }</strong>
+              <span class="quiz-feedback-note">หยุดเวลาชั่วคราวขณะอ่านคำอธิบาย</span>
             </div>
-
-            <button type="button" class="btn-primary quiz-advance-btn" id="btn-quiz-advance-inline" style="min-height: 48px; padding: 10px 22px; font-size: 1.08rem; font-weight: 800; border: 2px solid var(--border-ink); box-shadow: 2.5px 2.5px 0px var(--shadow-ink); margin-left: auto;">
+          </div>
+          <p class="quiz-feedback-text">${formatLessonText(qObj.explanation)}</p>
+          <div class="quiz-feedback-actions">
+            <button type="button" class="btn-primary btn-lg" id="btn-quiz-next-question">
               <span>${nextBtnText}</span>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
+              ${icon("arrow-right", "icon-nudge-right")}
             </button>
           </div>
-          <p style="font-size: 1.06rem; margin-top: 10px; line-height: 1.68; font-weight: 500;">
-            ${formatLessonText(qObj.explanation)}
-          </p>
         </div>
       `;
     }
 
     setQuizFocusMode(true);
+    setReaderChrome(false);
     workspace.innerHTML = `
       <div class="quiz-cockpit-shell">
-        <!-- Compact HUD Bar -->
-        <div class="surface-card quiz-cockpit-hud">
+        <div class="quiz-cockpit-hud">
           <div class="quiz-cockpit-hud-top">
             <div class="quiz-cockpit-hud-left">
-              <button type="button" class="btn-secondary quiz-back-btn" id="btn-abort-quiz" title="ออกจากการทำข้อสอบ">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
-                  <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
+              <button type="button" class="btn-secondary btn-sm quiz-back-btn" id="btn-abort-quiz" title="ออกจากการทำข้อสอบ">
+                ${icon("arrow-left", "icon-nudge-left")}
                 <span>ออก</span>
               </button>
-              <span class="unit-number-badge font-notch">UNIT ${quizState.unitNo}</span>
-              <span class="quiz-hud-tag font-notch">ข้อที่ ${qIdx + 1}/${totalQ}</span>
+              <span class="unit-number-badge">Unit ${quizState.unitNo}</span>
+              <span class="quiz-hud-tag">ข้อที่ ${qIdx + 1}/${totalQ}</span>
             </div>
 
-            <div class="quiz-cockpit-hud-center">
-              <div class="quiz-hud-timer-badge font-notch tabular-nums">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                  <circle cx="12" cy="13" r="8"></circle>
-                  <path d="M12 9v4l2.5 2.5"></path>
-                  <path d="M9 2h6"></path>
-                </svg>
-                <span id="quiz-live-timer">${elapsedFormatted}</span>
-              </div>
+            <div class="quiz-hud-timer-badge" aria-label="เวลาที่ใช้">
+              ${icon("timer")}
+              <span id="quiz-live-timer">${elapsedFormatted}</span>
             </div>
 
-            <div class="quiz-cockpit-hud-right">
-              <span class="quiz-hud-score-badge font-notch">
-                คะแนน: <strong>${quizState.score}/${totalQ}</strong>
-              </span>
-            </div>
+            <span class="quiz-hud-score-badge">คะแนน: <strong>${quizState.score}/${totalQ}</strong></span>
           </div>
 
-          <!-- 10 Slim Progress Dots -->
-          <div class="quiz-dots-row quiz-cockpit-dots">
+          <ol class="quiz-dots-row quiz-cockpit-dots" aria-label="ความคืบหน้าแบบทดสอบ">
             ${dotsHtml}
-          </div>
+          </ol>
         </div>
 
-        <!-- Question & Options Cockpit Card -->
-        <article class="surface-card quiz-cockpit-card">
+        <article class="surface-card quiz-cockpit-card quiz-question-card">
           <div class="quiz-cockpit-q-header">
-            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
-              <span class="font-notch quiz-q-chip">QUESTION ${qIdx + 1} OF ${totalQ} • เกณฑ์ผ่าน 8/10</span>
-              <span class="status-pill is-info font-notch" style="font-size: 0.90rem; font-weight: 700; padding: 4px 12px; border: 2px solid var(--border-ink);">ตรวจคำตอบทันที</span>
-            </div>
-            <h2 class="quiz-cockpit-question-title">
-              ข้อที่ ${qIdx + 1}. ${esc(qObj.q)}
-            </h2>
+            <p class="quiz-q-chip">
+              <span>Question ${qIdx + 1} of ${totalQ}</span>
+              <span class="dot-sep" aria-hidden="true"></span>
+              <span>เกณฑ์ผ่าน 8/10</span>
+              <span class="dot-sep" aria-hidden="true"></span>
+              <span>ตรวจคำตอบทันที</span>
+            </p>
+            <h2 class="quiz-cockpit-question-title">ข้อที่ ${qIdx + 1}. ${esc(qObj.q)}</h2>
           </div>
 
-          <!-- 2x2 Options on Desktop/Tablet, 4 Rows on Mobile -->
           <div class="quiz-cockpit-options-grid">
             ${choicesHtml}
           </div>
 
           ${feedbackHtml ? `<div class="quiz-cockpit-feedback-wrap">${feedbackHtml}</div>` : ""}
 
-          <div class="quiz-cockpit-footer">
-            <span class="quiz-hint-text">
-              ${
-                hasAnswered
-                  ? "ตรวจคำอธิบายแล้ว กดปุ่มเพื่อไปข้อถัดไป (หรือกดปุ่ม Space / Enter บนแป้นพิมพ์)"
-                  : "คลิกตัวเลือกที่ถูกต้องที่สุดเพียงข้อเดียว หรือกดแป้นพิมพ์ 1–4 (เกณฑ์ผ่าน 8/10 คะแนน)"
-              }
-            </span>
-
+          <p class="quiz-hint-text">
             ${
               hasAnswered
-                ? `
-                  <button type="button" class="btn-primary" id="btn-quiz-next-question" style="min-height: 52px; padding: 12px 28px; font-size: 1.15rem; font-weight: 800; border: 2.5px solid var(--border-ink); box-shadow: 3.5px 3.5px 0 var(--border-ink);">
-                    <span>${
-                      qIdx < totalQ - 1
-                        ? `ข้อถัดไป (${qIdx + 2}/${totalQ})`
-                        : "ตรวจผลสอบและบันทึกคะแนน"
-                    }</span>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6">
-                      <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                  </button>
-                `
-                : ""
+                ? "ตรวจคำอธิบายแล้ว กดปุ่มเพื่อไปข้อถัดไป (หรือกดปุ่ม Space / Enter บนแป้นพิมพ์)"
+                : "คลิกตัวเลือกที่ถูกต้องที่สุดเพียงข้อเดียว หรือกดแป้นพิมพ์ 1 ถึง 4 (เกณฑ์ผ่าน 8/10 คะแนน)"
             }
-          </div>
+          </p>
         </article>
       </div>
     `;
@@ -1385,6 +1311,7 @@
     if (!workspace || !quizState) return;
 
     const esc = window.AppUtils.escapeHtml;
+    const icon = window.AppUtils.icon;
     const score = quizState.score;
     const totalQ = quizState.questions.length;
     const percent = Math.round((score / totalQ) * 100);
@@ -1402,29 +1329,27 @@
     let saveBannerHtml = "";
     if (quizState.isSubmitting) {
       saveBannerHtml = `
-        <div class="quiz-save-banner is-saving">
-          <span style="display: inline-flex; align-items: center; gap: 8px;">
-            <svg class="btn-spinner-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.4" opacity="0.28"></circle>
-              <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"></path>
-            </svg>
-            <span>กำลังบันทึกคะแนน (${score}/10) และเวลา (${quizState.finalTimeSec} วินาที) ไปยังฐานข้อมูล...</span>
-          </span>
+        <div class="quiz-save-banner is-saving" role="status">
+          <svg class="btn-spinner-svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.4" opacity="0.28"></circle>
+            <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"></path>
+          </svg>
+          <span>กำลังบันทึกคะแนน (${score}/10) และเวลา (${quizState.finalTimeSec} วินาที) ไปยังฐานข้อมูล...</span>
         </div>
       `;
     } else if (quizState.saveError) {
       saveBannerHtml = `
-        <div class="quiz-save-banner is-error">
+        <div class="quiz-save-banner is-error" role="alert">
+          ${icon("alert")}
           <span>${esc(quizState.saveError)}</span>
-          <button type="button" class="btn-secondary" id="btn-retry-save-quiz" style="min-height: 32px; padding: 4px 12px; font-size: 0.78rem;">
-            ลองบันทึกอีกครั้ง
-          </button>
+          <button type="button" class="btn-secondary btn-sm" id="btn-retry-save-quiz">ลองบันทึกอีกครั้ง</button>
         </div>
       `;
     } else {
       saveBannerHtml = `
-        <div class="quiz-save-banner is-saved">
-          บันทึกคะแนน (${score}/10 คะแนน) และเวลาที่ใช้ (${quizState.finalTimeSec} วินาที) ลงฐานข้อมูลเรียบร้อยแล้ว
+        <div class="quiz-save-banner is-saved" role="status">
+          ${icon("check", "icon-check-anim")}
+          <span>บันทึกคะแนน (${score}/10 คะแนน) และเวลาที่ใช้ (${quizState.finalTimeSec} วินาที) ลงฐานข้อมูลเรียบร้อยแล้ว</span>
         </div>
       `;
     }
@@ -1436,74 +1361,65 @@
         const chosenLabel = ans ? CHOICE_LABELS[ans.chosenIdx] : "-";
         const correctLabel = CHOICE_LABELS[qObj.answer];
         return `
-          <div class="quiz-review-item">
-            <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;">
-              <span style="font-size: 0.88rem; font-weight: 500; color: var(--text-main);">
-                ข้อ ${idx + 1}. ${esc(qObj.q)}
-              </span>
-              <span class="status-pill ${ok ? "is-pass" : "is-fail"}" style="flex-shrink: 0;">
-                ${ok ? `ถูก (ข้อ ${correctLabel})` : `เลือก ${chosenLabel} • เฉลย ${correctLabel}`}
-              </span>
-            </div>
-          </div>
+          <li class="quiz-review-item">
+            <span class="quiz-review-question">ข้อ ${idx + 1}. ${esc(qObj.q)}</span>
+            <span class="status-pill ${ok ? "is-pass" : "is-fail"}">
+              ${icon(ok ? "tick" : "close")}
+              ${ok ? `ถูก (ข้อ ${correctLabel})` : `เลือก ${chosenLabel} เฉลย ${correctLabel}`}
+            </span>
+          </li>
         `;
       })
       .join("");
 
+    setReaderChrome(false);
     workspace.innerHTML = `
       ${renderWorkspaceTopBar("quiz")}
 
       <div class="surface-card quiz-result-card">
-        <div style="display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 14px;">
-          <div class="quiz-result-mascot-head">
+        <div class="quiz-result-head">
+          <span class="mascot-plate" aria-hidden="true">
             <img
               src="images/mascot/${passedAttempt ? "star-9-congrats.png" : "mascot-study.png"}"
               alt=""
-              class="mascot-sticker mascot-sticker--quiz-result"
-              aria-hidden="true"
+              class="mascot-sticker"
             />
-            <div>
-              <span class="status-pill ${passedAttempt ? "is-pass" : "is-warn"}">
-                ${
-                  passedAttempt
-                    ? "ผ่านเกณฑ์การประเมินประจำหน่วย (80% ขึ้นไป)"
-                    : "ยังไม่ผ่านเกณฑ์ 80% (ต้องทำได้ตั้งแต่ 8/10 คะแนน)"
-                }
-              </span>
-              <h2 style="font-size: 1.42rem; font-weight: 600; margin-top: 10px;">
-                ${
-                  passedAttempt
-                    ? `ยอดเยี่ยม คุณสอบผ่านหน่วยที่ ${quizState.unitNo} เรียบร้อยแล้ว`
-                    : `ทำได้ ${score} จาก ${totalQ} คะแนน ลองทบทวนเนื้อหาแล้วสอบใหม่อีกครั้ง`
-                }
-              </h2>
-              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 4px;">
-                ระบบเก็บคะแนนสูงสุดและเวลาที่เร็วที่สุดของคุณเพื่อนำไปคำนวณความคืบหน้าและปลดล็อกเกียรติบัตร
-              </p>
-            </div>
+          </span>
+          <div>
+            <span class="status-pill is-wrap ${passedAttempt ? "is-pass" : "is-warn"}">
+              ${passedAttempt ? icon("check") : icon("alert")}
+              ${
+                passedAttempt
+                  ? "ผ่านเกณฑ์การประเมินประจำหน่วย (80% ขึ้นไป)"
+                  : "ยังไม่ผ่านเกณฑ์ 80% (ต้องทำได้ตั้งแต่ 8/10 คะแนน)"
+              }
+            </span>
+            <h2 class="quiz-result-title">
+              ${
+                passedAttempt
+                  ? `ยอดเยี่ยม คุณสอบผ่านหน่วยที่ ${quizState.unitNo} เรียบร้อยแล้ว`
+                  : `ทำได้ ${score} จาก ${totalQ} คะแนน ลองทบทวนเนื้อหาแล้วสอบใหม่อีกครั้ง`
+              }
+            </h2>
+            <p class="quiz-result-desc">
+              ระบบเก็บคะแนนสูงสุดและเวลาที่เร็วที่สุดของคุณเพื่อนำไปคำนวณความคืบหน้าและปลดล็อกเกียรติบัตร
+            </p>
           </div>
         </div>
 
         ${saveBannerHtml}
 
-        <!-- Divided 3-Column KPI Result Strip -->
         <div class="metric-strip quiz-result-metrics">
           <div class="metric-cell">
             <span class="metric-label">คะแนนที่ทำได้รอบนี้</span>
-            <span class="metric-value" style="color: ${
-              passedAttempt ? "var(--status-pass-ink)" : "var(--blue-600)"
-            };">
-              ${score} / ${totalQ} (${percent}%)
-            </span>
+            <span class="metric-value ${passedAttempt ? "is-success" : "is-accent"}">${score} / ${totalQ} (${percent}%)</span>
             <span class="metric-sub">เกณฑ์ผ่านขั้นต่ำ 8 / 10 (80%)</span>
           </div>
-
           <div class="metric-cell">
             <span class="metric-label">เวลาที่ใช้ทำควิซรอบนี้</span>
             <span class="metric-value">${timeFormatted}</span>
             <span class="metric-sub">คิดเป็น ${quizState.finalTimeSec} วินาที</span>
           </div>
-
           <div class="metric-cell">
             <span class="metric-label">สถิติสูงสุดของหน่วยนี้</span>
             <span class="metric-value">${bestScore} / ${totalQ}</span>
@@ -1511,52 +1427,33 @@
           </div>
         </div>
 
-        <!-- Compact Answer Summary -->
-        <div style="margin-top: 20px;">
-          <h3 style="font-size: 0.96rem; font-weight: 600; margin-bottom: 10px;">
-            สรุปผลการตอบรายข้อ (${totalQ} ข้อ)
-          </h3>
-          <div class="quiz-review-list">
+        <div class="quiz-review">
+          <h3 class="quiz-review-heading">สรุปผลการตอบรายข้อ (${totalQ} ข้อ)</h3>
+          <ol class="quiz-review-list">
             ${reviewRowsHtml}
-          </div>
+          </ol>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="lesson-step-footer" style="margin-top: 22px;">
-          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-            <button type="button" class="btn-secondary" id="btn-result-back-directory">
-              กลับหน้ารวมบทเรียน
-            </button>
-            <button type="button" class="btn-secondary" id="btn-result-review-steps">
-              ทบทวนเนื้อหา 5 สเต็ป
-            </button>
+        <div class="lesson-step-footer">
+          <div class="btn-row">
+            <button type="button" class="btn-secondary" id="btn-result-back-directory">กลับหน้ารวมบทเรียน</button>
+            <button type="button" class="btn-secondary" id="btn-result-review-steps">ทบทวนเนื้อหาบทเรียน</button>
           </div>
 
-          <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-            <button
-              type="button"
-              class="${passedAttempt ? "btn-secondary" : "btn-primary"}"
-              id="btn-result-retake-quiz"
-            >
+          <div class="btn-row">
+            <button type="button" class="${passedAttempt ? "btn-secondary" : "btn-primary"}" id="btn-result-retake-quiz">
               ${passedAttempt ? "ทำซ้ำเพื่อทำเวลาให้ไวขึ้น" : "ทำแบบทดสอบใหม่อีกครั้ง"}
             </button>
-
             ${
               passedAttempt
                 ? canOpenNextUnit
                   ? `
                     <button type="button" class="btn-primary" data-enter-unit="${nextUnitNo}">
                       <span>เรียนหน่วยถัดไป (หน่วยที่ ${nextUnitNo})</span>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                      </svg>
+                      ${icon("arrow-right", "icon-nudge-right")}
                     </button>
                   `
-                  : `
-                    <button type="button" class="btn-primary" data-nav-view="progress">
-                      ดูหน้าความคืบหน้าทั้ง 16 หน่วย
-                    </button>
-                  `
+                  : `<button type="button" class="btn-primary" data-nav-view="progress">ดูหน้าความคืบหน้าทั้ง 16 หน่วย</button>`
                 : ""
             }
           </div>
@@ -1572,6 +1469,7 @@
   function bindLearningEvents() {
     const lessonsSection = document.getElementById("view-lessons");
     if (!lessonsSection) return;
+    bindTocDrawerEvents();
 
     lessonsSection.addEventListener("click", (e) => {
       // Module filter buttons in Directory
@@ -1606,8 +1504,46 @@
         return;
       }
 
+      // Mobile TOC drawer: close on overlay / close button
+      if (e.target.closest("[data-close-toc]")) {
+        e.preventDefault();
+        closeTocDrawer(true);
+        return;
+      }
+
+      // Bookmark the current unit (stored locally)
+      const bookmarkBtn = e.target.closest("[data-toggle-bookmark]");
+      if (bookmarkBtn && window.Bookmarks) {
+        e.preventDefault();
+        const saved = window.Bookmarks.toggle(bookmarkBtn.getAttribute("data-toggle-bookmark"));
+        bookmarkBtn.classList.toggle("is-saved", saved);
+        bookmarkBtn.setAttribute("aria-pressed", saved ? "true" : "false");
+        const labelEl = bookmarkBtn.querySelector("[data-bookmark-label]");
+        if (labelEl) labelEl.textContent = saved ? "บันทึกแล้ว" : "บันทึก";
+        window.AppUtils?.showToast(saved ? "บันทึกหน่วยนี้ไว้แล้ว" : "ยกเลิกการบันทึกหน่วยนี้แล้ว", "info");
+        return;
+      }
+
+      // Copy code sample
+      const copyBtn = e.target.closest("[data-copy-code]");
+      if (copyBtn) {
+        e.preventDefault();
+        const codeEl = copyBtn.closest(".lesson-code-box")?.querySelector("code");
+        const labelEl = copyBtn.querySelector("[data-copy-label]");
+        const done = () => {
+          if (labelEl) {
+            labelEl.textContent = "คัดลอกแล้ว";
+            setTimeout(() => (labelEl.textContent = "คัดลอก"), 1600);
+          }
+        };
+        if (codeEl && navigator.clipboard?.writeText) {
+          navigator.clipboard.writeText(codeEl.textContent || "").then(done, () => {});
+        }
+        return;
+      }
+
       // Click card to open unit in reader mode directly
-      const cardEl = e.target.closest(".module-overview-card, [data-unit-no]");
+      const cardEl = e.target.closest(".lesson-card, [data-unit-no]");
       if (cardEl && !e.target.closest("button")) {
         const uNo = Number(cardEl.getAttribute("data-unit-no"));
         if (uNo) {
@@ -1708,6 +1644,7 @@
           window.SoundEngine?.playError?.();
           return;
         }
+        closeTocDrawer(false);
         goToStep(targetIdx, false);
         return;
       }
