@@ -362,7 +362,8 @@ const IN_PAGE = String.raw`
     check(tag + ": best score recorded", Number(rec.best_quiz_score) === (unitNo === 4 ? 8 : 10) && rec.is_passed === true, JSON.stringify(rec.best_quiz_score));
     if (unitNo < 16) check(tag + ": next-unit button offered", !!$('[data-enter-unit="' + (unitNo + 1) + '"]', ws()));
   }
-  check("content: every lesson block rendered", renderedBlocks === 300, String(renderedBlocks));
+  const expectedBlocks = Object.keys(DATA).reduce((n, k) => n + DATA[k].steps.reduce((m, st) => m + st.blocks.length, 0), 0);
+  check("content: every lesson block rendered", renderedBlocks === expectedBlocks && expectedBlocks >= 300, renderedBlocks + "/" + expectedBlocks);
 
   /* ---------- 8. หน้าความคืบหน้าและเกียรติบัตร ---------- */
   click('.sticky-navbar [data-nav-view="progress"]');
