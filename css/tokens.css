@@ -53,8 +53,8 @@
   --danger-line: rgba(179, 38, 30, 0.34);
 
   /* Glass */
-  --glass-bg: rgba(255, 255, 255, 0.72);
-  --glass-bg-hover: rgba(255, 255, 255, 0.88);
+  --glass-bg: rgba(255, 255, 255, 0.80);
+  --glass-bg-hover: rgba(255, 255, 255, 0.92);
   --glass-border: rgba(255, 255, 255, 0.85);
   --glass-highlight: rgba(255, 255, 255, 0.9);
   --glass-shadow: 0 10px 30px rgba(74, 40, 140, 0.10);

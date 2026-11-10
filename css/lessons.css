@@ -615,6 +615,7 @@ button.toc-item:hover:not(:disabled) {
   body.is-drawer-open .lesson-toc {
     transform: none;
     visibility: visible;
+    transition: transform var(--t-med) var(--ease-out), visibility 0s;
   }
 
   .toc-overlay {

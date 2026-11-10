@@ -191,7 +191,7 @@
 
     ctx.fillStyle = "#64748B";
     ctx.font = "600 19px 'Stack Sans Notch', sans-serif";
-    drawCenteredText(ctx, "CERTIFICATE OF COURSE COMPLETION  •  COURSE 21901-2017", centerX, 318, W - 240);
+    drawCenteredText(ctx, "CERTIFICATE OF COURSE COMPLETION  |  COURSE 21901-2017", centerX, 318, W - 240);
 
     // 5. Presentation Line
     ctx.fillStyle = "#334155";
@@ -215,7 +215,7 @@
 
     ctx.fillStyle = "#475569";
     ctx.font = "500 22px 'Mitr', 'Stack Sans Notch', sans-serif";
-    drawCenteredText(ctx, `รหัสนักเรียน ${studentId}  •  ${CFG.LEVEL_PROGRAM_TH}`, centerX, 568, 860);
+    drawCenteredText(ctx, `รหัสนักเรียน ${studentId}  |  ${CFG.LEVEL_PROGRAM_TH}`, centerX, 568, 860);
 
     // 6.5 Celebratory Jumping Star Mascot Stamp (star-9-congrats.png)
     if (congratsStar) {
@@ -398,7 +398,7 @@
 
       ctx.fillStyle = "#9A5B08";
       ctx.font = "500 18px 'Mitr', 'Stack Sans Notch', sans-serif";
-      drawCenteredText(ctx, "ตัวอย่างเกียรติบัตร (PREVIEW)  •  ปลดล็อกไฟล์จริงเมื่อสอบผ่านครบ 16 หน่วย (100%)", centerX, badgeY + 28, badgeW - 20);
+      drawCenteredText(ctx, "ตัวอย่างเกียรติบัตร (PREVIEW)  |  ปลดล็อกไฟล์จริงเมื่อสอบผ่านครบ 16 หน่วย (100%)", centerX, badgeY + 28, badgeW - 20);
       ctx.restore();
     }
   }

@@ -471,6 +471,120 @@ const IN_PAGE = String.raw`
 })()
 `;
 
+
+const MOBILE_PAGE = String.raw`
+(async () => {
+  const fails = [];
+  const passes = [];
+  const check = (name, cond, detail) => (cond ? passes : fails).push(name + (cond || !detail ? "" : " :: " + detail));
+  const $ = (s) => document.querySelector(s);
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  const waitFor = async (fn, ms = 6000) => {
+    const t0 = Date.now();
+    while (Date.now() - t0 < ms) { try { if (fn()) return true; } catch (e) {} await sleep(40); }
+    return false;
+  };
+  const shown = (el) => !!el && getComputedStyle(el).display !== "none" && getComputedStyle(el).visibility !== "hidden" && el.getClientRects().length > 0;
+  const setVal = (id, v) => { const el = document.getElementById(id); el.value = v; el.dispatchEvent(new Event("input", { bubbles: true })); };
+  const key = (k, opts) => document.dispatchEvent(new KeyboardEvent("keydown", Object.assign({ key: k, bubbles: true, cancelable: true }, opts || {})));
+  const noOverflow = () => document.documentElement.scrollWidth <= window.innerWidth + 1;
+
+  check("theme: follows system dark preference by default", document.documentElement.getAttribute("data-theme") === "dark", document.documentElement.getAttribute("data-theme"));
+  check("theme: toggle label matches state", ($("#auth-theme-toggle-btn").getAttribute("aria-label") || "").includes("สว่าง"), $("#auth-theme-toggle-btn").getAttribute("aria-label"));
+  check("layout: no horizontal overflow on auth", noOverflow(), String(document.documentElement.scrollWidth));
+
+  setVal("login-student-id", "6999900001");
+  setVal("login-password", "Next@5678");
+  document.getElementById("login-form").dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+  check("mobile: login works", await waitFor(() => shown($("#app-shell")), 9000));
+  await sleep(400);
+  check("mobile: bottom navigation visible", shown($(".mobile-nav-bar")) && !shown($(".nav-links")));
+  check("mobile: menu button hidden outside reader", !shown($("#toc-menu-btn")));
+  check("layout: no horizontal overflow on home", noOverflow(), String(document.documentElement.scrollWidth));
+  check("grid: 6 glass columns on mobile", getComputedStyle($("#home-glass-grid")).getPropertyValue("--glass-cols").trim() === "6", getComputedStyle($("#home-glass-grid")).getPropertyValue("--glass-cols"));
+  const cardLink = $("#home-syllabus-grid .lesson-card-link");
+  cardLink.focus();
+  check("keyboard: lesson card is focusable", document.activeElement === cardLink);
+
+  window.AppController.openUnitInLessons(2);
+  await waitFor(() => $("#lesson-toc"));
+  await sleep(300);
+  const menu = $("#toc-menu-btn");
+  const toc = () => $("#lesson-toc");
+  check("drawer: menu button shown in reader", shown(menu));
+  check("drawer: closed by default", getComputedStyle(toc()).visibility === "hidden" && menu.getAttribute("aria-expanded") === "false");
+  menu.focus();
+  menu.click();
+  await sleep(350);
+  check("drawer: opens", document.body.classList.contains("is-drawer-open") && getComputedStyle(toc()).visibility === "visible");
+  check("drawer: aria-expanded true", menu.getAttribute("aria-expanded") === "true");
+  check("drawer: focus moves inside", toc().contains(document.activeElement), document.activeElement && document.activeElement.className);
+  const focusables = Array.from(toc().querySelectorAll("button:not([disabled])")).filter((el) => el.offsetParent !== null);
+  focusables[focusables.length - 1].focus();
+  key("Tab");
+  check("drawer: Tab wraps to first item", document.activeElement === focusables[0]);
+  key("Tab", { shiftKey: true });
+  check("drawer: Shift+Tab wraps to last item", document.activeElement === focusables[focusables.length - 1]);
+  key("Escape");
+  await sleep(350);
+  check("drawer: Escape closes", !document.body.classList.contains("is-drawer-open") && getComputedStyle(toc()).visibility === "hidden");
+  check("drawer: focus returns to menu button", document.activeElement === menu);
+  menu.click();
+  await sleep(350);
+  document.querySelector(".toc-overlay").click();
+  await sleep(350);
+  check("drawer: overlay click closes", !document.body.classList.contains("is-drawer-open"));
+  menu.click();
+  await sleep(300);
+  document.querySelector('#lesson-toc [data-goto-step="3"]').click();
+  await sleep(350);
+  check("drawer: choosing a step closes it and navigates", !document.body.classList.contains("is-drawer-open") && /4\s*\/\s*6/.test(document.querySelector(".lesson-step-counter").textContent));
+
+  const bm = () => document.querySelector("[data-toggle-bookmark]");
+  check("bookmark: starts unsaved", bm().getAttribute("aria-pressed") === "false");
+  bm().click();
+  await sleep(80);
+  check("bookmark: saves", bm().getAttribute("aria-pressed") === "true" && bm().classList.contains("is-saved"));
+  document.getElementById("btn-next-step").click();
+  await sleep(200);
+  check("bookmark: kept across steps", bm().getAttribute("aria-pressed") === "true");
+  window.AppController.switchView("lessons", { resetToDirectory: true });
+  await sleep(300);
+  check("bookmark: shown on the unit card", !!document.querySelector('#lessons-units-grid [data-unit-no="2"] .icon-fill'));
+  check("mobile: menu button hidden after leaving reader", !shown($("#toc-menu-btn")));
+  check("layout: no horizontal overflow in directory", noOverflow(), String(document.documentElement.scrollWidth));
+  window.AppController.openUnitInLessons(2);
+  await sleep(400);
+  bm().click();
+  await sleep(80);
+  check("bookmark: can be removed", bm().getAttribute("aria-pressed") === "false");
+  check("layout: no horizontal overflow in reader", noOverflow(), String(document.documentElement.scrollWidth));
+
+  // ปุ่มชื่อบทบนการ์ดขยายพื้นที่แตะเต็มการ์ดด้วย ::after จึงไม่นับขนาดกล่องข้อความ
+  const small = Array.from(document.querySelectorAll("button, a, [role=button]"))
+    .filter((el) => shown(el) && !el.disabled && !el.classList.contains("lesson-card-link"))
+    .map((el) => ({ el, r: el.getBoundingClientRect() }))
+    .filter((x) => x.r.width > 0 && (x.r.height < 43.5 || x.r.width < 43.5))
+    .map((x) => (x.el.id || x.el.className) + " " + Math.round(x.r.width) + "x" + Math.round(x.r.height));
+  check("touch: visible controls are at least 44px", small.length === 0, small.slice(0, 6).join(" ; "));
+
+  window.AppController.switchView("home");
+  await sleep(400);
+  const smallHome = Array.from(document.querySelectorAll("button, a, [role=button]"))
+    .filter((el) => shown(el) && !el.disabled && !el.classList.contains("lesson-card-link"))
+    .map((el) => ({ el, r: el.getBoundingClientRect() }))
+    .filter((x) => x.r.width > 0 && (x.r.height < 43.5 || x.r.width < 43.5))
+    .map((x) => (x.el.id || x.el.className) + " " + Math.round(x.r.width) + "x" + Math.round(x.r.height));
+  check("touch: home controls are at least 44px", smallHome.length === 0, smallHome.slice(0, 6).join(" ; "));
+
+  window.AppController.switchView("progress");
+  await sleep(300);
+  check("layout: no horizontal overflow on progress", noOverflow(), String(document.documentElement.scrollWidth));
+
+  return { passes, fails };
+})()
+`;
+
 (async () => {
   const noMinigame = !require("fs").existsSync(path.join(ROOT, "js", "minigames.js"));
   const page = await launch({ width: 1440, height: 900 });
@@ -489,8 +603,20 @@ const IN_PAGE = String.raw`
       b = await page.eval(IN_PAGE);
     }
 
-    const fails = [...a.fails, ...b.fails];
-    const passes = [...a.passes, ...b.passes];
+    // Phase C: จอมือถือ + ระบบตั้งค่าโหมดมืด (ลิ้นชักสารบัญ บุ๊กมาร์ก ค่าเริ่มต้นของธีม)
+    let c = { passes: [], fails: [] };
+    if (a.theme) {
+      await page.eval(
+        `localStorage.removeItem("cdti_theme"); localStorage.removeItem("cdti_21901_session_v3"); localStorage.removeItem("cdti_motion_mode");`
+      );
+      await page.setViewport(390, 844, true);
+      await page.emulateMedia({ "prefers-color-scheme": "dark" });
+      await page.goto("/index.html", 1500);
+      c = await page.eval(MOBILE_PAGE);
+    }
+
+    const fails = [...a.fails, ...b.fails, ...c.fails];
+    const passes = [...a.passes, ...b.passes, ...c.passes];
     const errors = page.errors.filter((e) => !/favicon/.test(e));
     const notFound = page.notFound.filter((p) => !/favicon/.test(p));
 

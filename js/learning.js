@@ -773,7 +773,7 @@
   function getTocFocusables() {
     const toc = document.getElementById("lesson-toc");
     if (!toc) return [];
-    return Array.from(toc.querySelectorAll("button:not([disabled]), [href], [tabindex]:not([tabindex='-1'])")).filter(
+    return Array.from(toc.querySelectorAll("button:not([disabled]), a[href], [tabindex]:not([tabindex='-1'])")).filter(
       (el) => el.offsetParent !== null
     );
   }
@@ -787,6 +787,8 @@
       btn.setAttribute("aria-expanded", "true");
       btn.setAttribute("aria-label", "ปิดสารบัญบทเรียน");
     }
+    // บังคับคำนวณสไตล์ใหม่ก่อน เพื่อให้ลิ้นชักพ้นสถานะ visibility: hidden แล้วจึงรับ focus ได้
+    void toc.offsetWidth;
     const current = toc.querySelector(".toc-item.is-current") || getTocFocusables()[0];
     if (current) current.focus({ preventScroll: true });
   }
