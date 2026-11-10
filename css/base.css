@@ -894,12 +894,13 @@ strong, b {
   inset: 0;
   background: linear-gradient(90deg, transparent, var(--glass-highlight), transparent);
   transform: translateX(-100%);
-  animation: progress-sheen 3.2s ease-in-out infinite;
+  animation: progress-sheen 1400ms var(--ease-out) 300ms 1 both;
 }
 
+/* แสงวิ่งผ่านแถบหนึ่งครั้งตอนแถบถูกวาด ไม่วนซ้ำ */
 @keyframes progress-sheen {
-  0%, 55% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
 }
 
 .metric-strip {
