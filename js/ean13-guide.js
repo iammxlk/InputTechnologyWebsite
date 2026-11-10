@@ -1238,7 +1238,7 @@
   }
 
   // Update DOM in-place without rebuilding the whole reader
-  function updateDom() {
+  function updateDom(quiet) {
     const root = document.getElementById("ean13-guide-root");
     if (!root) return;
 
@@ -1274,6 +1274,8 @@
     temp.innerHTML = renderRootHtml();
     const newRoot = temp.firstElementChild;
 
+    // quiet: ระหว่างพิมพ์ไม่เล่นแอนิเมชันเปิดตัวซ้ำทุกตัวอักษร
+    if (quiet) newRoot.classList.add("is-quiet");
     root.replaceWith(newRoot);
 
     if (refocusSelector) {
@@ -1360,7 +1362,7 @@
 
     onCustomInputChange(value) {
       state.customInput = String(value || "").replace(/\D/g, "").slice(0, 13);
-      updateDom();
+      updateDom(true);
     },
 
     generateRandomBarcode() {

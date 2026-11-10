@@ -5,6 +5,7 @@
 /* ---------- 1. Hero ---------- */
 .hero {
   position: relative;
+  container-type: inline-size;
   display: flex;
   flex-direction: column;
   gap: clamp(20px, 3vw, 32px);
@@ -16,15 +17,16 @@
 .hero-glow {
   position: absolute;
   z-index: -1;
-  left: var(--mx, 72%);
-  top: var(--my, 30%);
+  left: 0;
+  top: 0;
   width: clamp(320px, 46vw, 620px);
   aspect-ratio: 1;
   border-radius: 50%;
   background: radial-gradient(circle, var(--cursor-glow) 0%, transparent 66%);
   filter: blur(30px);
-  transform: translate(-50%, -50%);
-  transition: left 500ms var(--ease-out), top 500ms var(--ease-out);
+  transform: translate3d(calc(var(--mx, 72cqw) - 50%), calc(var(--my, 240px) - 50%), 0);
+  transition: transform 600ms var(--ease-out);
+  will-change: transform;
   pointer-events: none;
 }
 
@@ -72,8 +74,22 @@
   gap: 0 clamp(12px, 2vw, 28px);
 }
 
-.hero-line-1 { animation: rise-in 600ms var(--ease-out) both; }
-.hero-line-2 { animation: rise-in 600ms var(--ease-out) 120ms both; }
+.is-intro .hero-line-1 { animation: rise-in 600ms var(--ease-out) both; }
+.is-intro .hero-line-2 { animation: rise-in 600ms var(--ease-out) 120ms both; }
+.is-intro .hero-aside { animation: rise-in 600ms var(--ease-out) 240ms both; }
+.is-intro .hero-body { animation: rise-in 600ms var(--ease-out) 340ms both; }
+.is-intro .hero-stats { animation: rise-in 600ms var(--ease-out) 440ms both; }
+
+.hero-line-2 .accent-gradient {
+  background-image: linear-gradient(110deg, var(--grad-title-from) 0%, var(--grad-title-to) 38%, var(--accent-glow) 52%, var(--grad-title-to) 66%, var(--grad-title-from) 100%);
+  background-size: 240% 100%;
+  animation: title-shimmer 9s ease-in-out infinite alternate;
+}
+
+@keyframes title-shimmer {
+  from { background-position: 0% 50%; }
+  to { background-position: 100% 50%; }
+}
 
 .hero-aside {
   margin-left: auto;
@@ -84,7 +100,6 @@
   text-transform: uppercase;
   letter-spacing: 0.02em;
   color: var(--accent-ink);
-  animation: rise-in 600ms var(--ease-out) 240ms both;
 }
 
 .hero-sparkles {
@@ -115,6 +130,26 @@
   height: 0.3em;
   animation: twinkle 3.2s ease-in-out 1.6s infinite;
 }
+
+.hero-sparkle-field {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  color: var(--sparkle);
+  pointer-events: none;
+}
+
+.hero-sparkle-field .icon {
+  position: absolute;
+  opacity: 0.55;
+  animation: twinkle 4.2s ease-in-out infinite;
+}
+
+.hero-sparkle-field .f1 { left: 58%; top: 6%; width: 18px; height: 18px; animation-delay: 0.4s; }
+.hero-sparkle-field .f2 { left: 86%; top: 30%; width: 26px; height: 26px; animation-delay: 1.3s; }
+.hero-sparkle-field .f3 { left: 70%; top: 58%; width: 14px; height: 14px; animation-delay: 2.1s; }
+.hero-sparkle-field .f4 { left: 44%; top: 40%; width: 12px; height: 12px; animation-delay: 2.9s; }
+.hero-sparkle-field .f5 { left: 95%; top: 72%; width: 16px; height: 16px; animation-delay: 3.4s; }
 
 .hero-body {
   display: grid;
@@ -228,6 +263,35 @@
     radial-gradient(70% 34% at 88% 30%, var(--fog-soft), transparent 74%);
   filter: blur(40px);
   pointer-events: none;
+  will-change: transform;
+  animation: fog-drift 26s ease-in-out infinite alternate;
+}
+
+@keyframes fog-drift {
+  from { transform: translate3d(-1.5%, 0, 0) scale(1); }
+  to { transform: translate3d(1.5%, -14px, 0) scale(1.04); }
+}
+
+/* แสงใต้กระจก: อยู่ใต้ช่องกระจก เหนือหมอก ตำแหน่งมาจาก JS ผ่าน --gx / --gy */
+.glass-zone::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  top: 0;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 62%);
+  opacity: 0;
+  transform: translate3d(calc(var(--gx, 50%) - 50%), calc(var(--gy, 200px) - 50%), 0);
+  transition: opacity 400ms ease, transform 220ms var(--ease-out);
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+.glass-zone.is-lit::before {
+  opacity: 0.5;
 }
 
 .glass-grid {
@@ -249,8 +313,12 @@
   background-color: var(--tile-bg);
   border: 1px solid var(--tile-border);
   box-shadow: inset 0 1px 0 var(--glass-highlight);
+}
+
+/* คลื่นจากล่างขึ้นบน เล่นครั้งเดียวตอนเปิดหน้า */
+.is-intro .glass-tile {
   animation: tile-rise 520ms var(--ease-out) both;
-  animation-delay: calc(var(--wave, 0) * 45ms);
+  animation-delay: calc((14 - var(--wave, 0)) * 45ms);
 }
 
 /* แถวบนสุดซ้อนทับเส้นไกด์ จึงเบลอฉากหลังจริง */
@@ -376,12 +444,43 @@
   text-align: left;
   cursor: pointer;
   overflow: hidden;
+  transform-style: preserve-3d;
   transition:
     transform var(--t-med) var(--ease-out),
     background-color var(--t-med) ease,
     border-color var(--t-med) ease,
     box-shadow var(--t-med) ease;
 }
+
+/* แสงเงาบนกระจกตามตำแหน่งเมาส์ */
+.lesson-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(260px circle at var(--px, 50%) var(--py, 0%), var(--glass-highlight), transparent 70%);
+  opacity: 0;
+  transition: opacity var(--t-med) ease;
+  pointer-events: none;
+}
+
+.lesson-card:hover::before {
+  opacity: 0.55;
+}
+
+.lesson-card.is-tilting {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(1.02);
+  transition-duration: 90ms, var(--t-med), var(--t-med), var(--t-med);
+}
+
+.is-intro .lesson-card {
+  animation: rise-in 520ms var(--ease-out) both;
+}
+
+.is-intro .lesson-card:nth-child(1) { animation-delay: 700ms; }
+.is-intro .lesson-card:nth-child(2) { animation-delay: 780ms; }
+.is-intro .lesson-card:nth-child(3) { animation-delay: 860ms; }
+.is-intro .lesson-card:nth-child(4) { animation-delay: 940ms; }
 
 .lesson-card:hover,
 .lesson-card:focus-within {
@@ -403,9 +502,16 @@
   font-weight: 800;
   line-height: 1;
   color: var(--number-ghost);
+  -webkit-text-stroke: 1px var(--accent-tint-strong);
   font-variant-numeric: tabular-nums;
   pointer-events: none;
   user-select: none;
+  transition: color var(--t-med) ease, transform var(--t-med) var(--ease-out);
+}
+
+.lesson-card:hover .lesson-card-number {
+  color: var(--accent-tint-strong);
+  transform: translateY(-3px);
 }
 
 .lesson-card-top {

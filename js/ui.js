@@ -4,7 +4,7 @@
  *   1. AppUtils.icon()            ไอคอน SVG จาก sprite ใน index.html
  *   2. AppUtils.renderLessonCard() การ์ดบทเรียนกระจกฝ้า (ใช้ทั้งหน้าแรกและหน้ารวมบทเรียน)
  *   3. GlassGrid                  กริดกระจกขอบบนขั้นบันไดแบบ seeded random
- *   4. Hero cursor glow           แสงม่วงเรืองตามเคอร์เซอร์
+ *   4. Motion polish              เล่น intro ครั้งเดียว, แสงตามเคอร์เซอร์, แสงใต้กระจก, การ์ดเอียงตามเมาส์
  *   5. Bookmarks                  บันทึกหน่วยที่สนใจ (เก็บในเครื่อง ไม่ซิงก์ขึ้นเซิร์ฟเวอร์)
  * ============================================================================
  */
@@ -127,7 +127,22 @@
 
   const GLASS_SEED = 21901;
   const GAP = 2;
+  const STAIR_ROWS = 5; // แถวบนที่มีขั้นบันได แถวถัดลงไปเต็มทุกช่อง
 
+  function tileHtml(r, cols, offsets, holes) {
+    let html = "";
+    for (let c = 0; c < cols; c++) {
+      const isVoid = r < offsets[c] || holes.has(`${r}:${c}`);
+      const isEdge = !isVoid && r <= offsets[c] + 2;
+      html += `<span class="glass-tile${isVoid ? " is-void" : ""}${isEdge ? " is-edge" : ""}" style="--wave:${Math.min(14, r)}"></span>`;
+    }
+    return html;
+  }
+
+  /**
+   * สร้างกริดครั้งเดียว ถ้าพื้นที่สูงขึ้นภายหลัง (ฟอนต์โหลดเสร็จ, เนื้อหาเพิ่ม) จะเติมแถวต่อท้ายเท่านั้น
+   * ไม่ล้างของเดิม จึงไม่มีการเล่นแอนิเมชันซ้ำจนดูเหมือนหน้าจอกระพริบ
+   */
   function buildGlassGrid(gridEl) {
     const zone = gridEl.parentElement;
     if (!zone) return;
@@ -137,32 +152,28 @@
 
     const cols = window.matchMedia("(max-width: 639px)").matches ? 6 : 10;
     const tile = (width - GAP * (cols - 1)) / cols;
-    const rows = Math.ceil(height / (tile + GAP)) + 1;
-    const key = `${cols}x${rows}`;
-    if (gridEl.dataset.layout === key) return;
-    gridEl.dataset.layout = key;
-    gridEl.style.setProperty("--glass-cols", String(cols));
+    const rowsNeeded = Math.ceil(height / (tile + GAP)) + 1;
+    const state = gridEl.__grid || (gridEl.__grid = { cols: 0, rows: 0, offsets: [], holes: new Set() });
 
-    // ความสูงขั้นบันไดของแต่ละคอลัมน์ สุ่มแบบ seed คงที่ จึงได้รูปเดิมทุกครั้งที่โหลด
-    const rand = mulberry32(GLASS_SEED + cols);
-    const offsets = [];
-    for (let c = 0; c < cols; c++) offsets.push(Math.floor(rand() * 4));
-    const holes = new Set();
-    for (let c = 0; c < cols; c++) {
-      if (rand() < 0.3) holes.add(`${offsets[c] + 1}:${c}`);
-    }
-
-    const waveCap = 18;
-    let html = "";
-    for (let r = 0; r < rows; r++) {
+    if (state.cols !== cols) {
+      const rand = mulberry32(GLASS_SEED + cols);
+      state.offsets = [];
+      for (let c = 0; c < cols; c++) state.offsets.push(Math.floor(rand() * 4));
+      state.holes = new Set();
       for (let c = 0; c < cols; c++) {
-        const isVoid = r < offsets[c] || holes.has(`${r}:${c}`);
-        const isEdge = !isVoid && r <= offsets[c] + 2;
-        const wave = Math.min(waveCap, rows - 1 - r);
-        html += `<span class="glass-tile${isVoid ? " is-void" : ""}${isEdge ? " is-edge" : ""}" style="--wave:${wave}"></span>`;
+        if (rand() < 0.3) state.holes.add(`${state.offsets[c] + 1}:${c}`);
       }
+      state.cols = cols;
+      state.rows = 0;
+      gridEl.style.setProperty("--glass-cols", String(cols));
+      gridEl.innerHTML = "";
     }
-    gridEl.innerHTML = html;
+
+    if (rowsNeeded <= state.rows) return;
+    let html = "";
+    for (let r = state.rows; r < rowsNeeded; r++) html += tileHtml(r, cols, state.offsets, state.holes);
+    gridEl.insertAdjacentHTML("beforeend", html);
+    state.rows = rowsNeeded;
   }
 
   function initGlassGrids() {
@@ -186,23 +197,122 @@
   }
 
   /* ==========================================================================
-     4. HERO CURSOR GLOW
+     4. MOTION POLISH: intro once, cursor glow, glass spotlight, card tilt
      ========================================================================== */
+
+  const isReducedMotion = () => document.documentElement.getAttribute("data-motion") === "reduced";
+  const canHover = () => window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+  // แอนิเมชันเปิดตัวของหน้าแรกเล่นครั้งเดียวต่อการโหลดหน้า กลับมาหน้าแรกอีกครั้งจะไม่เล่นซ้ำ
+  let introPlayed = false;
+  function playHomeIntro() {
+    if (introPlayed) return;
+    introPlayed = true;
+    const home = document.getElementById("view-home");
+    if (!home || isReducedMotion()) return;
+    home.classList.add("is-intro");
+    setTimeout(() => home.classList.remove("is-intro"), 2200);
+  }
+
+  function trackPointer(el, onMove) {
+    let raf = 0;
+    let last = null;
+    el.addEventListener(
+      "pointermove",
+      (e) => {
+        if (e.pointerType === "touch" || isReducedMotion()) return;
+        last = e;
+        if (raf) return;
+        raf = requestAnimationFrame(() => {
+          raf = 0;
+          if (last) onMove(last);
+        });
+      },
+      { passive: true }
+    );
+  }
 
   function initHeroGlow() {
     const hero = document.getElementById("home-hero");
     if (!hero) return;
-    hero.addEventListener(
+    trackPointer(hero, (e) => {
+      const rect = hero.getBoundingClientRect();
+      hero.style.setProperty("--mx", `${(e.clientX - rect.left).toFixed(1)}px`);
+      hero.style.setProperty("--my", `${(e.clientY - rect.top).toFixed(1)}px`);
+    });
+  }
+
+  // แสงใต้กระจก: ช่องกระจกใกล้เคอร์เซอร์สว่างขึ้นเหมือนมีแสงส่องจากด้านหลัง
+  function initGlassSpotlight() {
+    document.querySelectorAll(".glass-zone").forEach((zone) => {
+      trackPointer(zone, (e) => {
+        const rect = zone.getBoundingClientRect();
+        zone.style.setProperty("--gx", `${(e.clientX - rect.left).toFixed(1)}px`);
+        zone.style.setProperty("--gy", `${(e.clientY - rect.top).toFixed(1)}px`);
+        zone.classList.add("is-lit");
+      });
+      zone.addEventListener("pointerleave", () => zone.classList.remove("is-lit"));
+    });
+  }
+
+  // การ์ดบทเรียนเอียงตามเคอร์เซอร์เล็กน้อย และมีแสงเงาวิ่งตามตำแหน่งเมาส์
+  function initCardTilt() {
+    if (!canHover()) return;
+    let active = null;
+    let raf = 0;
+    let last = null;
+    const reset = (card) => {
+      card.style.removeProperty("--rx");
+      card.style.removeProperty("--ry");
+      card.classList.remove("is-tilting");
+    };
+    document.addEventListener(
       "pointermove",
       (e) => {
-        if (document.documentElement.getAttribute("data-motion") === "reduced") return;
-        if (e.pointerType === "touch") return;
-        const rect = hero.getBoundingClientRect();
-        hero.style.setProperty("--mx", `${(e.clientX - rect.left).toFixed(1)}px`);
-        hero.style.setProperty("--my", `${(e.clientY - rect.top).toFixed(1)}px`);
+        if (isReducedMotion() || e.pointerType === "touch") return;
+        const card = e.target.closest && e.target.closest(".lesson-card");
+        if (active && active !== card) {
+          reset(active);
+          active = null;
+        }
+        if (!card) return;
+        active = card;
+        last = e;
+        if (raf) return;
+        raf = requestAnimationFrame(() => {
+          raf = 0;
+          if (!active || !last) return;
+          const rect = active.getBoundingClientRect();
+          const px = (last.clientX - rect.left) / rect.width;
+          const py = (last.clientY - rect.top) / rect.height;
+          active.style.setProperty("--rx", `${((0.5 - py) * 5).toFixed(2)}deg`);
+          active.style.setProperty("--ry", `${((px - 0.5) * 6).toFixed(2)}deg`);
+          active.style.setProperty("--px", `${(px * 100).toFixed(1)}%`);
+          active.style.setProperty("--py", `${(py * 100).toFixed(1)}%`);
+          active.classList.add("is-tilting");
+        });
       },
       { passive: true }
     );
+    document.addEventListener("pointerleave", () => active && reset(active));
+  }
+
+  function initHeaderScrollState() {
+    let ticking = false;
+    const apply = () => {
+      ticking = false;
+      document.documentElement.classList.toggle("is-scrolled", (window.scrollY || 0) > 8);
+    };
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(apply);
+      },
+      { passive: true }
+    );
+    apply();
   }
 
   /* ==========================================================================
@@ -244,10 +354,14 @@
   Utils.renderLessonCard = renderLessonCard;
   window.Bookmarks = Bookmarks;
   window.GlassGrid = { refresh: () => document.querySelectorAll(".glass-grid").forEach((g) => buildGlassGrid(g)) };
+  window.UiFx = { playHomeIntro };
 
   function init() {
     initGlassGrids();
     initHeroGlow();
+    initGlassSpotlight();
+    initCardTilt();
+    initHeaderScrollState();
   }
 
   if (document.readyState === "loading") {

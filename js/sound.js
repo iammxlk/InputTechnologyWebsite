@@ -238,12 +238,12 @@
       return currentTheme === "dark";
     },
 
-    setTheme(theme, skipStorage = false) {
+    setTheme(theme, skipStorage = false, skipFade = false) {
       const target = theme === "dark" ? "dark" : "light";
       currentTheme = target;
 
       const root = document.documentElement;
-      if (root.getAttribute("data-theme") !== target) {
+      if (!skipFade && root.getAttribute("data-theme") !== target) {
         root.classList.add("is-theme-switching");
         clearTimeout(themeSwitchTimer);
         themeSwitchTimer = setTimeout(() => root.classList.remove("is-theme-switching"), 450);
@@ -263,9 +263,30 @@
       window.dispatchEvent(new CustomEvent("themechange", { detail: { theme: target } }));
     },
 
-    toggleTheme() {
+    toggleTheme(originEl) {
       const nextTheme = currentTheme === "dark" ? "light" : "dark";
       SoundEngine.playToggle();
+
+      const root = document.documentElement;
+      const reduced =
+        root.getAttribute("data-motion") === "reduced" ||
+        (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+
+      // เบราว์เซอร์ที่รองรับ View Transitions: ธีมใหม่แผ่ออกเป็นวงกลมจากปุ่มที่กด
+      if (!reduced && typeof document.startViewTransition === "function") {
+        const rect = originEl && originEl.getBoundingClientRect ? originEl.getBoundingClientRect() : null;
+        const x = rect ? rect.left + rect.width / 2 : window.innerWidth - 60;
+        const y = rect ? rect.top + rect.height / 2 : 40;
+        const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+        root.style.setProperty("--vt-x", `${x}px`);
+        root.style.setProperty("--vt-y", `${y}px`);
+        root.style.setProperty("--vt-r", `${radius}px`);
+        root.classList.add("is-theme-reveal");
+        const transition = document.startViewTransition(() => this.setTheme(nextTheme, false, true));
+        transition.finished.finally(() => root.classList.remove("is-theme-reveal"));
+        return nextTheme;
+      }
+
       this.setTheme(nextTheme);
       return nextTheme;
     }
@@ -411,7 +432,7 @@
       const themeBtn = e.target.closest && e.target.closest("#theme-toggle-btn, #auth-theme-toggle-btn");
       if (themeBtn) {
         e.preventDefault();
-        ThemeManager.toggleTheme();
+        ThemeManager.toggleTheme(themeBtn);
         return;
       }
     });

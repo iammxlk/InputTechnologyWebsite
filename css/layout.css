@@ -14,6 +14,12 @@
   border-bottom: 1px solid var(--line);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
   backdrop-filter: blur(16px) saturate(140%);
+  transition: box-shadow var(--t-med) ease, border-color var(--t-med) ease;
+}
+
+.is-scrolled .site-header {
+  border-bottom-color: var(--line-strong);
+  box-shadow: var(--shadow-card);
 }
 
 .site-header-inner {

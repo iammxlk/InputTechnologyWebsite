@@ -222,13 +222,8 @@
      4. SCROLL REVEAL (INTERSECTION OBSERVER) & SCROLL PROGRESS BAR
      ========================================================================== */
 
-  const REVEAL_SELECTOR = [
-    ".surface-card",
-    ".module-group-head",
-    ".lesson-flow-item",
-    ".lesson-info-card",
-    ".lesson-callout-box"
-  ].join(", ");
+  // ปิด scroll reveal: เนื้อหาที่วาดใหม่ทุกครั้งที่เปลี่ยนสเต็ปจะไม่ค่อย ๆ โผล่จนดูเหมือนกระพริบ
+  const REVEAL_SELECTOR = ".js-scroll-reveal";
 
   let revealObserver = null;
   let scrollTicking = false;

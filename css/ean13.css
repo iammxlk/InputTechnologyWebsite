@@ -1983,3 +1983,9 @@ html[data-motion="reduced"] #ean13-guide-root *::after {
   animation: none !important;
   transition: none !important;
 }
+
+/* ระหว่างพิมพ์ในช่องทดสอบ แล็บวาดใหม่ทุกตัวอักษร จึงไม่เล่นแอนิเมชันเปิดตัวซ้ำ */
+#ean13-guide-root.is-quiet,
+#ean13-guide-root.is-quiet * {
+  animation: none !important;
+}

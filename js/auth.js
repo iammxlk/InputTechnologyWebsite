@@ -548,10 +548,12 @@
     isAuthenticated: () => Boolean(currentUser),
     getCurrentUser: () => currentUser,
     getUnitProgressMap: () => unitProgressMap,
-    updateSessionData(user, unitMap) {
+    updateSessionData(user, unitMap, options) {
       if (user) persistSession(user);
       if (unitMap) unitProgressMap = unitMap;
       renderNavbarProfile();
+      // silent: บันทึกความคืบหน้าเบื้องหลังโดยไม่วาดหน้าปัจจุบันซ้ำ (กันหน้าจอกระพริบระหว่างอ่าน)
+      if (options && options.silent) return;
       if (window.AppController && typeof window.AppController.refreshActiveView === "function") {
         window.AppController.refreshActiveView();
       }

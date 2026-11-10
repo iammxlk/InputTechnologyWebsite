@@ -270,6 +270,25 @@ strong, b {
   box-shadow: 0 6px 18px var(--btn-shadow);
 }
 
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+  width: 45%;
+  background: linear-gradient(100deg, transparent, var(--glass-highlight), transparent);
+  opacity: 0;
+  transform: skewX(-18deg);
+  pointer-events: none;
+}
+
+.btn-primary:hover:not(:disabled)::after {
+  opacity: 0.35;
+  left: 120%;
+  transition: left 700ms var(--ease-out), opacity 200ms ease;
+}
+
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-1px);
   box-shadow: 0 10px 26px var(--btn-shadow);
@@ -865,6 +884,22 @@ strong, b {
   border-radius: inherit;
   background-image: linear-gradient(90deg, var(--accent), var(--accent-glow));
   transition: width 700ms var(--ease-out);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, var(--glass-highlight), transparent);
+  transform: translateX(-100%);
+  animation: progress-sheen 3.2s ease-in-out infinite;
+}
+
+@keyframes progress-sheen {
+  0%, 55% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 .metric-strip {
@@ -1336,6 +1371,27 @@ html.is-theme-switching *::after {
     fill var(--t-theme) ease,
     stroke var(--t-theme) ease,
     box-shadow var(--t-theme) ease !important;
+}
+
+/* สลับธีมแบบวงกลมแผ่ออกจากปุ่ม (เบราว์เซอร์ที่รองรับ View Transitions) */
+html.is-theme-reveal::view-transition-old(root),
+html.is-theme-reveal::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html.is-theme-reveal::view-transition-old(root) {
+  z-index: 1;
+}
+
+html.is-theme-reveal::view-transition-new(root) {
+  z-index: 2;
+  animation: theme-reveal 620ms var(--ease-out) both;
+}
+
+@keyframes theme-reveal {
+  from { clip-path: circle(0 at var(--vt-x, 100%) var(--vt-y, 0)); }
+  to { clip-path: circle(var(--vt-r, 150vmax) at var(--vt-x, 100%) var(--vt-y, 0)); }
 }
 
 /* ---------- 16. Reduced motion: ปิดแอนิเมชันทั้งหมด ---------- */

@@ -220,6 +220,7 @@
         `;
       }).join("");
       window.GlassGrid?.refresh();
+      window.UiFx?.playHomeIntro();
     }
   }
 

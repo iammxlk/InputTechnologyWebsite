@@ -160,7 +160,7 @@
         is_content_read: Boolean(isContentRead)
       });
       if (res && res.ok) {
-        window.AuthManager.updateSessionData(res.user, res.unit_progress);
+        window.AuthManager.updateSessionData(res.user, res.unit_progress, { silent: true });
       }
     } catch (err) {
       // เงียบไว้หากเครือข่ายสะดุดชั่วคราว เพื่อไม่ขัดจังหวะการอ่าน
