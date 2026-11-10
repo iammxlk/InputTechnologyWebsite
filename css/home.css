@@ -549,15 +549,20 @@
   margin-top: 20px;
 }
 
+.plain-section {
+  padding-top: 8px;
+}
+
 .learning-step-card {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 18px;
-  border-radius: var(--radius-md);
-  background-color: var(--surface-2);
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  background-color: var(--surface);
   border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
 }
 

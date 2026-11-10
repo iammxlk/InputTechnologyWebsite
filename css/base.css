@@ -765,7 +765,6 @@ strong, b {
   padding: 12px 14px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--line);
-  border-left-width: 3px;
   font-size: 0.9375rem;
   line-height: 1.5;
 }

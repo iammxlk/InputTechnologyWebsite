@@ -15,7 +15,6 @@
   border-radius: 50%;
   background-color: var(--accent);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-ring) 45%, transparent);
-  animation: simLedBreathe 2.4s ease-in-out infinite;
 }
 
 .cyber-scanner-badge {
@@ -48,7 +47,6 @@
   border-radius: 50%;
   background-color: var(--accent);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-ring) 45%, transparent);
-  animation: simLedBreathe 2.4s ease-in-out infinite;
 }
 
 .cyber-scanner-badge .pixel-led-dot {

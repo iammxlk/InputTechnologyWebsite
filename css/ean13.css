@@ -130,7 +130,6 @@
   flex: none;
   border-radius: 50%;
   background: var(--accent);
-  animation: eanSoftPulse 2.4s ease-in-out infinite;
 }
 
 #ean13-guide-root .ean13-lab-live-text {
@@ -450,7 +449,6 @@
   flex: none;
   border-radius: 50%;
   background: currentColor;
-  animation: eanSoftPulse 1.6s ease-in-out infinite;
 }
 
 #ean13-guide-root .legend-pulse-badge.is-green {

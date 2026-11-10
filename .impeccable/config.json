@@ -20,6 +20,33 @@
         ],
         "createdAt": "2026-11-10T07:10:58.628Z",
         "reason": "user brief section 3: hero line 1 soft black gradient, line 2 purple gradient #9B5CF0 to #7A2BD9"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-10T11:52:28.969Z",
+        "reason": "user brief section 3: hero line 1 soft black gradient, line 2 purple gradient"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-10T11:52:29.161Z",
+        "reason": "false positive: padding on hero-stats, surface-card and modal-dialog is set with clamp() (18-28px), which the static detector reads as none"
+      },
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-11-10T11:52:40.736Z",
+        "reason": "decorative ghost numerals (aria-hidden) that the user brief asks to be large and translucent; readable text contrast is enforced by tools/audit-design.js (68 pairs, both themes)"
       }
     ]
   }
