@@ -299,7 +299,7 @@
 
     // 8. Achievement Summary Strip
     const passedUnits = user ? Number(user.passed_units_count || 0) : 0;
-    const totalScore = user ? Number(user.grand_total_score || 0) : 0;
+    const totalScore = user ? Number(user.total_quiz_score || 0) : 0;
     const totalTime = window.AppUtils.formatDuration(user ? user.total_time_sec : 0);
 
     const stripY = 730;

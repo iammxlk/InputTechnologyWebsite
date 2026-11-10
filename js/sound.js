@@ -324,7 +324,6 @@
     ".module-unit-link",
     ".step-rail-btn",
     ".pwd-toggle-btn",
-    ".mg-pad-btn",
     ".cert-action-btn",
     ".floating-action-btn"
   ].join(", ");

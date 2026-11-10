@@ -9,7 +9,6 @@
 
   let currentUser = null;
   let unitProgressMap = {};
-  let miniGameRecordsMap = {};
   let pendingRegisterAvatarBase64 = "";
 
   function loadStoredSession() {
@@ -31,7 +30,6 @@
   function clearSession() {
     currentUser = null;
     unitProgressMap = {};
-    miniGameRecordsMap = {};
     localStorage.removeItem(CFG.STORAGE_KEYS.SESSION_USER);
   }
 
@@ -160,7 +158,7 @@
       modalProgress.textContent = `${currentUser.passed_units_count} / ${CFG.TOTAL_UNITS} หน่วย (${currentUser.progress_percent}%)`;
     }
     if (modalScore) {
-      modalScore.textContent = `${currentUser.grand_total_score} คะแนน`;
+      modalScore.textContent = `${currentUser.total_quiz_score} คะแนน`;
     }
     if (modalTime) {
       modalTime.textContent = `${window.AppUtils.formatDuration(currentUser.total_time_sec)} นาที`;
@@ -277,7 +275,6 @@
         }
 
         unitProgressMap = res.unit_progress || {};
-        miniGameRecordsMap = res.minigame_records || {};
         persistSession(res.user);
         enforceRouteGuard();
         window.SoundEngine?.playSuccess();
@@ -378,7 +375,6 @@
         }
 
         unitProgressMap = res.unit_progress || {};
-        miniGameRecordsMap = res.minigame_records || {};
         persistSession(res.user);
         registerForm.reset();
         window.MotionEngine?.syncAllFloatingFields(registerForm);
@@ -534,7 +530,6 @@
       const res = await window.BackendAPI.getSession(cached.student_id);
       if (res && res.ok && res.user) {
         unitProgressMap = res.unit_progress || {};
-        miniGameRecordsMap = res.minigame_records || {};
         persistSession(res.user);
         renderNavbarProfile();
       } else {
@@ -553,11 +548,9 @@
     isAuthenticated: () => Boolean(currentUser),
     getCurrentUser: () => currentUser,
     getUnitProgressMap: () => unitProgressMap,
-    getMiniGameRecordsMap: () => miniGameRecordsMap,
-    updateSessionData(user, unitMap, gameMap) {
+    updateSessionData(user, unitMap) {
       if (user) persistSession(user);
       if (unitMap) unitProgressMap = unitMap;
-      if (gameMap) miniGameRecordsMap = gameMap;
       renderNavbarProfile();
       if (window.AppController && typeof window.AppController.refreshActiveView === "function") {
         window.AppController.refreshActiveView();

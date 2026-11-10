@@ -373,7 +373,7 @@
             CHITRALADA TECHNOLOGY INSTITUTE (CDTI) • VOCATIONAL EDUCATION
           </span>
           <span class="hw-telemetry-item font-notch">
-            BUS: <strong style="color: var(--accent-signal);">READY</strong> • KEYBIND: [1–4]
+            BUS: <strong style="color: var(--accent-signal);">READY</strong> • KEYBIND: [1–3]
           </span>
           <span class="hw-telemetry-item font-notch" style="margin-left: auto;">
             SIGNAL MATRIX: <span style="color: var(--accent-signal);">ACTIVE</span>
@@ -888,9 +888,6 @@
 
         <!-- Active Unit Workspace (Bite-sized Step Reader + 10-Question Instant-Grading Quiz) -->
         <div id="lesson-workspace" class="hidden" style="display: flex; flex-direction: column; gap: 18px;"></div>
-
-        <!-- Active Milestone Mini-Game Workspace (Interactive Skill Lab) -->
-        <div id="minigame-workspace" class="hidden" style="display: flex; flex-direction: column; gap: 18px;"></div>
       </section>
 
       <!-- ====================================================================
@@ -1064,61 +1061,6 @@
   <!-- ========================================================================
        3. PROFILE & CHANGE PASSWORD MODAL (TRIGGERED FROM TOP-RIGHT NAVBAR)
        ======================================================================== -->
-    <!-- ========================================================================
-       MODAL: MINIGAME RULE & BRIEFING MODAL (ENDLESS TIME-ATTACK)
-       ======================================================================== -->
-  <div id="minigame-rule-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="mg-rule-modal-title">
-    <div class="modal-card surface-card" style="max-width: 680px; width: 92%;">
-      <div class="modal-header">
-        <div>
-          <span id="mg-rule-badge" class="font-notch" style="font-size: 0.82rem; font-weight: 700; color: var(--accent-signal, #e11d48); letter-spacing: 0.04em;">ENDLESS TIME-ATTACK</span>
-          <h3 id="mg-rule-modal-title" style="font-size: 1.35rem; font-weight: 700; margin-top: 4px;">กติกาการแข่งขัน</h3>
-          <p id="mg-rule-subtitle" style="font-size: 0.90rem; color: var(--color-ink-subtle, #64748b); margin-top: 2px;"></p>
-        </div>
-        <button id="close-mg-rule-modal-btn" type="button" class="modal-close-btn" aria-label="ปิดหน้าต่าง">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-
-      <div style="padding: 16px 0; display: flex; flex-direction: column; gap: 16px;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; background: var(--bg-ground, #f8fafc); border: 2px solid var(--border-subtle, #cbd5e1); border-radius: 8px; padding: 12px 14px;">
-          <div>
-            <span style="font-size: 0.76rem; color: var(--color-ink-subtle, #64748b); display: block;">กิจกรรมประจำหมวด</span>
-            <strong id="mg-rule-checkpoint" class="font-notch" style="font-size: 0.92rem;"></strong>
-          </div>
-          <div>
-            <span style="font-size: 0.76rem; color: var(--color-ink-subtle, #64748b); display: block;">เวลาเริ่มต้น</span>
-            <strong id="mg-rule-time-limit" class="font-notch" style="font-size: 0.92rem;"></strong>
-          </div>
-          <div>
-            <span style="font-size: 0.76rem; color: var(--color-ink-subtle, #64748b); display: block;">โหมดการเล่น</span>
-            <strong id="mg-rule-max-score" class="font-notch" style="font-size: 0.92rem;"></strong>
-          </div>
-          <div>
-            <span style="font-size: 0.76rem; color: var(--color-ink-subtle, #64748b); display: block;">สถิติสูงสุด</span>
-            <strong id="mg-rule-personal-best" class="font-notch" style="font-size: 0.92rem;"></strong>
-          </div>
-        </div>
-
-        <div>
-          <h4 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 8px;">กฎและเทคนิคการทำคะแนน:</h4>
-          <ul id="mg-rule-list" class="game-rule-list" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;"></ul>
-        </div>
-      </div>
-
-      <div style="display: flex; align-items: center; justify-content: flex-end; gap: 10px; padding-top: 14px; border-top: 2px solid var(--border-subtle, #e2e8f0);">
-        <button id="cancel-mg-rule-btn" type="button" class="btn-secondary" style="min-height: 42px; padding: 8px 18px;">
-          ยกเลิก
-        </button>
-        <button id="btn-confirm-start-minigame" type="button" class="btn-primary" style="min-height: 42px; padding: 8px 24px;">
-          เริ่มการแข่งขัน
-        </button>
-      </div>
-    </div>
-  </div>
 
   <div id="profile-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="profile-modal-title">
     <div class="modal-dialog">
@@ -1263,7 +1205,6 @@
   <script src="js/curriculum-part1.js?v=4.4"></script>
   <script src="js/curriculum-part2.js?v=4.4"></script>
   <script src="js/ean13-guide.js?v=4.4"></script>
-  <script src="js/minigames.js?v=4.4"></script>
   <script src="js/learning.js?v=4.4"></script>
   <script src="js/mascot.js?v=4.4"></script>
   <script src="js/app.js?v=4.4"></script>

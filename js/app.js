@@ -130,9 +130,9 @@
     }
     if (metricScore) {
       if (window.MotionEngine) {
-        window.MotionEngine.animateNumber(metricScore, user.grand_total_score, (n) => `${Math.round(n)}`);
+        window.MotionEngine.animateNumber(metricScore, user.total_quiz_score, (n) => `${Math.round(n)}`);
       } else {
-        metricScore.textContent = `${user.grand_total_score}`;
+        metricScore.textContent = `${user.total_quiz_score}`;
       }
     }
     if (metricTime) metricTime.textContent = window.AppUtils.formatDuration(user.total_time_sec);
@@ -245,14 +245,6 @@
                 หลักสูตร 4 หน่วยการเรียนรู้
               </span>
               <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-left: auto;">
-                <button
-                  type="button"
-                  class="btn-secondary"
-                  style="min-height: 34px; padding: 5px 12px; font-size: 0.78rem; font-weight: 700;"
-                  data-open-minigame-mod="${mod.id}"
-                >
-                  มินิเกมหมวด ${mod.id} (G0${mod.id})
-                </button>
                 <button
                   type="button"
                   class="btn-primary"
@@ -610,18 +602,6 @@
       }
     });
 
-    // Milestone Minigame Triggers
-    document.addEventListener("click", (e) => {
-      const mgBtn = e.target.closest("[data-open-minigame-mod]");
-      if (mgBtn) {
-        e.preventDefault();
-        const modId = Number(mgBtn.getAttribute("data-open-minigame-mod"));
-        const gameKeys = { 1: "G01", 2: "G02", 3: "G03", 4: "G04" };
-        const gKey = gameKeys[modId] || "G01";
-        window.MiniGameEngine?.openRuleModal(gKey);
-      }
-    });
-
     // Certificate Download Buttons (Progress View + Modal)
     document
       .getElementById("progress-download-cert-btn")
@@ -634,7 +614,7 @@
         window.CertificateEngine?.downloadOfficialCertificate();
       });
 
-    // Escape key closes open modals + Number keys [1-4] switch views when outside inputs/games
+    // Escape key closes open modals + Number keys [1-3] switch views when outside inputs/games
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         closeCertificateModal();

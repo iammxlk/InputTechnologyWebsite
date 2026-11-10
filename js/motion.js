@@ -103,32 +103,6 @@
     }
   }
 
-  function buildLeaderboardSkeletonRows(rowCount = 5) {
-    let html = "";
-    for (let i = 0; i < rowCount; i++) {
-      html += `
-        <tr class="skeleton-table-row" aria-hidden="true">
-          <td><span class="skeleton-block" style="width: 30px; height: 30px; border-radius: 50%;"></span></td>
-          <td>
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <span class="skeleton-block" style="width: 34px; height: 34px; border-radius: 50%;"></span>
-              <div style="display: flex; flex-direction: column; gap: 6px;">
-                <span class="skeleton-block" style="width: 140px; height: 13px;"></span>
-                <span class="skeleton-block" style="width: 96px; height: 10px;"></span>
-              </div>
-            </div>
-          </td>
-          <td><span class="skeleton-block" style="width: 84px; height: 13px;"></span></td>
-          <td class="num"><span class="skeleton-block" style="width: 42px; height: 13px; margin-left: auto;"></span></td>
-          <td class="num"><span class="skeleton-block" style="width: 42px; height: 13px; margin-left: auto;"></span></td>
-          <td class="num"><span class="skeleton-block" style="width: 52px; height: 15px; margin-left: auto;"></span></td>
-          <td class="num"><span class="skeleton-block" style="width: 56px; height: 13px; margin-left: auto;"></span></td>
-        </tr>
-      `;
-    }
-    return html;
-  }
-
   /* ==========================================================================
      2. POINTER-ORIGIN BUTTON RIPPLE & TACTILE FEEDBACK
      ========================================================================== */
@@ -254,7 +228,6 @@
     ".metric-strip",
     ".surface-card",
     ".module-overview-card",
-    ".minigame-checkpoint-card",
     ".podium-strip",
     ".my-rank-banner",
     ".lesson-flow-item",
@@ -698,7 +671,6 @@
     startTopLoader,
     doneTopLoader,
     setButtonLoading,
-    buildLeaderboardSkeletonRows,
     syncAllFloatingFields,
     shakeElement,
     refreshScrollReveal,

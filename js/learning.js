@@ -154,7 +154,7 @@
         is_content_read: Boolean(isContentRead)
       });
       if (res && res.ok) {
-        window.AuthManager.updateSessionData(res.user, res.unit_progress, null);
+        window.AuthManager.updateSessionData(res.user, res.unit_progress);
       }
     } catch (err) {
       // เงียบไว้หากเครือข่ายสะดุดชั่วคราว เพื่อไม่ขัดจังหวะการอ่าน
@@ -277,15 +277,6 @@
                       ? `
                         <button type="button" class="btn-secondary" data-start-unit-quiz="${currentUnit.no}">
                           ทำแบบทดสอบ (10 ข้อ)
-                        </button>
-                      `
-                      : ""
-                  }
-                  ${
-                    window.MiniGameEngine && window.MiniGameEngine.getGameForMilestoneUnit(currentUnit.no)
-                      ? `
-                        <button type="button" class="btn-secondary" data-open-minigame="${currentUnit.no}" style="min-height: 44px; padding: 10px 18px; font-weight: 700; border: 2px solid var(--border-ink);">
-                          มินิเกมฝึกทักษะประจำหมวด (Endless)
                         </button>
                       `
                       : ""
@@ -1356,7 +1347,7 @@
       }
 
       if (res.user) {
-        window.AuthManager.updateSessionData(res.user, res.unit_progress, null);
+        window.AuthManager.updateSessionData(res.user, res.unit_progress);
       }
       quizState.isSubmitting = false;
       quizState.savedResult = res;
@@ -1654,18 +1645,6 @@
         const uNo = Number(startQuizBtn.getAttribute("data-start-unit-quiz")) || 1;
         openUnit(uNo, "quiz");
         window.scrollTo({ top: 0, behavior: "smooth" });
-        return;
-      }
-
-      // Milestone Minigame Trigger
-      const mgBtn = e.target.closest("[data-open-minigame]");
-      if (mgBtn) {
-        e.preventDefault();
-        const unitNo = Number(mgBtn.getAttribute("data-open-minigame"));
-        const game = window.MiniGameEngine?.getGameForMilestoneUnit(unitNo);
-        if (game) {
-          window.MiniGameEngine.openRuleModal(game.id);
-        }
         return;
       }
 
