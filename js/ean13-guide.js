@@ -2,7 +2,7 @@
  * ============================================================================
  * js/ean13-guide.js — EAN-13 Interactive Step-by-Step Learning Lab & Validator
  * รายวิชา: 21901-2017 เทคโนโลยีการนำเข้าข้อมูลสู่ระบบคอมพิวเตอร์
- * ออกแบบตามหลัก Neo-Brutalism (Stwedy) ผสาน Composite Animation 60fps
+ * ออกแบบตามหลัก Glass Grid (Stwedy) ผสาน Composite Animation 60fps
  *
  * ฟังก์ชันหลัก:
  * 1. ตัวอย่างที่ 1: คำนวณทีละขั้นตอนอย่างละเอียด (885123456789 -> Check Digit 8)
@@ -129,15 +129,27 @@
       }
     }
 
+    // ตัวเลขแต่ละหลักวางกึ่งกลางใต้แท่งของตัวเอง (หลักละ 7 โมดูล)
+    const digitW = barW * 7;
+    const leftX = startX + 3 * barW;
+    const rightX = startX + 50 * barW;
+    let digitTexts = "";
+    for (let i = 0; i < 12; i++) {
+      const cx = (i < 6 ? leftX + (i + 0.5) * digitW : rightX + (i - 6 + 0.5) * digitW).toFixed(1);
+      const isCheck = i === 11;
+      digitTexts += `<text x="${cx}" y="94" text-anchor="middle" font-size="13" font-weight="${isCheck ? 800 : 600}"${
+        isCheck ? ' class="ean13-barcode-check"' : ""
+      }>${code13[i + 1]}</text>`;
+    }
+
     return `
       <div class="ean13-barcode-card ${isInvalid ? "is-invalid-barcode" : ""}">
         <svg viewBox="0 0 285 106" class="ean13-barcode-svg" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="EAN-13 Barcode ${esc(code13)}">
           <rect class="ean13-barcode-paper" width="285" height="106" rx="4" />
           <g class="ean13-barcode-ink">
             ${rects}
-            <text x="12" y="86" font-family="'Stack Sans Notch', monospace" font-size="14" font-weight="700">${code13[0]}</text>
-            <text x="76" y="94" font-family="'Stack Sans Notch', monospace" font-size="13" font-weight="600" letter-spacing="2.8">${code13.slice(1, 7)}</text>
-            <text x="174" y="94" font-family="'Stack Sans Notch', monospace" font-size="13" font-weight="600" letter-spacing="2.8">${code13.slice(7, 12)}<tspan class="ean13-barcode-check" font-weight="800">${code13[12]}</tspan></text>
+            <text x="14" y="94" text-anchor="middle" font-size="13" font-weight="700">${code13[0]}</text>
+            ${digitTexts}
           </g>
         </svg>
         <div class="ean13-barcode-meta">
@@ -1241,11 +1253,35 @@
       cursorEnd = liveInput.selectionEnd;
     }
 
+    // จำปุ่มที่กำลังโฟกัสไว้ เพื่อคืน focus หลังวาดแล็บใหม่ (ผู้ใช้คีย์บอร์ดจะไม่หลุดไปต้นหน้า)
+    const FOCUS_ATTRS = ["data-ean13-tab", "data-ean13-step-dot", "data-ean13-preset"];
+    let refocusSelector = "";
+    const active = document.activeElement;
+    if (active && root.contains(active) && active !== liveInput) {
+      if (active.id) {
+        refocusSelector = "#" + active.id;
+      } else {
+        for (const attr of FOCUS_ATTRS) {
+          if (active.hasAttribute(attr)) {
+            refocusSelector = `[${attr}="${active.getAttribute(attr)}"]`;
+            break;
+          }
+        }
+      }
+    }
+
     const temp = document.createElement("div");
     temp.innerHTML = renderRootHtml();
     const newRoot = temp.firstElementChild;
 
     root.replaceWith(newRoot);
+
+    if (refocusSelector) {
+      const target = newRoot.querySelector(refocusSelector);
+      const fallback = newRoot.querySelector("#ean13-btn-next:not([disabled]), #ean13-btn-prev:not([disabled])");
+      const el = target && !target.disabled ? target : fallback;
+      if (el) el.focus({ preventScroll: true });
+    }
 
     if (hadFocus) {
       const reInput = document.getElementById("ean13-live-input");

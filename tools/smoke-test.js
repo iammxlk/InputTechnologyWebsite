@@ -240,14 +240,24 @@ const IN_PAGE = String.raw`
         const root = $("#ean13-guide-root");
         check("ean13: lab rendered", !!root && shown(root));
         const before = root.textContent;
+        $("#ean13-btn-next").focus();
         click("#ean13-btn-next");
         await sleep(80);
         check("ean13: next step changes content", $("#ean13-guide-root").textContent !== before);
+        check("ean13: focus stays on the next button after re-render", document.activeElement && document.activeElement.id === "ean13-btn-next", document.activeElement && document.activeElement.tagName);
         click("#ean13-btn-prev");
         await sleep(80);
         const tabs = $$("[data-ean13-tab]");
         check("ean13: has tabs", tabs.length >= 2, String(tabs.length));
-        for (const t of tabs) { click('[data-ean13-tab="' + t.getAttribute("data-ean13-tab") + '"]'); await sleep(60); }
+        for (const t of tabs) {
+          const sel = '[data-ean13-tab="' + t.getAttribute("data-ean13-tab") + '"]';
+          $(sel).focus();
+          click(sel);
+          await sleep(60);
+          if (document.activeElement !== $(sel)) fails.push("ean13: focus lost after choosing tab " + t.getAttribute("data-ean13-tab"));
+        }
+        const digits = $$(".ean13-barcode-svg text");
+        if (digits.length) check("ean13: barcode shows 13 digits", digits.length === 13 && digits.map((d) => d.textContent).join("").length === 13, String(digits.length));
         const live = $("#ean13-live-input");
         check("ean13: live validator input present", !!live);
         if (live) {
