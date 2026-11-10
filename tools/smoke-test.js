@@ -162,13 +162,14 @@ const IN_PAGE = String.raw`
     for (let i = 0; i < quiz.length; i++) {
       await waitFor(() => $$("[data-quiz-choice]", ws()).length === 4 && !$("[data-quiz-choice]", ws()).disabled);
       const qText = $(".quiz-cockpit-question-title", ws()).textContent;
-      if (!qText.replace(/\s+/g, "").includes(quiz[i].q.replace(/\s+/g, "").slice(0, 20))) {
+      if (!qText.replace(/[\s*]+/g, "").includes(quiz[i].q.replace(/[\s*]+/g, "").slice(0, 20))) {
         fails.push("quiz u" + unitNo + " q" + (i + 1) + ": question text mismatch");
       }
       const choiceTexts = $$(".quiz-option-text", ws()).map((e) => e.textContent.trim());
-      if (JSON.stringify(choiceTexts) !== JSON.stringify(quiz[i].choices.map((c) => String(c).trim()))) {
+      if (JSON.stringify(choiceTexts) !== JSON.stringify(quiz[i].choices.map((c) => String(c).replace(/\*\*/g, "").trim()))) {
         fails.push("quiz u" + unitNo + " q" + (i + 1) + ": choices mismatch");
       }
+      if (/\*\*/.test(ws().querySelector(".quiz-cockpit-card").textContent)) fails.push("quiz u" + unitNo + " q" + (i + 1) + ": stray markdown asterisks shown");
       const correct = Number(quiz[i].answer);
       const pick = i < wrongCount ? (correct + 1) % 4 : correct;
       click($('[data-quiz-choice="' + pick + '"]', ws()));

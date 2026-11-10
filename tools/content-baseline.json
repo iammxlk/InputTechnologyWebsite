@@ -1,7 +1,7 @@
 {
   "totals": {
     "units": 16,
-    "steps": 96,
+    "steps": 99,
     "blocks": 321,
     "questions": 160
   },
@@ -71,18 +71,18 @@
       "answers": "0132013202"
     },
     "8": {
-      "steps": 6,
+      "steps": 7,
       "blocks": 20,
       "questions": 10,
-      "lessonText": "3807b132071beda4",
+      "lessonText": "acfb4681e2495d4c",
       "quizText": "2111d655d0c4a79d",
       "answers": "3210321013"
     },
     "9": {
-      "steps": 6,
+      "steps": 7,
       "blocks": 23,
       "questions": 10,
-      "lessonText": "3e04892a73e7255a",
+      "lessonText": "84ca5aaada9574b5",
       "quizText": "2fda788b12d32b02",
       "answers": "2103210302"
     },
@@ -111,10 +111,10 @@
       "answers": "3021302113"
     },
     "13": {
-      "steps": 6,
+      "steps": 7,
       "blocks": 23,
       "questions": 10,
-      "lessonText": "a3867201a4fd900f",
+      "lessonText": "3b83edb382e5c926",
       "quizText": "4abaf0996fb4f555",
       "answers": "2013201302"
     },

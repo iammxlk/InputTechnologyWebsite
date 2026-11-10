@@ -1129,7 +1129,7 @@
             ${hasAnswered ? "disabled" : ""}
           >
             <span class="quiz-option-prefix">${CHOICE_LABELS[idx]}</span>
-            <span class="quiz-option-text">${esc(choiceText)}</span>
+            <span class="quiz-option-text">${esc(cleanTitle(choiceText))}</span>
             ${badgeNote}
           </button>
         `;
@@ -1202,7 +1202,7 @@
               <span class="dot-sep" aria-hidden="true"></span>
               <span>ตรวจคำตอบทันที</span>
             </p>
-            <h2 class="quiz-cockpit-question-title">ข้อที่ ${qIdx + 1}. ${esc(qObj.q)}</h2>
+            <h2 class="quiz-cockpit-question-title">ข้อที่ ${qIdx + 1}. ${esc(cleanTitle(qObj.q))}</h2>
           </div>
 
           <div class="quiz-cockpit-options-grid">
@@ -1364,7 +1364,7 @@
         const correctLabel = CHOICE_LABELS[qObj.answer];
         return `
           <li class="quiz-review-item">
-            <span class="quiz-review-question">ข้อ ${idx + 1}. ${esc(qObj.q)}</span>
+            <span class="quiz-review-question">ข้อ ${idx + 1}. ${esc(cleanTitle(qObj.q))}</span>
             <span class="status-pill ${ok ? "is-pass" : "is-fail"}">
               ${icon(ok ? "tick" : "close")}
               ${ok ? `ถูก (ข้อ ${correctLabel})` : `เลือก ${chosenLabel} เฉลย ${correctLabel}`}
