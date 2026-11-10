@@ -1,0 +1,16 @@
+# ไฟล์ที่ไม่ต้องขึ้นเว็บ: เครื่องมือพัฒนา เอกสารภายใน และโค้ดฝั่ง Google Apps Script
+.agents
+.aider-desk
+.autohand
+.claude
+.codex
+.github
+.impeccable
+backend
+docs
+edu-plan
+scratch
+tools
+DESIGN.md
+skills-lock.json
+node_modules
