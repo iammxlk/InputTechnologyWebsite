@@ -114,14 +114,14 @@ window.APP_CONFIG = {
       moduleId: 2,
       code: "Unit 7",
       title: "การนำเข้าด้วยรหัสภาพ 2 มิติ (QR Code โครงสร้างและการกู้คืนข้อมูล)",
-      subtitle: "โครงสร้าง Finder / Alignment / Timing Pattern ระดับการแก้ไขข้อผิดพลาด L, M, Q, H และการใส่โลโก้"
+      subtitle: "โหมดการเก็บข้อมูล โครงสร้าง Finder / Alignment / Timing Pattern ระดับการแก้ไขข้อผิดพลาด L, M, Q, H และการใส่โลโก้"
     },
     {
       no: 8,
       moduleId: 2,
       code: "Unit 8",
       title: "การนำเข้าด้วยรหัสภาพ 2 มิติ (ประเภท อุปกรณ์อ่าน และการใช้งาน)",
-      subtitle: "ตระกูล QR Code (Model 2, Micro QR, rMQR, SQRC) Static vs Dynamic QR และการแก้ปัญหาการสแกน"
+      subtitle: "ตระกูล QR Code (Model 2, Micro QR, rMQR, SQRC) Static vs Dynamic QR การเลือกอุปกรณ์อ่าน และการแก้ปัญหาการสแกน"
     },
     {
       no: 9,
@@ -149,7 +149,7 @@ window.APP_CONFIG = {
       moduleId: 3,
       code: "Unit 12",
       title: "เทคโนโลยีชีวมิติ (Biometric Input)",
-      subtitle: "ชีวมิติทางกายภาพและพฤติกรรม ลักษณะเด่นลายนิ้วมือ Minutiae ขั้นตอน Enrollment และการปรับเกณฑ์ FAR / FRR"
+      subtitle: "ชีวมิติทางกายภาพและพฤติกรรม ลักษณะเด่นลายนิ้วมือ Minutiae ขั้นตอน Enrollment และการปรับเกณฑ์ FAR / FRR และการตรวจความมีชีวิต"
     },
     {
       no: 13,
