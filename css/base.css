@@ -145,7 +145,8 @@ strong, b {
 }
 
 .unit-title-paren {
-  white-space: nowrap;
+  display: inline-block;
+  max-width: 100%;
   color: inherit;
   opacity: 0.86;
 }
