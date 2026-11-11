@@ -828,3 +828,64 @@
     border-radius: 0;
   }
 }
+
+/* ---------- แถบเลื่อนหัวข้อเทคโนโลยี (Tech Ticker) ---------- */
+.tech-ticker {
+  overflow: hidden;
+  padding: 4px 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+}
+
+.tech-ticker-track {
+  display: flex;
+  width: max-content;
+  animation: tech-ticker-slide 60s linear infinite;
+}
+
+.tech-ticker:hover .tech-ticker-track {
+  animation-play-state: paused;
+}
+
+.tech-ticker-list {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 32px;
+  margin: 0;
+  padding: 0 32px 0 0;
+  list-style: none;
+}
+
+.tech-ticker-list li {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: var(--text-muted);
+}
+
+.tech-ticker-list .icon {
+  width: 12px;
+  height: 12px;
+  color: var(--accent);
+}
+
+@keyframes tech-ticker-slide {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+[data-motion="reduced"] .tech-ticker-track {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tech-ticker-track {
+    animation: none;
+  }
+}
