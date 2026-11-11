@@ -2,7 +2,7 @@
   "totals": {
     "units": 16,
     "steps": 99,
-    "blocks": 321,
+    "blocks": 323,
     "questions": 160
   },
   "config": {
@@ -48,9 +48,9 @@
     },
     "5": {
       "steps": 6,
-      "blocks": 19,
+      "blocks": 20,
       "questions": 10,
-      "lessonText": "4490eef5ec7a7e1e",
+      "lessonText": "a1ea393f1177f329",
       "quizText": "7a9ba5c2bdf5b7ef",
       "answers": "1023102320"
     },
@@ -58,7 +58,7 @@
       "steps": 6,
       "blocks": 17,
       "questions": 10,
-      "lessonText": "d3668e9fd05873b7",
+      "lessonText": "37ec7cc6568f01d6",
       "quizText": "5fc23519be33bb74",
       "answers": "2301230131"
     },
@@ -66,7 +66,7 @@
       "steps": 6,
       "blocks": 21,
       "questions": 10,
-      "lessonText": "4d9ccd9d94d776b5",
+      "lessonText": "22aba07f8a01c7c5",
       "quizText": "a57160ffa6b15f0c",
       "answers": "0132013202"
     },
@@ -74,7 +74,7 @@
       "steps": 7,
       "blocks": 20,
       "questions": 10,
-      "lessonText": "ecce1d28eba83ba3",
+      "lessonText": "5edc7901d7e2c2a5",
       "quizText": "2111d655d0c4a79d",
       "answers": "3210321013"
     },
@@ -136,9 +136,9 @@
     },
     "16": {
       "steps": 6,
-      "blocks": 18,
+      "blocks": 19,
       "questions": 10,
-      "lessonText": "3552d17bd0e6ecbd",
+      "lessonText": "c22dfbdfea73f829",
       "quizText": "67dabac3ae233399",
       "answers": "3102310213"
     }
