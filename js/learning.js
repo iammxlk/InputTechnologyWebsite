@@ -46,6 +46,20 @@
     );
   }
 
+  /** สุ่มข้อสอบ count ข้อจากคลังของหน่วย โดยคงลำดับตามเนื้อหา (คลังที่มีไม่เกิน count ข้อใช้ทั้งหมด) */
+  function drawQuizQuestions(pool, count) {
+    if (pool.length <= count) return pool.slice();
+    const idx = pool.map((_, i) => i);
+    for (let i = idx.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [idx[i], idx[j]] = [idx[j], idx[i]];
+    }
+    return idx
+      .slice(0, count)
+      .sort((a, b) => a - b)
+      .map((i) => pool[i]);
+  }
+
   function stopCountdownTimer() {
     if (countdownTimerId) {
       clearInterval(countdownTimerId);
@@ -877,7 +891,7 @@
     countdownSecondsLeft = 5;
     quizState = {
       unitNo: targetNo,
-      questions: unitData.quiz.slice(0, CFG.QUESTIONS_PER_UNIT),
+      questions: drawQuizQuestions(unitData.quiz, CFG.QUESTIONS_PER_UNIT),
       currentIdx: 0,
       score: 0,
       answers: new Array(CFG.QUESTIONS_PER_UNIT).fill(null),

@@ -158,19 +158,25 @@ const IN_PAGE = String.raw`
   /* ---------- 7. อ่านครบ 16 หน่วย + แบบทดสอบท้ายหน่วย ---------- */
   const ws = () => $("#lesson-workspace");
   const answerQuiz = async (unitNo, wrongCount) => {
-    const quiz = DATA[unitNo].quiz;
-    for (let i = 0; i < quiz.length; i++) {
+    // ข้อสอบสุ่มจากคลังของหน่วย จึงหาข้อที่แสดงอยู่จากข้อความคำถาม
+    const pool = DATA[unitNo].quiz;
+    const norm = (t) => String(t).replace(/[\s*]+/g, "");
+    const seen = new Set();
+    for (let i = 0; i < 10; i++) {
       await waitFor(() => $$("[data-quiz-choice]", ws()).length === 4 && !$("[data-quiz-choice]", ws()).disabled);
       const qText = $(".quiz-cockpit-question-title", ws()).textContent;
-      if (!qText.replace(/[\s*]+/g, "").includes(quiz[i].q.replace(/[\s*]+/g, "").slice(0, 20))) {
+      const q = pool.find((x) => norm(qText).includes(norm(x.q))) || pool[i];
+      if (seen.has(q.id)) fails.push("quiz u" + unitNo + " q" + (i + 1) + ": question repeated");
+      seen.add(q.id);
+      if (!norm(qText).includes(norm(q.q))) {
         fails.push("quiz u" + unitNo + " q" + (i + 1) + ": question text mismatch");
       }
       const choiceTexts = $$(".quiz-option-text", ws()).map((e) => e.textContent.trim());
-      if (JSON.stringify(choiceTexts) !== JSON.stringify(quiz[i].choices.map((c) => String(c).replace(/\*\*/g, "").trim()))) {
+      if (JSON.stringify(choiceTexts) !== JSON.stringify(q.choices.map((c) => String(c).replace(/\*\*/g, "").trim()))) {
         fails.push("quiz u" + unitNo + " q" + (i + 1) + ": choices mismatch");
       }
       if (/\*\*/.test(ws().querySelector(".quiz-cockpit-card").textContent)) fails.push("quiz u" + unitNo + " q" + (i + 1) + ": stray markdown asterisks shown");
-      const correct = Number(quiz[i].answer);
+      const correct = Number(q.answer);
       const pick = i < wrongCount ? (correct + 1) % 4 : correct;
       click($('[data-quiz-choice="' + pick + '"]', ws()));
       await waitFor(() => $("#quiz-feedback-banner"));
@@ -178,7 +184,7 @@ const IN_PAGE = String.raw`
       if (!fb) { fails.push("quiz u" + unitNo + " q" + (i + 1) + ": no feedback"); return; }
       const wantCls = i < wrongCount ? "is-wrong" : "is-correct";
       if (!fb.classList.contains(wantCls)) fails.push("quiz u" + unitNo + " q" + (i + 1) + ": verdict not " + wantCls);
-      if (!fb.textContent.replace(/[\s*]+/g, "").includes(String(quiz[i].explanation).replace(/[\s*]+/g, "").slice(0, 24))) {
+      if (!fb.textContent.replace(/[\s*]+/g, "").includes(String(q.explanation).replace(/[\s*]+/g, "").slice(0, 24))) {
         fails.push("quiz u" + unitNo + " q" + (i + 1) + ": explanation missing");
       }
       if (!$$("[data-quiz-choice]", ws()).every((b) => b.disabled)) fails.push("quiz u" + unitNo + " q" + (i + 1) + ": choices not locked");
