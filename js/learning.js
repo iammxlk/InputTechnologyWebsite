@@ -403,13 +403,17 @@
     const esc = window.AppUtils.escapeHtml;
     let safe = esc(text);
 
-    // 1. Transform subheadings (หัวข้อย่อย) prominently:
+    // 1. หัวข้อตัวอย่าง "ตัวอย่างที่ 1: ชื่อเรื่อง" แสดงเป็นหัวข้อย่อย โดยไม่แสดงเครื่องหมายทวิภาค
     safe = safe.replace(
-      /(^|\n)((?:\*\*)?(?:ตัวอย่างที่\s*\d+|ตัวอย่าง|กรณีศึกษา|ข้อสังเกตสำคัญ|ข้อควรระวัง|สาเหตุที่พบบ่อย|แนวทางการแก้ไข|วิธีตรวจสอบ[^\n:]*|ขั้นตอนการปฏิบัติ[^\n:]*):[^\n*]+(?:\*\*)?)/g,
-      (m, p1, p2) => {
-        const clean = p2.replace(/\*\*/g, '');
-        return `${p1}<strong class="lesson-subheading">${clean}</strong>`;
-      }
+      /(^|\n)(ตัวอย่างที่\s*\d+):[ \t]*([^\n]+)\n?/g,
+      (m, p1, tag, title) =>
+        `${p1}<strong class="lesson-subheading"><span class="lesson-subheading-tag">${tag}</span>${title}</strong>`
+    );
+
+    // 1.1 ป้ายสั้นต้นบรรทัด เช่น "สาเหตุ: ..." หรือ "วิธีแก้: ..." แสดงเป็นตัวหนาแทนเครื่องหมายทวิภาค
+    safe = safe.replace(
+      /(^|\n)([^\n:&<]{2,40}):(?=\s|$)/g,
+      (m, p1, label) => `${p1}<strong class="lesson-inline-label">${label}</strong>`
     );
 
     // 2. Transform markdown bold **word** -> <strong class="lesson-term-emphasis">word</strong>

@@ -26,7 +26,7 @@
       "steps": 6,
       "blocks": 23,
       "questions": 10,
-      "lessonText": "e788e759b58de012",
+      "lessonText": "53cd94de25df6ce8",
       "quizText": "b16af4c4a03b756a",
       "answers": "3210132023"
     },
@@ -34,7 +34,7 @@
       "steps": 6,
       "blocks": 21,
       "questions": 10,
-      "lessonText": "b6a6280d73446f3d",
+      "lessonText": "beec10fdf164db49",
       "quizText": "950252da5ef259a4",
       "answers": "1320231020"
     },
@@ -42,7 +42,7 @@
       "steps": 6,
       "blocks": 19,
       "questions": 10,
-      "lessonText": "0a96e8f3296fcac4",
+      "lessonText": "8e88f994c0660e9f",
       "quizText": "c6d0b174cc70569e",
       "answers": "0103123231"
     },
@@ -50,7 +50,7 @@
       "steps": 6,
       "blocks": 20,
       "questions": 10,
-      "lessonText": "a1ea393f1177f329",
+      "lessonText": "01595799fe7e4519",
       "quizText": "e45baaea3da3f75e",
       "answers": "0320313120"
     },
@@ -58,7 +58,7 @@
       "steps": 6,
       "blocks": 17,
       "questions": 10,
-      "lessonText": "37ec7cc6568f01d6",
+      "lessonText": "469b010385200dca",
       "quizText": "1516ff4d864a5a50",
       "answers": "1201313202"
     },
@@ -66,15 +66,15 @@
       "steps": 6,
       "blocks": 21,
       "questions": 12,
-      "lessonText": "22aba07f8a01c7c5",
-      "quizText": "9145b2f13d7c3736",
+      "lessonText": "e0fdbd34218595a4",
+      "quizText": "9263f1fffa11c8ca",
       "answers": "023021301231"
     },
     "8": {
       "steps": 7,
       "blocks": 20,
       "questions": 12,
-      "lessonText": "5edc7901d7e2c2a5",
+      "lessonText": "a4511a8bc9bb5a24",
       "quizText": "7baaf4777bb2d4ad",
       "answers": "012030323121"
     },
@@ -82,7 +82,7 @@
       "steps": 7,
       "blocks": 23,
       "questions": 12,
-      "lessonText": "2a27eeb4a062fce5",
+      "lessonText": "652e1afe14376428",
       "quizText": "5cf5e13386b3e4d4",
       "answers": "120132030231"
     },
@@ -90,7 +90,7 @@
       "steps": 6,
       "blocks": 19,
       "questions": 10,
-      "lessonText": "cace2700a9c4e75f",
+      "lessonText": "f58837ba51493794",
       "quizText": "a8746c1f83a7b1a4",
       "answers": "1202013031"
     },
@@ -98,7 +98,7 @@
       "steps": 6,
       "blocks": 17,
       "questions": 10,
-      "lessonText": "96a6aa492ac8716b",
+      "lessonText": "c036d183277a1f36",
       "quizText": "c2e6aefa6d9241ce",
       "answers": "3230212301"
     },
@@ -122,7 +122,7 @@
       "steps": 6,
       "blocks": 16,
       "questions": 10,
-      "lessonText": "0ae4be8860ea17e2",
+      "lessonText": "504728575916c112",
       "quizText": "9686a5200a7a641e",
       "answers": "1320203012"
     },
@@ -138,8 +138,8 @@
       "steps": 6,
       "blocks": 19,
       "questions": 12,
-      "lessonText": "c22dfbdfea73f829",
-      "quizText": "96801fab625e034d",
+      "lessonText": "223e68840160de44",
+      "quizText": "04a05c92b8fbb7a6",
       "answers": "120301201323"
     }
   }

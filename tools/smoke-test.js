@@ -160,7 +160,7 @@ const IN_PAGE = String.raw`
   const answerQuiz = async (unitNo, wrongCount) => {
     // ข้อสอบสุ่มจากคลังของหน่วย จึงหาข้อที่แสดงอยู่จากข้อความคำถาม
     const pool = DATA[unitNo].quiz;
-    const norm = (t) => String(t).replace(/[\s*]+/g, "");
+    const norm = (t) => String(t).replace(/[\s*:]+/g, "");
     const seen = new Set();
     for (let i = 0; i < 10; i++) {
       await waitFor(() => $$("[data-quiz-choice]", ws()).length === 4 && !$("[data-quiz-choice]", ws()).disabled);
@@ -184,7 +184,7 @@ const IN_PAGE = String.raw`
       if (!fb) { fails.push("quiz u" + unitNo + " q" + (i + 1) + ": no feedback"); return; }
       const wantCls = i < wrongCount ? "is-wrong" : "is-correct";
       if (!fb.classList.contains(wantCls)) fails.push("quiz u" + unitNo + " q" + (i + 1) + ": verdict not " + wantCls);
-      if (!fb.textContent.replace(/[\s*]+/g, "").includes(String(q.explanation).replace(/[\s*]+/g, "").slice(0, 24))) {
+      if (!fb.textContent.replace(/[\s*:]+/g, "").includes(String(q.explanation).replace(/[\s*:]+/g, "").slice(0, 24))) {
         fails.push("quiz u" + unitNo + " q" + (i + 1) + ": explanation missing");
       }
       if (!$$("[data-quiz-choice]", ws()).every((b) => b.disabled)) fails.push("quiz u" + unitNo + " q" + (i + 1) + ": choices not locked");
@@ -220,7 +220,7 @@ const IN_PAGE = String.raw`
       await waitFor(() => $(".lesson-step-title", ws()) && $(".lesson-step-title", ws()).textContent.trim() === String(step.title).replace(/\*\*/g, "").trim());
       const card = $(".lesson-reader-card", ws());
       const body = $(".lesson-step-body", ws());
-      const flat = card.textContent.replace(/[\s*]+/g, "");
+      const flat = card.textContent.replace(/[\s*:]+/g, "");
       const needles = [step.title, step.lead, step.keyTakeaway];
       for (const b of step.blocks) {
         if (b.type === "paragraph") needles.push(b.text);
@@ -230,7 +230,7 @@ const IN_PAGE = String.raw`
         if (b.type === "flow") b.steps.forEach((st) => needles.push(st.stepTitle, st.stepDesc));
         if (b.type === "image" && b.caption) needles.push(b.caption);
       }
-      const missing = needles.filter((n) => n && !flat.includes(String(n).replace(/[\s*]+/g, "")));
+      const missing = needles.filter((n) => n && !flat.includes(String(n).replace(/[\s*:]+/g, "")));
       if (missing.length) fails.push(tag + " step " + (s + 1) + ": " + missing.length + " text piece(s) not rendered, e.g. " + String(missing[0]).slice(0, 40));
       if (body.children.length < step.blocks.length) fails.push(tag + " step " + (s + 1) + ": blocks " + body.children.length + "/" + step.blocks.length);
       renderedBlocks += step.blocks.length;

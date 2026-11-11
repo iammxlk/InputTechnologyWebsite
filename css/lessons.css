@@ -311,6 +311,28 @@ button.toc-item:hover:not(:disabled) {
   color: var(--accent-ink);
 }
 
+.lesson-subheading-tag {
+  display: block;
+
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+/* ป้ายสั้นต้นบรรทัด เช่น สาเหตุ / วิธีแก้ */
+.lesson-inline-label {
+  font-weight: 600;
+  color: var(--accent-ink);
+}
+
+.lesson-info-card-title .lesson-inline-label {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+}
+
 /* กล่องโน้ต/เคล็ดลับ ขอบซ้ายสีม่วง */
 .lesson-callout-box {
   padding: 16px 20px;
