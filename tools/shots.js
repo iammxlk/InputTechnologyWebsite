@@ -115,9 +115,12 @@ const SCENES = [
       await window.__w(() => document.getElementById("btn-skip-countdown"));
       document.getElementById("btn-skip-countdown").click();
       const quiz = window.CURRICULUM_DATA[7].quiz;
-      for (let i = 0; i < quiz.length; i++) {
+      const norm = (t) => String(t).replace(/[\s*:]+/g, "");
+      for (let i = 0; i < 10; i++) {
         await window.__w(() => { const b = document.querySelector("[data-quiz-choice]"); return b && !b.disabled; });
-        document.querySelector('[data-quiz-choice="' + Number(quiz[i].answer) + '"]').click();
+        const shown = norm(document.querySelector(".quiz-cockpit-question-title").textContent);
+        const q = quiz.find((x) => shown.includes(norm(x.q))) || quiz[i];
+        document.querySelector('[data-quiz-choice="' + Number(q.answer) + '"]').click();
         await window.__w(() => document.getElementById("btn-quiz-next-question"));
         document.getElementById("btn-quiz-next-question").click();
         await new Promise((r) => setTimeout(r, 30));

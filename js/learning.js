@@ -617,6 +617,17 @@
     return String(text || "").replace(/\*\*/g, "").trim();
   }
 
+  /** ประมาณเวลาอ่านของสเต็ป (ราว 600 ตัวอักษรต่อนาทีสำหรับเนื้อหาเชิงเทคนิค) */
+  function estimateReadMinutes(stepObj) {
+    let chars = 0;
+    (function count(o) {
+      if (typeof o === "string") chars += o.length;
+      else if (Array.isArray(o)) o.forEach(count);
+      else if (o && typeof o === "object") Object.keys(o).forEach((k) => k !== "src" && k !== "type" && count(o[k]));
+    })([stepObj.lead, stepObj.blocks, stepObj.keyTakeaway]);
+    return Math.max(1, Math.round(chars / 600));
+  }
+
   function splitStepTag(tag) {
     const parts = String(tag || "")
       .split(/\s*[:|]\s*/)
@@ -729,6 +740,8 @@
                   ${tag.topic ? `<span class="dot-sep" aria-hidden="true"></span><span>${esc(tag.topic)}</span>` : ""}
                   <span class="dot-sep" aria-hidden="true"></span>
                   <span>สเต็ปที่ ${currentStepIdx + 1} จาก ${totalSteps}</span>
+                  <span class="dot-sep" aria-hidden="true"></span>
+                  <span class="lesson-step-readtime">${icon("clock")}อ่านประมาณ ${estimateReadMinutes(stepObj)} นาที</span>
                 </p>
                 <button
                   type="button"
@@ -1425,6 +1438,13 @@
               ระบบเก็บคะแนนสูงสุดและเวลาที่เร็วที่สุดของคุณเพื่อนำไปคำนวณความคืบหน้าและปลดล็อกเกียรติบัตร
             </p>
           </div>
+          <span class="quiz-score-ring ${passedAttempt ? "is-pass" : ""} ${quizState.isSubmitting ? "is-animate" : ""}" role="img" aria-label="ได้ ${score} จาก ${totalQ} คะแนน">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="progress-ring-track" cx="60" cy="60" r="52"></circle>
+              <circle class="progress-ring-arc" cx="60" cy="60" r="52" pathLength="100" stroke-dasharray="${percent} 100"></circle>
+            </svg>
+            <span class="quiz-score-ring-value">${score}<small>/${totalQ}</small></span>
+          </span>
         </div>
 
         ${saveBannerHtml}

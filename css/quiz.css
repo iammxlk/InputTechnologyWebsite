@@ -545,3 +545,99 @@
     height: 124px;
   }
 }
+
+/* ---------- วงแหวนคะแนนในหน้าผลสอบ (Score Ring) ---------- */
+.quiz-score-ring {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 112px;
+  height: 112px;
+  margin-left: auto;
+}
+
+.quiz-score-ring svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.quiz-score-ring.is-pass .progress-ring-arc {
+  stroke: var(--success);
+}
+
+.quiz-score-ring.is-pass .progress-ring-track {
+  stroke: var(--success-tint);
+}
+
+.quiz-score-ring.is-animate .progress-ring-arc {
+  animation: score-ring-fill 0.9s var(--ease-out) both;
+}
+
+.quiz-score-ring-value {
+  position: relative;
+  font-size: 1.875rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.quiz-score-ring-value small {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+@keyframes score-ring-fill {
+  from {
+    stroke-dasharray: 0 100;
+  }
+}
+
+/* ---------- จังหวะตอบถูก/ผิดของตัวเลือก ---------- */
+.quiz-option-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.99);
+}
+
+.quiz-option-btn.is-correct {
+  animation: quiz-choice-pop 0.36s var(--ease-out);
+}
+
+.quiz-option-btn.is-wrong {
+  animation: quiz-choice-shake 0.32s ease;
+}
+
+@keyframes quiz-choice-pop {
+  40% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes quiz-choice-shake {
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+@media (max-width: 640px) {
+  .quiz-result-head {
+    flex-wrap: wrap;
+  }
+
+  .quiz-score-ring {
+    width: 88px;
+    height: 88px;
+    margin-left: 0;
+  }
+
+  .quiz-score-ring-value {
+    font-size: 1.5rem;
+  }
+}

@@ -869,3 +869,38 @@
   height: 12px;
   color: var(--accent);
 }
+
+/* ---------- มาตรวัดขั้นการอ่านบนการ์ดบทเรียน (Step Meter) ---------- */
+.lesson-card-steps {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: auto;
+}
+
+.lesson-card-steps + .lesson-card-foot {
+  margin-top: 0;
+}
+
+.lesson-card-step {
+  flex: 1 1 0;
+  height: 4px;
+  border-radius: 2px;
+  background-color: var(--accent-tint-strong);
+  transition: background-color var(--t-med) ease;
+}
+
+.lesson-card-step.is-done {
+  background-color: var(--accent);
+}
+
+.lesson-card-step.is-quiz {
+  flex: 0 0 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.lesson-card-step.is-quiz.is-done {
+  background-color: var(--success);
+}

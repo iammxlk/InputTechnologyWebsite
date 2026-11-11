@@ -96,6 +96,14 @@
           </button>
         </h3>
         <p class="lesson-card-desc">${esc(unit.subtitle)}</p>
+        ${
+          st.available
+            ? `<div class="lesson-card-steps" role="img" aria-label="อ่านแล้ว ${st.stepsDone} จาก ${st.totalSteps} ขั้น${st.passed ? " และผ่านแบบทดสอบแล้ว" : ""}">
+                ${Array.from({ length: st.totalSteps }, (_, i) => `<span class="lesson-card-step ${i < st.stepsDone ? "is-done" : ""}"></span>`).join("")}
+                <span class="lesson-card-step is-quiz ${st.passed ? "is-done" : ""}"></span>
+              </div>`
+            : ""
+        }
         <div class="lesson-card-foot">
           <span class="lesson-card-meta">${metaHtml}</span>
           <div class="lesson-card-actions">

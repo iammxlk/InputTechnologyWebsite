@@ -183,6 +183,12 @@ async function launch(options = {}) {
     async goto(pathname = "/index.html", waitMs = 1200) {
       await send("Page.navigate", { url: `http://127.0.0.1:${port}${pathname}` });
       await sleep(waitMs);
+      // เครือข่ายช้า (เช่น โหลดฟอนต์ภายนอก) ทำให้หน้ายังโหลดไม่เสร็จ จึงรอจน readyState เป็น complete (ไม่เกิน 20 วินาที)
+      for (let i = 0; i < 100; i++) {
+        const res = await send("Runtime.evaluate", { expression: "document.readyState", returnByValue: true }).catch(() => null);
+        if (res && res.result && res.result.value === "complete") break;
+        await sleep(200);
+      }
     },
 
     async eval(expression) {

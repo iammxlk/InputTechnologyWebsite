@@ -810,3 +810,181 @@ body.is-quiz-active .nav-links {
   .progress-table td:nth-child(7) { grid-column: 3; }
   .progress-table td.table-empty { grid-column: 1 / -1; }
 }
+
+/* ---------- วงแหวนความคืบหน้า (Progress Ring) ---------- */
+.progress-score {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.progress-ring {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 132px;
+  height: 132px;
+}
+
+.progress-ring svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.progress-ring-track,
+.progress-ring-arc {
+  fill: none;
+  stroke-width: 9;
+}
+
+.progress-ring-track {
+  stroke: var(--accent-tint-strong);
+}
+
+.progress-ring-arc {
+  stroke: var(--accent);
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.9s var(--ease-out);
+}
+
+.progress-ring .progress-score-value {
+  position: relative;
+  font-size: 2rem;
+}
+
+/* ---------- แผนที่ความคืบหน้า 16 หน่วย (Unit Map) ---------- */
+.unit-map-wrap {
+  margin-top: 20px;
+}
+
+.unit-map-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 10px;
+}
+
+.unit-map-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.unit-map-legend {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.unit-map-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.unit-map-key::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  border: 1px solid var(--line-strong);
+  background-color: var(--surface-2);
+}
+
+.unit-map-key.is-pass::before {
+  border-color: var(--success-line);
+  background-color: var(--success);
+}
+
+.unit-map-key.is-progress::before {
+  border-color: var(--accent);
+  background-color: var(--accent-tint-strong);
+}
+
+.unit-map {
+  display: grid;
+  grid-template-columns: repeat(16, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.unit-map-cell {
+  min-height: 44px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line-strong);
+  background-color: var(--surface-2);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+  transition:
+    transform var(--t-fast) var(--ease-out),
+    border-color var(--t-fast) ease,
+    background-color var(--t-fast) ease;
+}
+
+.unit-map-cell:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+}
+
+.unit-map-cell.is-progress {
+  border-color: var(--accent);
+  background-color: var(--accent-tint-strong);
+  color: var(--accent-ink);
+}
+
+.unit-map-cell.is-pass {
+  border-color: var(--success-line);
+  background-color: var(--success-tint);
+  color: var(--success);
+}
+
+@media (max-width: 720px) {
+  .unit-map {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+
+  .progress-score {
+    align-items: flex-start;
+  }
+
+  .progress-ring {
+    width: 104px;
+    height: 104px;
+  }
+
+  .progress-ring .progress-score-value {
+    font-size: 1.5rem;
+  }
+}
+
+/* ---------- จุดคะแนน 10 จุดในตารางสถานะ (Score Dots) ---------- */
+.score-dots {
+  display: flex;
+  justify-content: flex-end;
+  gap: 3px;
+  margin-top: 6px;
+}
+
+.score-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent-tint-strong);
+}
+
+.score-dot.is-on {
+  background-color: var(--accent);
+}
+
+.score-dot.is-pass {
+  background-color: var(--success);
+}

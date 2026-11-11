@@ -264,6 +264,19 @@
         : `ผ่านเกณฑ์แล้ว ${passedCount} จาก ${CFG.TOTAL_UNITS} หน่วยการเรียนรู้ (เหลืออีก ${remainingUnits} หน่วยเพื่อปลดล็อกเกียรติบัตร)`;
     }
     if (bigPercentEl) bigPercentEl.textContent = `${percent}%`;
+    const ringArcEl = document.getElementById("progress-ring-arc");
+    if (ringArcEl) ringArcEl.setAttribute("stroke-dasharray", `${Math.min(100, Math.max(0, percent))} 100`);
+
+    // แผนที่ความคืบหน้า: หนึ่งช่องต่อหนึ่งหน่วย กดเพื่อเปิดหน่วยนั้น
+    const unitMapEl = document.getElementById("progress-unit-map");
+    if (unitMapEl && window.AppUtils.getUnitState) {
+      unitMapEl.innerHTML = CFG.UNITS_METADATA.map((u) => {
+        const st = window.AppUtils.getUnitState(u.no, unitMap);
+        const cls = st.passed ? "is-pass" : st.stepsDone > 0 || st.attempts > 0 ? "is-progress" : "is-idle";
+        const label = st.passed ? "ผ่านเกณฑ์แล้ว" : cls === "is-progress" ? "กำลังเรียน" : "ยังไม่เริ่ม";
+        return `<button type="button" class="unit-map-cell ${cls}" data-open-unit="${u.no}" aria-label="หน่วยที่ ${u.no} ${label}" title="หน่วยที่ ${u.no} ${label}">${String(u.no).padStart(2, "0")}</button>`;
+      }).join("");
+    }
     if (barFillEl) barFillEl.style.width = `${Math.min(100, Math.max(0, percent))}%`;
     if (statUnitsEl) statUnitsEl.textContent = `${passedCount} / ${CFG.TOTAL_UNITS} หน่วย`;
     if (statQuizEl) {
@@ -398,6 +411,7 @@
                 </td>
                 <td class="num">
                   ${attempts > 0 ? `<strong>${bestScore}</strong> / 10` : `<span class="text-muted">- / 10</span>`}
+                  <span class="score-dots" aria-hidden="true">${Array.from({ length: 10 }, (_, i) => `<span class="score-dot ${attempts > 0 && i < bestScore ? (isPassed ? "is-pass" : "is-on") : ""}"></span>`).join("")}</span>
                 </td>
                 <td class="num">
                   ${

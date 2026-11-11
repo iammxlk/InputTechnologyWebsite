@@ -20,14 +20,14 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="alternate icon" type="image/x-icon" href="favicon.ico" />
 
-  <link rel="stylesheet" href="css/tokens.css?v=5.2" />
-  <link rel="stylesheet" href="css/base.css?v=5.2" />
-  <link rel="stylesheet" href="css/layout.css?v=5.2" />
-  <link rel="stylesheet" href="css/home.css?v=5.2" />
-  <link rel="stylesheet" href="css/simulator.css?v=5.2" />
-  <link rel="stylesheet" href="css/lessons.css?v=5.2" />
-  <link rel="stylesheet" href="css/ean13.css?v=5.2" />
-  <link rel="stylesheet" href="css/quiz.css?v=5.2" />
+  <link rel="stylesheet" href="css/tokens.css?v=5.3" />
+  <link rel="stylesheet" href="css/base.css?v=5.3" />
+  <link rel="stylesheet" href="css/layout.css?v=5.3" />
+  <link rel="stylesheet" href="css/home.css?v=5.3" />
+  <link rel="stylesheet" href="css/simulator.css?v=5.3" />
+  <link rel="stylesheet" href="css/lessons.css?v=5.3" />
+  <link rel="stylesheet" href="css/ean13.css?v=5.3" />
+  <link rel="stylesheet" href="css/quiz.css?v=5.3" />
 
   <!-- กำหนดธีมและโหมดการเคลื่อนไหวก่อนวาดหน้า เพื่อไม่ให้สีแฟลช -->
   <script>
@@ -830,7 +830,13 @@
             </div>
             <div class="progress-score">
               <span class="progress-score-label">ความคืบหน้ารวมสุทธิ</span>
-              <span id="progress-big-percent" class="progress-score-value">0%</span>
+              <span class="progress-ring">
+                <svg viewBox="0 0 120 120" aria-hidden="true">
+                  <circle class="progress-ring-track" cx="60" cy="60" r="52"></circle>
+                  <circle id="progress-ring-arc" class="progress-ring-arc" cx="60" cy="60" r="52" pathLength="100" stroke-dasharray="0 100"></circle>
+                </svg>
+                <span id="progress-big-percent" class="progress-score-value">0%</span>
+              </span>
             </div>
           </div>
 
@@ -852,6 +858,18 @@
               <dd id="progress-stat-time">00:00 นาที</dd>
             </div>
           </dl>
+
+          <div class="unit-map-wrap">
+            <div class="unit-map-head">
+              <span class="unit-map-title">แผนที่ความคืบหน้า 16 หน่วย</span>
+              <span class="unit-map-legend">
+                <span class="unit-map-key is-pass">ผ่านเกณฑ์</span>
+                <span class="unit-map-key is-progress">กำลังเรียน</span>
+                <span class="unit-map-key is-idle">ยังไม่เริ่ม</span>
+              </span>
+            </div>
+            <div id="progress-unit-map" class="unit-map"></div>
+          </div>
 
           <div id="progress-cert-gate-box" class="progress-cert-gate-box">
             <div class="cert-gate-info">
@@ -1047,18 +1065,18 @@
 
   <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
 
-  <script src="js/config.js?v=5.2"></script>
-  <script src="js/sound.js?v=5.2"></script>
-  <script src="js/api.js?v=5.2"></script>
-  <script src="js/motion.js?v=5.2"></script>
-  <script src="js/ui.js?v=5.2"></script>
-  <script src="js/auth.js?v=5.2"></script>
-  <script src="js/certificate.js?v=5.2"></script>
-  <script src="js/curriculum-part1.js?v=5.2"></script>
-  <script src="js/curriculum-part2.js?v=5.2"></script>
-  <script src="js/ean13-guide.js?v=5.2"></script>
-  <script src="js/learning.js?v=5.2"></script>
-  <script src="js/mascot.js?v=5.2"></script>
-  <script src="js/app.js?v=5.2"></script>
+  <script src="js/config.js?v=5.3"></script>
+  <script src="js/sound.js?v=5.3"></script>
+  <script src="js/api.js?v=5.3"></script>
+  <script src="js/motion.js?v=5.3"></script>
+  <script src="js/ui.js?v=5.3"></script>
+  <script src="js/auth.js?v=5.3"></script>
+  <script src="js/certificate.js?v=5.3"></script>
+  <script src="js/curriculum-part1.js?v=5.3"></script>
+  <script src="js/curriculum-part2.js?v=5.3"></script>
+  <script src="js/ean13-guide.js?v=5.3"></script>
+  <script src="js/learning.js?v=5.3"></script>
+  <script src="js/mascot.js?v=5.3"></script>
+  <script src="js/app.js?v=5.3"></script>
 </body>
 </html>
