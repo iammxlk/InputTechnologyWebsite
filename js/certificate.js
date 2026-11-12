@@ -406,9 +406,11 @@
   /**
    * สร้างและดาวน์โหลดไฟล์ PNG ความละเอียดสูง (เฉพาะผู้ที่ผ่านครบ 16 หน่วย 100% เท่านั้น)
    */
+  let isDownloadingCertificate = false;
+
   async function downloadOfficialCertificate() {
     const user = window.AuthManager?.getCurrentUser();
-    if (!user) return;
+    if (!user || isDownloadingCertificate) return;
 
     if (Number(user.passed_units_count || 0) < CFG.TOTAL_UNITS) {
       window.AppUtils.showToast(
@@ -418,29 +420,44 @@
       return;
     }
 
+    isDownloadingCertificate = true;
+    window.MotionEngine?.startTopLoader();
     try {
-      const claimRes = await window.BackendAPI.claimCertificate(user.student_id);
-      if (claimRes && claimRes.ok && claimRes.user) {
-        window.AuthManager.updateSessionData(claimRes.user, null, null);
+      let claimRes = null;
+      try {
+        claimRes = await window.BackendAPI.claimCertificate(user.student_id);
+      } catch (e) {
+        // เครือข่ายขัดข้อง: อนุญาตให้ดาวน์โหลดจากข้อมูลที่ยืนยันแล้วในเซสชัน
       }
-    } catch (e) {
-      // allow download if already verified in session
+      if (claimRes && claimRes.ok && claimRes.user) {
+        window.AuthManager.updateSessionData(claimRes.user, null, { silent: true });
+      } else if (claimRes && claimRes.ok === false && !claimRes.offline) {
+        // เซิร์ฟเวอร์ยืนยันว่ายังไม่ผ่านเกณฑ์: ไม่ออกเกียรติบัตร
+        window.AppUtils.showToast(claimRes.error || "เซิร์ฟเวอร์ยังไม่ยืนยันสิทธิ์รับเกียรติบัตร", "error");
+        return;
+      }
+
+      const latestUser = window.AuthManager.getCurrentUser() || user;
+      const exportCanvas = document.createElement("canvas");
+      await renderCertificateCanvas(exportCanvas, latestUser, false);
+
+      const dataUrl = exportCanvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      const safeId = String(latestUser.student_id || "student").replace(/[^a-zA-Z0-9_-]/g, "");
+      link.download = `Certificate_21901-2017_${safeId}.png`;
+      link.href = dataUrl;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      window.AppUtils.showToast("ดาวน์โหลดเกียรติบัตร (.PNG) เรียบร้อยแล้ว", "success");
+    } catch (err) {
+      console.warn("[Certificate] download failed:", err);
+      window.AppUtils.showToast("สร้างไฟล์เกียรติบัตรไม่สำเร็จ กรุณาลองอีกครั้ง", "error");
+    } finally {
+      isDownloadingCertificate = false;
+      window.MotionEngine?.doneTopLoader();
     }
-
-    const latestUser = window.AuthManager.getCurrentUser();
-    const exportCanvas = document.createElement("canvas");
-    await renderCertificateCanvas(exportCanvas, latestUser, false);
-
-    const dataUrl = exportCanvas.toDataURL("image/png");
-    const link = document.createElement("a");
-    const safeId = String((latestUser && latestUser.student_id) || (user && user.student_id) || "student").replace(/[^a-zA-Z0-9_-]/g, "");
-    link.download = `Certificate_21901-2017_${safeId}.png`;
-    link.href = dataUrl;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-
-    window.AppUtils.showToast("ดาวน์โหลดเกียรติบัตร (.PNG) เรียบร้อยแล้ว", "success");
   }
 
   window.CertificateEngine = {

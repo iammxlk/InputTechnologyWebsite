@@ -1,0 +1,431 @@
+/* ==========================================================================
+   css/fx.css  ชั้นแอนิเมชันและของตกแต่ง (โหลดเป็นไฟล์สุดท้าย)
+   แนวคิด: "ข้อมูลถูกนำเข้าสู่ระบบ" ลำแสงสแกนเปิดหัวข้อ, พัลส์ข้อมูลวิ่งตามเส้นไกด์,
+   ช่องกระจกติดสว่างเหมือนเซลล์ข้อมูล ทุกอย่างปิดเมื่อ data-motion="reduced"
+   สีทุกค่ามาจาก tokens.css
+   ========================================================================== */
+
+@property --fx-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* ---------- 1. ฉากหลัง: แสงฟุ้งลอยช้า ๆ + พัลส์ข้อมูลบนเส้นไกด์ ---------- */
+.page-backdrop::after {
+  animation: fx-ambient-a 28s ease-in-out infinite alternate;
+}
+
+.fx-ambient-b {
+  position: absolute;
+  left: -16vw;
+  bottom: -24vh;
+  width: 54vw;
+  height: 54vw;
+  max-width: 760px;
+  max-height: 760px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, var(--ambient-glow) 0%, transparent 66%);
+  filter: blur(48px);
+  opacity: 0.7;
+  animation: fx-ambient-b 34s ease-in-out infinite alternate;
+}
+
+@keyframes fx-ambient-a {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(-6vw, 5vh, 0) scale(1.12); }
+}
+
+@keyframes fx-ambient-b {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(7vw, -6vh, 0) scale(1.1); }
+}
+
+/* พัลส์ข้อมูล: เส้นแสงสั้น ๆ ไหลลงตามเส้นไกด์แนวตั้ง (ตำแหน่งตรงกับเส้นทุก 10%) */
+.fx-stream {
+  position: absolute;
+  top: 0;
+  left: calc(5% + var(--col, 0) * 10%);
+  width: 1px;
+  height: 22vh;
+  background: linear-gradient(to bottom, transparent, var(--accent-soft) 70%, var(--accent));
+  opacity: 0;
+  animation: fx-stream var(--dur, 9s) linear var(--delay, 0s) infinite;
+}
+
+.fx-stream::after {
+  content: "";
+  position: absolute;
+  left: -1.5px;
+  bottom: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--accent-glow);
+}
+
+@keyframes fx-stream {
+  0% { transform: translate3d(0, -24vh, 0); opacity: 0; }
+  8% { opacity: 0.75; }
+  60% { opacity: 0.55; }
+  100% { transform: translate3d(0, 104vh, 0); opacity: 0; }
+}
+
+/* ---------- 2. Hero: ลำแสงสแกนกวาดเปิดบรรทัดสีม่วง ---------- */
+.hero-title {
+  position: relative;
+}
+
+.is-intro .hero-line-2 {
+  animation: fx-scan-reveal 900ms cubic-bezier(0.65, 0, 0.35, 1) 260ms both;
+}
+
+@keyframes fx-scan-reveal {
+  from { clip-path: inset(-0.4em 100% -0.4em 0); }
+  to { clip-path: inset(-0.4em 0 -0.4em 0); }
+}
+
+.fx-scan-beam {
+  position: absolute;
+  left: 0;
+  top: 52%;
+  bottom: 6%;
+  width: 3px;
+  border-radius: 3px;
+  background-color: var(--accent-glow);
+  box-shadow: 0 0 18px 2px var(--accent), -28px 0 46px 8px var(--accent-tint-strong);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.is-intro .fx-scan-beam {
+  animation: fx-scan-beam 900ms cubic-bezier(0.65, 0, 0.35, 1) 260ms both;
+}
+
+@keyframes fx-scan-beam {
+  0% { transform: translate3d(0, 0, 0); opacity: 0; }
+  8% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { transform: translate3d(100cqw, 0, 0); opacity: 0; }
+}
+
+.is-intro .hero-sparkles {
+  animation: fx-pop-in 520ms var(--ease-spring) 1000ms both;
+}
+
+.is-intro .hero-top { animation: fade-in 500ms ease both; }
+.is-intro .hero-facts { animation: rise-in 600ms var(--ease-out) 420ms both; }
+.is-intro .tech-ticker { animation: fade-in 700ms ease 700ms both; }
+.is-intro .home-panels { animation: rise-in 640ms var(--ease-out) 620ms both; }
+
+@keyframes fx-pop-in {
+  from { opacity: 0; transform: scale(0.4) rotate(-30deg); }
+  to { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+/* ขอบแสงวิ่งรอบแผงสถิติและกล่องฟอร์มเข้าสู่ระบบ */
+.hero-stats,
+.auth-form-pane {
+  position: relative;
+}
+
+.hero-stats::before,
+.auth-form-pane::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(from var(--fx-angle), transparent 0 68%, var(--accent-soft) 82%, var(--accent) 90%, transparent 100%);
+  -webkit-mask: linear-gradient(black, black) content-box, linear-gradient(black, black);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(black, black) content-box exclude, linear-gradient(black, black);
+  animation: fx-orbit 9s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes fx-orbit {
+  to { --fx-angle: 360deg; }
+}
+
+/* ---------- 3. ช่องกระจกติดสว่างแบบเซลล์ข้อมูล ---------- */
+.glass-tile.is-pulse {
+  animation: fx-tile-pulse 1800ms ease-out both;
+}
+
+@keyframes fx-tile-pulse {
+  0% { background-color: var(--tile-bg); border-color: var(--tile-border); }
+  22% { background-color: var(--accent-tint-strong); border-color: var(--accent-soft); }
+  100% { background-color: var(--tile-bg); border-color: var(--tile-border); }
+}
+
+/* ---------- 4. เลื่อนแล้วค่อย ๆ ปรากฏ (scroll-driven, ไม่มีสถานะ จึงไม่กระพริบเมื่อวาดใหม่) ---------- */
+@supports (animation-timeline: view()) {
+  html[data-motion="full"] .lesson-card,
+  html[data-motion="full"] .module-group-head,
+  html[data-motion="full"] .glass-zone-head,
+  html[data-motion="full"] .learning-step-card,
+  html[data-motion="full"] .selected-unit-banner,
+  html[data-motion="full"] .progress-table tbody tr {
+    animation: fx-scroll-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 100%;
+  }
+
+  html[data-motion="full"] .is-intro .lesson-card {
+    animation-name: rise-in;
+    animation-duration: 520ms;
+    animation-timing-function: var(--ease-out);
+    animation-timeline: auto;
+    animation-range: normal;
+  }
+}
+
+@keyframes fx-scroll-in {
+  0% { opacity: 0; translate: 0 40px; }
+  55% { opacity: 1; }
+  100% { opacity: 1; translate: 0 0; }
+}
+
+/* ---------- 5. เมนู: แคปซูลเลื่อนตามหน้าที่เลือก ---------- */
+.nav-links,
+.mobile-nav-bar {
+  position: relative;
+}
+
+.nav-indicator {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--ind-w, 0);
+  height: var(--ind-h, 0);
+  border-radius: var(--radius-pill);
+  background-color: var(--accent-tint-strong);
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
+  transform: translate3d(var(--ind-x, 0), var(--ind-y, 0), 0);
+  transition: transform 420ms var(--ease-out), width 420ms var(--ease-out);
+  pointer-events: none;
+}
+
+.nav-indicator.is-instant {
+  transition: none;
+}
+
+.has-nav-indicator .nav-btn {
+  position: relative;
+  z-index: 1;
+}
+
+.has-nav-indicator .nav-btn.is-active {
+  background-color: transparent;
+}
+
+.mobile-nav-bar .nav-btn .icon {
+  transition: transform var(--t-med) var(--ease-spring);
+}
+
+.mobile-nav-bar .nav-btn.is-active .icon {
+  transform: translateY(-1px) scale(1.12);
+}
+
+/* ---------- 6. โมดัล: เข้าแบบขยายจากเล็ก ออกเร็วกว่าเข้า ---------- */
+.modal-overlay.is-modal-entering .modal-dialog {
+  animation: fx-modal-in 320ms var(--ease-out) both;
+}
+
+.modal-overlay.is-modal-leaving {
+  animation: fx-fade-out 160ms ease both;
+  pointer-events: none;
+}
+
+.modal-overlay.is-modal-leaving .modal-dialog {
+  animation: fx-modal-out 160ms ease-in both;
+}
+
+@keyframes fx-modal-in {
+  from { opacity: 0; transform: translateY(18px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes fx-modal-out {
+  to { opacity: 0; transform: translateY(8px) scale(0.98); }
+}
+
+@keyframes fx-fade-out {
+  to { opacity: 0; }
+}
+
+/* ---------- 7. แจ้งเตือน: เลื่อนเข้าจากขอบจอ ---------- */
+.toast-item {
+  animation: fx-toast-in 360ms var(--ease-out) both;
+}
+
+@keyframes fx-toast-in {
+  from { opacity: 0; transform: translate3d(24px, 0, 0) scale(0.96); }
+  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@media (max-width: 639px) {
+  @keyframes fx-toast-in {
+    from { opacity: 0; transform: translate3d(0, -14px, 0) scale(0.96); }
+    to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  }
+}
+
+/* ---------- 8. หน้าเข้าสู่ระบบ: เปิดตัวเป็นจังหวะ ---------- */
+.fx-auth-intro .auth-logo-chip { animation: fade-in 500ms ease both; }
+.fx-auth-intro .hero-kicker { animation: rise-in 560ms var(--ease-out) 60ms both; }
+.fx-auth-intro .auth-title-line.ink-gradient { animation: rise-in 600ms var(--ease-out) 120ms both; }
+.fx-auth-intro .auth-title-line.accent-gradient { animation: fx-scan-reveal 820ms cubic-bezier(0.65, 0, 0.35, 1) 300ms both; }
+.fx-auth-intro .auth-title-rest { animation: rise-in 600ms var(--ease-out) 520ms both; }
+.fx-auth-intro .auth-lead { animation: rise-in 600ms var(--ease-out) 600ms both; }
+.fx-auth-intro .auth-form-pane { animation: fx-modal-in 700ms var(--ease-out) 240ms both; }
+.fx-auth-intro .auth-spec-box { animation: tile-rise 520ms var(--ease-out) both; }
+.fx-auth-intro .auth-spec-box:nth-child(1) { animation-delay: 700ms; }
+.fx-auth-intro .auth-spec-box:nth-child(2) { animation-delay: 780ms; }
+.fx-auth-intro .auth-spec-box:nth-child(3) { animation-delay: 860ms; }
+.fx-auth-intro .auth-spec-box:nth-child(4) { animation-delay: 940ms; }
+
+.auth-title-line.accent-gradient {
+  background-image: linear-gradient(110deg, var(--grad-title-from) 0%, var(--grad-title-to) 38%, var(--accent-glow) 52%, var(--grad-title-to) 66%, var(--grad-title-from) 100%);
+  background-size: 240% 100%;
+  animation: title-shimmer 9s ease-in-out infinite alternate;
+}
+
+/* มาสคอตลอยเบา ๆ */
+.auth-spec-box--mascot .mascot-sticker,
+.quiz-result-mascot,
+.cert-gate-info .mascot-sticker {
+  animation: fx-float 4.6s ease-in-out infinite;
+}
+
+@keyframes fx-float {
+  0%, 100% { translate: 0 0; rotate: 0deg; }
+  50% { translate: 0 -6px; rotate: -2deg; }
+}
+
+.mascot-companion-btn {
+  animation: fx-float 5.2s ease-in-out infinite;
+}
+
+/* ---------- 9. สลับหน้า: ชิ้นส่วนในหน้าเข้าตามจังหวะ ---------- */
+.is-view-entering .unit-map-cell {
+  animation: fx-cell-in 380ms var(--ease-spring) both;
+  animation-delay: calc(var(--fx-i, 0) * 28ms + 120ms);
+}
+
+.unit-map-cell:nth-child(1) { --fx-i: 0; }
+.unit-map-cell:nth-child(2) { --fx-i: 1; }
+.unit-map-cell:nth-child(3) { --fx-i: 2; }
+.unit-map-cell:nth-child(4) { --fx-i: 3; }
+.unit-map-cell:nth-child(5) { --fx-i: 4; }
+.unit-map-cell:nth-child(6) { --fx-i: 5; }
+.unit-map-cell:nth-child(7) { --fx-i: 6; }
+.unit-map-cell:nth-child(8) { --fx-i: 7; }
+.unit-map-cell:nth-child(9) { --fx-i: 8; }
+.unit-map-cell:nth-child(10) { --fx-i: 9; }
+.unit-map-cell:nth-child(11) { --fx-i: 10; }
+.unit-map-cell:nth-child(12) { --fx-i: 11; }
+.unit-map-cell:nth-child(13) { --fx-i: 12; }
+.unit-map-cell:nth-child(14) { --fx-i: 13; }
+.unit-map-cell:nth-child(15) { --fx-i: 14; }
+.unit-map-cell:nth-child(16) { --fx-i: 15; }
+
+@keyframes fx-cell-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.7); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.is-view-entering .filter-pill-btn {
+  animation: rise-in 380ms var(--ease-out) both;
+}
+
+.is-view-entering .filter-pill-btn:nth-child(2) { animation-delay: 40ms; }
+.is-view-entering .filter-pill-btn:nth-child(3) { animation-delay: 80ms; }
+.is-view-entering .filter-pill-btn:nth-child(4) { animation-delay: 120ms; }
+.is-view-entering .filter-pill-btn:nth-child(5) { animation-delay: 160ms; }
+
+/* ---------- 10. แบบทดสอบ: ตัวเลือกเข้าทีละข้อเมื่อขึ้นคำถามใหม่ ---------- */
+.is-step-sliding-next .quiz-option-btn {
+  animation: rise-in 340ms var(--ease-out) both;
+}
+
+.is-step-sliding-next .quiz-option-btn:nth-child(1) { animation-delay: 80ms; }
+.is-step-sliding-next .quiz-option-btn:nth-child(2) { animation-delay: 130ms; }
+.is-step-sliding-next .quiz-option-btn:nth-child(3) { animation-delay: 180ms; }
+.is-step-sliding-next .quiz-option-btn:nth-child(4) { animation-delay: 230ms; }
+
+/* ---------- 11. การ์ดบทเรียน: เลขบทจางลงตรงที่ชื่อบทพาดผ่าน ---------- */
+.lesson-card-number {
+  -webkit-mask-image: linear-gradient(to bottom, black 34%, transparent 86%);
+  mask-image: linear-gradient(to bottom, black 34%, transparent 86%);
+}
+
+.lesson-card-step.is-done {
+  box-shadow: 0 0 0 0 transparent;
+}
+
+.lesson-card:hover .lesson-card-step.is-done {
+  background-image: linear-gradient(90deg, var(--accent), var(--accent-glow));
+}
+
+/* ---------- 12. ผิวเบราว์เซอร์: แถบเลื่อน เคอร์เซอร์พิมพ์ ตัวควบคุมฟอร์ม ---------- */
+html {
+  scrollbar-color: var(--accent-soft) transparent;
+  scrollbar-width: thin;
+  accent-color: var(--accent);
+  caret-color: var(--accent);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: var(--radius-pill);
+  border: 2px solid transparent;
+  background-color: var(--accent-soft);
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--accent);
+}
+
+/* ---------- 13. ปิดทั้งหมดเมื่อผู้ใช้ขอลดการเคลื่อนไหว ---------- */
+html[data-motion="reduced"] .fx-stream,
+html[data-motion="reduced"] .fx-scan-beam,
+html[data-motion="reduced"] .hero-stats::before,
+html[data-motion="reduced"] .auth-form-pane::before {
+  display: none;
+}
+
+html[data-motion="reduced"] .page-backdrop::after,
+html[data-motion="reduced"] .fx-ambient-b,
+html[data-motion="reduced"] .mascot-sticker,
+html[data-motion="reduced"] .mascot-companion-btn,
+html[data-motion="reduced"] .glass-tile.is-pulse {
+  animation: none;
+}
+
+/* ---------- 14. แก้การซ้อนทับ ---------- */
+/* ท้ายหน้าเว้นที่ให้ผู้ช่วยมุมจอ ข้อความท้ายหน้าจึงไม่ถูกบัง */
+.info-bar {
+  padding-bottom: 64px;
+}
+
+/* ป้ายสถานะการอ่านในตารางความคืบหน้าไม่ตัดคำกลางวลี */
+.progress-table td:nth-child(3) {
+  white-space: nowrap;
+}
+
+/* ปุ่มเลือกรูประหว่างอัปโหลด */
+label.is-busy {
+  opacity: 0.6;
+  pointer-events: none;
+}

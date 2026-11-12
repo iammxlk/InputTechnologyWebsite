@@ -203,7 +203,11 @@
   }
 
   function saveLocalDb(db) {
-    localStorage.setItem(CFG.STORAGE_KEYS.LOCAL_DB_MIRROR, JSON.stringify(db));
+    try {
+      localStorage.setItem(CFG.STORAGE_KEYS.LOCAL_DB_MIRROR, JSON.stringify(db));
+    } catch (e) {
+      // พื้นที่เก็บข้อมูลเต็มหรือถูกปิด: ทำงานต่อด้วยข้อมูลในหน่วยความจำ
+    }
   }
 
   function sanitizeUser(u) {
@@ -592,25 +596,24 @@
      UNIFIED REQUEST DISPATCHER
      ========================================================================== */
 
+  // Apps Script ตอบช้าได้เมื่อมีผู้ใช้พร้อมกันทั้งห้อง (รอคิวล็อกและอัปโหลดรูปขึ้น Drive)
+  const CLOUD_TIMEOUT_MS = 20000;
+  const OFFLINE_ERROR = "เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองอีกครั้ง";
+
   async function postAction(action, data = {}) {
     const payload = Object.assign({ action: action }, data);
     const sid = String(data.student_id || payload.student_id || "").trim().toLowerCase();
-    const isDemoAccount = /^672010100[1-5]$/.test(sid);
 
-    // If cloud is not configured OR student is one of the 5 built-in demo showcase accounts:
-    if (!isCloudConfigured() || (isDemoAccount && (action === "login" || action === "get_session"))) {
-      const localDb = loadLocalDb();
-      const foundLocal = localDb.users.find(
-        (u) => u && u.student_id && u.student_id.toLowerCase() === sid
-      );
-      if (foundLocal) {
-        return executeLocalRequest(payload);
-      }
+    // โหมดจำลอง (ไม่ได้ตั้งค่า Google Apps Script): ทำงานกับฐานข้อมูลในเครื่องทั้งหมด
+    if (!isCloudConfigured()) {
+      return executeLocalRequest(payload);
     }
 
+    // เมื่อเชื่อมต่อคลาวด์แล้ว เซิร์ฟเวอร์เป็นผู้ตัดสินเพียงผู้เดียว
+    // ห้ามใช้ฐานข้อมูลในเครื่องตรวจรหัสผ่านหรือรับคะแนนแทน เพราะจะเข้าบัญชีคนอื่นได้และคะแนนจะหายภายหลัง
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 6500);
+      const timeoutId = setTimeout(() => controller.abort(), CLOUD_TIMEOUT_MS);
 
       const response = await fetch(CFG.GAS_WEB_APP_URL.trim(), {
         method: "POST",
@@ -626,18 +629,6 @@
         throw new Error(`HTTP ${response.status}`);
       }
       const data = await response.json();
-
-      // If cloud does not have this student account, fall back to check local demo DB
-      if (!data.ok && (action === "login" || action === "get_session")) {
-        const localDb = loadLocalDb();
-        const sid = String(payload.student_id || "").toLowerCase();
-        const foundLocal = localDb.users.find(
-          (u) => u && u.student_id && u.student_id.toLowerCase() === sid
-        );
-        if (foundLocal) {
-          return executeLocalRequest(payload);
-        }
-      }
 
       // Keep local DB mirror seamlessly synced with cloud state
       if (data && data.ok && data.user) {
@@ -661,8 +652,18 @@
 
       return data;
     } catch (err) {
-      console.warn(`[Cloud API] ${action} fallback to local DB: ${err.message}`);
-      return executeLocalRequest(payload);
+      console.warn(`[Cloud API] ${action} failed: ${err.message}`);
+      // ตรวจเซสชันตอนเปิดหน้า: โยนข้อผิดพลาดให้ผู้เรียกใช้ข้อมูลแคชต่อ ไม่ถือว่าเซสชันหมดอายุ
+      if (action === "get_session") throw err;
+      // ความคืบหน้าการอ่านเก็บในเครื่องไว้ก่อนได้ สเต็ปถัดไปจะส่งค่าสะสมขึ้นเซิร์ฟเวอร์อีกครั้ง
+      if (action === "save_step_progress") {
+        try {
+          return await executeLocalRequest(payload);
+        } catch (localErr) {
+          return { ok: false, error: OFFLINE_ERROR };
+        }
+      }
+      return { ok: false, offline: true, error: OFFLINE_ERROR };
     }
   }
 

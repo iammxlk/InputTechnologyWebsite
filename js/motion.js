@@ -421,9 +421,16 @@
     cardEl.classList.add(cls);
   }
 
+  const modalLeaveTimers = new WeakMap();
+
   function animateModalOpen(modalEl) {
     if (!modalEl) return;
-    modalEl.classList.remove("hidden");
+    const pendingLeave = modalLeaveTimers.get(modalEl);
+    if (pendingLeave) {
+      clearTimeout(pendingLeave);
+      modalLeaveTimers.delete(modalEl);
+    }
+    modalEl.classList.remove("hidden", "is-modal-leaving");
     document.body.classList.add("is-modal-open");
     syncAllFloatingFields(modalEl);
     if (isReducedMotion()) return;
@@ -435,8 +442,24 @@
   function animateModalClose(modalEl, onClosed) {
     if (!modalEl) return;
     modalEl.classList.remove("is-modal-entering");
-    modalEl.classList.add("hidden");
-    const anyModalOpen = Boolean(document.querySelector(".modal-overlay:not(.hidden)"));
+    if (isReducedMotion() || modalEl.classList.contains("hidden")) {
+      modalEl.classList.remove("is-modal-leaving");
+      modalEl.classList.add("hidden");
+    } else {
+      // ออกเร็วกว่าเข้า: เล่นแอนิเมชันปิด 160ms แล้วจึงซ่อนจริง
+      modalEl.classList.add("is-modal-leaving");
+      const prev = modalLeaveTimers.get(modalEl);
+      if (prev) clearTimeout(prev);
+      modalLeaveTimers.set(
+        modalEl,
+        setTimeout(() => {
+          modalLeaveTimers.delete(modalEl);
+          modalEl.classList.remove("is-modal-leaving");
+          modalEl.classList.add("hidden");
+        }, 170)
+      );
+    }
+    const anyModalOpen = Boolean(document.querySelector(".modal-overlay:not(.hidden):not(.is-modal-leaving)"));
     if (!anyModalOpen) {
       document.body.classList.remove("is-modal-open");
     }

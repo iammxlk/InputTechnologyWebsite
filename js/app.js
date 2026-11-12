@@ -30,6 +30,7 @@
       window.SoundEngine?.playPop();
     }
     if (target !== "lessons") {
+      window.LearningEngine?.abandonActiveQuiz?.();
       window.LearningEngine?.stopActiveTimer();
       document.body.classList.remove("is-reader-open", "is-drawer-open");
     }
@@ -373,13 +374,13 @@
             const bestScore = Number(prog.best_quiz_score || 0);
             const bestTime = Number(prog.best_quiz_time_sec || 0);
 
-            let readLabel = "ยังเรียนไม่ครบหน่วย";
+            let readLabel = "ยังไม่ได้เรียน";
             let readClass = "";
             if (isRead) {
               readLabel = "เรียนครบแล้ว";
               readClass = "is-done";
             } else if (stepsDone > 0) {
-              readLabel = `ยังเรียนไม่ครบ (${stepsDone} สเต็ป)`;
+              readLabel = `อ่านถึงสเต็ป ${stepsDone}`;
               readClass = "is-partial";
             }
 
@@ -731,7 +732,16 @@
 
   async function bootstrap() {
     bindGlobalEvents();
-    const loggedIn = await window.AuthManager.initAuth();
+    // วาดหน้าแรกจากข้อมูลแคชทันที แล้วซิงก์กับเซิร์ฟเวอร์เบื้องหลัง ผู้เรียนไม่ต้องรอเครือข่าย
+    const loggedIn = window.AuthManager.initAuth({
+      onSynced() {
+        if (!window.AuthManager.isAuthenticated()) return;
+        const mode = window.LearningEngine?.getMode?.();
+        // กำลังอ่านหรือทำแบบทดสอบอยู่: ไม่วาดซ้ำ กันหน้าจอกระพริบและโฟกัสหลุด
+        if (activeView === "lessons" && mode && mode !== "directory") return;
+        renderActiveView();
+      }
+    });
     if (loggedIn) {
       switchView("home", { scrollTop: false });
     }

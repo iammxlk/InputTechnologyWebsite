@@ -26,6 +26,7 @@
   let quizState = null;
   let quizTimerId = null;
   let countdownTimerId = null;
+  let countdownGoTimeoutId = null;
   let countdownSecondsLeft = 5;
 
   /* ==========================================================================
@@ -65,6 +66,24 @@
       clearInterval(countdownTimerId);
       countdownTimerId = null;
     }
+    if (countdownGoTimeoutId) {
+      clearTimeout(countdownGoTimeoutId);
+      countdownGoTimeoutId = null;
+    }
+  }
+
+  // ออกจากแบบทดสอบที่ยังทำไม่จบ (สลับหน้า ออกจากระบบ): คีย์ลัดและตัวจับเวลาต้องหยุดทั้งหมด
+  function abandonActiveQuiz() {
+    if (currentMode !== "quiz" && currentMode !== "quiz-countdown") return;
+    stopQuizTimer();
+    quizState = null;
+    currentMode = "directory";
+  }
+
+  function resetForLogout() {
+    stopQuizTimer();
+    quizState = null;
+    currentMode = "directory";
   }
 
   function stopQuizTimer() {
@@ -138,6 +157,8 @@
      2. BACKGROUND PROGRESS SYNC (STEPS & QUIZ SUBMISSION)
      ========================================================================== */
 
+  let stepSaveSeq = 0;
+
   async function syncStepProgress(unitNo, stepsCompleted, isContentRead) {
     const user = window.AuthManager?.getCurrentUser();
     if (!user) return;
@@ -166,6 +187,7 @@
       }
     }
 
+    const saveSeq = ++stepSaveSeq;
     try {
       const res = await window.BackendAPI.saveStepProgress({
         student_id: user.student_id,
@@ -173,6 +195,8 @@
         steps_completed: stepsCompleted,
         is_content_read: Boolean(isContentRead)
       });
+      // มีคำขอที่ใหม่กว่าส่งออกไปแล้ว: ทิ้งคำตอบนี้ ไม่ให้ทับความคืบหน้าล่าสุดบนหน้าจอ
+      if (saveSeq !== stepSaveSeq) return;
       if (res && res.ok) {
         window.AuthManager.updateSessionData(res.user, res.unit_progress, { silent: true });
       }
@@ -270,8 +294,8 @@
                     <span>${
                       isPassed || isContentRead
                         ? "ทบทวนเนื้อหาบทเรียน"
-                        : stepsDone > 0
-                        ? `เรียนต่อสเต็ปที่ ${Math.min(totalSteps, stepsDone + 1)}`
+                        : stepsDone > 1
+                        ? `เรียนต่อสเต็ปที่ ${Math.min(totalSteps, stepsDone)}`
                         : "เริ่มเรียนเนื้อหาทีละสเต็ป"
                     }</span>
                     ${icon("arrow-right", "icon-nudge-right")}
@@ -338,8 +362,6 @@
     }
 
     currentMode = "reader";
-
-    // Always start at step 0 (Step 1)
     currentStepIdx = 0;
 
     // Highest step unlocked:
@@ -350,6 +372,8 @@
     } else {
       const savedSteps = Math.max(0, Number(prog.steps_completed || 0));
       maxStepReachedInSession = Math.max(0, Math.min(totalSteps - 1, savedSteps > 0 ? savedSteps - 1 : 0));
+      // ยังอ่านไม่ครบ: เปิดต่อที่สเต็ปล่าสุดที่เคยเปิดไว้ ตรงกับป้ายปุ่ม "เรียนต่อสเต็ปที่ N"
+      currentStepIdx = maxStepReachedInSession;
     }
 
     toggleLessonsContainers(false);
@@ -978,7 +1002,8 @@
 
     window.SoundEngine?.playCountdownGo();
 
-    setTimeout(() => {
+    countdownGoTimeoutId = setTimeout(() => {
+      countdownGoTimeoutId = null;
       if (currentMode !== "quiz-countdown") return;
       currentMode = "quiz";
       renderQuizWorkspace();
@@ -1292,17 +1317,29 @@
       return;
     }
 
+    const attempt = quizState;
+    const isStale = () => quizState !== attempt || currentMode !== "result";
     window.MotionEngine?.startTopLoader();
     try {
       const res = await window.BackendAPI.submitUnitQuiz({
         student_id: user.student_id,
-        unit_no: quizState.unitNo,
-        score: quizState.score,
+        unit_no: attempt.unitNo,
+        score: attempt.score,
         time_sec: finalTimeSec
       });
 
       if (!res || !res.ok) {
         throw new Error((res && res.error) || "บันทึกผลคะแนนไม่สำเร็จ");
+      }
+
+      attempt.isSubmitting = false;
+      attempt.savedResult = res;
+      if (isStale()) {
+        // ผู้เรียนเปิดหน้าอื่นหรือเริ่มสอบรอบใหม่ไปแล้ว: เก็บผลเงียบ ๆ ไม่วาดทับ
+        if (res.user) {
+          window.AuthManager.updateSessionData(res.user, res.unit_progress, { silent: true });
+        }
+        return;
       }
 
       if (res.user) {
@@ -1325,7 +1362,11 @@
         passed ? "success" : "info"
       );
     } catch (err) {
-      quizState.isSubmitting = false;
+      attempt.isSubmitting = false;
+      if (isStale()) {
+        window.AppUtils.showToast(`บันทึกคะแนนหน่วยที่ ${attempt.unitNo} ไม่สำเร็จ กรุณาทำแบบทดสอบอีกครั้ง`, "error");
+        return;
+      }
       const rawMsg = (err && err.message) ? err.message : String(err);
       if (rawMsg.includes("Cannot read properties of null") || rawMsg.includes("student_id")) {
         quizState.saveError = "เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล กรุณากดลองบันทึกซ้ำ";
@@ -1796,9 +1837,12 @@
     // Keyboard navigation for Quiz Cockpit (1-4 for fast-tap answers, Space/Enter to advance)
     window.addEventListener("keydown", (e) => {
       if (currentMode !== "quiz" || !quizState) return;
+      if (window.AppController?.getActiveView?.() !== "lessons") return;
+      if (!window.AuthManager?.isAuthenticated?.()) return;
+      if (document.querySelector(".modal-overlay:not(.hidden)")) return;
 
       const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : "";
-      if (activeTag === "input" || activeTag === "textarea") return;
+      if (activeTag === "input" || activeTag === "textarea" || activeTag === "select") return;
 
       if (e.repeat || e.ctrlKey || e.altKey || e.metaKey) return;
 
@@ -1821,6 +1865,15 @@
         }
       } else {
         if (e.key === "Enter" || e.key === " " || e.key === "ArrowRight") {
+          // Enter/Space บนปุ่มอื่น (ออก ธีม เสียง โปรไฟล์) ต้องกดปุ่มนั้น ไม่ใช่ข้ามข้อ
+          const focusedControl = e.target && e.target.closest ? e.target.closest("button, a, [role='button']") : null;
+          if (
+            focusedControl &&
+            e.key !== "ArrowRight" &&
+            !focusedControl.matches("#btn-quiz-next-question, .quiz-option-btn")
+          ) {
+            return;
+          }
           e.preventDefault();
           advanceQuizOrSubmit();
         }
@@ -1836,6 +1889,9 @@
     openUnit,
     startUnitQuiz,
     stopActiveTimer: stopQuizTimer,
+    abandonActiveQuiz,
+    resetForLogout,
+    getMode: () => currentMode,
     renderCurrentLessonsView() {
       if (currentMode === "reader") {
         toggleLessonsContainers(false);

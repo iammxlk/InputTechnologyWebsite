@@ -10,6 +10,24 @@
   let currentUser = null;
   let unitProgressMap = {};
   let pendingRegisterAvatarBase64 = "";
+  let isAvatarUploading = false;
+  let registerAvatarNoteDefault = null;
+
+  // คืนช่องรูปโปรไฟล์ของฟอร์มสมัครให้ว่าง ไม่ให้รูปของคนก่อนหน้าค้างอยู่บนเครื่องที่ใช้ร่วมกัน
+  function resetRegisterAvatarPreview() {
+    pendingRegisterAvatarBase64 = "";
+    const input = document.getElementById("reg-avatar-input");
+    const preview = document.getElementById("reg-avatar-preview-img");
+    const placeholder = document.getElementById("reg-avatar-placeholder");
+    const note = document.getElementById("reg-avatar-filename");
+    if (input) input.value = "";
+    if (preview) {
+      preview.classList.add("hidden");
+      preview.src = "favicon.svg";
+    }
+    if (placeholder) placeholder.classList.remove("hidden");
+    if (note && registerAvatarNoteDefault !== null) note.textContent = registerAvatarNoteDefault;
+  }
 
   function loadStoredSession() {
     try {
@@ -24,13 +42,48 @@
 
   function persistSession(userObj) {
     currentUser = userObj;
-    localStorage.setItem(CFG.STORAGE_KEYS.SESSION_USER, JSON.stringify(userObj));
+    try {
+      localStorage.setItem(CFG.STORAGE_KEYS.SESSION_USER, JSON.stringify(userObj));
+    } catch (e) {
+      // พื้นที่เก็บข้อมูลเต็มหรือถูกปิด: ใช้เซสชันในหน่วยความจำต่อได้จนกว่าจะปิดแท็บ
+    }
+    saveUnitMapToStorage();
+  }
+
+  // ความคืบหน้ารายหน่วยเก็บคู่กับเซสชัน เปิดหน้าใหม่จึงวาดสถานะจริงได้ทันทีโดยไม่รอเครือข่าย
+  const UNIT_MAP_KEY = `${CFG.STORAGE_KEYS.SESSION_USER}_units`;
+
+  function setUnitProgressMap(map) {
+    unitProgressMap = map || {};
+    saveUnitMapToStorage();
+  }
+
+  function saveUnitMapToStorage() {
+    if (!currentUser) return;
+    try {
+      localStorage.setItem(UNIT_MAP_KEY, JSON.stringify({ student_id: currentUser.student_id, units: unitProgressMap }));
+    } catch (e) {}
+  }
+
+  function loadStoredUnitMap(studentId) {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(UNIT_MAP_KEY) || "null");
+      if (parsed && String(parsed.student_id) === String(studentId) && parsed.units && typeof parsed.units === "object") {
+        return parsed.units;
+      }
+    } catch (e) {}
+    return {};
   }
 
   function clearSession() {
+    try {
+      localStorage.removeItem(UNIT_MAP_KEY);
+    } catch (e) {}
     currentUser = null;
     unitProgressMap = {};
-    localStorage.removeItem(CFG.STORAGE_KEYS.SESSION_USER);
+    try {
+      localStorage.removeItem(CFG.STORAGE_KEYS.SESSION_USER);
+    } catch (e) {}
   }
 
   function enforceRouteGuard() {
@@ -217,6 +270,7 @@
     const regAvatarPreview = document.getElementById("reg-avatar-preview-img");
     const regAvatarPlaceholder = document.getElementById("reg-avatar-placeholder");
     const regAvatarFilename = document.getElementById("reg-avatar-filename");
+    if (regAvatarFilename) registerAvatarNoteDefault = regAvatarFilename.textContent;
 
     regAvatarInput?.addEventListener("change", async (e) => {
       const file = e.target.files && e.target.files[0];
@@ -379,6 +433,7 @@
         registerForm.reset();
         window.MotionEngine?.syncAllFloatingFields(registerForm);
         pendingRegisterAvatarBase64 = "";
+        resetRegisterAvatarPreview();
         enforceRouteGuard();
         window.SoundEngine?.playSuccess();
 
@@ -414,15 +469,24 @@
     // Update Avatar inside Profile Modal
     const modalAvatarInput = document.getElementById("modal-avatar-upload-input");
     modalAvatarInput?.addEventListener("change", async (e) => {
-      const file = e.target.files && e.target.files[0];
-      if (!file || !currentUser) return;
+      const input = e.target;
+      const file = input.files && input.files[0];
+      if (!file || !currentUser || isAvatarUploading) return;
+      const ownerId = currentUser.student_id;
+      const pickLabel = document.querySelector('label[for="modal-avatar-upload-input"]');
+      isAvatarUploading = true;
+      pickLabel?.classList.add("is-busy");
+      pickLabel?.setAttribute("aria-busy", "true");
+      window.MotionEngine?.startTopLoader();
       try {
         setFormAlert("profile-modal-alert", "");
         const base64 = await window.BackendAPI.compressImageToBase64(file);
         const res = await window.BackendAPI.updateProfile({
-          student_id: currentUser.student_id,
+          student_id: ownerId,
           avatar_base64: base64
         });
+        // ออกจากระบบหรือสลับบัญชีระหว่างอัปโหลด: ทิ้งผลลัพธ์
+        if (!currentUser || currentUser.student_id !== ownerId) return;
         if (!res || !res.ok) {
           setFormAlert("profile-modal-alert", (res && res.error) || "อัปเดตรูปไม่สำเร็จ");
           return;
@@ -436,6 +500,13 @@
         window.AppUtils.showToast("อัปเดตรูปโปรไฟล์เรียบร้อยแล้ว", "success");
       } catch (err) {
         setFormAlert("profile-modal-alert", err.message || "เกิดข้อผิดพลาด");
+      } finally {
+        isAvatarUploading = false;
+        pickLabel?.classList.remove("is-busy");
+        pickLabel?.removeAttribute("aria-busy");
+        window.MotionEngine?.doneTopLoader();
+        // ล้างค่าเพื่อให้เลือกไฟล์เดิมซ้ำได้หลังอัปโหลดไม่สำเร็จ
+        input.value = "";
       }
     });
 
@@ -507,14 +578,16 @@
     // Logout Button
     document.getElementById("logout-btn")?.addEventListener("click", () => {
       closeProfileModal();
+      window.LearningEngine?.resetForLogout?.();
       clearSession();
+      resetRegisterAvatarPreview();
       switchAuthMode("login");
       enforceRouteGuard();
       window.AppUtils.showToast("ออกจากระบบเรียบร้อยแล้ว", "info");
     });
   }
 
-  async function initAuth() {
+  function initAuth(options = {}) {
     bindAuthEvents();
     const cached = loadStoredSession();
     if (!cached) {
@@ -523,24 +596,33 @@
     }
 
     currentUser = cached;
+    unitProgressMap = loadStoredUnitMap(cached.student_id);
     enforceRouteGuard();
+    syncSessionInBackground(cached).then((ok) => {
+      if (ok && typeof options.onSynced === "function") options.onSynced();
+    });
+    return true;
+  }
 
-    // ซิงก์ข้อมูลล่าสุดจากเซิร์ฟเวอร์เบื้องหลัง
+  // ซิงก์ข้อมูลล่าสุดจากเซิร์ฟเวอร์เบื้องหลัง คืน true เมื่อได้ข้อมูลใหม่มาแทนแคช
+  async function syncSessionInBackground(cached) {
     try {
       const res = await window.BackendAPI.getSession(cached.student_id);
+      // ผู้ใช้ออกจากระบบหรือเข้าบัญชีอื่นระหว่างรอ: ไม่นำผลของบัญชีเดิมมาใช้
+      if (!currentUser || currentUser.student_id !== cached.student_id) return false;
       if (res && res.ok && res.user) {
-        unitProgressMap = res.unit_progress || {};
+        setUnitProgressMap(res.unit_progress || {});
         persistSession(res.user);
         renderNavbarProfile();
-      } else {
-        clearSession();
-        enforceRouteGuard();
-        return false;
+        return true;
       }
+      window.LearningEngine?.resetForLogout?.();
+      clearSession();
+      enforceRouteGuard();
     } catch (e) {
       // กรณีออฟไลน์ชั่วคราว ใช้ข้อมูลแคชล่าสุดต่อได้
     }
-    return true;
+    return false;
   }
 
   window.AuthManager = {
@@ -549,8 +631,11 @@
     getCurrentUser: () => currentUser,
     getUnitProgressMap: () => unitProgressMap,
     updateSessionData(user, unitMap, options) {
+      // คำตอบที่มาถึงหลังออกจากระบบ หรือเป็นของบัญชีอื่น ต้องไม่ปลุกเซสชันเดิมกลับมา
+      if (!currentUser) return;
+      if (user && String(user.student_id) !== String(currentUser.student_id)) return;
       if (user) persistSession(user);
-      if (unitMap) unitProgressMap = unitMap;
+      if (unitMap) setUnitProgressMap(unitMap);
       renderNavbarProfile();
       // silent: บันทึกความคืบหน้าเบื้องหลังโดยไม่วาดหน้าปัจจุบันซ้ำ (กันหน้าจอกระพริบระหว่างอ่าน)
       if (options && options.silent) return;
