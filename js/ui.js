@@ -26,10 +26,16 @@
      2. LESSON CARD
      ========================================================================== */
 
+  function isUnitLocked(unitNo) {
+    const maxUnlocked = Number(CFG.MAX_UNLOCKED_UNIT || CFG.TOTAL_UNITS);
+    return Number(unitNo) > maxUnlocked;
+  }
+
   function getUnitState(unitNo, unitMap) {
     const prog = (unitMap && unitMap[unitNo]) || {};
     const unitData = window.CURRICULUM_DATA && window.CURRICULUM_DATA[unitNo];
-    const available = Boolean(unitData);
+    const locked = isUnitLocked(unitNo);
+    const available = Boolean(unitData) && !locked;
     const totalSteps = unitData ? unitData.steps.length : 0;
     const passed = Boolean(prog.is_passed);
     const contentRead = Boolean(prog.is_content_read || passed);
@@ -37,9 +43,13 @@
     const stepsDone = Math.min(totalSteps, contentRead ? totalSteps : Number(prog.steps_completed || 0));
 
     let statusClass = "is-neutral";
-    let statusLabel = available ? "ยังไม่เริ่ม" : "รออัปเดตเนื้อหา";
-    let statusIcon = "";
-    if (passed) {
+    let statusLabel = locked ? "ล็อกอยู่" : available ? "ยังไม่เริ่ม" : "รออัปเดตเนื้อหา";
+    let statusIcon = locked ? icon("lock") : "";
+    if (locked) {
+      statusClass = "is-neutral";
+      statusLabel = "ล็อกอยู่";
+      statusIcon = icon("lock");
+    } else if (passed) {
       statusClass = "is-pass";
       statusLabel = `เรียนจบ (${prog.best_quiz_score}/10)`;
       statusIcon = icon("check");
@@ -54,7 +64,7 @@
       statusLabel = `กำลังเรียน (${stepsDone}/${totalSteps} ขั้น)`;
     }
 
-    return { prog, available, totalSteps, passed, contentRead, attempts, stepsDone, statusClass, statusLabel, statusIcon };
+    return { prog, locked, available, totalSteps, passed, contentRead, attempts, stepsDone, statusClass, statusLabel, statusIcon };
   }
 
   /**
@@ -66,34 +76,47 @@
     const esc = Utils.escapeHtml;
     const st = getUnitState(unit.no, unitMap);
     const openAttr = opts.mode === "lessons" ? "data-enter-unit" : "data-open-unit";
-    const actionLabel = st.passed || st.contentRead ? "ทบทวน" : st.stepsDone > 0 ? "เรียนต่อ" : "เข้าเรียน";
+    const actionLabel = st.locked
+      ? "ล็อกอยู่"
+      : st.passed || st.contentRead
+      ? "ทบทวน"
+      : st.stepsDone > 0
+      ? "เรียนต่อ"
+      : "เข้าเรียน";
 
-    const metaHtml =
-      st.attempts > 0 && Number(st.prog.best_quiz_time_sec) > 0
-        ? `${icon("clock")}<span>เวลาเร็วสุด ${Utils.formatDuration(st.prog.best_quiz_time_sec)}</span>`
-        : st.available
-        ? `${icon("book")}<span>${st.totalSteps} ขั้น</span><span class="dot-sep" aria-hidden="true"></span><span>แบบทดสอบ 10 ข้อ</span>`
-        : `<span>รออัปเดตเนื้อหา</span>`;
+    const metaHtml = st.locked
+      ? `${icon("lock")}<span>อยู่ระหว่างปรับปรุงเนื้อหา</span>`
+      : st.attempts > 0 && Number(st.prog.best_quiz_time_sec) > 0
+      ? `${icon("clock")}<span>เวลาเร็วสุด ${Utils.formatDuration(st.prog.best_quiz_time_sec)}</span>`
+      : st.available
+      ? `${icon("book")}<span>${st.totalSteps} ขั้น</span><span class="dot-sep" aria-hidden="true"></span><span>แบบทดสอบ 10 ข้อ</span>`
+      : `<span>รออัปเดตเนื้อหา</span>`;
 
     const quizBtn =
       opts.mode === "lessons" && st.available && st.contentRead
         ? `<button type="button" class="btn-secondary btn-sm" data-start-unit-quiz="${unit.no}">ทำแบบทดสอบ</button>`
         : "";
 
-    const bookmarked = Bookmarks.has(unit.no);
+    const bookmarked = !st.locked && Bookmarks.has(unit.no);
 
     return `
       <article class="lesson-card ${opts.selected ? "is-selected-unit" : ""}" data-unit-no="${unit.no}">
         <span class="lesson-card-number" aria-hidden="true">${String(unit.no).padStart(2, "0")}</span>
         <div class="lesson-card-top">
-          <span class="unit-number-badge ${st.passed ? "is-done" : ""}">หมวด ${unit.moduleId}</span>
+          <span class="unit-number-badge ${st.passed && !st.locked ? "is-done" : ""}">หมวด ${unit.moduleId}</span>
           <span class="status-pill ${st.statusClass}">${st.statusIcon}${esc(st.statusLabel)}</span>
           ${bookmarked ? `<span class="status-pill is-info" title="บันทึกไว้">${icon("bookmark", "icon-fill")}<span class="sr-only">บันทึกไว้</span></span>` : ""}
         </div>
         <h3 class="lesson-card-title">
-          <button type="button" class="lesson-card-link" ${openAttr}="${unit.no}">
-            หน่วยที่ ${unit.no}: ${Utils.formatUnitTitleHtml(unit.title)}
-          </button>
+          ${
+            st.locked
+              ? `<button type="button" class="lesson-card-link" disabled aria-disabled="true">
+                   หน่วยที่ ${unit.no}: ${Utils.formatUnitTitleHtml(unit.title)}
+                 </button>`
+              : `<button type="button" class="lesson-card-link" ${openAttr}="${unit.no}">
+                   หน่วยที่ ${unit.no}: ${Utils.formatUnitTitleHtml(unit.title)}
+                 </button>`
+          }
         </h3>
         <p class="lesson-card-desc">${esc(unit.subtitle)}</p>
         ${
@@ -108,10 +131,17 @@
           <span class="lesson-card-meta">${metaHtml}</span>
           <div class="lesson-card-actions">
             ${quizBtn}
-            <button type="button" class="btn-primary btn-sm" ${openAttr}="${unit.no}" aria-label="${actionLabel}หน่วยที่ ${unit.no}">
-              <span>${actionLabel}</span>
-              ${icon("arrow-right", "icon-nudge-right")}
-            </button>
+            ${
+              st.locked
+                ? `<button type="button" class="btn-secondary btn-sm" disabled aria-label="หน่วยที่ ${unit.no} ล็อกอยู่">
+                     ${icon("lock")}
+                     <span>ล็อกอยู่</span>
+                   </button>`
+                : `<button type="button" class="btn-primary btn-sm" ${openAttr}="${unit.no}" aria-label="${actionLabel}หน่วยที่ ${unit.no}">
+                     <span>${actionLabel}</span>
+                     ${icon("arrow-right", "icon-nudge-right")}
+                   </button>`
+            }
           </div>
         </div>
       </article>
@@ -358,6 +388,7 @@
   };
 
   Utils.icon = icon;
+  Utils.isUnitLocked = isUnitLocked;
   Utils.getUnitState = getUnitState;
   Utils.renderLessonCard = renderLessonCard;
   window.Bookmarks = Bookmarks;

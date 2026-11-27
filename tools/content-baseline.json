@@ -1,34 +1,34 @@
 {
   "totals": {
     "units": 16,
-    "steps": 99,
-    "blocks": 324,
+    "steps": 100,
+    "blocks": 368,
     "questions": 172
   },
   "config": {
     "totalUnits": 16,
     "questionsPerUnit": 10,
     "passScore": 8,
-    "unitsMeta": "c951330a2ef5be38",
+    "unitsMeta": "9e393f993f76b5b2",
     "modules": "aa213c1b7dc62175",
     "course": "231fa6fc82b5e4a7"
   },
   "units": {
     "1": {
-      "steps": 6,
-      "blocks": 24,
+      "steps": 7,
+      "blocks": 43,
       "questions": 10,
-      "lessonText": "e3cbb18413128067",
-      "quizText": "2d8e968021e21048",
-      "answers": "0130201231"
+      "lessonText": "b22ac8ddc2a51eac",
+      "quizText": "9b1be2e6daf8b0c3",
+      "answers": "0213013203"
     },
     "2": {
       "steps": 6,
-      "blocks": 23,
+      "blocks": 48,
       "questions": 10,
-      "lessonText": "a30baadbd44c27d6",
-      "quizText": "eafc3b898ef48a71",
-      "answers": "3210132023"
+      "lessonText": "23295fde93255b36",
+      "quizText": "c0395af46206001c",
+      "answers": "1302103201"
     },
     "3": {
       "steps": 6,

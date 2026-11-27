@@ -252,9 +252,10 @@
     const currentUnit = getUnitMeta(activeUnitNo);
     const currentMod = CFG.MODULES_SYLLABUS.find((m) => m.id === currentUnit.moduleId);
     const currentProg = unitMap[currentUnit.no] || {};
+    const isLocked = Boolean(window.AppUtils?.isUnitLocked?.(currentUnit.no));
     const isPassed = Boolean(currentProg.is_passed);
     const isContentRead = Boolean(currentProg.is_content_read || isPassed);
-    const isAvailable = hasUnitCurriculum(currentUnit.no);
+    const isAvailable = hasUnitCurriculum(currentUnit.no) && !isLocked;
     const unitData = getUnitCurriculum(currentUnit.no);
     const totalSteps = unitData ? unitData.steps.length : 5;
     const stepsDone = Math.min(
@@ -271,7 +272,7 @@
         <div class="selected-unit-banner-inner">
           <div class="selected-unit-copy">
             <div class="selected-unit-tags">
-              <span class="unit-number-badge ${isPassed ? "is-done" : ""}">${esc(currentUnit.code)}</span>
+              <span class="unit-number-badge ${isPassed && !isLocked ? "is-done" : ""}">${esc(currentUnit.code)}</span>
               <span class="status-pill is-neutral is-wrap">${esc(currentMod ? currentMod.title : "")}</span>
               <span class="status-pill ${st.statusClass}">${st.statusIcon}${esc(st.statusLabel)}</span>
             </div>
@@ -283,7 +284,9 @@
 
           <div class="btn-row">
             ${
-              isAvailable
+              isLocked
+                ? `<button type="button" class="btn-secondary" disabled>${icon("lock")}<span>ยังไม่เปิดให้เรียน (อยู่ระหว่างปรับปรุงเนื้อหา)</span></button>`
+                : isAvailable
                 ? `
                   ${
                     isContentRead
@@ -330,6 +333,16 @@
 
   function openUnit(unitNo, startSubMode = "reader") {
     const targetNo = Math.max(1, Math.min(CFG.TOTAL_UNITS, Number(unitNo) || 1));
+
+    if (window.AppUtils?.isUnitLocked?.(targetNo)) {
+      window.AppUtils?.showToast(
+        `หน่วยที่ ${targetNo} ยังล็อกอยู่ อยู่ระหว่างปรับปรุงเนื้อหา`,
+        "warn"
+      );
+      window.SoundEngine?.playError?.();
+      return;
+    }
+
     activeUnitNo = targetNo;
 
     if (!hasUnitCurriculum(targetNo)) {
@@ -432,6 +445,12 @@
       /(^|\n)(ตัวอย่างที่\s*\d+):[ \t]*([^\n]+)\n?/g,
       (m, p1, tag, title) =>
         `${p1}<strong class="lesson-subheading"><span class="lesson-subheading-tag">${tag}</span>${title}</strong>`
+    );
+
+    // 1.05 บรรทัดที่เป็นหัวข้อย่อยตัวหนาทั้งบรรทัด เช่น "**หัวข้อย่อย**" แสดงเป็นหัวข้อแยกสัดส่วนชัดเจน
+    safe = safe.replace(
+      /(?:^|\n)\*\*([^\n*]+)\*\*\n?/g,
+      (m, title) => `<strong class="lesson-subheading">${title}</strong>`
     );
 
     // 1.1 ป้ายสั้นต้นบรรทัด เช่น "สาเหตุ: ..." หรือ "วิธีแก้: ..." แสดงเป็นตัวหนาแทนเครื่องหมายทวิภาค
@@ -902,6 +921,14 @@
 
   function startUnitQuiz(unitNo) {
     const targetNo = Number(unitNo) || activeUnitNo;
+    if (window.AppUtils?.isUnitLocked?.(targetNo)) {
+      window.AppUtils?.showToast(
+        `หน่วยที่ ${targetNo} ยังล็อกอยู่ อยู่ระหว่างปรับปรุงเนื้อหา`,
+        "warn"
+      );
+      window.SoundEngine?.playError?.();
+      return;
+    }
     if (!hasUnitCurriculum(targetNo)) return;
 
     activeUnitNo = targetNo;
@@ -1398,7 +1425,10 @@
     const bestTime = Number(unitRecord.best_quiz_time_sec || quizState.finalTimeSec);
 
     const nextUnitNo = quizState.unitNo + 1;
-    const canOpenNextUnit = nextUnitNo <= CFG.TOTAL_UNITS && hasUnitCurriculum(nextUnitNo);
+    const canOpenNextUnit =
+      nextUnitNo <= CFG.TOTAL_UNITS &&
+      hasUnitCurriculum(nextUnitNo) &&
+      !window.AppUtils?.isUnitLocked?.(nextUnitNo);
 
     let saveBannerHtml = "";
     if (quizState.isSubmitting) {

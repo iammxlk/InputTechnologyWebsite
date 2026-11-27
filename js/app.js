@@ -72,7 +72,16 @@
   }
 
   function openUnitInLessons(unitNo, startSubMode = "reader") {
-    selectedUnitNo = Math.max(1, Math.min(CFG.TOTAL_UNITS, Number(unitNo) || 1));
+    const targetNo = Math.max(1, Math.min(CFG.TOTAL_UNITS, Number(unitNo) || 1));
+    if (window.AppUtils?.isUnitLocked?.(targetNo)) {
+      window.AppUtils?.showToast(
+        `หน่วยที่ ${targetNo} ยังล็อกอยู่ อยู่ระหว่างปรับปรุงเนื้อหา`,
+        "warn"
+      );
+      window.SoundEngine?.playError?.();
+      return;
+    }
+    selectedUnitNo = targetNo;
     lessonsModuleFilter = "all";
     switchView("lessons", {
       unitNo: selectedUnitNo,
@@ -94,7 +103,8 @@
   }
 
   function getNextRecommendedUnitNo(unitMap) {
-    for (let i = 1; i <= CFG.TOTAL_UNITS; i++) {
+    const maxUnlocked = Number(CFG.MAX_UNLOCKED_UNIT || CFG.TOTAL_UNITS);
+    for (let i = 1; i <= maxUnlocked; i++) {
       const rec = unitMap[i];
       if (!rec || !rec.is_passed) {
         return i;
@@ -152,8 +162,15 @@
 
     if (continueBtn) {
       const labelEl = continueBtn.querySelector("[data-label]") || continueBtn;
+      const maxUnlocked = Number(CFG.MAX_UNLOCKED_UNIT || CFG.TOTAL_UNITS);
+      const allUnlockedPassed = Array.from({ length: maxUnlocked }, (_, idx) => idx + 1).every(
+        (no) => Boolean(unitMap[no]?.is_passed)
+      );
       if (user.passed_units_count >= CFG.TOTAL_UNITS) {
         labelEl.textContent = "ทบทวนบทเรียนทั้ง 16 หน่วย";
+        continueBtn.onclick = () => openUnitInLessons(1);
+      } else if (allUnlockedPassed && maxUnlocked < CFG.TOTAL_UNITS) {
+        labelEl.textContent = `ทบทวนหน่วยที่ 1–${maxUnlocked} (รอเปิดหน่วยที่ ${maxUnlocked + 1})`;
         continueBtn.onclick = () => openUnitInLessons(1);
       } else {
         labelEl.textContent = `เริ่มเรียนหน่วยที่ ${nextMeta.no}: ${nextMeta.title}`;
@@ -273,6 +290,9 @@
     if (unitMapEl && window.AppUtils.getUnitState) {
       unitMapEl.innerHTML = CFG.UNITS_METADATA.map((u) => {
         const st = window.AppUtils.getUnitState(u.no, unitMap);
+        if (st.locked) {
+          return `<button type="button" class="unit-map-cell is-idle" disabled aria-label="หน่วยที่ ${u.no} ล็อกอยู่" title="หน่วยที่ ${u.no} ล็อกอยู่ (อยู่ระหว่างปรับปรุงเนื้อหา)">${String(u.no).padStart(2, "0")}</button>`;
+        }
         const cls = st.passed ? "is-pass" : st.stepsDone > 0 || st.attempts > 0 ? "is-progress" : "is-idle";
         const label = st.passed ? "ผ่านเกณฑ์แล้ว" : cls === "is-progress" ? "กำลังเรียน" : "ยังไม่เริ่ม";
         return `<button type="button" class="unit-map-cell ${cls}" data-open-unit="${u.no}" aria-label="หน่วยที่ ${u.no} ${label}" title="หน่วยที่ ${u.no} ${label}">${String(u.no).padStart(2, "0")}</button>`;
@@ -367,6 +387,7 @@
         tbody.innerHTML = filtered
           .map((u) => {
             const prog = unitMap[u.no] || {};
+            const isLocked = Boolean(window.AppUtils?.isUnitLocked?.(u.no));
             const isPassed = Boolean(prog.is_passed);
             const isRead = Boolean(prog.is_content_read);
             const stepsDone = Number(prog.steps_completed || 0);
@@ -374,30 +395,34 @@
             const bestScore = Number(prog.best_quiz_score || 0);
             const bestTime = Number(prog.best_quiz_time_sec || 0);
 
-            let readLabel = "ยังไม่ได้เรียน";
+            let readLabel = isLocked ? "ยังไม่เปิดให้เรียน" : "ยังไม่ได้เรียน";
             let readClass = "";
-            if (isRead) {
-              readLabel = "เรียนครบแล้ว";
-              readClass = "is-done";
-            } else if (stepsDone > 0) {
-              readLabel = `อ่านถึงสเต็ป ${stepsDone}`;
-              readClass = "is-partial";
+            if (!isLocked) {
+              if (isRead) {
+                readLabel = "เรียนครบแล้ว";
+                readClass = "is-done";
+              } else if (stepsDone > 0) {
+                readLabel = `อ่านถึงสเต็ป ${stepsDone}`;
+                readClass = "is-partial";
+              }
             }
 
             let statusPillClass = "is-neutral";
-            let statusPillText = "รอเข้าเรียน";
-            if (isPassed) {
-              statusPillClass = "is-pass";
-              statusPillText = "ผ่านเกณฑ์ 80%";
-            } else if (attempts > 0) {
-              statusPillClass = "is-warn";
-              statusPillText = "ยังไม่ผ่านเกณฑ์";
+            let statusPillText = isLocked ? "ล็อกอยู่" : "รอเข้าเรียน";
+            if (!isLocked) {
+              if (isPassed) {
+                statusPillClass = "is-pass";
+                statusPillText = "ผ่านเกณฑ์ 80%";
+              } else if (attempts > 0) {
+                statusPillClass = "is-warn";
+                statusPillText = "ยังไม่ผ่านเกณฑ์";
+              }
             }
 
             return `
               <tr>
                 <td>
-                  <span class="unit-number-badge ${isPassed ? "is-done" : ""}">${esc(u.code)}</span>
+                  <span class="unit-number-badge ${isPassed && !isLocked ? "is-done" : ""}">${esc(u.code)}</span>
                 </td>
                 <td>
                   <strong class="progress-unit-title">
@@ -422,16 +447,20 @@
                   }
                 </td>
                 <td>
-                  <span class="status-pill ${statusPillClass}">${isPassed ? window.AppUtils.icon("check") : ""}${esc(statusPillText)}</span>
+                  <span class="status-pill ${statusPillClass}">${isLocked ? window.AppUtils.icon("lock") : isPassed ? window.AppUtils.icon("check") : ""}${esc(statusPillText)}</span>
                 </td>
                 <td class="num">
-                  <button
-                    type="button"
-                    class="${isPassed ? "btn-secondary" : "btn-primary"} btn-sm"
-                    data-open-unit="${u.no}"
-                  >
-                    ${isPassed ? "ทบทวน" : "เข้าเรียน"}
-                  </button>
+                  ${
+                    isLocked
+                      ? `<button type="button" class="btn-secondary btn-sm" disabled>${window.AppUtils.icon("lock")}<span>ล็อกอยู่</span></button>`
+                      : `<button
+                           type="button"
+                           class="${isPassed ? "btn-secondary" : "btn-primary"} btn-sm"
+                           data-open-unit="${u.no}"
+                         >
+                           ${isPassed ? "ทบทวน" : "เข้าเรียน"}
+                         </button>`
+                  }
                 </td>
               </tr>
             `;

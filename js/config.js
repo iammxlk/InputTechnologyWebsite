@@ -23,6 +23,7 @@ window.APP_CONFIG = {
   GAS_WEB_APP_URL: "https://script.google.com/macros/s/AKfycbxTWYDzJ_lKa2n4RIt9yFDZep4qzXs6WxESuinSPIpylmobNDjwAxO8Zgfo3dUEJWHn/exec",
 
   TOTAL_UNITS: 16,
+  MAX_UNLOCKED_UNIT: 2, // เปิดให้เรียนถึงหน่วยที่ 2 (หน่วยที่ 3–16 ล็อกไว้ระหว่างทยอยปรับปรุงเนื้อหา)
   QUESTIONS_PER_UNIT: 10,
   PASS_SCORE_PER_UNIT: 8, // เกณฑ์ผ่าน 80% (8 จาก 10 ข้อ)
   PASS_PERCENTAGE: 80,
@@ -72,14 +73,14 @@ window.APP_CONFIG = {
       moduleId: 1,
       code: "Unit 1",
       title: "ข้อมูลดิบและสารสนเทศ",
-      subtitle: "ความแตกต่างข้อมูลดิบกับสารสนเทศ ประเภทข้อมูล 5 รูปแบบ และคุณสมบัติของสารสนเทศที่ดี"
+      subtitle: "ความแตกต่างข้อมูลดิบกับสารสนเทศ วงจร IPO และ Storage ประเภทข้อมูล 5 ประเภท คุณสมบัติของสารสนเทศที่ดี อุปกรณ์ I/O และการจัดการข้อมูลในตารางคำนวณ"
     },
     {
       no: 2,
       moduleId: 1,
       code: "Unit 2",
-      title: "เทคโนโลยีการนำข้อมูลเข้าสู่ระบบคอมพิวเตอร์",
-      subtitle: "ความสำคัญของการนำเข้าข้อมูล วงจร IPO และเปรียบเทียบ Manual Input กับ Automatic Input"
+      title: "เทคโนโลยีการนำข้อมูลเข้าคอมพิวเตอร์",
+      subtitle: "องค์ประกอบระบบนำเข้าและ Digitization หลักการ GIGO และ Data Validation 5 รูปแบบ Manual vs Automated หลักการตรวจจับ 4 กลุ่ม และปัจจัยเลือกใช้ 5 ด้าน"
     },
     {
       no: 3,
