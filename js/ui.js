@@ -66,14 +66,22 @@
   function getNextUnitMeta(unitNo) {
     const canonical = getCanonicalUnitNo(unitNo);
     const idx = CFG.UNITS_METADATA.findIndex((u) => u.no === canonical);
-    return idx >= 0 && idx + 1 < CFG.UNITS_METADATA.length
-      ? CFG.UNITS_METADATA[idx + 1]
-      : null;
+    if (idx < 0) return null;
+    for (let i = idx + 1; i < CFG.UNITS_METADATA.length; i++) {
+      if (!isUnitLocked(CFG.UNITS_METADATA[i].no)) {
+        return CFG.UNITS_METADATA[i];
+      }
+    }
+    return null;
   }
 
   function isUnitLocked(unitNo) {
+    const canonical = getCanonicalUnitNo(unitNo);
+    if (Array.isArray(CFG.UNLOCKED_UNITS)) {
+      return !CFG.UNLOCKED_UNITS.includes(canonical);
+    }
     const maxUnlocked = Number(CFG.MAX_UNLOCKED_UNIT || CFG.TOTAL_UNITS);
-    return getCanonicalUnitNo(unitNo) > maxUnlocked;
+    return canonical > maxUnlocked;
   }
 
   function getUnitState(unitNo, unitMap) {

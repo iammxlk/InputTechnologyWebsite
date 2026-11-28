@@ -165,8 +165,8 @@
 
     if (continueBtn) {
       const labelEl = continueBtn.querySelector("[data-label]") || continueBtn;
-      const maxUnlocked = Number(CFG.MAX_UNLOCKED_UNIT || CFG.TOTAL_UNITS);
       const unlockedUnits = CFG.UNITS_METADATA.filter((u) => !window.AppUtils?.isUnitLocked?.(u.no));
+      const firstLocked = CFG.UNITS_METADATA.find((u) => window.AppUtils?.isUnitLocked?.(u.no));
       const allUnlockedPassed = unlockedUnits.every((u) => Boolean(unitMap[u.no]?.is_passed));
       const nextDisplayNo = window.AppUtils?.getUnitDisplayNo
         ? window.AppUtils.getUnitDisplayNo(nextMeta)
@@ -174,8 +174,11 @@
       if (user.passed_units_count >= CFG.TOTAL_UNITS) {
         labelEl.textContent = "ทบทวนบทเรียนทั้ง 16 หน่วย";
         continueBtn.onclick = () => openUnitInLessons(1);
-      } else if (allUnlockedPassed && maxUnlocked < CFG.TOTAL_UNITS) {
-        labelEl.textContent = `ทบทวนหน่วยที่ 1–${maxUnlocked} (รอเปิดหน่วยที่ ${maxUnlocked + 1})`;
+      } else if (allUnlockedPassed && firstLocked) {
+        const nextLockDisp = window.AppUtils?.getUnitDisplayNo
+          ? window.AppUtils.getUnitDisplayNo(firstLocked)
+          : firstLocked.no;
+        labelEl.textContent = `ทบทวนบทเรียนที่เปิดแล้ว (รอเปิดหน่วยที่ ${nextLockDisp})`;
         continueBtn.onclick = () => openUnitInLessons(1);
       } else {
         labelEl.textContent = `เริ่มเรียนหน่วยที่ ${nextDisplayNo}: ${nextMeta.title}`;

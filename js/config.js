@@ -23,7 +23,8 @@ window.APP_CONFIG = {
   GAS_WEB_APP_URL: "https://script.google.com/macros/s/AKfycbxTWYDzJ_lKa2n4RIt9yFDZep4qzXs6WxESuinSPIpylmobNDjwAxO8Zgfo3dUEJWHn/exec",
 
   TOTAL_UNITS: 16,
-  MAX_UNLOCKED_UNIT: 8, // เปิดให้เรียนถึงหน่วยที่ 7&8 (หน่วยที่ 9–16 ล็อกไว้ระหว่างทยอยปรับปรุงเนื้อหา)
+  MAX_UNLOCKED_UNIT: 8, // หน่วยหลักที่เปิดต่อเนื่อง (1–8)
+  UNLOCKED_UNITS: [1, 2, 3, 4, 5, 6, 7, 8, 11], // เปิดให้เรียนหน่วยที่ 1–4, 5&6, 7&8 และข้ามมาปลดล็อกหน่วยที่ 11 (ล็อก 9, 10, 12–16)
   QUESTIONS_PER_UNIT: 10,
   PASS_SCORE_PER_UNIT: 8, // เกณฑ์ผ่าน 80% (8 จาก 10 ข้อ)
   PASS_PERCENTAGE: 80,
@@ -132,8 +133,8 @@ window.APP_CONFIG = {
       no: 11,
       moduleId: 3,
       code: "Unit 11",
-      title: "เทคโนโลยีระบุตัวตนด้วยคลื่นความถี่วิทยุ (RFID)",
-      subtitle: "องค์ประกอบ Tag / Reader แหล่งพลังงาน Passive / Active ย่านความถี่ LF, HF (13.56 MHz), UHF และปัจจัยที่มีผลต่อการอ่าน"
+      title: "เทคโนโลยี RFID (Radio Frequency Identification)",
+      subtitle: "ความหมายและพัฒนาการ RFID โครงสร้างภายในแท็ก (IC/Antenna) เส้นทางข้อมูล 4 องค์ประกอบ Passive/Active/BAP ย่านความถี่ LF/HF/UHF การแก้ปัญหาอ่านขาด-อ่านเกิน-อ่านซ้ำ และความปลอดภัย"
     },
     {
       no: 12,

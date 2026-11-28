@@ -717,15 +717,35 @@ body.is-quiz-active .nav-links {
 
   .auth-shell {
     grid-template-columns: minmax(0, 1fr);
-    max-width: 620px;
+    max-width: 560px;
+    gap: 22px;
+  }
+
+  .auth-showcase {
+    display: contents;
+  }
+
+  .auth-logo-chip {
+    order: 1;
+  }
+
+  .auth-showcase-copy {
+    order: 2;
+    gap: 10px;
   }
 
   .auth-form-pane {
-    order: -1;
+    order: 3;
+  }
+
+  .auth-glass-foot {
+    order: 4;
+    margin-top: 4px;
   }
 
   .auth-wrapper {
     align-items: flex-start;
+    padding: 80px var(--gutter) 112px;
   }
 }
 
@@ -751,12 +771,59 @@ body.is-quiz-active .nav-links {
     display: none;
   }
 
+  .auth-wrapper {
+    padding: 72px var(--gutter) 44px;
+  }
+
+  /* ซ่อนผู้ช่วยมุมจอบนมือถือเฉพาะหน้าล็อกอิน เพื่อไม่ให้บังช่องรหัสผ่านและปุ่มเข้าสู่ระบบ */
+  body:has(#auth-screen:not(.hidden)) .studio-mascot-companion {
+    display: none;
+  }
+
+  .auth-floating-actions {
+    top: 14px;
+  }
+
+  .auth-shell {
+    gap: 18px;
+  }
+
+  .auth-logo-chip img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .auth-title {
+    font-size: clamp(2rem, 9.2vw, 2.75rem);
+    line-height: 1.18;
+  }
+
+  .auth-title-rest {
+    font-size: 1.125rem;
+    margin-top: 4px;
+  }
+
+  .auth-lead {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+  }
+
+  .auth-form-pane {
+    padding: 20px 18px;
+  }
+
+  .auth-pane-head {
+    margin: 18px 0 14px;
+  }
+
   .auth-spec-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
   }
 
   .auth-spec-box {
-    min-height: 112px;
+    min-height: 108px;
+    padding: 12px;
   }
 
   .progress-score {
