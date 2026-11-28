@@ -50,7 +50,8 @@
     lessons: ["starWave", "starSmile", "starLook", "starSleep"],
     reader: ["starSmile", "starShy", "starWave", "starLook"],
     quiz: ["starWave", "starSmile", "starLook", "starBack"],
-    progress: ["starWave", "starSmile", "starExcited", "starLook"]
+    progress: ["starWave", "starSmile", "starExcited", "starLook"],
+    creator: ["starSmile", "starWave", "starIdea", "starLook"]
   };
 
   const INTERACTIVE_TIPS = [
@@ -64,7 +65,7 @@
     },
     {
       pose: "starWave",
-      text: "กดปุ่มลัดตัวเลข 1-3 บนแป้นพิมพ์เพื่อสลับหน้าเมนูหลักได้ไวทันใจ"
+      text: "กดปุ่มลัดตัวเลข 1-4 บนแป้นพิมพ์เพื่อสลับหน้าเมนูหลักได้ไวทันใจ"
     },
     {
       pose: "cheer",
@@ -134,6 +135,11 @@
       pose: "cheer",
       ambientRoute: "progress",
       text: "สะสมครบทั้ง 16 หน่วย (100%) รับใบเกียรติบัตรประจำรายวิชาได้เลย!"
+    },
+    creator: {
+      pose: "starSmile",
+      ambientRoute: "creator",
+      text: "มีคำถามเกี่ยวกับบทเรียนหรือการใช้งานเว็บ ติดต่อครูอาร์ทได้เลยครับ!"
     }
   };
 
@@ -320,8 +326,11 @@
     const viewHome = document.getElementById("view-home");
     const viewLessons = document.getElementById("view-lessons");
     const viewProgress = document.getElementById("view-progress");
+    const viewCreator = document.getElementById("view-creator");
 
-    if (viewProgress && !viewProgress.classList.contains("hidden")) {
+    if (viewCreator && !viewCreator.classList.contains("hidden")) {
+      setState("creator", { bounce: false });
+    } else if (viewProgress && !viewProgress.classList.contains("hidden")) {
       setState("progress", { bounce: false });
     } else if (viewLessons && !viewLessons.classList.contains("hidden")) {
       const ws = document.getElementById("lesson-workspace");
@@ -416,6 +425,7 @@
       "view-home",
       "view-lessons",
       "view-progress",
+      "view-creator",
       "lesson-workspace",
       "cert-preview-modal"
     ].forEach((id) => {

@@ -33,17 +33,31 @@
      1. HELPERS & TIMER MANAGEMENT
      ========================================================================== */
 
+  function canonicalUnit(unitNo) {
+    return window.AppUtils?.getCanonicalUnitNo
+      ? window.AppUtils.getCanonicalUnitNo(unitNo)
+      : Number(unitNo) || 1;
+  }
+
+  function unitDisplay(unitOrNo) {
+    return window.AppUtils?.getUnitDisplayNo
+      ? window.AppUtils.getUnitDisplayNo(unitOrNo)
+      : String(typeof unitOrNo === "object" && unitOrNo ? unitOrNo.no : unitOrNo);
+  }
+
   function hasUnitCurriculum(unitNo) {
-    return Boolean(window.CURRICULUM_DATA && window.CURRICULUM_DATA[Number(unitNo)]);
+    return Boolean(window.CURRICULUM_DATA && window.CURRICULUM_DATA[canonicalUnit(unitNo)]);
   }
 
   function getUnitCurriculum(unitNo) {
-    return (window.CURRICULUM_DATA && window.CURRICULUM_DATA[Number(unitNo)]) || null;
+    return (window.CURRICULUM_DATA && window.CURRICULUM_DATA[canonicalUnit(unitNo)]) || null;
   }
 
   function getUnitMeta(unitNo) {
     return (
-      CFG.UNITS_METADATA.find((u) => u.no === Number(unitNo)) || CFG.UNITS_METADATA[0]
+      window.AppUtils?.getUnitMetaByNo?.(unitNo) ||
+      CFG.UNITS_METADATA.find((u) => u.no === canonicalUnit(unitNo)) ||
+      CFG.UNITS_METADATA[0]
     );
   }
 
@@ -163,42 +177,51 @@
     const user = window.AuthManager?.getCurrentUser();
     if (!user) return;
 
+    const syncNos = window.AppUtils?.getUnitSyncNos
+      ? window.AppUtils.getUnitSyncNos(unitNo)
+      : [Number(unitNo) || 1];
+
     // Immediately update in-memory AuthManager unitProgressMap so UI checks are instantaneous
     const unitMap = window.AuthManager.getUnitProgressMap();
     if (unitMap) {
-      if (!unitMap[unitNo]) {
-        unitMap[unitNo] = {
-          unit_no: unitNo,
-          steps_completed: stepsCompleted,
-          is_content_read: Boolean(isContentRead),
-          best_quiz_score: 0,
-          best_quiz_time_sec: 0,
-          is_passed: false,
-          attempts_count: 0
-        };
-      } else {
-        unitMap[unitNo].steps_completed = Math.max(
-          Number(unitMap[unitNo].steps_completed || 0),
-          stepsCompleted
-        );
-        if (isContentRead) {
-          unitMap[unitNo].is_content_read = true;
+      syncNos.forEach((n) => {
+        if (!unitMap[n]) {
+          unitMap[n] = {
+            unit_no: n,
+            steps_completed: stepsCompleted,
+            is_content_read: Boolean(isContentRead),
+            best_quiz_score: 0,
+            best_quiz_time_sec: 0,
+            is_passed: false,
+            attempts_count: 0
+          };
+        } else {
+          unitMap[n].steps_completed = Math.max(
+            Number(unitMap[n].steps_completed || 0),
+            stepsCompleted
+          );
+          if (isContentRead) {
+            unitMap[n].is_content_read = true;
+          }
         }
-      }
+      });
     }
 
     const saveSeq = ++stepSaveSeq;
     try {
-      const res = await window.BackendAPI.saveStepProgress({
-        student_id: user.student_id,
-        unit_no: unitNo,
-        steps_completed: stepsCompleted,
-        is_content_read: Boolean(isContentRead)
-      });
-      // มีคำขอที่ใหม่กว่าส่งออกไปแล้ว: ทิ้งคำตอบนี้ ไม่ให้ทับความคืบหน้าล่าสุดบนหน้าจอ
-      if (saveSeq !== stepSaveSeq) return;
-      if (res && res.ok) {
-        window.AuthManager.updateSessionData(res.user, res.unit_progress, { silent: true });
+      let lastRes = null;
+      for (const n of syncNos) {
+        const res = await window.BackendAPI.saveStepProgress({
+          student_id: user.student_id,
+          unit_no: n,
+          steps_completed: stepsCompleted,
+          is_content_read: Boolean(isContentRead)
+        });
+        if (saveSeq !== stepSaveSeq) return;
+        if (res && res.ok) lastRes = res;
+      }
+      if (lastRes && lastRes.ok) {
+        window.AuthManager.updateSessionData(lastRes.user, lastRes.unit_progress, { silent: true });
       }
     } catch (err) {
       // เงียบไว้หากเครือข่ายสะดุดชั่วคราว เพื่อไม่ขัดจังหวะการอ่าน
@@ -213,7 +236,7 @@
     stopQuizTimer();
     currentMode = "directory";
     if (options.unitNo) {
-      activeUnitNo = Math.max(1, Math.min(CFG.TOTAL_UNITS, Number(options.unitNo) || 1));
+      activeUnitNo = canonicalUnit(options.unitNo);
     }
     if (options.moduleFilter) {
       moduleFilter = options.moduleFilter;
@@ -277,7 +300,7 @@
               <span class="status-pill ${st.statusClass}">${st.statusIcon}${esc(st.statusLabel)}</span>
             </div>
             <h2 class="selected-unit-title">
-              หน่วยที่ ${currentUnit.no}: ${window.AppUtils.formatUnitTitleHtml(currentUnit.title)}
+              หน่วยที่ ${esc(unitDisplay(currentUnit))}: ${window.AppUtils.formatUnitTitleHtml(currentUnit.title)}
             </h2>
             <p class="selected-unit-desc">${esc(currentUnit.subtitle)}</p>
           </div>
@@ -332,11 +355,12 @@
      ========================================================================== */
 
   function openUnit(unitNo, startSubMode = "reader") {
-    const targetNo = Math.max(1, Math.min(CFG.TOTAL_UNITS, Number(unitNo) || 1));
+    const targetNo = canonicalUnit(unitNo);
+    const dispNo = unitDisplay(targetNo);
 
     if (window.AppUtils?.isUnitLocked?.(targetNo)) {
       window.AppUtils?.showToast(
-        `หน่วยที่ ${targetNo} ยังล็อกอยู่ อยู่ระหว่างปรับปรุงเนื้อหา`,
+        `หน่วยที่ ${dispNo} ยังล็อกอยู่ อยู่ระหว่างปรับปรุงเนื้อหา`,
         "warn"
       );
       window.SoundEngine?.playError?.();
@@ -348,7 +372,7 @@
     if (!hasUnitCurriculum(targetNo)) {
       openDirectory({ unitNo: targetNo });
       window.AppUtils?.showToast(
-        `ไม่พบข้อมูลเนื้อหาของหน่วยที่ ${targetNo}`,
+        `ไม่พบข้อมูลเนื้อหาของหน่วยที่ ${dispNo}`,
         "info"
       );
       return;
@@ -364,7 +388,7 @@
     if (startSubMode === "quiz") {
       if (!isContentRead) {
         window.AppUtils?.showToast(
-          `กรุณาเรียนเนื้อหาหน่วยที่ ${targetNo} ให้ครบทุกสเต็ปก่อนทำแบบทดสอบ`,
+          `กรุณาเรียนเนื้อหาหน่วยที่ ${dispNo} ให้ครบทุกสเต็ปก่อนทำแบบทดสอบ`,
           "warn"
         );
         startSubMode = "reader";
@@ -650,7 +674,7 @@
           }
         </div>
         <p class="lesson-topbar-module">${esc(mod ? mod.title : "")}</p>
-        <h1 class="lesson-topbar-title">หน่วยที่ ${meta.no}: ${window.AppUtils.formatUnitTitleHtml(meta.title)}</h1>
+        <h1 class="lesson-topbar-title">หน่วยที่ ${esc(unitDisplay(meta))}: ${window.AppUtils.formatUnitTitleHtml(meta.title)}</h1>
       </header>
     `;
   }
@@ -735,7 +759,7 @@
 
         <aside id="lesson-toc" class="lesson-toc" aria-label="สารบัญบทเรียน">
           <div class="lesson-toc-head">
-            <span class="eyebrow">สารบัญหน่วยที่ ${activeUnitNo}</span>
+            <span class="eyebrow">สารบัญหน่วยที่ ${esc(unitDisplay(meta))}</span>
             <button type="button" class="icon-btn toc-close-btn" data-close-toc aria-label="ปิดสารบัญบทเรียน">
               ${icon("close")}
             </button>
@@ -743,7 +767,7 @@
 
           <div class="toc-progress">
             <div class="toc-progress-row">
-              <span>ความคืบหน้าการอ่านเนื้อหาหน่วยที่ ${activeUnitNo}</span>
+              <span>ความคืบหน้าการอ่านเนื้อหาหน่วยที่ ${esc(unitDisplay(meta))}</span>
               <strong>สเต็ปที่ ${currentStepIdx + 1} จาก ${totalSteps} (${stepPercent}%)</strong>
             </div>
             <div class="progress-track is-thin">
@@ -791,7 +815,7 @@
                   class="bookmark-btn ${bookmarked ? "is-saved" : ""}"
                   data-toggle-bookmark="${activeUnitNo}"
                   aria-pressed="${bookmarked ? "true" : "false"}"
-                  aria-label="${bookmarked ? "ยกเลิกการบันทึก" : "บันทึก"}หน่วยที่ ${meta.no}"
+                  aria-label="${bookmarked ? "ยกเลิกการบันทึก" : "บันทึก"}หน่วยที่ ${esc(unitDisplay(meta))}"
                 >
                   ${icon("bookmark")}
                   <span data-bookmark-label>${bookmarked ? "บันทึกแล้ว" : "บันทึก"}</span>
@@ -920,10 +944,11 @@
      ========================================================================== */
 
   function startUnitQuiz(unitNo) {
-    const targetNo = Number(unitNo) || activeUnitNo;
+    const targetNo = canonicalUnit(unitNo || activeUnitNo);
+    const dispNo = unitDisplay(targetNo);
     if (window.AppUtils?.isUnitLocked?.(targetNo)) {
       window.AppUtils?.showToast(
-        `หน่วยที่ ${targetNo} ยังล็อกอยู่ อยู่ระหว่างปรับปรุงเนื้อหา`,
+        `หน่วยที่ ${dispNo} ยังล็อกอยู่ อยู่ระหว่างปรับปรุงเนื้อหา`,
         "warn"
       );
       window.SoundEngine?.playError?.();
@@ -946,7 +971,7 @@
 
     if (!isCompleted) {
       window.AppUtils?.showToast(
-        `กรุณาเรียนเนื้อหาหน่วยที่ ${targetNo} ให้ครบทุกสเต็ปก่อนทำแบบทดสอบ`,
+        `กรุณาเรียนเนื้อหาหน่วยที่ ${dispNo} ให้ครบทุกสเต็ปก่อนทำแบบทดสอบ`,
         "warn"
       );
       openUnit(targetNo, "reader");
@@ -1059,7 +1084,7 @@
 
         <div class="quiz-countdown-meta">
           <span class="unit-number-badge">${esc(meta.code)}</span>
-          <h2 class="quiz-countdown-title">เตรียมพร้อมทำแบบทดสอบ: หน่วยที่ ${meta.no}</h2>
+          <h2 class="quiz-countdown-title">เตรียมพร้อมทำแบบทดสอบ: หน่วยที่ ${esc(unitDisplay(meta))}</h2>
           <p class="quiz-countdown-subtitle">${window.AppUtils.formatUnitTitleHtml(meta.title)}: ${esc(meta.subtitle)}</p>
         </div>
 
@@ -1259,7 +1284,7 @@
                 ${icon("arrow-left", "icon-nudge-left")}
                 <span>ออก</span>
               </button>
-              <span class="unit-number-badge">Unit ${quizState.unitNo}</span>
+              <span class="unit-number-badge">${esc(getUnitMeta(quizState.unitNo).code)}</span>
               <span class="quiz-hud-tag">ข้อที่ ${qIdx + 1}/${totalQ}</span>
             </div>
 
@@ -1345,18 +1370,26 @@
     }
 
     const attempt = quizState;
+    const dispNo = unitDisplay(attempt.unitNo);
+    const syncNos = window.AppUtils?.getUnitSyncNos
+      ? window.AppUtils.getUnitSyncNos(attempt.unitNo)
+      : [attempt.unitNo];
     const isStale = () => quizState !== attempt || currentMode !== "result";
     window.MotionEngine?.startTopLoader();
     try {
-      const res = await window.BackendAPI.submitUnitQuiz({
-        student_id: user.student_id,
-        unit_no: attempt.unitNo,
-        score: attempt.score,
-        time_sec: finalTimeSec
-      });
-
-      if (!res || !res.ok) {
-        throw new Error((res && res.error) || "บันทึกผลคะแนนไม่สำเร็จ");
+      let res = null;
+      for (let idx = 0; idx < syncNos.length; idx++) {
+        const uNo = syncNos[idx];
+        const r = await window.BackendAPI.submitUnitQuiz({
+          student_id: user.student_id,
+          unit_no: uNo,
+          score: attempt.score,
+          time_sec: idx === 0 ? finalTimeSec : 1
+        });
+        if (!r || !r.ok) {
+          throw new Error((r && r.error) || "บันทึกผลคะแนนไม่สำเร็จ");
+        }
+        res = r;
       }
 
       attempt.isSubmitting = false;
@@ -1384,14 +1417,14 @@
       }
       window.AppUtils.showToast(
         passed
-          ? `บันทึกคะแนนหน่วยที่ ${quizState.unitNo} สำเร็จ (${quizState.score}/10 ผ่านเกณฑ์ 80%)`
-          : `บันทึกคะแนนหน่วยที่ ${quizState.unitNo} แล้ว (${quizState.score}/10 ลองทบทวนและสอบใหม่อีกครั้ง)`,
+          ? `บันทึกคะแนนหน่วยที่ ${dispNo} สำเร็จ (${quizState.score}/10 ผ่านเกณฑ์ 80%)`
+          : `บันทึกคะแนนหน่วยที่ ${dispNo} แล้ว (${quizState.score}/10 ลองทบทวนและสอบใหม่อีกครั้ง)`,
         passed ? "success" : "info"
       );
     } catch (err) {
       attempt.isSubmitting = false;
       if (isStale()) {
-        window.AppUtils.showToast(`บันทึกคะแนนหน่วยที่ ${attempt.unitNo} ไม่สำเร็จ กรุณาทำแบบทดสอบอีกครั้ง`, "error");
+        window.AppUtils.showToast(`บันทึกคะแนนหน่วยที่ ${dispNo} ไม่สำเร็จ กรุณาทำแบบทดสอบอีกครั้ง`, "error");
         return;
       }
       const rawMsg = (err && err.message) ? err.message : String(err);
@@ -1424,9 +1457,13 @@
     const bestScore = Number(unitRecord.best_quiz_score || score);
     const bestTime = Number(unitRecord.best_quiz_time_sec || quizState.finalTimeSec);
 
-    const nextUnitNo = quizState.unitNo + 1;
+    const nextMeta = window.AppUtils?.getNextUnitMeta
+      ? window.AppUtils.getNextUnitMeta(quizState.unitNo)
+      : null;
+    const nextUnitNo = nextMeta ? nextMeta.no : CFG.TOTAL_UNITS + 1;
+    const nextUnitDisplay = nextMeta ? unitDisplay(nextMeta) : String(nextUnitNo);
     const canOpenNextUnit =
-      nextUnitNo <= CFG.TOTAL_UNITS &&
+      Boolean(nextMeta) &&
       hasUnitCurriculum(nextUnitNo) &&
       !window.AppUtils?.isUnitLocked?.(nextUnitNo);
 
@@ -1501,7 +1538,7 @@
             <h2 class="quiz-result-title">
               ${
                 passedAttempt
-                  ? `ยอดเยี่ยม คุณสอบผ่านหน่วยที่ ${quizState.unitNo} เรียบร้อยแล้ว`
+                  ? `ยอดเยี่ยม คุณสอบผ่านหน่วยที่ ${esc(unitDisplay(quizState.unitNo))} เรียบร้อยแล้ว`
                   : `ทำได้ ${score} จาก ${totalQ} คะแนน ลองทบทวนเนื้อหาแล้วสอบใหม่อีกครั้ง`
               }
             </h2>
@@ -1560,7 +1597,7 @@
                 ? canOpenNextUnit
                   ? `
                     <button type="button" class="btn-primary" data-enter-unit="${nextUnitNo}">
-                      <span>เรียนหน่วยถัดไป (หน่วยที่ ${nextUnitNo})</span>
+                      <span>เรียนหน่วยถัดไป (หน่วยที่ ${esc(nextUnitDisplay)})</span>
                       ${icon("arrow-right", "icon-nudge-right")}
                     </button>
                   `

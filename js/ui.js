@@ -26,15 +26,61 @@
      2. LESSON CARD
      ========================================================================== */
 
+  function getUnitMetaByNo(unitNo) {
+    const num = Number(unitNo);
+    return (
+      CFG.UNITS_METADATA.find(
+        (u) => u.no === num || (Array.isArray(u.mergedNos) && u.mergedNos.includes(num))
+      ) || null
+    );
+  }
+
+  function getCanonicalUnitNo(unitNo) {
+    const meta = getUnitMetaByNo(unitNo);
+    return meta ? meta.no : Math.max(1, Math.min(CFG.TOTAL_UNITS, Number(unitNo) || 1));
+  }
+
+  function getUnitDisplayNo(unitOrNo) {
+    const meta =
+      unitOrNo && typeof unitOrNo === "object" ? unitOrNo : getUnitMetaByNo(unitOrNo);
+    if (meta && meta.displayNo) return String(meta.displayNo);
+    return String(meta ? meta.no : Number(unitOrNo) || 1);
+  }
+
+  function getUnitBadgeText(unitOrNo) {
+    const meta =
+      unitOrNo && typeof unitOrNo === "object" ? unitOrNo : getUnitMetaByNo(unitOrNo);
+    if (meta && meta.displayNo) return String(meta.displayNo);
+    return String(meta ? meta.no : Number(unitOrNo) || 1).padStart(2, "0");
+  }
+
+  function getUnitSyncNos(unitOrNo) {
+    const meta =
+      unitOrNo && typeof unitOrNo === "object" ? unitOrNo : getUnitMetaByNo(unitOrNo);
+    if (meta && Array.isArray(meta.mergedNos) && meta.mergedNos.length) {
+      return meta.mergedNos.slice();
+    }
+    return [meta ? meta.no : Number(unitOrNo) || 1];
+  }
+
+  function getNextUnitMeta(unitNo) {
+    const canonical = getCanonicalUnitNo(unitNo);
+    const idx = CFG.UNITS_METADATA.findIndex((u) => u.no === canonical);
+    return idx >= 0 && idx + 1 < CFG.UNITS_METADATA.length
+      ? CFG.UNITS_METADATA[idx + 1]
+      : null;
+  }
+
   function isUnitLocked(unitNo) {
     const maxUnlocked = Number(CFG.MAX_UNLOCKED_UNIT || CFG.TOTAL_UNITS);
-    return Number(unitNo) > maxUnlocked;
+    return getCanonicalUnitNo(unitNo) > maxUnlocked;
   }
 
   function getUnitState(unitNo, unitMap) {
-    const prog = (unitMap && unitMap[unitNo]) || {};
-    const unitData = window.CURRICULUM_DATA && window.CURRICULUM_DATA[unitNo];
-    const locked = isUnitLocked(unitNo);
+    const canonicalNo = getCanonicalUnitNo(unitNo);
+    const prog = (unitMap && unitMap[canonicalNo]) || {};
+    const unitData = window.CURRICULUM_DATA && window.CURRICULUM_DATA[canonicalNo];
+    const locked = isUnitLocked(canonicalNo);
     const available = Boolean(unitData) && !locked;
     const totalSteps = unitData ? unitData.steps.length : 0;
     const passed = Boolean(prog.is_passed);
@@ -98,10 +144,12 @@
         : "";
 
     const bookmarked = !st.locked && Bookmarks.has(unit.no);
+    const displayNo = getUnitDisplayNo(unit);
+    const badgeText = getUnitBadgeText(unit);
 
     return `
       <article class="lesson-card ${opts.selected ? "is-selected-unit" : ""}" data-unit-no="${unit.no}">
-        <span class="lesson-card-number" aria-hidden="true">${String(unit.no).padStart(2, "0")}</span>
+        <span class="lesson-card-number" aria-hidden="true">${esc(badgeText)}</span>
         <div class="lesson-card-top">
           <span class="unit-number-badge ${st.passed && !st.locked ? "is-done" : ""}">หมวด ${unit.moduleId}</span>
           <span class="status-pill ${st.statusClass}">${st.statusIcon}${esc(st.statusLabel)}</span>
@@ -111,10 +159,10 @@
           ${
             st.locked
               ? `<button type="button" class="lesson-card-link" disabled aria-disabled="true">
-                   หน่วยที่ ${unit.no}: ${Utils.formatUnitTitleHtml(unit.title)}
+                   หน่วยที่ ${esc(displayNo)}: ${Utils.formatUnitTitleHtml(unit.title)}
                  </button>`
               : `<button type="button" class="lesson-card-link" ${openAttr}="${unit.no}">
-                   หน่วยที่ ${unit.no}: ${Utils.formatUnitTitleHtml(unit.title)}
+                   หน่วยที่ ${esc(displayNo)}: ${Utils.formatUnitTitleHtml(unit.title)}
                  </button>`
           }
         </h3>
@@ -133,11 +181,11 @@
             ${quizBtn}
             ${
               st.locked
-                ? `<button type="button" class="btn-secondary btn-sm" disabled aria-label="หน่วยที่ ${unit.no} ล็อกอยู่">
+                ? `<button type="button" class="btn-secondary btn-sm" disabled aria-label="หน่วยที่ ${esc(displayNo)} ล็อกอยู่">
                      ${icon("lock")}
                      <span>ล็อกอยู่</span>
                    </button>`
-                : `<button type="button" class="btn-primary btn-sm" ${openAttr}="${unit.no}" aria-label="${actionLabel}หน่วยที่ ${unit.no}">
+                : `<button type="button" class="btn-primary btn-sm" ${openAttr}="${unit.no}" aria-label="${actionLabel}หน่วยที่ ${esc(displayNo)}">
                      <span>${actionLabel}</span>
                      ${icon("arrow-right", "icon-nudge-right")}
                    </button>`
@@ -388,6 +436,12 @@
   };
 
   Utils.icon = icon;
+  Utils.getUnitMetaByNo = getUnitMetaByNo;
+  Utils.getCanonicalUnitNo = getCanonicalUnitNo;
+  Utils.getUnitDisplayNo = getUnitDisplayNo;
+  Utils.getUnitBadgeText = getUnitBadgeText;
+  Utils.getUnitSyncNos = getUnitSyncNos;
+  Utils.getNextUnitMeta = getNextUnitMeta;
   Utils.isUnitLocked = isUnitLocked;
   Utils.getUnitState = getUnitState;
   Utils.renderLessonCard = renderLessonCard;

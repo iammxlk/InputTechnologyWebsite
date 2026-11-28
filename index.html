@@ -22,7 +22,7 @@
 
   <link rel="stylesheet" href="css/tokens.css?v=5.4" />
   <link rel="stylesheet" href="css/base.css?v=5.4" />
-  <link rel="stylesheet" href="css/layout.css?v=5.4" />
+  <link rel="stylesheet" href="css/layout.css?v=5.5" />
   <link rel="stylesheet" href="css/home.css?v=5.4" />
   <link rel="stylesheet" href="css/simulator.css?v=5.4" />
   <link rel="stylesheet" href="css/lessons.css?v=5.4" />
@@ -217,6 +217,14 @@
       <path d="M12 3.5L21 8.5L12 13.5L3 8.5Z" />
       <path d="M3.5 12.5L12 17.2L20.5 12.5" />
       <path d="M3.5 16.3L12 21L20.5 16.3" />
+    </symbol>
+    <symbol id="icon-instagram" viewBox="0 0 24 24">
+      <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.2" cy="6.8" r="0.8" />
+    </symbol>
+    <symbol id="icon-phone" viewBox="0 0 24 24">
+      <path d="M5.5 4.5H9L10.8 9L8.5 10.6A11.2 11.2 0 0 0 13.4 15.5L15 13.2L19.5 15V18.5A1.5 1.5 0 0 1 18 20A14.5 14.5 0 0 1 4 6A1.5 1.5 0 0 1 5.5 4.5Z" />
     </symbol>
   </svg>
 
@@ -413,6 +421,7 @@
             <button type="button" class="nav-btn is-active" data-nav-view="home" title="คีย์ลัด: กดปุ่ม 1">หน้าหลัก</button>
             <button type="button" class="nav-btn" data-nav-view="lessons" title="คีย์ลัด: กดปุ่ม 2">บทเรียน 16 หน่วย</button>
             <button type="button" class="nav-btn" data-nav-view="progress" title="คีย์ลัด: กดปุ่ม 3">ความคืบหน้า</button>
+            <button type="button" class="nav-btn" data-nav-view="creator" title="คีย์ลัด: กดปุ่ม 4">ผู้จัดทำ</button>
           </nav>
 
           <div class="header-actions">
@@ -460,6 +469,10 @@
         <button type="button" class="nav-btn" data-nav-view="progress">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-chart"></use></svg>
           <span>ความคืบหน้า</span>
+        </button>
+        <button type="button" class="nav-btn" data-nav-view="creator">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-user"></use></svg>
+          <span>ผู้จัดทำ</span>
         </button>
       </nav>
 
@@ -929,6 +942,196 @@
         </div>
       </section>
 
+      <!-- ======== มุมมอง 4: ผู้จัดทำและครูผู้สอน ======== -->
+      <section id="view-creator" class="view-stack hidden" aria-label="ผู้จัดทำและครูผู้สอน">
+        <div class="surface-card creator-hero-card">
+          <div class="creator-hero-grid">
+            <div class="creator-portrait-col">
+              <div class="creator-portrait-frame">
+                <img
+                  src="images/creator-anupong.jpg"
+                  alt="นายอนุพงศ์ พลายรักษา (ครูอาร์ท) ครูผู้สอนและผู้จัดทำสื่อบทเรียนคอมพิวเตอร์ช่วยสอน"
+                  class="creator-portrait-img"
+                />
+              </div>
+              <div class="creator-school-chip">
+                <img src="cdti-logo.png" alt="โลโก้สถาบันเทคโนโลยีจิตรลดา" class="creator-school-logo" />
+                <div class="creator-school-meta">
+                  <span class="creator-school-code">CDTI VOCATIONAL SCHOOL</span>
+                  <span class="creator-school-name">โรงเรียนจิตรลดาวิชาชีพ</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="creator-info-col">
+              <p class="eyebrow">CREATOR &amp; COURSE INSTRUCTOR</p>
+              <div class="creator-role-badges">
+                <span class="creator-badge is-primary">ครูผู้สอนประจำรายวิชา</span>
+                <span class="creator-badge">ผู้จัดทำและพัฒนาสื่อ CAI</span>
+              </div>
+              <h1 class="creator-name">
+                นายอนุพงศ์ พลายรักษา
+                <span class="creator-nickname">(ครูอาร์ท)</span>
+              </h1>
+              <p class="creator-affiliation">
+                ครูผู้สอน สาขาวิชาเทคโนโลยีสารสนเทศ โรงเรียนจิตรลดาวิชาชีพ สถาบันเทคโนโลยีจิตรลดา
+              </p>
+              <p class="creator-bio">
+                ครูผู้สอนและผู้พัฒนาสื่อบทเรียนคอมพิวเตอร์ช่วยสอน (CAI) เพื่อให้นักเรียน ปวช.1 เรียนรู้และทบทวนบทเรียนได้ด้วยตนเองทุกที่ทุกเวลา
+              </p>
+
+              <div class="creator-contact-section">
+                <h2 class="creator-contact-heading">ช่องทางการติดต่อ</h2>
+                <div class="creator-contact-grid">
+                  <div class="creator-contact-card">
+                    <a
+                      href="https://www.instagram.com/mxlkuht/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="creator-contact-link"
+                    >
+                      <span class="creator-contact-icon" aria-hidden="true">
+                        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-instagram"></use></svg>
+                      </span>
+                      <span class="creator-contact-text">
+                        <span class="creator-contact-label">Instagram</span>
+                        <span class="creator-contact-value num-font">@mxlkuht</span>
+                      </span>
+                    </a>
+                    <button
+                      type="button"
+                      class="icon-btn creator-copy-btn"
+                      data-copy-text="mxlkuht"
+                      data-copy-label="Instagram"
+                      aria-label="คัดลอกชื่อบัญชี Instagram"
+                      title="คัดลอก mxlkuht"
+                    >
+                      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-copy"></use></svg>
+                    </button>
+                  </div>
+
+                  <div class="creator-contact-card">
+                    <a href="tel:0659206718" class="creator-contact-link">
+                      <span class="creator-contact-icon" aria-hidden="true">
+                        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-phone"></use></svg>
+                      </span>
+                      <span class="creator-contact-text">
+                        <span class="creator-contact-label">โทรศัพท์ติดต่อ</span>
+                        <span class="creator-contact-value num-font">065-920-6718</span>
+                      </span>
+                    </a>
+                    <button
+                      type="button"
+                      class="icon-btn creator-copy-btn"
+                      data-copy-text="0659206718"
+                      data-copy-label="เบอร์โทรศัพท์"
+                      aria-label="คัดลอกเบอร์โทรศัพท์"
+                      title="คัดลอก 065-920-6718"
+                    >
+                      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-copy"></use></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="creator-detail-grid">
+          <div class="surface-card creator-detail-card">
+            <p class="eyebrow">COURSE &amp; CAI SPECIFICATION</p>
+            <h2 class="card-title">ข้อมูลรายวิชาและสื่อการเรียนรู้</h2>
+            <dl class="creator-spec-list">
+              <div class="creator-spec-row">
+                <dt>รหัสและชื่อรายวิชา</dt>
+                <dd>21901-2017 เทคโนโลยีการนำเข้าข้อมูลสู่ระบบคอมพิวเตอร์</dd>
+              </div>
+              <div class="creator-spec-row">
+                <dt>หน่วยกิตและเวลาเรียน</dt>
+                <dd>2 หน่วยกิต (3 ชั่วโมง/สัปดาห์)</dd>
+              </div>
+              <div class="creator-spec-row">
+                <dt>ระดับชั้นและสาขาวิชา</dt>
+                <dd>ระดับ ปวช.1 สาขาวิชาเทคโนโลยีสารสนเทศ</dd>
+              </div>
+              <div class="creator-spec-row">
+                <dt>สถานศึกษา</dt>
+                <dd>โรงเรียนจิตรลดาวิชาชีพ สถาบันเทคโนโลยีจิตรลดา</dd>
+              </div>
+              <div class="creator-spec-row">
+                <dt>ปีการศึกษา</dt>
+                <dd class="num-font">2569</dd>
+              </div>
+              <div class="creator-spec-row">
+                <dt>โครงสร้างสื่อ CAI</dt>
+                <dd>เนื้อหา 16 หน่วย (4 หมวด), เครื่องจำลองอินเทอร์แอคทีฟ, แบบทดสอบท้ายหน่วย และเกียรติบัตรออนไลน์</dd>
+              </div>
+              <div class="creator-spec-row">
+                <dt>เกณฑ์ผ่านรายหน่วย</dt>
+                <dd>อ่านเนื้อหาครบทุกสเต็ป และสอบผ่าน 8 / 10 คะแนน (80%) ขึ้นไปทุกหน่วยเพื่อปลดล็อกเกียรติบัตร</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="surface-card creator-detail-card">
+            <p class="eyebrow">DEVELOPMENT ROLES</p>
+            <h2 class="card-title">ขอบเขตการจัดทำและพัฒนาสื่อ</h2>
+            <ul class="creator-roles-list">
+              <li class="creator-role-item">
+                <span class="creator-role-icon" aria-hidden="true">
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-book"></use></svg>
+                </span>
+                <div>
+                  <strong class="creator-role-title">ออกแบบเนื้อหาและแผนการจัดการเรียนรู้</strong>
+                  <p class="creator-role-desc">เรียบเรียงสาระการเรียนรู้ทั้ง 16 หน่วย จัดแบ่งสเต็ปการอ่านและจัดทำแบบทดสอบวัดผลสัมฤทธิ์ประจำหน่วย</p>
+                </div>
+              </li>
+              <li class="creator-role-item">
+                <span class="creator-role-icon" aria-hidden="true">
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-layers"></use></svg>
+                </span>
+                <div>
+                  <strong class="creator-role-title">พัฒนาเว็บไซต์และระบบฐานข้อมูลผู้เรียน</strong>
+                  <p class="creator-role-desc">พัฒนาเว็บแอปพลิเคชันแบบครบวงจร ระบบบัญชีนักเรียน และการซิงก์คะแนนความคืบหน้าเข้า Google Sheets</p>
+                </div>
+              </li>
+              <li class="creator-role-item">
+                <span class="creator-role-icon" aria-hidden="true">
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-scan"></use></svg>
+                </span>
+                <div>
+                  <strong class="creator-role-title">ออกแบบสื่อภาพประกอบและห้องทดลองเสมือน</strong>
+                  <p class="creator-role-desc">จัดทำภาพประกอบอธิบายโครงสร้างอุปกรณ์ เครื่องจำลองการสแกน 4 โหมด และแล็บคำนวณเลขตรวจสอบ EAN-13</p>
+                </div>
+              </li>
+              <li class="creator-role-item">
+                <span class="creator-role-icon" aria-hidden="true">
+                  <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-award"></use></svg>
+                </span>
+                <div>
+                  <strong class="creator-role-title">ระบบประเมินผลและออกเกียรติบัตรออนไลน์</strong>
+                  <p class="creator-role-desc">กำหนดเกณฑ์ผ่าน 80% ต่อหน่วย และพัฒนาระบบออกใบเกียรติบัตรอิเล็กทรอนิกส์ความละเอียดสูงเมื่อเรียนครบ 100%</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="surface-card creator-cta-bar">
+          <div class="creator-cta-copy">
+            <h2 class="creator-cta-title">พร้อมเรียนต่อหรือทบทวนบทเรียนแล้วหรือยัง?</h2>
+            <p class="creator-cta-desc">หากพบปัญหาการใช้งานระบบหรือมีคำถามเพิ่มเติมในเนื้อหาวิชา สามารถติดต่อครูอาร์ทผ่านช่องทางด้านบนได้ตลอดครับ</p>
+          </div>
+          <div class="btn-row">
+            <button type="button" class="btn-secondary" data-nav-view="progress">ดูความคืบหน้าของฉัน</button>
+            <button type="button" class="btn-primary" data-nav-view="lessons">
+              <span>ไปที่บทเรียน 16 หน่วย</span>
+              <svg class="icon icon-nudge-right" viewBox="0 0 24 24" aria-hidden="true"><use href="#icon-arrow-right"></use></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
       <footer class="info-bar">
         <span>CAI 21901-2017 เทคโนโลยีการนำเข้าข้อมูลสู่ระบบคอมพิวเตอร์</span>
         <span>ปีการศึกษา <span class="num-font">2569</span></span>
@@ -1066,19 +1269,19 @@
 
   <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
 
-  <script src="js/config.js?v=5.4"></script>
+  <script src="js/config.js?v=5.5"></script>
   <script src="js/sound.js?v=5.4"></script>
   <script src="js/api.js?v=5.4"></script>
   <script src="js/motion.js?v=5.4"></script>
-  <script src="js/ui.js?v=5.4"></script>
+  <script src="js/ui.js?v=5.5"></script>
   <script src="js/auth.js?v=5.4"></script>
   <script src="js/certificate.js?v=5.4"></script>
-  <script src="js/curriculum-part1.js?v=5.4"></script>
+  <script src="js/curriculum-part1.js?v=5.5"></script>
   <script src="js/curriculum-part2.js?v=5.4"></script>
   <script src="js/ean13-guide.js?v=5.4"></script>
-  <script src="js/learning.js?v=5.4"></script>
-  <script src="js/mascot.js?v=5.4"></script>
-  <script src="js/app.js?v=5.4"></script>
+  <script src="js/learning.js?v=5.5"></script>
+  <script src="js/mascot.js?v=5.5"></script>
+  <script src="js/app.js?v=5.5"></script>
   <script src="js/fx.js?v=5.4"></script>
 </body>
 </html>

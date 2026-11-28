@@ -8,7 +8,7 @@
 
 (function () {
   const CFG = window.APP_CONFIG;
-  const VALID_VIEWS = ["home", "lessons", "progress"];
+  const VALID_VIEWS = ["home", "lessons", "progress", "creator"];
 
   let activeView = "home";
   let selectedUnitNo = 1;
@@ -72,10 +72,13 @@
   }
 
   function openUnitInLessons(unitNo, startSubMode = "reader") {
-    const targetNo = Math.max(1, Math.min(CFG.TOTAL_UNITS, Number(unitNo) || 1));
+    const targetNo = window.AppUtils?.getCanonicalUnitNo
+      ? window.AppUtils.getCanonicalUnitNo(unitNo)
+      : Math.max(1, Math.min(CFG.TOTAL_UNITS, Number(unitNo) || 1));
     if (window.AppUtils?.isUnitLocked?.(targetNo)) {
+      const disp = window.AppUtils?.getUnitDisplayNo ? window.AppUtils.getUnitDisplayNo(targetNo) : targetNo;
       window.AppUtils?.showToast(
-        `หน่วยที่ ${targetNo} ยังล็อกอยู่ อยู่ระหว่างปรับปรุงเนื้อหา`,
+        `หน่วยที่ ${disp} ยังล็อกอยู่ อยู่ระหว่างปรับปรุงเนื้อหา`,
         "warn"
       );
       window.SoundEngine?.playError?.();
@@ -103,14 +106,14 @@
   }
 
   function getNextRecommendedUnitNo(unitMap) {
-    const maxUnlocked = Number(CFG.MAX_UNLOCKED_UNIT || CFG.TOTAL_UNITS);
-    for (let i = 1; i <= maxUnlocked; i++) {
-      const rec = unitMap[i];
+    const unlockedUnits = CFG.UNITS_METADATA.filter((u) => !window.AppUtils?.isUnitLocked?.(u.no));
+    for (const u of unlockedUnits) {
+      const rec = unitMap[u.no];
       if (!rec || !rec.is_passed) {
-        return i;
+        return u.no;
       }
     }
-    return 1;
+    return unlockedUnits.length ? unlockedUnits[0].no : 1;
   }
 
   /* ==========================================================================
@@ -163,9 +166,11 @@
     if (continueBtn) {
       const labelEl = continueBtn.querySelector("[data-label]") || continueBtn;
       const maxUnlocked = Number(CFG.MAX_UNLOCKED_UNIT || CFG.TOTAL_UNITS);
-      const allUnlockedPassed = Array.from({ length: maxUnlocked }, (_, idx) => idx + 1).every(
-        (no) => Boolean(unitMap[no]?.is_passed)
-      );
+      const unlockedUnits = CFG.UNITS_METADATA.filter((u) => !window.AppUtils?.isUnitLocked?.(u.no));
+      const allUnlockedPassed = unlockedUnits.every((u) => Boolean(unitMap[u.no]?.is_passed));
+      const nextDisplayNo = window.AppUtils?.getUnitDisplayNo
+        ? window.AppUtils.getUnitDisplayNo(nextMeta)
+        : nextMeta.no;
       if (user.passed_units_count >= CFG.TOTAL_UNITS) {
         labelEl.textContent = "ทบทวนบทเรียนทั้ง 16 หน่วย";
         continueBtn.onclick = () => openUnitInLessons(1);
@@ -173,7 +178,7 @@
         labelEl.textContent = `ทบทวนหน่วยที่ 1–${maxUnlocked} (รอเปิดหน่วยที่ ${maxUnlocked + 1})`;
         continueBtn.onclick = () => openUnitInLessons(1);
       } else {
-        labelEl.textContent = `เริ่มเรียนหน่วยที่ ${nextMeta.no}: ${nextMeta.title}`;
+        labelEl.textContent = `เริ่มเรียนหน่วยที่ ${nextDisplayNo}: ${nextMeta.title}`;
         continueBtn.onclick = () => openUnitInLessons(nextMeta.no);
       }
     }
@@ -211,12 +216,19 @@
       }
     }
 
-    // 4. บทเรียนทั้งหมด: 4 หมวด หมวดละ 4 การ์ดหน่วย (ครบ 16 หน่วยตามแผนการจัดการเรียนรู้)
+    // 4. บทเรียนทั้งหมด: 4 หมวด (ครบสาระทั้ง 16 หน่วยตามแผนการจัดการเรียนรู้)
     const syllabusGrid = document.getElementById("home-syllabus-grid");
     if (syllabusGrid) {
       syllabusGrid.innerHTML = CFG.MODULES_SYLLABUS.map((mod) => {
         const modUnits = CFG.UNITS_METADATA.filter((u) => u.moduleId === mod.id);
-        const passedInMod = modUnits.filter((u) => unitMap[u.no]?.is_passed).length;
+        const modTotalUnits = modUnits.reduce(
+          (sum, u) => sum + (window.AppUtils?.getUnitSyncNos ? window.AppUtils.getUnitSyncNos(u).length : 1),
+          0
+        );
+        const passedInMod = modUnits.reduce((sum, u) => {
+          const weight = window.AppUtils?.getUnitSyncNos ? window.AppUtils.getUnitSyncNos(u).length : 1;
+          return sum + (unitMap[u.no]?.is_passed ? weight : 0);
+        }, 0);
         const cardsHtml = modUnits
           .map((u) => window.AppUtils.renderLessonCard(u, unitMap, { mode: "home" }))
           .join("");
@@ -229,8 +241,8 @@
                 <h3 class="module-group-title">${esc(mod.title)}</h3>
                 <p class="module-group-desc">${esc(mod.description)}</p>
               </div>
-              <span class="module-group-count ${passedInMod === modUnits.length ? "is-complete" : ""}">
-                ${esc(mod.unitRange)} ผ่านแล้ว ${passedInMod} / ${modUnits.length} หน่วย
+              <span class="module-group-count ${passedInMod === modTotalUnits ? "is-complete" : ""}">
+                ${esc(mod.unitRange)} ผ่านแล้ว ${passedInMod} / ${modTotalUnits} หน่วย
               </span>
             </header>
             <div class="lesson-card-grid">${cardsHtml}</div>
@@ -285,17 +297,21 @@
     const ringArcEl = document.getElementById("progress-ring-arc");
     if (ringArcEl) ringArcEl.setAttribute("stroke-dasharray", `${Math.min(100, Math.max(0, percent))} 100`);
 
-    // แผนที่ความคืบหน้า: หนึ่งช่องต่อหนึ่งหน่วย กดเพื่อเปิดหน่วยนั้น
+    // แผนที่ความคืบหน้า: หนึ่งช่องต่อหนึ่งรายการบทเรียน (หน่วยควบรวมกินพื้นที่ตามจำนวนหน่วยในหลักสูตร)
     const unitMapEl = document.getElementById("progress-unit-map");
     if (unitMapEl && window.AppUtils.getUnitState) {
       unitMapEl.innerHTML = CFG.UNITS_METADATA.map((u) => {
         const st = window.AppUtils.getUnitState(u.no, unitMap);
+        const disp = window.AppUtils.getUnitDisplayNo ? window.AppUtils.getUnitDisplayNo(u) : u.no;
+        const badge = window.AppUtils.getUnitBadgeText ? window.AppUtils.getUnitBadgeText(u) : String(u.no).padStart(2, "0");
+        const span = window.AppUtils.getUnitSyncNos ? window.AppUtils.getUnitSyncNos(u).length : 1;
+        const spanAttr = span > 1 ? ` style="grid-column: span ${span}"` : "";
         if (st.locked) {
-          return `<button type="button" class="unit-map-cell is-idle" disabled aria-label="หน่วยที่ ${u.no} ล็อกอยู่" title="หน่วยที่ ${u.no} ล็อกอยู่ (อยู่ระหว่างปรับปรุงเนื้อหา)">${String(u.no).padStart(2, "0")}</button>`;
+          return `<button type="button" class="unit-map-cell is-idle"${spanAttr} disabled aria-label="หน่วยที่ ${esc(disp)} ล็อกอยู่" title="หน่วยที่ ${esc(disp)} ล็อกอยู่ (อยู่ระหว่างปรับปรุงเนื้อหา)">${esc(badge)}</button>`;
         }
         const cls = st.passed ? "is-pass" : st.stepsDone > 0 || st.attempts > 0 ? "is-progress" : "is-idle";
         const label = st.passed ? "ผ่านเกณฑ์แล้ว" : cls === "is-progress" ? "กำลังเรียน" : "ยังไม่เริ่ม";
-        return `<button type="button" class="unit-map-cell ${cls}" data-open-unit="${u.no}" aria-label="หน่วยที่ ${u.no} ${label}" title="หน่วยที่ ${u.no} ${label}">${String(u.no).padStart(2, "0")}</button>`;
+        return `<button type="button" class="unit-map-cell ${cls}"${spanAttr} data-open-unit="${u.no}" aria-label="หน่วยที่ ${esc(disp)} ${label}" title="หน่วยที่ ${esc(disp)} ${label}">${esc(badge)}</button>`;
       }).join("");
     }
     if (barFillEl) barFillEl.style.width = `${Math.min(100, Math.max(0, percent))}%`;
@@ -353,12 +369,15 @@
     }
 
     // 3. Filter Pills Counts
+    const totalCardsCount = CFG.UNITS_METADATA.length;
+    const passedCardsCount = CFG.UNITS_METADATA.filter((u) => Boolean(unitMap[u.no] && unitMap[u.no].is_passed)).length;
+    const pendingCardsCount = Math.max(0, totalCardsCount - passedCardsCount);
     document.querySelectorAll("[data-progress-filter]").forEach((btn) => {
       const f = btn.getAttribute("data-progress-filter");
       btn.classList.toggle("is-active", f === progressStatusFilter);
-      if (f === "all") btn.textContent = `ทั้งหมด (${CFG.TOTAL_UNITS})`;
-      if (f === "passed") btn.textContent = `ผ่านเกณฑ์แล้ว (${passedCount})`;
-      if (f === "pending") btn.textContent = `ยังไม่ผ่านเกณฑ์ (${remainingUnits})`;
+      if (f === "all") btn.textContent = `ทั้งหมด (${totalCardsCount})`;
+      if (f === "passed") btn.textContent = `ผ่านเกณฑ์แล้ว (${passedCardsCount})`;
+      if (f === "pending") btn.textContent = `ยังไม่ผ่านเกณฑ์ (${pendingCardsCount})`;
     });
 
     // 4. 16-Unit Status Rows
@@ -568,6 +587,42 @@
         setScannerMode(activeScannerMode, true);
         return;
       }
+
+      const copyBtn = e.target.closest("[data-copy-text]");
+      if (copyBtn) {
+        e.preventDefault();
+        const text = copyBtn.getAttribute("data-copy-text") || "";
+        const label = copyBtn.getAttribute("data-copy-label") || "ข้อมูล";
+        if (!text) return;
+        const done = () => {
+          window.SoundEngine?.playPop?.();
+          window.AppUtils?.showToast(`คัดลอก${label} (${text}) เรียบร้อยแล้ว`, "success");
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done).catch(() => {
+            const ta = document.createElement("textarea");
+            ta.value = text;
+            ta.style.position = "fixed";
+            ta.style.opacity = "0";
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand("copy"); } catch (err) {}
+            ta.remove();
+            done();
+          });
+        } else {
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand("copy"); } catch (err) {}
+          ta.remove();
+          done();
+        }
+        return;
+      }
     });
 
     // Brand Home Link
@@ -641,6 +696,7 @@
       if (e.key === "1") switchView("home");
       else if (e.key === "2") switchView("lessons", { resetToDirectory: true });
       else if (e.key === "3") switchView("progress");
+      else if (e.key === "4") switchView("creator");
     });
   }
 

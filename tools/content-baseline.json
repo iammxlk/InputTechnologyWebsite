@@ -1,15 +1,15 @@
 {
   "totals": {
-    "units": 16,
-    "steps": 100,
-    "blocks": 368,
-    "questions": 172
+    "units": 14,
+    "steps": 88,
+    "blocks": 494,
+    "questions": 148
   },
   "config": {
     "totalUnits": 16,
     "questionsPerUnit": 10,
     "passScore": 8,
-    "unitsMeta": "9e393f993f76b5b2",
+    "unitsMeta": "3de122fe9640abc7",
     "modules": "aa213c1b7dc62175",
     "course": "231fa6fc82b5e4a7"
   },
@@ -32,51 +32,35 @@
     },
     "3": {
       "steps": 6,
-      "blocks": 21,
+      "blocks": 64,
       "questions": 10,
-      "lessonText": "be032609b08bac25",
-      "quizText": "e8d1b0db59297616",
-      "answers": "1320231020"
+      "lessonText": "ec0a291cc62cb725",
+      "quizText": "e546a2ec80707712",
+      "answers": "2031201302"
     },
     "4": {
-      "steps": 6,
-      "blocks": 19,
+      "steps": 5,
+      "blocks": 45,
       "questions": 10,
-      "lessonText": "a3964b8c5504301a",
-      "quizText": "19da4f17187ded2b",
-      "answers": "0103123231"
+      "lessonText": "48609ba58126d079",
+      "quizText": "f273549825667e6a",
+      "answers": "0213031201"
     },
     "5": {
-      "steps": 6,
-      "blocks": 20,
+      "steps": 7,
+      "blocks": 72,
       "questions": 10,
-      "lessonText": "65091393e07193f5",
-      "quizText": "1aa9d08a8c7460c7",
-      "answers": "0320313120"
-    },
-    "6": {
-      "steps": 6,
-      "blocks": 17,
-      "questions": 10,
-      "lessonText": "de26594e8f2d5c97",
-      "quizText": "f98082de03a21fc1",
-      "answers": "1201313202"
+      "lessonText": "b2be2e38335c0275",
+      "quizText": "658f964727529ea6",
+      "answers": "1302013213"
     },
     "7": {
-      "steps": 6,
-      "blocks": 21,
-      "questions": 12,
-      "lessonText": "49e7df9e8bc34f13",
-      "quizText": "44e56120b7faf685",
-      "answers": "023021301231"
-    },
-    "8": {
       "steps": 7,
-      "blocks": 20,
-      "questions": 12,
-      "lessonText": "c0b3c0214e4fbccd",
-      "quizText": "e59c706a6082215a",
-      "answers": "012030323121"
+      "blocks": 63,
+      "questions": 10,
+      "lessonText": "333eef22a81a6b5d",
+      "quizText": "b0581b7df35f40d9",
+      "answers": "3102130203"
     },
     "9": {
       "steps": 7,

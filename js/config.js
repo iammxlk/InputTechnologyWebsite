@@ -23,7 +23,7 @@ window.APP_CONFIG = {
   GAS_WEB_APP_URL: "https://script.google.com/macros/s/AKfycbxTWYDzJ_lKa2n4RIt9yFDZep4qzXs6WxESuinSPIpylmobNDjwAxO8Zgfo3dUEJWHn/exec",
 
   TOTAL_UNITS: 16,
-  MAX_UNLOCKED_UNIT: 2, // เปิดให้เรียนถึงหน่วยที่ 2 (หน่วยที่ 3–16 ล็อกไว้ระหว่างทยอยปรับปรุงเนื้อหา)
+  MAX_UNLOCKED_UNIT: 8, // เปิดให้เรียนถึงหน่วยที่ 7&8 (หน่วยที่ 9–16 ล็อกไว้ระหว่างทยอยปรับปรุงเนื้อหา)
   QUESTIONS_PER_UNIT: 10,
   PASS_SCORE_PER_UNIT: 8, // เกณฑ์ผ่าน 80% (8 จาก 10 ข้อ)
   PASS_PERCENTAGE: 80,
@@ -86,43 +86,33 @@ window.APP_CONFIG = {
       no: 3,
       moduleId: 1,
       code: "Unit 3",
-      title: "อุปกรณ์นำเข้าข้อมูล (Input Device)",
-      subtitle: "หลักการทำงานและการเลือกใช้งานแป้นพิมพ์ (Keyboard) เมาส์ (Mouse) และสแกนเนอร์ (Scanner)"
+      title: "อุปกรณ์นำเข้าข้อมูล (Basic Input Device)",
+      subtitle: "กลไกแป้นพิมพ์ (Key Matrix & Scan Code) เมาส์ (DPI & Optical DSP) เครื่องสแกนเนอร์ (CIS/CCD) การสแกนด้วยสมาร์ตโฟน และสรีรศาสตร์"
     },
     {
       no: 4,
       moduleId: 1,
       code: "Unit 4",
-      title: "กล้องดิจิทัลกับไมโครโฟน",
-      subtitle: "เซนเซอร์รับภาพดิจิทัล การแปลงคลื่นเสียงเป็นสัญญาณดิจิทัล และการเลือกใช้อุปกรณ์ภาพและเสียง"
+      title: "กล้องดิจิทัลกับไมโครโฟน (Digital Camera and Microphone)",
+      subtitle: "กล้องดิจิทัล 4 ประเภท พิกเซล RGB และเมกะพิกเซล ไมโครโฟน 6 ประเภท ไดอะแฟรม วงจร ADC ค่า Sampling Rate และการเลือกใช้งานจริง"
     },
     {
       no: 5,
+      mergedNos: [5, 6],
+      displayNo: "5&6",
       moduleId: 2,
-      code: "Unit 5",
-      title: "อุปกรณ์อ่านบาร์โค้ด (CCD และ Image-based)",
-      subtitle: "หลักการทำงานของเครื่องอ่าน CCD และ Image-based การอ่านบาร์โค้ด 1 มิติ/2 มิติ และการบันทึกเข้าตารางคำนวณ"
-    },
-    {
-      no: 6,
-      moduleId: 2,
-      code: "Unit 6",
-      title: "อุปกรณ์อ่านบาร์โค้ดแบบไร้สายและแบบฝังตัว (Wireless / Fixed)",
-      subtitle: "การจับคู่ไร้สาย โหมดพักข้อมูลตรวจนับสินค้า (Batch Mode) และเครื่องอ่านฝังตัวอัตโนมัติ"
+      code: "Unit 5&6",
+      title: "อุปกรณ์อ่านบาร์โค้ด (CCD กับ Image-based และแบบไร้สายกับแบบฝังตัว)",
+      subtitle: "บาร์โค้ด 1D/2D และ EAN-13 หลักการสะท้อนแสง หัวอ่าน CCD กับ Image-based การเชื่อมต่อ USB-HID เครื่องอ่านไร้สาย (โหมดส่งทันที/เก็บข้อมูล) และแบบฝังตัว 4 ประเภท"
     },
     {
       no: 7,
+      mergedNos: [7, 8],
+      displayNo: "7&8",
       moduleId: 2,
-      code: "Unit 7",
-      title: "การนำเข้าด้วยรหัสภาพ 2 มิติ (QR Code โครงสร้างและการกู้คืนข้อมูล)",
-      subtitle: "โหมดการเก็บข้อมูล โครงสร้าง Finder / Alignment / Timing Pattern ระดับการแก้ไขข้อผิดพลาด L, M, Q, H และการใส่โลโก้"
-    },
-    {
-      no: 8,
-      moduleId: 2,
-      code: "Unit 8",
-      title: "การนำเข้าด้วยรหัสภาพ 2 มิติ (ประเภท อุปกรณ์อ่าน และการใช้งาน)",
-      subtitle: "ตระกูล QR Code (Model 2, Micro QR, rMQR, SQRC) Static vs Dynamic QR การเลือกอุปกรณ์อ่าน และการแก้ปัญหาการสแกน"
+      code: "Unit 7&8",
+      title: "รหัสภาพ 2 มิติ (QR Code คืออะไร โครงสร้าง ประเภท และอุปกรณ์อ่าน)",
+      subtitle: "ความหมาย ที่มาและความจุ QR Code โครงสร้าง 6 ส่วนและ Error Correction (L/M/Q/H) ตระกูล QR (Model 2/Micro/rMQR) Static vs Dynamic อุปกรณ์อ่าน 5 ชนิด การแก้ปัญหา และภัย Quishing"
     },
     {
       no: 9,
